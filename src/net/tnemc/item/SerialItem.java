@@ -8,6 +8,7 @@ import net.tnemc.item.data.FireworkEffectData;
 import net.tnemc.item.data.LeatherData;
 import net.tnemc.item.data.MapData;
 import net.tnemc.item.data.SerialPotionData;
+import net.tnemc.item.data.ShulkerData;
 import net.tnemc.item.data.SkullData;
 import net.tnemc.item.data.TropicalFishBucketData;
 import org.bukkit.Bukkit;
@@ -39,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static net.tnemc.item.ItemCalculations.isShulker;
 
 /**
  * The New Economy Minecraft Server Plugin
@@ -101,27 +104,31 @@ public class SerialItem {
   }
 
   private void buildData(ItemStack stack) {
-    ItemMeta meta = stack.getItemMeta();
-    if (meta instanceof PotionMeta) {
-      data = new SerialPotionData();
-    } else if (meta instanceof BookMeta) {
-      data = new BookData();
-    } else if (meta instanceof BannerMeta) {
-      data = new BannerData();
-    } else if (meta instanceof LeatherArmorMeta) {
-      data = new LeatherData();
-    } else if (meta instanceof SkullMeta) {
-      data = new SkullData();
-    } else if (meta instanceof MapMeta) {
-      data = new MapData();
-    } else if (meta instanceof EnchantmentStorageMeta) {
-      data = new EnchantStorageData();
-    } else if (meta instanceof FireworkMeta) {
-      data = new FireworkData();
-    } else if (meta instanceof FireworkEffectMeta) {
-      data = new FireworkEffectData();
-    } else if(meta instanceof TropicalFishBucketMeta) {
-      data = new TropicalFishBucketData();
+    if(isShulker(stack.getType())) {
+      data = new ShulkerData();
+    } else {
+      ItemMeta meta = stack.getItemMeta();
+      if (meta instanceof PotionMeta) {
+        data = new SerialPotionData();
+      } else if (meta instanceof BookMeta) {
+        data = new BookData();
+      } else if (meta instanceof BannerMeta) {
+        data = new BannerData();
+      } else if (meta instanceof LeatherArmorMeta) {
+        data = new LeatherData();
+      } else if (meta instanceof SkullMeta) {
+        data = new SkullData();
+      } else if (meta instanceof MapMeta) {
+        data = new MapData();
+      } else if (meta instanceof EnchantmentStorageMeta) {
+        data = new EnchantStorageData();
+      } else if (meta instanceof FireworkMeta) {
+        data = new FireworkData();
+      } else if (meta instanceof FireworkEffectMeta) {
+        data = new FireworkEffectData();
+      } else if(meta instanceof TropicalFishBucketMeta) {
+        data = new TropicalFishBucketData();
+      }
     }
     if(data != null){
       data.initialize(stack);
