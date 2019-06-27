@@ -34,11 +34,10 @@ public class ItemCalculations {
    * @param inventory The inventory to remove the items from.
    */
   public static void removeAllItem(ItemStack stack, Inventory inventory) {
-    for(int i = 0; i < inventory.getContents().length; i++) {
-      final ItemStack item = inventory.getItem(i);
-
-      if(stack != null && itemsEqual(stack, item)) inventory.setItem(i, null);
-    }
+    Arrays.stream(inventory.getContents())
+            .filter(Objects::nonNull)
+            .filter(itemStack -> itemsEqual(stack, itemStack))
+            .forEach(inventory::remove);
   }
 
   /**
@@ -47,17 +46,15 @@ public class ItemCalculations {
    * @param inventory The inventory to check.
    * @return The total count of items in the inventory.
    */
-  public static Integer getCount(ItemStack stack, Inventory inventory) {
+  public static int getCount(ItemStack stack, Inventory inventory) {
     ItemStack compare = stack.clone();
     compare.setAmount(1);
-
-    Integer value = 0;
-    for(ItemStack item : inventory.getContents()) {
-      if(itemsEqual(compare, item)) {
-        value += item.getAmount();
-      }
-    }
-    return value;
+    return Arrays
+            .stream(inventory.getContents())
+            .filter(Objects::nonNull)
+            .filter(itemStack -> itemsEqual(compare, itemStack))
+            .mapToInt(ItemStack::getAmount)
+            .sum();
   }
 
   /**
@@ -66,9 +63,7 @@ public class ItemCalculations {
    * @param inventory The inventory to remove the items from.
    */
   public static void takeItems(Collection<ItemStack> items, Inventory inventory) {
-    for (ItemStack item : items) {
-      removeItem(item, inventory);
-    }
+    items.forEach(itemStack -> removeItem(itemStack, inventory));
   }
 
   /**
@@ -86,12 +81,11 @@ public class ItemCalculations {
           final HumanEntity entity = ((HumanEntity)inventory.getHolder());
           for (Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
             final ItemStack i = entry.getValue();
+            if (i == null || i.getType() == Material.AIR) {
+              continue;
+            }
             Bukkit.getScheduler().runTask(plugin, () -> {
-              try {
-                entity.getWorld().dropItemNaturally(entity.getLocation(), i);
-              } catch(Exception e) {
-                //attempted to drop air/some crazy/stupid error.
-              }
+              entity.getWorld().dropItemNaturally(entity.getLocation(), i);
             });
           }
         }
@@ -105,7 +99,7 @@ public class ItemCalculations {
    * @param inventory The inventory to return the item stack from.
    * @return The remaining amount of items to remove.
    */
-  public static Integer removeItem(ItemStack stack, Inventory inventory) {
+  public static int removeItem(ItemStack stack, Inventory inventory) {
     int left = stack.getAmount();
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
@@ -160,60 +154,34 @@ public class ItemCalculations {
    * @param compare The item stack you're comparing to the original.
    * @return True if the item stacks are equal, otherwise false.
    */
-  public static Boolean itemsEqual(ItemStack original, ItemStack compare) {
-    if(compare == null) return false;
+  public static boolean itemsEqual(ItemStack original, ItemStack compare) {
+    if (compare == null) return false;
     ItemMeta originalMeta = original.getItemMeta();
     ItemMeta compareMeta = compare.getItemMeta();
-    if(compare.hasItemMeta()) {
-      if (compareMeta.hasDisplayName()) {
-        if (!originalMeta.hasDisplayName()) return false;
-        if (!originalMeta.getDisplayName().equalsIgnoreCase(compareMeta.getDisplayName())) return false;
-      }
+    if (compare.hasItemMeta()) {
+      if (isShulker(original.getType())) {
+        if (originalMeta instanceof BlockStateMeta && compareMeta instanceof BlockStateMeta) {
+          BlockStateMeta state = (BlockStateMeta) originalMeta;
+          BlockStateMeta stateCompare = (BlockStateMeta) compareMeta;
+          if (state.getBlockState() instanceof ShulkerBox && stateCompare.getBlockState() instanceof ShulkerBox) {
+            ShulkerBox shulker = (ShulkerBox) state.getBlockState();
+            ShulkerBox shulkerCompare = (ShulkerBox) stateCompare.getBlockState();
 
-      if (compareMeta.hasLore()) {
-        if (!originalMeta.hasLore()) return false;
-        if (!originalMeta.getLore().containsAll(compareMeta.getLore())) return false;
-      }
-
-      if (compareMeta.hasEnchants()) {
-        if (!originalMeta.hasEnchants()) return false;
-
-        for (Map.Entry<Enchantment, Integer> entry : compare.getEnchantments().entrySet()) {
-          if (!original.containsEnchantment(entry.getKey())) return false;
-          if (original.getEnchantmentLevel(entry.getKey()) != entry.getValue()) return false;
-        }
-      }
-    }
-
-    if(isShulker(original.getType())) {
-      if(originalMeta instanceof BlockStateMeta && compareMeta instanceof BlockStateMeta) {
-        BlockStateMeta state = (BlockStateMeta) originalMeta;
-        BlockStateMeta stateCompare = (BlockStateMeta) compareMeta;
-        if (state.getBlockState() instanceof ShulkerBox && stateCompare.getBlockState() instanceof ShulkerBox) {
-          ShulkerBox shulker = (ShulkerBox)state.getBlockState();
-          ShulkerBox shulkerCompare = (ShulkerBox)stateCompare.getBlockState();
-
-          for(int i = 0; i < shulker.getInventory().getSize(); i++) {
-            final ItemStack stack = shulker.getInventory().getItem(i);
-            if(stack != null) {
-              if(!itemsEqual(stack, shulkerCompare.getInventory().getItem(i))) return false;
+            for (int i = 0; i < shulker.getInventory().getSize(); i++) {
+              final ItemStack stack = shulker.getInventory().getItem(i);
+              if (stack != null) {
+                if (!itemsEqual(stack, shulkerCompare.getInventory().getItem(i))) return false;
+              }
             }
+            return true;
           }
-          return true;
+          return false;
         }
         return false;
       }
-      return false;
-    } else if(original.getType().equals(Material.WRITTEN_BOOK) ||
-        original.getType().equals(Material.WRITABLE_BOOK)) {
-      if(originalMeta instanceof BookMeta && compareMeta instanceof BookMeta) {
-        return new SerialItem(original).serialize().equals(new SerialItem(compare).serialize());
-      }
-      return false;
+      return original.isSimilar(compare);
     }
-    if(!original.getType().equals(compare.getType())) return false;
-    if(original.getDurability() != compare.getDurability()) return false;
-    return true;
+    return false;
   }
 
   /**
@@ -222,21 +190,6 @@ public class ItemCalculations {
    * @return True if it's a shulker box, otherwise false.
    */
   public static boolean isShulker(Material material) {
-    return material.equals(Material.WHITE_SHULKER_BOX) ||
-        material.equals(Material.ORANGE_SHULKER_BOX) ||
-        material.equals(Material.MAGENTA_SHULKER_BOX) ||
-        material.equals(Material.LIGHT_BLUE_SHULKER_BOX) ||
-        material.equals(Material.YELLOW_SHULKER_BOX) ||
-        material.equals(Material.LIME_SHULKER_BOX) ||
-        material.equals(Material.PINK_SHULKER_BOX) ||
-        material.equals(Material.GRAY_SHULKER_BOX) ||
-        material.equals(Material.LIGHT_GRAY_SHULKER_BOX) ||
-        material.equals(Material.CYAN_SHULKER_BOX) ||
-        material.equals(Material.PURPLE_SHULKER_BOX) ||
-        material.equals(Material.BLUE_SHULKER_BOX) ||
-        material.equals(Material.BROWN_SHULKER_BOX) ||
-        material.equals(Material.GREEN_SHULKER_BOX) ||
-        material.equals(Material.RED_SHULKER_BOX) ||
-        material.equals(Material.BLACK_SHULKER_BOX);
+    return material.name().contains("SHULKER_BOX");
   }
 }
