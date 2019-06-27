@@ -1,6 +1,5 @@
 package net.tnemc.item;
 
-
 import net.tnemc.item.data.BannerData;
 import net.tnemc.item.data.BookData;
 import net.tnemc.item.data.EnchantStorageData;
@@ -9,12 +8,15 @@ import net.tnemc.item.data.FireworkEffectData;
 import net.tnemc.item.data.LeatherData;
 import net.tnemc.item.data.MapData;
 import net.tnemc.item.data.SerialPotionData;
-import net.tnemc.item.data.ShulkerData;
 import net.tnemc.item.data.SkullData;
 import net.tnemc.item.data.TropicalFishBucketData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BookMeta;
@@ -36,9 +38,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
- * TheNewItemLibrary
+ * The New Economy Minecraft Server Plugin
  *
  * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/ or send a letter to
@@ -47,6 +50,8 @@ import java.util.Map;
  */
 public class SerialItem {
 
+  private List<String> flags = new ArrayList<>();
+  private Map<String, AttributeModifier> attributes = new HashMap<>();
   private Map<String, Integer> enchantments = new HashMap<>();
   private List<String> lore = new ArrayList<>();
 
@@ -55,6 +60,7 @@ public class SerialItem {
   private Integer amount = 1;
   private String display = "";
   private short damage = 0;
+  private int customModelData = -1;
   private SerialItemData data;
 
   //Cache=related variables
@@ -74,6 +80,16 @@ public class SerialItem {
       display = stack.getItemMeta().getDisplayName();
       lore = stack.getItemMeta().getLore();
 
+      if(stack.getItemMeta().hasCustomModelData()) {
+        customModelData = stack.getItemMeta().getCustomModelData();
+      }
+
+      for(ItemFlag flag : stack.getItemMeta().getItemFlags()) {
+        flags.add(flag.name());
+      }
+
+      stack.getItemMeta().getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.name(), modifier));
+
       if(stack.getItemMeta().hasEnchants()) {
 
         stack.getItemMeta().getEnchants().forEach(((enchantment, level) ->{
@@ -85,31 +101,27 @@ public class SerialItem {
   }
 
   private void buildData(ItemStack stack) {
-    if(ItemCalculations.isShulker(stack.getType())) {
-      data = new ShulkerData();
-    } else {
-      ItemMeta meta = stack.getItemMeta();
-      if (meta instanceof PotionMeta) {
-        data = new SerialPotionData();
-      } else if (meta instanceof BookMeta) {
-        data = new BookData();
-      } else if (meta instanceof BannerMeta) {
-        data = new BannerData();
-      } else if (meta instanceof LeatherArmorMeta) {
-        data = new LeatherData();
-      } else if (meta instanceof SkullMeta) {
-        data = new SkullData();
-      } else if (meta instanceof MapMeta) {
-        data = new MapData();
-      } else if (meta instanceof EnchantmentStorageMeta) {
-        data = new EnchantStorageData();
-      } else if (meta instanceof FireworkMeta) {
-        data = new FireworkData();
-      } else if (meta instanceof FireworkEffectMeta) {
-        data = new FireworkEffectData();
-      } else if(meta instanceof TropicalFishBucketMeta) {
-        data = new TropicalFishBucketData();
-      }
+    ItemMeta meta = stack.getItemMeta();
+    if (meta instanceof PotionMeta) {
+      data = new SerialPotionData();
+    } else if (meta instanceof BookMeta) {
+      data = new BookData();
+    } else if (meta instanceof BannerMeta) {
+      data = new BannerData();
+    } else if (meta instanceof LeatherArmorMeta) {
+      data = new LeatherData();
+    } else if (meta instanceof SkullMeta) {
+      data = new SkullData();
+    } else if (meta instanceof MapMeta) {
+      data = new MapData();
+    } else if (meta instanceof EnchantmentStorageMeta) {
+      data = new EnchantStorageData();
+    } else if (meta instanceof FireworkMeta) {
+      data = new FireworkData();
+    } else if (meta instanceof FireworkEffectMeta) {
+      data = new FireworkEffectData();
+    } else if(meta instanceof TropicalFishBucketMeta) {
+      data = new TropicalFishBucketData();
     }
     if(data != null){
       data.initialize(stack);
@@ -180,9 +192,6 @@ public class SerialItem {
     this.data = data;
   }
 
-  /**
-   * @return An itemstack instance from this SerialItem
-   */
   public ItemStack getStack() {
     if(stack == null) {
       stack = new ItemStack(material, amount, damage);
@@ -194,6 +203,18 @@ public class SerialItem {
       enchantments.forEach((name, level)->{
         meta.addEnchant(Enchantment.getByName(name), level, true);
       });
+
+      for(String str : flags) {
+        final ItemFlag flag = ItemFlag.valueOf(str);
+        if(flag != null) {
+          meta.addItemFlags(flag);
+        }
+      }
+
+      if(customModelData != -1) {
+        meta.setCustomModelData(customModelData);
+      }
+
       stack.setItemMeta(meta);
       if(data != null) {
         stack = data.build(stack);
@@ -206,9 +227,6 @@ public class SerialItem {
     this.stack = stack;
   }
 
-  /**
-   * @return A JSONObject based off this SerialItem.
-   */
   public JSONObject toJSON() {
     JSONObject json = new JSONObject();
     json.put("slot", slot);
@@ -216,30 +234,40 @@ public class SerialItem {
     json.put("amount", amount);
     if(display != null && !display.equalsIgnoreCase("")) json.put("display", display);
     json.put("damage", damage);
+    if(customModelData != -1) json.put("modelData", customModelData);
     if(lore != null && lore.size() > 0) json.put("lore", String.join(",", lore));
+
+    if(flags != null && flags.size() > 0) json.put("flags", String.join(",", flags));
 
     JSONObject object = new JSONObject();
     enchantments.forEach(object::put);
     json.put("enchantments", object);
+
+    JSONObject attr = new JSONObject();
+
+    attributes.forEach((name, modifier)->{
+      JSONObject mod = new JSONObject();
+
+      mod.put("id", modifier.getUniqueId().toString());
+      mod.put("name", modifier.getName());
+      mod.put("amount", modifier.getAmount());
+      mod.put("operation", modifier.getOperation().name());
+      mod.put("slot", modifier.getSlot().name());
+
+      attr.put(name, mod);
+    });
+    json.put("attributes", attr);
+
     if(data != null) {
       json.put("data", data.toJSON());
     }
     return json;
   }
 
-  /**
-   * @return A JSON String representing this SerialItem.
-   */
   public String serialize() {
     return toJSON().toJSONString();
   }
 
-  /**
-   * Reverts the serialize method back to a SerialItem instance.
-   * @param serialized The String to deserialize.
-   * @return The SerialItem instance based on the String.
-   * @throws ParseException Invalid JSON String.
-   */
   public static SerialItem unserialize(String serialized) throws ParseException {
     return fromJSON((JSONObject)new JSONParser().parse(serialized));
   }
@@ -249,10 +277,41 @@ public class SerialItem {
     Material material = Material.matchMaterial(helper.getString("material"));
     ItemStack stack = new ItemStack(material, helper.getInteger("amount"));
     ItemMeta meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
-    if(helper.has("display") && helper.isNull("display") && !helper.getString("display").equalsIgnoreCase("")) {
+    if(helper.has("display") && !helper.isNull("display") && !helper.getString("display").equalsIgnoreCase("")) {
       meta.setDisplayName(helper.getString("display"));
     }
+
+    if(helper.has("modelData")) {
+      meta.setCustomModelData(helper.getInteger("modelData"));
+    }
+
     if(helper.has("lore")) meta.setLore(new ArrayList<>(Arrays.asList((helper.getString("lore")).split(","))));
+
+    if(helper.has("flags")) {
+      List<String> parsedFlags = new ArrayList<>(Arrays.asList((helper.getString("flags")).split(",")));
+      for(String str : parsedFlags) {
+        final ItemFlag flag = ItemFlag.valueOf(str);
+        if(flag != null) {
+          meta.addItemFlags(flag);
+        }
+      }
+    }
+
+    if(json.containsKey("attributes")) {
+      JSONObject attr = (JSONObject)json.get("attributes");
+
+      attr.forEach((name, modifier)->{
+        JSONHelper mod = new JSONHelper((JSONObject)modifier);
+
+        meta.getAttributeModifiers().put(Attribute.valueOf(name.toString()),
+                                         new AttributeModifier(UUID.fromString(mod.getString("id")),
+                                                               mod.getString("name"),
+                                                               mod.getDouble("amount"),
+                                                               AttributeModifier.Operation.valueOf(mod.getString("operation")),
+                                                               EquipmentSlot.valueOf(mod.getString("slot"))));
+      });
+    }
+
     stack.setItemMeta(meta);
 
     if(json.containsKey("enchantments")) {
