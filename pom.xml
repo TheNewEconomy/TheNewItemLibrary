@@ -81,9 +81,9 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray-theneweconomy-java</id>
-            <name>theneweconomy-java</name>
-            <url>https://api.bintray.com/maven/theneweconomy/java/TheNewItemLibrary/;publish=1</url>
+            <id>github</id>
+            <name>GitHub TheNewEconomy Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/TheNewEconomy/TheNewItemLibrary</url>
         </repository>
     </distributionManagement>
 </project>

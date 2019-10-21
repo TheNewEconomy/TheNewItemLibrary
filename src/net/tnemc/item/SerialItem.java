@@ -275,6 +275,10 @@ public class SerialItem {
     return toJSON().toJSONString();
   }
 
+  public static String serialize(ItemStack stack) {
+    return new SerialItem(stack).serialize();
+  }
+
   public static SerialItem unserialize(String serialized) throws ParseException {
     return fromJSON((JSONObject)new JSONParser().parse(serialized));
   }

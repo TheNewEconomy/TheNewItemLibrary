@@ -3,18 +3,18 @@ package net.tnemc.item;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BlockStateMeta;
-import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The New Economy Minecraft Server Plugin
@@ -100,7 +100,7 @@ public class ItemCalculations {
    * @return The remaining amount of items to remove.
    */
   public static int removeItem(ItemStack stack, Inventory inventory) {
-    int left = stack.getAmount();
+    int left = stack.clone().getAmount();
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
       if(left <= 0) break;
