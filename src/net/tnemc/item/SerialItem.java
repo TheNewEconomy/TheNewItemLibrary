@@ -83,10 +83,8 @@ public class SerialItem {
       display = stack.getItemMeta().getDisplayName();
       lore = stack.getItemMeta().getLore();
 
-      // Quick 1.13 patch
-      boolean customModelCompat = !Bukkit.getVersion().contains("1.13");
-      
-      if(customModelCompat && stack.getItemMeta().hasCustomModelData()) {
+      // Check 1.13 version for compatibility with customModelData
+      if(!Bukkit.getVersion().contains("1.13") && stack.getItemMeta().hasCustomModelData()) {
         customModelData = stack.getItemMeta().getCustomModelData();
       }
 
