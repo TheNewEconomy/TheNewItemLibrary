@@ -84,7 +84,7 @@ public class SerialItem {
       lore = stack.getItemMeta().getLore();
 
       // Check 1.13 version for compatibility with customModelData
-      if(!Bukkit.getVersion().contains("1.13") && stack.getItemMeta().hasCustomModelData()) {
+      if(Utils.isOneFourteen() && stack.getItemMeta().hasCustomModelData()) {
         customModelData = stack.getItemMeta().getCustomModelData();
       }
 
@@ -92,7 +92,9 @@ public class SerialItem {
         flags.add(flag.name());
       }
 
-      stack.getItemMeta().getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.name(), modifier));
+      if(Utils.isOneThirteen() && stack.getItemMeta().hasAttributeModifiers()) {
+        stack.getItemMeta().getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.name(), modifier));
+      }
 
       if(stack.getItemMeta().hasEnchants()) {
 
@@ -251,20 +253,22 @@ public class SerialItem {
     enchantments.forEach(object::put);
     json.put("enchantments", object);
 
-    JSONObject attr = new JSONObject();
+    if(attributes.size() > 0) {
+      JSONObject attr = new JSONObject();
 
-    attributes.forEach((name, modifier)->{
-      JSONObject mod = new JSONObject();
+      attributes.forEach((name, modifier)->{
+        JSONObject mod = new JSONObject();
 
-      mod.put("id", modifier.getUniqueId().toString());
-      mod.put("name", modifier.getName());
-      mod.put("amount", modifier.getAmount());
-      mod.put("operation", modifier.getOperation().name());
-      mod.put("slot", modifier.getSlot().name());
+        mod.put("id", modifier.getUniqueId().toString());
+        mod.put("name", modifier.getName());
+        mod.put("amount", modifier.getAmount());
+        mod.put("operation", modifier.getOperation().name());
+        if(modifier.getSlot() != null) mod.put("slot", modifier.getSlot().name());
 
-      attr.put(name, mod);
-    });
-    json.put("attributes", attr);
+        attr.put(name, mod);
+      });
+      json.put("attributes", attr);
+    }
 
     if(data != null) {
       json.put("data", data.toJSON());
@@ -315,12 +319,12 @@ public class SerialItem {
       attr.forEach((name, modifier)->{
         JSONHelper mod = new JSONHelper((JSONObject)modifier);
 
-        meta.getAttributeModifiers().put(Attribute.valueOf(name.toString()),
+        meta.addAttributeModifier(Attribute.valueOf(name.toString()),
                                          new AttributeModifier(UUID.fromString(mod.getString("id")),
                                                                mod.getString("name"),
                                                                mod.getDouble("amount"),
                                                                AttributeModifier.Operation.valueOf(mod.getString("operation")),
-                                                               EquipmentSlot.valueOf(mod.getString("slot"))));
+                                                               mod.has("slot")? EquipmentSlot.valueOf(mod.getString("slot")) : null));
       });
     }
 
