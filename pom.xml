@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.tnemc</groupId>
-    <artifactId>TheNewItemLibrary</artifactId>
+    <artifactId>TNIL</artifactId>
     <version>0.1.4.0</version>
     <packaging>jar</packaging>
     <name>TheNewItemLibrary</name>
@@ -81,9 +81,12 @@
 
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>GitHub TheNewEconomy Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/TheNewEconomy/TheNewItemLibrary</url>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.io/repository/maven-releases/</url>
         </repository>
+        <snapshotRepository>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+        </snapshotRepository>
     </distributionManagement>
 </project>
