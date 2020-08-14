@@ -67,7 +67,7 @@ public class ItemCalculations {
   }
 
   /**
-   * Adds a collection of item stacks to an inventory, dropping them on the ground if it's a player inventory and overflow exists.
+   * Adds a collection of net.tnemc.item stacks to an inventory, dropping them on the ground if it's a player inventory and overflow exists.
    * @param plugin The instance of your plugin class.
    * @param items The collection of items to add to the inventory.
    * @param inventory The inventory to add the collection of items to.
@@ -94,9 +94,9 @@ public class ItemCalculations {
   }
 
   /**
-   * Removes an item stack with a specific amount from an inventory.
+   * Removes an net.tnemc.item stack with a specific amount from an inventory.
    * @param stack The stack, with the correct amount, to remove.
-   * @param inventory The inventory to return the item stack from.
+   * @param inventory The inventory to return the net.tnemc.item stack from.
    * @return The remaining amount of items to remove.
    */
   public static int removeItem(ItemStack stack, Inventory inventory) {
@@ -149,10 +149,10 @@ public class ItemCalculations {
   }
 
   /**
-   * Checks to see if two item stacks are equal.
-   * @param original The original item stack.
-   * @param compare The item stack you're comparing to the original.
-   * @return True if the item stacks are equal, otherwise false.
+   * Checks to see if two net.tnemc.item stacks are equal.
+   * @param original The original net.tnemc.item stack.
+   * @param compare The net.tnemc.item stack you're comparing to the original.
+   * @return True if the net.tnemc.item stacks are equal, otherwise false.
    */
   public static boolean itemsEqual(ItemStack original, ItemStack compare) {
     if (compare == null) return false;
