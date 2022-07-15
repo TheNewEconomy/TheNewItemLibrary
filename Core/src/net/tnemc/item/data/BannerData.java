@@ -8,7 +8,7 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BannerData implements SerialItemData {
+public abstract class BannerData<T> implements SerialItemData<T> {
 
   private List<PatternData> patterns = new ArrayList<>();
   /**
@@ -20,6 +20,7 @@ public abstract class BannerData implements SerialItemData {
   public JSONObject toJSON() {
     JSONObject json = new JSONObject();
     json.put("name", "banner");
+
 
     int i = 0;
     JSONObject patternsObject = new JSONObject();

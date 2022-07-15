@@ -4,7 +4,7 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-public abstract class LeatherData implements SerialItemData {
+public abstract class LeatherData<T> implements SerialItemData<T> {
 
   private int colorRGB;
 

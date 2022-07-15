@@ -8,7 +8,7 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SerialPotionData implements SerialItemData {
+public abstract class SerialPotionData<T> implements SerialItemData<T> {
 
   private List<PotionEffectData> customEffects = new ArrayList<>();
   private String type;

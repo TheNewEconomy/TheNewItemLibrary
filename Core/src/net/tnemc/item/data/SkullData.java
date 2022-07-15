@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 
 import java.util.UUID;
 
-public abstract class SkullData implements SerialItemData {
+public abstract class SkullData<T> implements SerialItemData<T> {
 
   private UUID owner;
 

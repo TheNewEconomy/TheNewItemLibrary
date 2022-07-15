@@ -4,7 +4,7 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-public abstract class TropicalFishData implements SerialItemData {
+public abstract class TropicalFishData<T> implements SerialItemData<T> {
 
   private boolean variant;
   private int bodyColour;

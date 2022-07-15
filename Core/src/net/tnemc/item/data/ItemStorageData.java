@@ -9,14 +9,13 @@ import org.json.simple.parser.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ItemStorageData implements SerialItemData {
+public abstract class ItemStorageData<T> implements SerialItemData<T> {
 
-  private Map<Integer, SerialItem> items = new HashMap<>();
+  private Map<Integer, SerialItem<T>> items = new HashMap<>();
 
   @Override
   public JSONObject toJSON() {
     JSONObject json = new JSONObject();
-    json.put("name", "shulker");
     JSONObject itemsObj = new JSONObject();
     items.forEach((slot, item)->{
       itemsObj.put(slot, item.toJSON());
@@ -30,10 +29,18 @@ public abstract class ItemStorageData implements SerialItemData {
     json.getJSON("items").forEach((key, value)->{
       final int slot = Integer.valueOf(String.valueOf(key));
       try {
-        items.put(slot, SerialItem.unserialize((JSONObject)value).get());
+        items.put(slot, (SerialItem<T>)SerialItem.unserialize((JSONObject)value).get());
       } catch(ParseException ignore) {
 
       }
     });
+  }
+
+  public Map<Integer, SerialItem<T>> getItems() {
+    return items;
+  }
+
+  public void setItems(Map<Integer, SerialItem<T>> items) {
+    this.items = items;
   }
 }

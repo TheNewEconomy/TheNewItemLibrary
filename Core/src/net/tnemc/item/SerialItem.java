@@ -6,11 +6,11 @@ import org.json.simple.parser.ParseException;
 
 import java.util.Optional;
 
-public class SerialItem {
+public class SerialItem<T> {
 
-  private AbstractItemStack stack;
+  private AbstractItemStack<T> stack;
 
-  public SerialItem(AbstractItemStack stack) {
+  public SerialItem(AbstractItemStack<T> stack) {
     this.stack = stack;
   }
 
@@ -56,19 +56,23 @@ public class SerialItem {
     return json;
   }
 
+  public AbstractItemStack<T> getStack() {
+    return stack;
+  }
+
   public String serialize() {
     return toJSON().toJSONString();
   }
 
-  public static Optional<SerialItem> unserialize(String serialized) throws ParseException {
+  public static <T> Optional<SerialItem<T>> unserialize(String serialized) throws ParseException {
     return new SerialItem().parse((JSONObject)new JSONParser().parse(serialized));
   }
 
-  public static Optional<SerialItem> unserialize(JSONObject json) throws ParseException {
+  public static <T> Optional<SerialItem<T>> unserialize(JSONObject json) throws ParseException {
     return new SerialItem().parse(json);
   }
 
-  public Optional<SerialItem> parse(JSONObject json) {
+  public Optional<SerialItem<T>> parse(JSONObject json) {
     return Optional.empty();
   }
 }

@@ -8,7 +8,7 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class FireworkData implements SerialItemData {
+public abstract class FireworkData<T> implements SerialItemData<T> {
 
   private List<FireworkEffectData> effects = new ArrayList<>();
 

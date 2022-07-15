@@ -7,7 +7,7 @@ import org.json.simple.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class EnchantStorageData implements SerialItemData {
+public abstract class EnchantStorageData<T> implements SerialItemData<T> {
 
   Map<String, Integer> enchantments = new HashMap<>();
 

@@ -4,7 +4,7 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-public abstract class MapData implements SerialItemData {
+public abstract class MapData<T> implements SerialItemData<T> {
 
   private Integer id = null;
   private String location = null;

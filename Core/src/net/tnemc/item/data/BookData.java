@@ -7,7 +7,7 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BookData implements SerialItemData {
+public abstract class BookData<T> implements SerialItemData<T> {
 
   private List<String> pages = new ArrayList<>();
 
