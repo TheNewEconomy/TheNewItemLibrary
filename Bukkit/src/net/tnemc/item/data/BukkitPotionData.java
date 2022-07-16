@@ -1,10 +1,10 @@
 package net.tnemc.item.data;
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.data.potion.PotionEffectData;
 import org.bukkit.inventory.ItemStack;
 
-public class BukkitAxolotlData extends AxolotlData<ItemStack> {
+public class BukkitPotionData extends SerialPotionData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid

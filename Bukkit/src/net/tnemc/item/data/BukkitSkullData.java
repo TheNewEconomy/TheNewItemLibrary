@@ -1,10 +1,9 @@
 package net.tnemc.item.data;
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import org.bukkit.inventory.ItemStack;
 
-public class BukkitAxolotlData extends AxolotlData<ItemStack> {
+public class BukkitSkullData extends SkullData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid

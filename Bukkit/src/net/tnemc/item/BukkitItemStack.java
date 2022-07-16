@@ -1,162 +1,261 @@
 package net.tnemc.item;
 
 import net.tnemc.item.attribute.SerialAttribute;
+import org.bukkit.Material;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents an ItemStack object related to the Bukkit API.
  */
 public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
+  private final List<String> flags = new ArrayList<>();
+  private final Map<String, AttributeModifier> attributes = new HashMap<>();
+  private final Map<String, Integer> enchantments = new HashMap<>();
+  private final List<String> lore = new ArrayList<>();
+
+  private int slot = 0;
+  private Material material;
+  private Integer amount = 1;
+  private String display = "";
+  private short damage = 0;
+  private int customModelData = -1;
+  private boolean unbreakable = false;
+  private SerialItemData<ItemStack> data;
+
+  //our locale stack
   private ItemStack stack;
 
   @Override
   public BukkitItemStack of(String material, int amount) {
-    return null;
+    this.material = Material.getMaterial(material);
+    this.amount = amount;
+    return this;
   }
 
   @Override
   public BukkitItemStack of(SerialItem<ItemStack> serialItem) {
-    return null;
+
+
+    return this;
   }
 
   @Override
   public BukkitItemStack of(ItemStack locale) {
-    return null;
+    this.stack = locale;
+    //TODO: parse stack into the variables above.
+
+    //Parse the meta data.
+    ParsingUtil.parseMeta(locale)
+               .ifPresent(itemStackSerialItemData->this.data = itemStackSerialItemData);
+
+    return this;
   }
 
   @Override
   public BukkitItemStack of(JSONObject json) {
-    return null;
+
+    try {
+      final Optional<SerialItem<ItemStack>> serialStack = SerialItem.unserialize(json);
+
+      if(serialStack.isPresent()) {
+        return of(serialStack.get());
+      }
+    } catch(ParseException e) {
+      e.printStackTrace();
+    }
+
+    return this;
   }
 
   @Override
   public BukkitItemStack flags(List<String> flags) {
-    return null;
+    this.flags.clear();
+    this.flags.addAll(flags);
+    return this;
   }
 
   @Override
   public BukkitItemStack lore(List<String> lore) {
-    return null;
+    this.lore.clear();
+    this.lore.addAll(lore);
+    return this;
   }
 
   @Override
   public BukkitItemStack attribute(String name, SerialAttribute attribute) {
-    return null;
+    final AttributeModifier attr = new AttributeModifier(attribute.getIdentifier(),
+                                                         attribute.getName(),
+                                                         attribute.getAmount(),
+                                                         ParsingUtil.attributeOperation(attribute.getOperation()),
+                                                         ParsingUtil.attributeSlot(attribute.getSlot()));
+
+
+    attributes.put(name, attr);
+    return this;
   }
 
   @Override
   public BukkitItemStack attribute(Map<String, SerialAttribute> attributes) {
-    return null;
+
+    for(Map.Entry<String, SerialAttribute> entry : attributes.entrySet()) {
+
+      final SerialAttribute attribute = entry.getValue();
+      final AttributeModifier attr = new AttributeModifier(attribute.getIdentifier(),
+                                                           attribute.getName(),
+                                                           attribute.getAmount(),
+                                                           ParsingUtil.attributeOperation(attribute.getOperation()),
+                                                           ParsingUtil.attributeSlot(attribute.getSlot()));
+
+
+      this.attributes.put(entry.getKey(), attr);
+    }
+    return this;
   }
 
   @Override
   public BukkitItemStack enchant(String enchantment, int level) {
-    return null;
+    enchantments.put(enchantment, level);
+    return this;
   }
 
   @Override
   public BukkitItemStack enchant(Map<String, Integer> enchantments) {
-    return null;
+    this.enchantments.clear();
+    this.enchantments.putAll(enchantments);
+    return this;
   }
 
   @Override
   public BukkitItemStack material(String material) {
-    return null;
+    this.material = Material.getMaterial(material);
+    return this;
   }
 
   @Override
   public BukkitItemStack amount(int amount) {
-    return null;
+    this.amount = amount;
+    return this;
   }
 
   @Override
   public BukkitItemStack slot(int slot) {
-    return null;
+    this.slot = slot;
+    return this;
   }
 
   @Override
   public BukkitItemStack display(String display) {
-    return null;
+    this.display = display;
+    return this;
   }
 
   @Override
   public BukkitItemStack damage(short damage) {
-    return null;
+    this.damage = damage;
+    return this;
   }
 
   @Override
   public BukkitItemStack modelData(int modelData) {
-    return null;
+    this.customModelData = modelData;
+    return this;
+  }
+
+  @Override
+  public BukkitItemStack unbreakable(boolean unbreakable) {
+    this.unbreakable = unbreakable;
+    return this;
   }
 
   @Override
   public BukkitItemStack applyData(SerialItemData<ItemStack> data) {
-    return null;
+    this.data = data;
+    return this;
   }
 
   @Override
   public List<String> flags() {
-    return null;
+    return flags;
   }
 
   @Override
   public List<String> lore() {
-    return null;
+    return lore;
   }
 
   @Override
   public Map<String, SerialAttribute> attributes() {
-    return null;
+    final Map<String, SerialAttribute> serialAttributes = new HashMap<>();
+
+    for(Map.Entry<String, AttributeModifier> entry : attributes.entrySet()) {
+
+      final AttributeModifier attribute = entry.getValue();
+
+      final SerialAttribute attr = new SerialAttribute(attribute.getUniqueId(),
+                                                       attribute.getName(),
+                                                       attribute.getAmount(),
+                                                       ParsingUtil.attributeOperation(attribute.getOperation()));
+      if(attribute.getSlot() != null) {
+        attr.setSlot(ParsingUtil.attributeSlot(attribute.getSlot()));
+      }
+      serialAttributes.put(entry.getKey(), attr);
+    }
+    return serialAttributes;
   }
 
   @Override
   public Map<String, Integer> enchantments() {
-    return null;
+    return enchantments;
   }
 
   @Override
   public String material() {
-    return null;
+    return material.getKey().toString();
   }
 
   @Override
   public int amount() {
-    return 0;
+    return amount;
   }
 
   @Override
   public int slot() {
-    return 0;
+    return slot;
   }
 
   @Override
   public String display() {
-    return null;
+    return display;
   }
 
   @Override
   public short damage() {
-    return 0;
+    return damage;
   }
 
   @Override
   public int modelData() {
-    return 0;
+    return customModelData;
   }
 
   @Override
   public boolean unbreakable() {
-    return false;
+    return unbreakable;
   }
 
   @Override
   public SerialItemData<ItemStack> data() {
-    return null;
+    return data;
   }
 
   /**
@@ -180,7 +279,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public boolean similar(AbstractItemStack<? extends ItemStack> compare) {
-    return false;
+    return stack.isSimilar(compare.locale());
   }
 
   public static BukkitItemStack locale(ItemStack stack) {
@@ -192,6 +291,8 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public ItemStack locale() {
+
+    //TODO: build stack.
     return stack;
   }
 }
