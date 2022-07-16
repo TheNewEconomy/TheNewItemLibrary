@@ -38,7 +38,10 @@ import net.tnemc.item.data.BukkitShulkerData;
 import net.tnemc.item.data.BukkitSkullData;
 import net.tnemc.item.data.BukkitSuspiciousStewData;
 import net.tnemc.item.data.BukkitTropicalFishData;
+import net.tnemc.item.data.firework.SerialFireworkEffect;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.EquipmentSlot;
@@ -61,6 +64,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.SuspiciousStewMeta;
 import org.bukkit.inventory.meta.TropicalFishBucketMeta;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ParsingUtil {
@@ -74,6 +79,39 @@ public class ParsingUtil {
       meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
     }
     return meta;
+  }
+
+  public static FireworkEffect fromSerial(final SerialFireworkEffect effect) {
+    final List<Color> colors = new ArrayList<>();
+    for(Integer i : effect.getColors()) {
+      colors.add(Color.fromRGB(i));
+    }
+
+    final List<Color> faded = new ArrayList<>();
+    for(Integer i : effect.getFadeColors()) {
+      faded.add(Color.fromRGB(i));
+    }
+
+    return FireworkEffect.builder().flicker(effect.hasFlicker()).trail(effect.hasTrail())
+        .withColor(colors).withFade(faded).build();
+  }
+
+  public static SerialFireworkEffect fromEffect(final FireworkEffect eff) {
+    final SerialFireworkEffect effect = new SerialFireworkEffect();
+
+    for(Color color : eff.getColors()) {
+      effect.getColors().add(color.asRGB());
+    }
+
+    for(Color color : eff.getFadeColors()) {
+      effect.getFadeColors().add(color.asRGB());
+    }
+
+    effect.setType(eff.getType().name());
+    effect.setTrail(eff.hasTrail());
+    effect.setFlicker(eff.hasFlicker());
+
+    return effect;
   }
 
   public static SerialAttributeSlot attributeSlot(final EquipmentSlot slot) {

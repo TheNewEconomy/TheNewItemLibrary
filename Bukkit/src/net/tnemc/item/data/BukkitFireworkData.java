@@ -20,8 +20,12 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.data.firework.SerialFireworkEffect;
+import org.bukkit.FireworkEffect;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 
 public class BukkitFireworkData extends FireworkData<ItemStack> {
 
@@ -33,7 +37,18 @@ public class BukkitFireworkData extends FireworkData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final FireworkMeta meta = (FireworkMeta)stack.getItemMeta();
 
+    if(meta != null) {
+
+      this.power = meta.getPower();
+
+      if(meta.hasEffects()) {
+        for(FireworkEffect eff : meta.getEffects()) {
+          effects.add(ParsingUtil.fromEffect(eff));
+        }
+      }
+    }
   }
 
   /**
@@ -43,6 +58,14 @@ public class BukkitFireworkData extends FireworkData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    final FireworkMeta meta = (FireworkMeta)ParsingUtil.buildFor(stack, FireworkMeta.class);
+
+    meta.setPower(power);
+    for(final SerialFireworkEffect effect : effects) {
+      meta.addEffect(ParsingUtil.fromSerial(effect));
+    }
+
+    return stack;
   }
 }

@@ -22,12 +22,12 @@ package net.tnemc.item.data;
 
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.firework.FireworkEffect;
+import net.tnemc.item.data.firework.SerialFireworkEffect;
 import org.json.simple.JSONObject;
 
 public abstract class FireworkEffectData<T> implements SerialItemData<T> {
 
-  private FireworkEffect effect = null;
+  private SerialFireworkEffect effect = null;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -49,6 +49,6 @@ public abstract class FireworkEffectData<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-    this.effect = FireworkEffect.readJSON(new JSONHelper(json.getJSON("effect_info")));
+    this.effect = SerialFireworkEffect.readJSON(new JSONHelper(json.getJSON("effect_info")));
   }
 }

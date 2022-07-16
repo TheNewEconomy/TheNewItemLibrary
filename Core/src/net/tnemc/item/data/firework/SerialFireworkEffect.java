@@ -26,7 +26,7 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FireworkEffect {
+public class SerialFireworkEffect {
 
   private final List<Integer> colors = new ArrayList<>();
   private final List<Integer> fadeColors = new ArrayList<>();
@@ -35,15 +35,12 @@ public class FireworkEffect {
   private boolean trail = false;
   private boolean flicker = false;
 
-  private boolean hasEffect = false;
+  public SerialFireworkEffect() { }
 
-  public FireworkEffect() { }
-
-  public FireworkEffect(String type, boolean trail, boolean flicker, boolean hasEffect) {
+  public SerialFireworkEffect(String type, boolean trail, boolean flicker, boolean hasEffect) {
     this.type = type;
     this.trail = trail;
     this.flicker = flicker;
-    this.hasEffect = hasEffect;
   }
 
   public JSONObject toJSON() {
@@ -64,22 +61,19 @@ public class FireworkEffect {
       }
       json.put("fades", fades);
     }
-    if(hasEffect) {
-      JSONObject eff = new JSONObject();
-      eff.put("type", type);
-      eff.put("flicker", flicker);
-      eff.put("trail", trail);
-      json.put("effect", eff);
-    }
+    JSONObject eff = new JSONObject();
+    eff.put("type", type);
+    eff.put("flicker", flicker);
+    eff.put("trail", trail);
+    json.put("effect", eff);
 
     return json;
   }
   
-  public static FireworkEffect readJSON(JSONHelper json) {
-    final FireworkEffect effect = new FireworkEffect();
+  public static SerialFireworkEffect readJSON(JSONHelper json) {
+    final SerialFireworkEffect effect = new SerialFireworkEffect();
 
     if(json.has("effect")) {
-      effect.setHasEffect(true);
       JSONHelper helper = json.getHelper("effect");
       effect.setType(helper.getString("type"));
       effect.setTrail(helper.getBoolean("trail"));
@@ -142,13 +136,5 @@ public class FireworkEffect {
 
   public void setFlicker(boolean flicker) {
     this.flicker = flicker;
-  }
-
-  public boolean hasEffect() {
-    return hasEffect;
-  }
-
-  public void setHasEffect(boolean hasEffect) {
-    this.hasEffect = hasEffect;
   }
 }
