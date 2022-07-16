@@ -2,6 +2,8 @@ package net.tnemc.item;
 
 import org.json.simple.JSONObject;
 
+import java.util.UUID;
+
 /**
  * TheNewItemLibrary
  * <p>
@@ -40,6 +42,10 @@ public class JSONHelper {
     return Short.valueOf(getString(identifier));
   }
 
+  public Float getFloat(String identifier) {
+    return Float.valueOf(getString(identifier));
+  }
+
   public Double getDouble(String identifier) {
     return Double.valueOf(getString(identifier));
   }
@@ -54,6 +60,10 @@ public class JSONHelper {
 
   public String getString(String identifier) {
     return object.get(identifier).toString();
+  }
+
+  public UUID getUUID(String identifier) {
+    return UUID.fromString(object.get(identifier).toString());
   }
 
   public JSONObject getObject() {
