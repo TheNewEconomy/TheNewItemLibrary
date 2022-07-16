@@ -4,7 +4,6 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class CompassData<T> implements SerialItemData<T> {
