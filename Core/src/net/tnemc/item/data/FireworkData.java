@@ -22,7 +22,7 @@ package net.tnemc.item.data;
 
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.firework.FireworkEffectData;
+import net.tnemc.item.data.firework.FireworkEffect;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public abstract class FireworkData<T> implements SerialItemData<T> {
 
-  protected List<FireworkEffectData> effects = new ArrayList<>();
+  protected List<FireworkEffect> effects = new ArrayList<>();
 
   protected int power;
 
@@ -67,7 +67,7 @@ public abstract class FireworkData<T> implements SerialItemData<T> {
       JSONHelper effectsObj = json.getHelper("effects");
 
       effects = new ArrayList<>();
-      effectsObj.getObject().forEach((key, value)->effects.add(FireworkEffectData.readJSON(new JSONHelper((JSONObject)value))));
+      effectsObj.getObject().forEach((key, value)->effects.add(FireworkEffect.readJSON(new JSONHelper((JSONObject)value))));
     }
   }
 

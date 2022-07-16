@@ -21,43 +21,34 @@ package net.tnemc.item.data.firework;
  */
 
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FireworkEffectData {
+public class FireworkEffect {
 
-  private List<Integer> colors = new ArrayList<>();
-  private List<Integer> fadeColors = new ArrayList<>();
+  private final List<Integer> colors = new ArrayList<>();
+  private final List<Integer> fadeColors = new ArrayList<>();
 
-  private String type;
-  private boolean trail;
-  private boolean flicker;
+  private String type = "";
+  private boolean trail = false;
+  private boolean flicker = false;
 
   private boolean hasEffect = false;
 
-  public FireworkEffectData(List<Integer> colors, List<Integer> fadeColors, String type,
-                            boolean trail, boolean flicker, boolean hasEffect) {
-    this.colors = colors;
-    this.fadeColors = fadeColors;
+  public FireworkEffect() { }
+
+  public FireworkEffect(String type, boolean trail, boolean flicker, boolean hasEffect) {
     this.type = type;
     this.trail = trail;
     this.flicker = flicker;
     this.hasEffect = hasEffect;
   }
 
-  /**
-   * Converts the {@link SerialItemData} to a JSON object.
-   *
-   * @return The JSONObject representing this {@link SerialItemData}.
-   */
   public JSONObject toJSON() {
+    
     JSONObject json = new JSONObject();
-    json.put("name", "fireworkeffect");
-
-    colors = new ArrayList<>();
     if(colors.size() > 0) {
       JSONObject colours = new JSONObject();
       for (int i = 0; i < colors.size(); i++) {
@@ -66,7 +57,6 @@ public class FireworkEffectData {
       json.put("colours", colours);
     }
 
-    fadeColors = new ArrayList<>();
     if(fadeColors.size() > 0) {
       JSONObject fades = new JSONObject();
       for (int i = 0; i < fadeColors.size(); i++) {
@@ -74,48 +64,42 @@ public class FireworkEffectData {
       }
       json.put("fades", fades);
     }
-
     if(hasEffect) {
-      JSONObject effect = new JSONObject();
-      effect.put("type", type);
-      effect.put("trail", trail);
-      effect.put("flicker", flicker);
-      json.put("effect", effect);
+      JSONObject eff = new JSONObject();
+      eff.put("type", type);
+      eff.put("flicker", flicker);
+      eff.put("trail", trail);
+      json.put("effect", eff);
     }
+
     return json;
   }
+  
+  public static FireworkEffect readJSON(JSONHelper json) {
+    final FireworkEffect effect = new FireworkEffect();
 
-  /**
-   * Reads JSON data and converts it back to a {@link SerialItemData} object.
-   *
-   * @param json The JSONHelper instance of the json data.
-   */
-  public static FireworkEffectData readJSON(JSONHelper json) {
+    if(json.has("effect")) {
+      effect.setHasEffect(true);
+      JSONHelper helper = json.getHelper("effect");
+      effect.setType(helper.getString("type"));
+      effect.setTrail(helper.getBoolean("trail"));
+      effect.setFlicker(helper.getBoolean("flicker"));
+    }
 
     List<Integer> colors = new ArrayList<>();
     if(json.has("colours")) {
       JSONObject colours = json.getJSON("colours");
       colours.forEach((ignore, value)->colors.add(Integer.valueOf(String.valueOf(value))));
     }
+    effect.setColors(colors);
 
     List<Integer> fadeColors = new ArrayList<>();
     if(json.has("fades")) {
       JSONObject fades = json.getJSON("fades");
       fades.forEach((ignore, value)->fadeColors.add(Integer.valueOf(String.valueOf(value))));
     }
-    String type = null;
-    boolean trail = false;
-    boolean flicker = false;
-    boolean hasEffect = false;
-    if(json.has("effect")) {
-      hasEffect = true;
-      JSONHelper helper = json.getHelper("effect");
-      type = helper.getString("type");
-      trail = helper.getBoolean("trail");
-      flicker = helper.getBoolean("flicker");
-    }
-
-    return new FireworkEffectData(colors, fadeColors, type, trail, flicker, hasEffect);
+    effect.setFadeColors(fadeColors);
+    return effect;
   }
 
   public List<Integer> getColors() {
@@ -123,7 +107,8 @@ public class FireworkEffectData {
   }
 
   public void setColors(List<Integer> colors) {
-    this.colors = colors;
+    this.colors.clear();
+    this.colors.addAll(colors);
   }
 
   public List<Integer> getFadeColors() {
@@ -131,7 +116,8 @@ public class FireworkEffectData {
   }
 
   public void setFadeColors(List<Integer> fadeColors) {
-    this.fadeColors = fadeColors;
+    this.fadeColors.clear();
+    this.fadeColors.addAll(fadeColors);
   }
 
   public String getType() {

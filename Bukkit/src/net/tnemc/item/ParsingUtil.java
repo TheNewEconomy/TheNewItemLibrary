@@ -28,6 +28,8 @@ import net.tnemc.item.data.BukkitBookData;
 import net.tnemc.item.data.BukkitBundleData;
 import net.tnemc.item.data.BukkitCompassData;
 import net.tnemc.item.data.BukkitEnchantData;
+import net.tnemc.item.data.BukkitFireworkData;
+import net.tnemc.item.data.BukkitFireworkEffectData;
 import net.tnemc.item.data.BukkitKnowledgeBookData;
 import net.tnemc.item.data.BukkitLeatherData;
 import net.tnemc.item.data.BukkitMapData;
@@ -45,6 +47,8 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.BundleMeta;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.KnowledgeBookMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -169,6 +173,10 @@ public class ParsingUtil {
         data = new BukkitCompassData();
       } else if(meta instanceof EnchantmentStorageMeta) {
         data = new BukkitEnchantData();
+      } else if(meta instanceof FireworkEffectMeta) {
+        data = new BukkitFireworkEffectData();
+      } else if(meta instanceof FireworkMeta) {
+        data = new BukkitFireworkData();
       } else if(meta instanceof KnowledgeBookMeta) {
         data = new BukkitKnowledgeBookData();
       } else if(meta instanceof LeatherArmorMeta) {
