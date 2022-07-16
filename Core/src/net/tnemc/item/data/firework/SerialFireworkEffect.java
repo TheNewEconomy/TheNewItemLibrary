@@ -37,7 +37,7 @@ public class SerialFireworkEffect {
 
   public SerialFireworkEffect() { }
 
-  public SerialFireworkEffect(String type, boolean trail, boolean flicker, boolean hasEffect) {
+  public SerialFireworkEffect(String type, boolean trail, boolean flicker) {
     this.type = type;
     this.trail = trail;
     this.flicker = flicker;

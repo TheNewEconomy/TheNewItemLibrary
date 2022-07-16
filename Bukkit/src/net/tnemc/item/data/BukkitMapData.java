@@ -20,8 +20,11 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.MapMeta;
 
 public class BukkitMapData extends MapData<ItemStack> {
 
@@ -33,7 +36,13 @@ public class BukkitMapData extends MapData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final MapMeta meta = (MapMeta)stack.getItemMeta();
 
+    if(meta != null) {
+      this.colorRGB = meta.getColor().asRGB();
+      this.scaling = meta.isScaling();
+      this.location = meta.getLocationName();
+    }
   }
 
   /**
@@ -43,6 +52,15 @@ public class BukkitMapData extends MapData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    final MapMeta meta = (MapMeta)ParsingUtil.buildFor(stack, MapMeta.class);
+
+    meta.setColor(Color.fromRGB(colorRGB));
+    meta.setScaling(scaling);
+    meta.setLocationName(location);
+
+    stack.setItemMeta(meta);
+
+    return stack;
   }
 }
