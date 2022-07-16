@@ -21,7 +21,13 @@ package net.tnemc.item.data;
  */
 
 import net.tnemc.item.SerialItemData;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
+import org.bukkit.entity.TropicalFish;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.TropicalFishBucketMeta;
 
 public class BukkitTropicalFishData extends TropicalFishData<ItemStack> {
 
@@ -33,7 +39,15 @@ public class BukkitTropicalFishData extends TropicalFishData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final TropicalFishBucketMeta meta = (TropicalFishBucketMeta)stack.getItemMeta();
 
+    if(meta != null && meta.hasVariant()) {
+      variant = true;
+
+      pattern = meta.getPattern().name();
+      patternColour = meta.getPatternColor().getColor().asRGB();
+      bodyColour = meta.getBodyColor().getColor().asRGB();
+    }
   }
 
   /**
@@ -43,6 +57,22 @@ public class BukkitTropicalFishData extends TropicalFishData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    TropicalFishBucketMeta meta;
+
+    if(stack.hasItemMeta() && stack.getItemMeta() instanceof TropicalFishBucketMeta) {
+      meta = (TropicalFishBucketMeta)stack.getItemMeta();
+    } else {
+      meta = (TropicalFishBucketMeta)Bukkit.getItemFactory().getItemMeta(Material.TROPICAL_FISH_BUCKET);
+    }
+
+    if(variant) {
+      meta.setBodyColor(DyeColor.getByColor(Color.fromRGB(bodyColour)));
+      meta.setPatternColor(DyeColor.getByColor(Color.fromRGB(patternColour)));
+      meta.setPattern(TropicalFish.Pattern.valueOf(pattern));
+    }
+    stack.setItemMeta(meta);
+
+    return stack;
   }
 }

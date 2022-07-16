@@ -26,7 +26,7 @@ import org.json.simple.JSONObject;
 
 public abstract class TropicalFishData<T> implements SerialItemData<T> {
 
-  protected boolean variant;
+  protected boolean variant = false;
   protected int bodyColour;
   protected int patternColour;
   protected String pattern;
