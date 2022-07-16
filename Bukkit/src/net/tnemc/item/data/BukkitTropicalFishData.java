@@ -20,6 +20,7 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -58,13 +59,7 @@ public class BukkitTropicalFishData extends TropicalFishData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    TropicalFishBucketMeta meta;
-
-    if(stack.hasItemMeta() && stack.getItemMeta() instanceof TropicalFishBucketMeta) {
-      meta = (TropicalFishBucketMeta)stack.getItemMeta();
-    } else {
-      meta = (TropicalFishBucketMeta)Bukkit.getItemFactory().getItemMeta(Material.TROPICAL_FISH_BUCKET);
-    }
+    TropicalFishBucketMeta meta = (TropicalFishBucketMeta)ParsingUtil.buildFor(stack, TropicalFishBucketMeta.class);
 
     if(variant) {
       meta.setBodyColor(DyeColor.getByColor(Color.fromRGB(bodyColour)));

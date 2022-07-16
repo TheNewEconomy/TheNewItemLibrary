@@ -20,6 +20,7 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -54,13 +55,7 @@ public class BukkitAxolotlData extends AxolotlData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    AxolotlBucketMeta meta;
-
-    if(stack.hasItemMeta() && stack.getItemMeta() instanceof AxolotlBucketMeta) {
-      meta = (AxolotlBucketMeta)stack.getItemMeta();
-    } else {
-      meta = (AxolotlBucketMeta)Bukkit.getItemFactory().getItemMeta(Material.AXOLOTL_BUCKET);
-    }
+    AxolotlBucketMeta meta = (AxolotlBucketMeta)ParsingUtil.buildFor(stack, AxolotlBucketMeta.class);
 
     meta.setVariant(Axolotl.Variant.valueOf(variant));
     stack.setItemMeta(meta);

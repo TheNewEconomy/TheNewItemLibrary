@@ -58,6 +58,17 @@ import java.util.Optional;
 
 public class ParsingUtil {
 
+  public static ItemMeta buildFor(ItemStack stack, Class<? extends ItemMeta> type) {
+    ItemMeta meta;
+
+    if(stack.hasItemMeta() && type.isInstance(stack.getItemMeta())) {
+      meta = stack.getItemMeta();
+    } else {
+      meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
+    }
+    return meta;
+  }
+
   public static SerialAttributeSlot attributeSlot(final EquipmentSlot slot) {
     if(slot == null) return null;
 

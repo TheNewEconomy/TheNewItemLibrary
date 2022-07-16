@@ -20,8 +20,19 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.data.potion.PotionEffectData;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.AxolotlBucketMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 public class BukkitPotionData extends SerialPotionData<ItemStack> {
 
@@ -34,6 +45,24 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
   @Override
   public void of(ItemStack stack) {
 
+    PotionMeta meta = (PotionMeta)stack.getItemMeta();
+    if(meta != null) {
+
+      if(meta.hasColor()) colorRGB = meta.getColor().asRGB();
+      type = meta.getBasePotionData().getType().name();
+      extended = meta.getBasePotionData().isExtended();
+      upgraded = meta.getBasePotionData().isUpgraded();
+
+      for(final PotionEffect effect : meta.getCustomEffects()) {
+
+        customEffects.add(new PotionEffectData(effect.getType().getName(),
+                                               effect.getAmplifier(),
+                                               effect.getDuration(),
+                                               effect.hasParticles(),
+                                               effect.isAmbient(),
+                                               effect.hasIcon()));
+      }
+    }
   }
 
   /**
@@ -43,6 +72,21 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+
+    PotionMeta meta = (PotionMeta)ParsingUtil.buildFor(stack, PotionMeta.class);
+
+    if(colorRGB != -1) meta.setColor(Color.fromRGB(colorRGB));
+
+    customEffects.forEach((effect)->meta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(effect.getName()),
+                                                                        effect.getDuration(),
+                                                                        effect.getAmplifier(),
+                                                                        effect.isAmbient(),
+                                                                        effect.hasParticles(),
+                                                                        effect.hasIcon()), true));
+    PotionData data = new PotionData(PotionType.valueOf(type), extended, upgraded);
+    meta.setBasePotionData(data);
+    stack.setItemMeta(meta);
+    return stack;
   }
 }

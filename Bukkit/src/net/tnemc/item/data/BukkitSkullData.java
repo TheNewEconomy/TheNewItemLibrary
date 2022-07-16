@@ -20,8 +20,16 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Axolotl;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.AxolotlBucketMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import java.util.UUID;
 
 public class BukkitSkullData extends SkullData<ItemStack> {
 
@@ -43,6 +51,12 @@ public class BukkitSkullData extends SkullData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    SkullMeta meta = (SkullMeta)ParsingUtil.buildFor(stack, SkullMeta.class);
+
+    meta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString(owner)));
+    stack.setItemMeta(meta);
+
+    return stack;
   }
 }
