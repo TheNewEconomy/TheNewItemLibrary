@@ -20,8 +20,10 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 
 public class BukkitBookData extends BookData<ItemStack> {
 
@@ -33,7 +35,14 @@ public class BukkitBookData extends BookData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final BookMeta meta = (BookMeta)stack.getItemMeta();
 
+    if(meta != null) {
+      this.title = meta.getTitle();
+      this.author = meta.getAuthor();
+      this.generation = meta.getGeneration().name();
+      this.pages = meta.getPages();
+    }
   }
 
   /**
@@ -43,6 +52,15 @@ public class BukkitBookData extends BookData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    final BookMeta meta = (BookMeta)ParsingUtil.buildFor(stack, BookMeta.class);
+
+    meta.setTitle(title);
+    meta.setAuthor(author);
+    meta.setGeneration(BookMeta.Generation.valueOf(generation));
+    meta.setPages(pages);
+    stack.setItemMeta(meta);
+
+    return stack;
   }
 }
