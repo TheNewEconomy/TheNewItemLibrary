@@ -20,8 +20,12 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
 
 public class BukkitCompassData extends CompassData<ItemStack> {
 
@@ -33,7 +37,23 @@ public class BukkitCompassData extends CompassData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final CompassMeta meta = (CompassMeta)stack.getItemMeta();
 
+    if(meta != null && meta.hasLodestone() && meta.isLodestoneTracked()) {
+      this.tracked = true;
+
+      final Location loc = meta.getLodestone();
+
+      if(loc.getWorld() != null) {
+        this.world = loc.getWorld().getUID();
+      }
+      this.x = loc.getX();
+      this.y = loc.getY();
+      this.z = loc.getZ();
+
+      this.yaw = loc.getYaw();
+      this.pitch = loc.getPitch();
+    }
   }
 
   /**
@@ -43,6 +63,16 @@ public class BukkitCompassData extends CompassData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    final CompassMeta meta = (CompassMeta)ParsingUtil.buildFor(stack, CompassMeta.class);
+
+    meta.setLodestoneTracked(tracked);
+    if(tracked) {
+      meta.setLodestone(new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch));
+    }
+
+    stack.setItemMeta(meta);
+
+    return stack;
   }
 }
