@@ -2,7 +2,7 @@ package net.tnemc.item.providers;
 
 import com.vdurmont.semver4j.Semver;
 
-public class VersionChecker {
+public class VersionUtil {
 
   /**
    * @return Whether the bukkit in use is for MC >= 1.8
