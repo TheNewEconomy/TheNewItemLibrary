@@ -20,8 +20,17 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.data.potion.PotionEffectData;
+import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SuspiciousStewMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 public class BukkitSuspiciousStewData extends SuspiciousStewData<ItemStack> {
 
@@ -34,6 +43,19 @@ public class BukkitSuspiciousStewData extends SuspiciousStewData<ItemStack> {
   @Override
   public void of(ItemStack stack) {
 
+    SuspiciousStewMeta meta = (SuspiciousStewMeta)stack.getItemMeta();
+    if(meta != null) {
+
+      for(final PotionEffect effect : meta.getCustomEffects()) {
+
+        customEffects.add(new PotionEffectData(effect.getType().getName(),
+                                               effect.getAmplifier(),
+                                               effect.getDuration(),
+                                               effect.hasParticles(),
+                                               effect.isAmbient(),
+                                               effect.hasIcon()));
+      }
+    }
   }
 
   /**
@@ -43,6 +65,17 @@ public class BukkitSuspiciousStewData extends SuspiciousStewData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+
+    SuspiciousStewMeta meta = (SuspiciousStewMeta)ParsingUtil.buildFor(stack, PotionMeta.class);
+
+    customEffects.forEach((effect)->meta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(effect.getName()),
+                                                                          effect.getDuration(),
+                                                                          effect.getAmplifier(),
+                                                                          effect.isAmbient(),
+                                                                          effect.hasParticles(),
+                                                                          effect.hasIcon()), true));
+    stack.setItemMeta(meta);
+    return stack;
   }
 }
