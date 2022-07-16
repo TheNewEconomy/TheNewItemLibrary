@@ -20,8 +20,14 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+
+import java.util.Map;
 
 public class BukkitEnchantData extends EnchantStorageData<ItemStack> {
 
@@ -33,7 +39,13 @@ public class BukkitEnchantData extends EnchantStorageData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final EnchantmentStorageMeta meta = (EnchantmentStorageMeta)stack.getItemMeta();
 
+    if(meta != null) {
+      for(final Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
+        enchantments.put(entry.getKey().getKey().toString(), entry.getValue());
+      }
+    }
   }
 
   /**
@@ -43,6 +55,17 @@ public class BukkitEnchantData extends EnchantStorageData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    final EnchantmentStorageMeta meta = (EnchantmentStorageMeta)ParsingUtil.buildFor(stack, EnchantmentStorageMeta.class);
+
+    for(final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
+      meta.addStoredEnchant(Enchantment.getByKey(NamespacedKey.fromString(entry.getKey())),
+                            entry.getValue(),
+                            true);
+    }
+
+    stack.setItemMeta(meta);
+
+    return stack;
   }
 }
