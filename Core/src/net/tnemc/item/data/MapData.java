@@ -28,16 +28,16 @@ import java.util.Objects;
 
 public abstract class MapData<T> implements SerialItemData<T> {
 
-  private Integer id = null;
-  private String location = null;
-  private int colorRGB = -1;
-  private boolean scaling = false;
+  protected String location = null;
+  protected int colorRGB = -1;
+  protected boolean scaling = false;
+
+  //TODO: MapView?
 
   @Override
   public JSONObject toJSON() {
     JSONObject json = new JSONObject();
     json.put("name", "map");
-    if(id != null) json.put("id", id);
     if(location != null) json.put("location", location);
     if(colorRGB != -1) json.put("colour", colorRGB);
     json.put("scaling", scaling);
@@ -46,7 +46,6 @@ public abstract class MapData<T> implements SerialItemData<T> {
 
   @Override
   public void readJSON(JSONHelper json) {
-    if(json.has("id")) id = json.getInteger("id");
     if(json.has("location")) location = json.getString("location");
     if(json.has("colour")) colorRGB = json.getInteger("colour");
     scaling = json.getBoolean("scaling");
@@ -64,8 +63,8 @@ public abstract class MapData<T> implements SerialItemData<T> {
   public boolean equals(SerialItemData<? extends T> data) {
     if(data instanceof MapData) {
       MapData<?> compare = (MapData<?>)data;
-      return Objects.equals(id, compare.id) && Objects.equals(location, compare.location)
-          && colorRGB == compare.colorRGB && scaling == compare.scaling;
+      return Objects.equals(location, compare.location) && colorRGB == compare.colorRGB
+          && scaling == compare.scaling;
     }
     return false;
   }

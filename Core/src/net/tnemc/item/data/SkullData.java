@@ -26,7 +26,7 @@ import org.json.simple.JSONObject;
 
 public abstract class SkullData<T> implements SerialItemData<T> {
 
-  private String owner;
+  protected String owner;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.

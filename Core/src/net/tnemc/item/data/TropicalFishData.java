@@ -26,10 +26,10 @@ import org.json.simple.JSONObject;
 
 public abstract class TropicalFishData<T> implements SerialItemData<T> {
 
-  private boolean variant;
-  private int bodyColour;
-  private int patternColour;
-  private String pattern;
+  protected boolean variant;
+  protected int bodyColour;
+  protected int patternColour;
+  protected String pattern;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.

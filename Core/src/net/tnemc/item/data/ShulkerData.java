@@ -26,7 +26,7 @@ import org.json.simple.JSONObject;
 
 public abstract class ShulkerData<T> extends ItemStorageData<T> {
 
-  private int colorRGB;
+  protected int colorRGB;
 
   @Override
   public JSONObject toJSON() {

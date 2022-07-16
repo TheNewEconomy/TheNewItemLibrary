@@ -30,11 +30,11 @@ import java.util.List;
 
 public abstract class SerialPotionData<T> implements SerialItemData<T> {
 
-  private List<PotionEffectData> customEffects = new ArrayList<>();
-  private String type;
-  private int colorRGB = -1;
-  private boolean extended;
-  private boolean upgraded;
+  protected List<PotionEffectData> customEffects = new ArrayList<>();
+  protected String type;
+  protected int colorRGB = -1;
+  protected boolean extended;
+  protected boolean upgraded;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.

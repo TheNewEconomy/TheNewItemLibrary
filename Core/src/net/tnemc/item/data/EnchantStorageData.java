@@ -29,7 +29,7 @@ import java.util.Map;
 
 public abstract class EnchantStorageData<T> implements SerialItemData<T> {
 
-  Map<String, Integer> enchantments = new HashMap<>();
+  protected Map<String, Integer> enchantments = new HashMap<>();
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.

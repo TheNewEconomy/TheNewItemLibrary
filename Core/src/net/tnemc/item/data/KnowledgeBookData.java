@@ -29,8 +29,7 @@ import java.util.List;
 
 public abstract class KnowledgeBookData<T> implements SerialItemData<T> {
 
-  private List<String> recipes = new ArrayList<>();
-
+  protected List<String> recipes = new ArrayList<>();
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.

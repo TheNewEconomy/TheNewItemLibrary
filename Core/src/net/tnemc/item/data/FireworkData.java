@@ -30,9 +30,9 @@ import java.util.List;
 
 public abstract class FireworkData<T> implements SerialItemData<T> {
 
-  private List<FireworkEffectData> effects = new ArrayList<>();
+  protected List<FireworkEffectData> effects = new ArrayList<>();
 
-  private int power;
+  protected int power;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.

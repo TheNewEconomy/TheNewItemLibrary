@@ -29,7 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SuspiciousStewData<T> implements SerialItemData<T> {
-  private List<PotionEffectData> customEffects = new ArrayList<>();
+
+  protected List<PotionEffectData> customEffects = new ArrayList<>();
 
 
   /**

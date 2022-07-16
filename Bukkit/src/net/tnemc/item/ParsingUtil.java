@@ -35,6 +35,7 @@ import net.tnemc.item.data.BukkitPotionData;
 import net.tnemc.item.data.BukkitSkullData;
 import net.tnemc.item.data.BukkitSuspiciousStewData;
 import net.tnemc.item.data.BukkitTropicalFishData;
+import org.bukkit.Bukkit;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -140,6 +141,7 @@ public class ParsingUtil {
   }
   
   public static Optional<SerialItemData<ItemStack>> parseMeta(final ItemStack stack) {
+
     SerialItemData<ItemStack> data = null;
 
     if(stack.hasItemMeta()) {

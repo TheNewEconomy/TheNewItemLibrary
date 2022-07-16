@@ -20,26 +20,6 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/*
- * The New Economy Minecraft Server Plugin
- *
- * Copyright (C) 2022 Daniel "creatorfromhell" Vidmar
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
@@ -48,14 +28,14 @@ import java.util.UUID;
 
 public abstract class CompassData<T> implements SerialItemData<T> {
 
-  private boolean tracked = false;
-  private UUID world;
-  private double x;
-  private double y;
-  private double z;
+  protected boolean tracked = false;
+  protected UUID world;
+  protected double x;
+  protected double y;
+  protected double z;
 
-  private float yaw;
-  private float pitch;
+  protected float yaw;
+  protected float pitch;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.

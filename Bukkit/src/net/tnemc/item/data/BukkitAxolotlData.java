@@ -21,7 +21,13 @@ package net.tnemc.item.data;
  */
 
 import net.tnemc.item.SerialItemData;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Axolotl;
+import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.AxolotlBucketMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class BukkitAxolotlData extends AxolotlData<ItemStack> {
 
@@ -33,7 +39,11 @@ public class BukkitAxolotlData extends AxolotlData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final AxolotlBucketMeta meta = (AxolotlBucketMeta)stack.getItemMeta();
 
+    if(meta != null && meta.hasVariant()) {
+      variant = meta.getVariant().name();
+    }
   }
 
   /**
@@ -43,6 +53,18 @@ public class BukkitAxolotlData extends AxolotlData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    AxolotlBucketMeta meta;
+
+    if(stack.hasItemMeta() && stack.getItemMeta() instanceof AxolotlBucketMeta) {
+      meta = (AxolotlBucketMeta)stack.getItemMeta();
+    } else {
+      meta = (AxolotlBucketMeta)Bukkit.getItemFactory().getItemMeta(Material.AXOLOTL_BUCKET);
+    }
+
+    meta.setVariant(Axolotl.Variant.valueOf(variant));
+    stack.setItemMeta(meta);
+
+    return stack;
   }
 }
