@@ -21,9 +21,16 @@ package net.tnemc.item;
  */
 
 import net.tnemc.item.attribute.SerialAttribute;
+import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -65,6 +72,22 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack of(SerialItem<ItemStack> serialItem) {
 
+    final BukkitItemStack stack = (BukkitItemStack)serialItem.getStack();
+
+    flags.addAll(stack.flags);
+    attributes.putAll(stack.attributes);
+    enchantments.putAll(stack.enchantments);
+    lore.addAll(stack.lore);
+
+    slot = stack.slot;
+    material = stack.material;
+    amount = stack.amount;
+    display = stack.display;
+    damage = stack.damage;
+    customModelData = stack.customModelData;
+    unbreakable = stack.unbreakable;
+    data = stack.data;
+    this.stack = stack.stack;
 
     return this;
   }
@@ -72,7 +95,37 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack of(ItemStack locale) {
     this.stack = locale;
-    //TODO: parse stack into the variables above.
+
+    material = stack.getType();
+    amount = stack.getAmount();
+    damage = stack.getDurability();
+
+    if(stack.hasItemMeta() && stack.getItemMeta()!= null) {
+      display = stack.getItemMeta().getDisplayName();
+
+      if(stack.getItemMeta().getLore() != null) {
+        lore.clear();
+        lore.addAll(stack.getItemMeta().getLore());
+      }
+
+      // Check 1.13 version for compatibility with customModelData
+      if(VersionUtil.isOneFourteen(Bukkit.getVersion()) && stack.getItemMeta().hasCustomModelData()) {
+        customModelData = stack.getItemMeta().getCustomModelData();
+      }
+
+      for(ItemFlag flag : stack.getItemMeta().getItemFlags()) {
+        flags.add(flag.name());
+      }
+
+      if(VersionUtil.isOneThirteen(Bukkit.getVersion()) && stack.getItemMeta().getAttributeModifiers() != null) {
+        stack.getItemMeta().getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.name(), modifier));
+      }
+
+      if(stack.getItemMeta().hasEnchants()) {
+
+        stack.getItemMeta().getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().toString(), level)));
+      }
+    }
 
     //Parse the meta data.
     ParsingUtil.parseMeta(locale)
@@ -310,8 +363,37 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public ItemStack locale() {
+    if(stack == null) {
+      stack = new ItemStack(material, amount, damage);
 
-    //TODO: build stack.
+      ItemMeta meta = Bukkit.getItemFactory().getItemMeta(material);
+      if(meta != null) {
+        if(display != null) {
+          meta.setDisplayName(display);
+        }
+        meta.setLore(lore);
+        enchantments.forEach((name, level)->meta.addEnchant(Enchantment.getByKey(NamespacedKey.fromString(name)), level, true));
+
+        if(flags.size() > 0) {
+          for(String str : flags) {
+            meta.addItemFlags(ItemFlag.valueOf(str));
+          }
+        }
+
+        if(customModelData != -1) {
+          meta.setCustomModelData(customModelData);
+        }
+
+        if(VersionUtil.isOneThirteen(Bukkit.getVersion())) {
+          attributes.forEach((name, attribute)->meta.addAttributeModifier(Attribute.valueOf(name), attribute));
+        }
+      }
+
+      stack.setItemMeta(meta);
+      if(data != null) {
+        stack = data.apply(stack);
+      }
+    }
     return stack;
   }
 }
