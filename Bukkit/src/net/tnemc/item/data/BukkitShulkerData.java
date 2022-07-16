@@ -20,8 +20,15 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.BukkitItemStack;
+import net.tnemc.item.ParsingUtil;
+import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
+import org.bukkit.Material;
+import org.bukkit.block.ShulkerBox;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 
 public class BukkitShulkerData extends ShulkerData<ItemStack> {
 
@@ -33,7 +40,25 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
 
+    if(meta != null && meta.getBlockState() instanceof ShulkerBox) {
+
+      final ShulkerBox box = (ShulkerBox)meta.getBlockState();
+
+      colorRGB = box.getColor().getColor().asRGB();
+
+      final Inventory inventory = box.getInventory();
+      for(int i = 0; i < inventory.getSize(); i++) {
+        if(inventory.getItem(i) == null || inventory.getItem(i).getType().equals(Material.AIR)) {
+          if(items.containsKey(i)) {
+            items.remove(i);
+          }
+        } else {
+          items.put(i, new SerialItem<>(BukkitItemStack.locale(inventory.getItem(i))));
+        }
+      }
+    }
   }
 
   /**
@@ -43,6 +68,16 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    final BlockStateMeta meta = (BlockStateMeta)ParsingUtil.buildFor(stack, BlockStateMeta.class);
+
+    if(meta.getBlockState() instanceof ShulkerBox) {
+
+      final ShulkerBox box = (ShulkerBox)meta.getBlockState();
+
+      items.forEach((slot, item)->box.getInventory().setItem(slot, item.getStack().locale()));
+    }
+
+    return stack;
   }
 }

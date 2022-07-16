@@ -33,6 +33,7 @@ public abstract class ShulkerData<T> extends ItemStorageData<T> {
     JSONObject json = super.toJSON();
     json.put("name", "shulker");
     json.put("colour", colorRGB);
+    json.put("items", super.toJSON());
     return json;
   }
 

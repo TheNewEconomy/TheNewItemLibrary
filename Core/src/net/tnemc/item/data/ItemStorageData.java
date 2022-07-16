@@ -36,13 +36,11 @@ public abstract class ItemStorageData<T> implements SerialItemData<T> {
 
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
     JSONObject itemsObj = new JSONObject();
     items.forEach((slot, item)->{
       itemsObj.put(slot, item.toJSON());
     });
-    json.put("items", itemsObj);
-    return json;
+    return itemsObj;
   }
 
   @Override

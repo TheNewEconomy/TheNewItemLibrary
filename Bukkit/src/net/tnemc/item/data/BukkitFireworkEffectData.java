@@ -2,6 +2,7 @@ package net.tnemc.item.data;
 
 import net.tnemc.item.SerialItemData;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
 
 public class BukkitFireworkEffectData extends FireworkData<ItemStack> {
 
@@ -13,7 +14,14 @@ public class BukkitFireworkEffectData extends FireworkData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final FireworkEffectMeta meta = (FireworkEffectMeta)stack.getItemMeta();
 
+    if(meta != null) {
+      this.title = meta.getTitle();
+      this.author = meta.getAuthor();
+      this.generation = meta.getGeneration().name();
+      this.pages = meta.getPages();
+    }
   }
 
   /**

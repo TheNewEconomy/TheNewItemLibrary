@@ -34,15 +34,18 @@ import net.tnemc.item.data.BukkitKnowledgeBookData;
 import net.tnemc.item.data.BukkitLeatherData;
 import net.tnemc.item.data.BukkitMapData;
 import net.tnemc.item.data.BukkitPotionData;
+import net.tnemc.item.data.BukkitShulkerData;
 import net.tnemc.item.data.BukkitSkullData;
 import net.tnemc.item.data.BukkitSuspiciousStewData;
 import net.tnemc.item.data.BukkitTropicalFishData;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
 import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.BundleMeta;
 import org.bukkit.inventory.meta.CompassMeta;
@@ -163,10 +166,14 @@ public class ParsingUtil {
       final ItemMeta meta = stack.getItemMeta();
       if(meta instanceof AxolotlBucketMeta) {
         data = new BukkitAxolotlData();
-      } else if(meta instanceof BookMeta) {
-        data = new BukkitBookData();
       } else if(meta instanceof BannerMeta) {
         data = new BukkitBannerData();
+      } else if(meta instanceof BlockStateMeta) {
+        if(((BlockStateMeta)meta).getBlockState() instanceof ShulkerBox) {
+          data = new BukkitShulkerData();
+        }
+      } else if(meta instanceof BookMeta) {
+        data = new BukkitBookData();
       } else if(meta instanceof BundleMeta) {
         data = new BukkitBundleData();
       } else if(meta instanceof CompassMeta) {
