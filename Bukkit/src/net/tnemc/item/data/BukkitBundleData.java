@@ -20,8 +20,12 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.BukkitItemStack;
+import net.tnemc.item.ParsingUtil;
+import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BundleMeta;
 
 public class BukkitBundleData extends BundleData<ItemStack> {
 
@@ -33,7 +37,15 @@ public class BukkitBundleData extends BundleData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final BundleMeta meta = (BundleMeta)stack.getItemMeta();
 
+    if(meta != null) {
+      int i = 0;
+      for(final ItemStack item : meta.getItems()) {
+        items.put(i, new SerialItem<>(BukkitItemStack.locale(item)));
+        i++;
+      }
+    }
   }
 
   /**
@@ -43,6 +55,12 @@ public class BukkitBundleData extends BundleData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    final BundleMeta meta = (BundleMeta)ParsingUtil.buildFor(stack, BundleMeta.class);
+
+
+    items.forEach((slot, item)->meta.addItem(item.getStack().locale()));
+
+    return stack;
   }
 }
