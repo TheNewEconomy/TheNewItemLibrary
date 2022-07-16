@@ -57,7 +57,7 @@ public class BukkitTropicalFishData extends TropicalFishData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    TropicalFishBucketMeta meta = (TropicalFishBucketMeta)ParsingUtil.buildFor(stack, TropicalFishBucketMeta.class);
+    final TropicalFishBucketMeta meta = (TropicalFishBucketMeta)ParsingUtil.buildFor(stack, TropicalFishBucketMeta.class);
 
     if(variant) {
       meta.setBodyColor(DyeColor.getByColor(Color.fromRGB(bodyColour)));

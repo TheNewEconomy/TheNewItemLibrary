@@ -20,8 +20,12 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 
 public class BukkitLeatherData extends LeatherData<ItemStack> {
 
@@ -34,6 +38,10 @@ public class BukkitLeatherData extends LeatherData<ItemStack> {
   @Override
   public void of(ItemStack stack) {
 
+    final LeatherArmorMeta meta = (LeatherArmorMeta)stack.getItemMeta();
+    if(meta != null) {
+      colorRGB = meta.getColor().asRGB();
+    }
   }
 
   /**
@@ -43,6 +51,13 @@ public class BukkitLeatherData extends LeatherData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+
+    final LeatherArmorMeta meta = (LeatherArmorMeta)ParsingUtil.buildFor(stack, PotionMeta.class);
+
+    meta.setColor(Color.fromRGB(colorRGB));
+    stack.setItemMeta(meta);
+
+    return stack;
   }
 }

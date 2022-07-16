@@ -42,7 +42,7 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
   @Override
   public void of(ItemStack stack) {
 
-    PotionMeta meta = (PotionMeta)stack.getItemMeta();
+    final PotionMeta meta = (PotionMeta)stack.getItemMeta();
     if(meta != null) {
 
       if(meta.hasColor()) colorRGB = meta.getColor().asRGB();
@@ -71,7 +71,7 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
   public ItemStack apply(ItemStack stack) {
 
 
-    PotionMeta meta = (PotionMeta)ParsingUtil.buildFor(stack, PotionMeta.class);
+    final PotionMeta meta = (PotionMeta)ParsingUtil.buildFor(stack, PotionMeta.class);
 
     if(colorRGB != -1) meta.setColor(Color.fromRGB(colorRGB));
 

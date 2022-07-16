@@ -38,7 +38,11 @@ public class BukkitSkullData extends SkullData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final SkullMeta meta = (SkullMeta)stack.getItemMeta();
 
+    if(meta != null && meta.getOwningPlayer() != null) {
+      owner = meta.getOwningPlayer().getUniqueId().toString();
+    }
   }
 
   /**
@@ -49,7 +53,7 @@ public class BukkitSkullData extends SkullData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    SkullMeta meta = (SkullMeta)ParsingUtil.buildFor(stack, SkullMeta.class);
+    final SkullMeta meta = (SkullMeta)ParsingUtil.buildFor(stack, SkullMeta.class);
 
     meta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString(owner)));
     stack.setItemMeta(meta);

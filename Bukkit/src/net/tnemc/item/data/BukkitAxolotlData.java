@@ -51,7 +51,7 @@ public class BukkitAxolotlData extends AxolotlData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    AxolotlBucketMeta meta = (AxolotlBucketMeta)ParsingUtil.buildFor(stack, AxolotlBucketMeta.class);
+    final AxolotlBucketMeta meta = (AxolotlBucketMeta)ParsingUtil.buildFor(stack, AxolotlBucketMeta.class);
 
     meta.setVariant(Axolotl.Variant.valueOf(variant));
     stack.setItemMeta(meta);
