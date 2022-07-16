@@ -140,31 +140,7 @@ public interface CalculationsProvider<T extends AbstractItemStack<S>, S, U> {
    * @param compare The net.tnemc.item stack you're comparing to the original.
    * @return True if the net.tnemc.item stacks are equal, otherwise false.
    */
-  default boolean itemsEqual(T original, T compare) { //these = BukkitItemStack
-    if(original.similar(compare)) {
-
-      final SerialItemData<S> data = original.data();
-      final SerialItemData<S> compareData = compare.data();
-
-      if(!data.similar(compareData)) return false;
-
-      if(data instanceof ItemStorageData && compareData instanceof ItemStorageData) {
-
-        final ItemStorageData<S> storage = ((ItemStorageData<S>)data);
-        final ItemStorageData<S> compareStorage = ((ItemStorageData<S>)compareData);
-
-        if(storage.getItems().size() != compareStorage.getItems().size()) return false;
-
-        for(Map.Entry<Integer, SerialItem<S>> entry: storage.getItems().entrySet()) {
-
-          final SerialItem<S> compI = compareStorage.getItems().get(entry.getKey());
-
-          if(compI == null || !itemsEqual((T)entry.getValue().getStack(), (T)compI.getStack())) {
-            return false;
-          }
-        }
-      }
-    }
-    return true;
+  default boolean itemsEqual(T original, T compare) {
+    return original.similar(compare) && original.data().similar(compare.data());
   }
 }
