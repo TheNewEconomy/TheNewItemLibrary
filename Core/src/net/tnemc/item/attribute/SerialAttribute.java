@@ -23,7 +23,9 @@ public class SerialAttribute {
     this.name = name;
     this.amount = amount;
     this.operation = operation;
-    this.slot = slot;
+    if(slot != null) {
+      this.slot = slot;
+    }
   }
 
   public UUID getIdentifier() {

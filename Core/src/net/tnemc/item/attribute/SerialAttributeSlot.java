@@ -2,8 +2,8 @@ package net.tnemc.item.attribute;
 
 public enum SerialAttributeSlot {
 
-  MAINHAND,
-  OFFHAND,
+  MAIN_HAND,
+  OFF_HAND,
   HEAD,
   CHEST,
   LEGS,

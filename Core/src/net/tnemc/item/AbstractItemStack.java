@@ -40,6 +40,8 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   AbstractItemStack<T> modelData(int modelData);
 
+  AbstractItemStack<T> unbreakable(boolean unbreakable);
+
   AbstractItemStack<T> applyData(SerialItemData<T> data);
 
   List<String> flags();

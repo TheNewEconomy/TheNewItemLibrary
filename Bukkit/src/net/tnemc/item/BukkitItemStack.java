@@ -73,7 +73,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     } catch(ParseException e) {
       e.printStackTrace();
     }
-
     return this;
   }
 
