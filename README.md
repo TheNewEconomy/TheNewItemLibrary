@@ -6,9 +6,8 @@ been rewritten to be platform agnostic, and will include sponge support shortly.
 ## Maven
 TheNewItemLibrary uses maven for dependency management.
 
-
 Repository:
-```
+```XML
 <repository>
     <id>codemc-releases</id>
     <url>https://repo.codemc.io/repository/maven-public/</url>
@@ -16,7 +15,7 @@ Repository:
 ```
 
 Core Dependency:
-```
+```XML
 <dependency>
     <groupId>net.tnemc</groupId>
     <artifactId>TNIL-Core</artifactId>
@@ -26,7 +25,7 @@ Core Dependency:
 ```
 
 Bukkit Dependency:
-```
+```XML
 <dependency>
     <groupId>net.tnemc</groupId>
     <artifactId>TNIL-Bukkit</artifactId>

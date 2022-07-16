@@ -99,15 +99,13 @@ public class ItemCalculations implements CalculationsProvider<BukkitItemStack, I
     for(BukkitItemStack item : items) {
       Map<Integer, ItemStack> left = inventory.addItem(item.locale());
 
-      if(left.size() > 0) {
-        if(inventory instanceof PlayerInventory) {
-          for (Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
-            final ItemStack i = entry.getValue();
-            if (i == null || i.getType() == Material.AIR) {
-              continue;
-            }
-            leftOver.add(BukkitItemStack.locale(i));
+      if(left.size() > 0 && inventory instanceof PlayerInventory) {
+        for(Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
+          final ItemStack i = entry.getValue();
+          if(i == null || i.getType() == Material.AIR) {
+            continue;
           }
+          leftOver.add(BukkitItemStack.locale(i));
         }
       }
     }

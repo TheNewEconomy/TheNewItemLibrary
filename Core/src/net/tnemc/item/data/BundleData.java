@@ -1,7 +1,6 @@
 package net.tnemc.item.data;
 
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
 public abstract class BundleData<T> extends ItemStorageData<T> {

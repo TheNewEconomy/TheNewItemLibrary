@@ -1,7 +1,5 @@
 package net.tnemc.item;
 
-import net.tnemc.item.providers.CalculationsProvider;
-
 /**
  * Represents an inventory type.
  *
