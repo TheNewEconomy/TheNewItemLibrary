@@ -4,8 +4,6 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-import java.util.UUID;
-
 public abstract class SkullData<T> implements SerialItemData<T> {
 
   private String owner;

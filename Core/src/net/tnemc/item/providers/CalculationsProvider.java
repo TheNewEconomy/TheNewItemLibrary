@@ -2,12 +2,8 @@ package net.tnemc.item.providers;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.InventoryType;
-import net.tnemc.item.SerialItem;
-import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.ItemStorageData;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
