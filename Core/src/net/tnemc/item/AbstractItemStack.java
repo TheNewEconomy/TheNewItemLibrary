@@ -62,6 +62,8 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   int modelData();
 
+  boolean unbreakable();
+
   SerialItemData<T> data();
 
   /**

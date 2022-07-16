@@ -150,6 +150,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
+  public boolean unbreakable() {
+    return false;
+  }
+
+  @Override
   public SerialItemData<ItemStack> data() {
     return null;
   }

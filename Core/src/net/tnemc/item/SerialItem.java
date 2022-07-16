@@ -22,6 +22,7 @@ public class SerialItem<T> {
     json.put("slot", stack.slot());
     json.put("material", stack.material());
     json.put("amount", stack.amount());
+    json.put("unbreakable", stack.unbreakable());
     if(stack.display() != null && !stack.display().equalsIgnoreCase("")) json.put("display", stack.display());
     json.put("damage", stack.damage());
     if(stack.modelData() != -1) json.put("modelData", stack.modelData());
