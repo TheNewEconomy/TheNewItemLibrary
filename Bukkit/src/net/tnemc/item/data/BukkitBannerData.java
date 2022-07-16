@@ -20,8 +20,15 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.data.banner.PatternData;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.block.banner.Pattern;
+import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
 
 public class BukkitBannerData extends BannerData<ItemStack> {
 
@@ -33,7 +40,14 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final BannerMeta meta = (BannerMeta)stack.getItemMeta();
 
+    if(meta != null) {
+      for(final Pattern pattern : meta.getPatterns()) {
+        patterns.add(new PatternData(pattern.getColor().getColor().asRGB(),
+                                     pattern.getPattern().getIdentifier()));
+      }
+    }
   }
 
   /**
@@ -43,6 +57,15 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
+
+    for(final PatternData pattern : patterns) {
+      meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(pattern.getColor())),
+                                  PatternType.valueOf(pattern.getPattern())));
+    }
+    stack.setItemMeta(meta);
+
+    return stack;
   }
 }
