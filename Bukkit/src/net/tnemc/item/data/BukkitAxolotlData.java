@@ -22,13 +22,9 @@ package net.tnemc.item.data;
 
 import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Axolotl;
-import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class BukkitAxolotlData extends AxolotlData<ItemStack> {
 
