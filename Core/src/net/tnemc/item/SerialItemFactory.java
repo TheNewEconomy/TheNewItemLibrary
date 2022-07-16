@@ -1,24 +1,24 @@
 package net.tnemc.item;
 
 import net.tnemc.item.providers.CalculationsProvider;
-import net.tnemc.item.providers.UtilsProvider;
+import net.tnemc.item.providers.Utils;
 
 public abstract class SerialItemFactory {
 
-  private UtilsProvider utils;
+  private Utils utils;
 
   private CalculationsProvider calculations;
 
-  public SerialItemFactory(UtilsProvider utils, CalculationsProvider calculations) {
+  public SerialItemFactory(Utils utils, CalculationsProvider calculations) {
     this.utils = utils;
     this.calculations = calculations;
   }
 
-  public UtilsProvider getUtils() {
+  public Utils getUtils() {
     return utils;
   }
 
-  public void setUtils(UtilsProvider utils) {
+  public void setUtils(Utils utils) {
     this.utils = utils;
   }
 

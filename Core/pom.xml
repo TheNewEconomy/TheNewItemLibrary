@@ -3,6 +3,13 @@
     <artifactId>TNIL-Core</artifactId>
     <packaging>jar</packaging>
     <name>The New Item Library Core</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>semver4j</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+    </dependencies>
 
     <parent>
         <groupId>net.tnemc</groupId>
