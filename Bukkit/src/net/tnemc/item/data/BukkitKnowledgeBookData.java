@@ -20,8 +20,11 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.KnowledgeBookMeta;
 
 public class BukkitKnowledgeBookData extends KnowledgeBookData<ItemStack> {
 
@@ -33,7 +36,13 @@ public class BukkitKnowledgeBookData extends KnowledgeBookData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final KnowledgeBookMeta meta = (KnowledgeBookMeta)stack.getItemMeta();
 
+    if(meta != null) {
+      for(final NamespacedKey key : meta.getRecipes()) {
+        recipes.add(key.toString());
+      }
+    }
   }
 
   /**
@@ -43,6 +52,14 @@ public class BukkitKnowledgeBookData extends KnowledgeBookData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-    return null;
+
+    final KnowledgeBookMeta meta = (KnowledgeBookMeta)ParsingUtil.buildFor(stack, KnowledgeBookMeta.class);
+
+    for(final String recipe : recipes) {
+      meta.addRecipe(NamespacedKey.fromString(recipe));
+    }
+    stack.setItemMeta(meta);
+
+    return stack;
   }
 }
