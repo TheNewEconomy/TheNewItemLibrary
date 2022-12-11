@@ -22,7 +22,8 @@ package net.tnemc.item.bukkit.data;
 
 import net.tnemc.item.bukkit.ParsingUtil;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.data.potion.PotionEffectData;
+import net.tnemc.item.data.SerialPotionData;
+import net.tnemc.item.data.potion.PotionEffectData;
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;

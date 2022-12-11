@@ -39,7 +39,7 @@ import net.tnemc.item.bukkit.data.BukkitShulkerData;
 import net.tnemc.item.bukkit.data.BukkitSkullData;
 import net.tnemc.item.bukkit.data.BukkitSuspiciousStewData;
 import net.tnemc.item.bukkit.data.BukkitTropicalFishData;
-import net.tnemc.item.bukkit.data.firework.SerialFireworkEffect;
+import net.tnemc.item.data.firework.SerialFireworkEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;

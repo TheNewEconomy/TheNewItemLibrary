@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -24,18 +24,12 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-import java.util.UUID;
+public abstract class TropicalFishData<T> implements SerialItemData<T> {
 
-public abstract class CompassData<T> implements SerialItemData<T> {
-
-  protected boolean tracked = false;
-  protected UUID world;
-  protected double x;
-  protected double y;
-  protected double z;
-
-  protected float yaw;
-  protected float pitch;
+  protected boolean variant = false;
+  protected int bodyColour;
+  protected int patternColour;
+  protected String pattern;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -45,14 +39,14 @@ public abstract class CompassData<T> implements SerialItemData<T> {
   @Override
   public JSONObject toJSON() {
     JSONObject json = new JSONObject();
-    json.put("name", "compass");
-    json.put("tracked", tracked);
-    json.put("world", world.toString());
-    json.put("x", x);
-    json.put("y", y);
-    json.put("z", z);
-    json.put("yaw", yaw);
-    json.put("pitch", pitch);
+    json.put("name", "tropicalfish");
+    json.put("variant", variant);
+
+    if(variant) {
+      json.put("bodyColour", bodyColour);
+      json.put("patternColour", patternColour);
+      json.put("pattern", pattern);
+    }
     return json;
   }
 
@@ -63,15 +57,14 @@ public abstract class CompassData<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-    if(json.has("tracked")) {
-      this.tracked = json.getBoolean("tracked");
+    if(json.has("variant")) {
+      this.variant = json.getBoolean("variant");
 
-      this.world = json.getUUID("world");
-      this.x = json.getInteger("x");
-      this.y = json.getInteger("y");
-      this.z = json.getInteger("z");
-      this.yaw = json.getFloat("yaw");
-      this.pitch = json.getFloat("pitch");
+      if(variant) {
+        this.bodyColour = json.getInteger("bodyColour");
+        this.patternColour = json.getInteger("patternColour");
+        this.pattern = json.getString("pattern");
+      }
     }
   }
 
@@ -85,11 +78,10 @@ public abstract class CompassData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof CompassData) {
-      CompassData<?> compare = (CompassData<?>)data;
-      return tracked == compare.tracked && x == compare.x && y == compare.y && z == compare.z
-          && world.toString().equalsIgnoreCase(compare.world.toString()) && yaw == compare.yaw
-          && pitch == compare.pitch;
+    if(data instanceof TropicalFishData) {
+      TropicalFishData<?> compare = (TropicalFishData<?>)data;
+      return variant == compare.variant && bodyColour == compare.bodyColour
+          && patternColour == compare.patternColour && pattern.equalsIgnoreCase(compare.pattern);
     }
     return false;
   }

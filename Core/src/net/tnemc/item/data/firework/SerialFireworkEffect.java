@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data.firework;
+package net.tnemc.item.data.firework;
 
 /*
  * The New Economy Minecraft Server Plugin

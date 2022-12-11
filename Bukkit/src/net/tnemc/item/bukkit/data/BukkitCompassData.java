@@ -22,6 +22,7 @@ package net.tnemc.item.bukkit.data;
 
 import net.tnemc.item.bukkit.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.data.CompassData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;

@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data.potion;
+package net.tnemc.item.data.potion;
 
 /*
  * The New Economy Minecraft Server Plugin

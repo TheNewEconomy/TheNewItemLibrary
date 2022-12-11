@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -24,23 +24,21 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-public abstract class ShulkerData<T> extends ItemStorageData<T> {
+public abstract class LeatherData<T> implements SerialItemData<T> {
 
   protected int colorRGB;
 
   @Override
   public JSONObject toJSON() {
-    JSONObject json = super.toJSON();
-    json.put("name", "shulker");
+    JSONObject json = new JSONObject();
+    json.put("name", "leather");
     json.put("colour", colorRGB);
-    json.put("items", super.toJSON());
     return json;
   }
 
   @Override
   public void readJSON(JSONHelper json) {
-    this.colorRGB = json.getInteger("colour");
-    super.readJSON(json);
+    if(json.has("color")) colorRGB = json.getInteger("colour");
   }
 
   /**
@@ -53,9 +51,9 @@ public abstract class ShulkerData<T> extends ItemStorageData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof ShulkerData) {
-      ShulkerData<?> compare = (ShulkerData<?>)data;
-      return colorRGB == compare.colorRGB && super.equals(data);
+    if(data instanceof LeatherData) {
+      LeatherData<?> compare = (LeatherData<?>)data;
+      return colorRGB == compare.colorRGB;
     }
     return false;
   }

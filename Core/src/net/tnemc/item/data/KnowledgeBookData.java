@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -22,15 +22,14 @@ package net.tnemc.item.bukkit.data;
 
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.data.banner.PatternData;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BannerData<T> implements SerialItemData<T> {
+public abstract class KnowledgeBookData<T> implements SerialItemData<T> {
 
-  protected List<PatternData> patterns = new ArrayList<>();
+  protected List<String> recipes = new ArrayList<>();
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -40,19 +39,17 @@ public abstract class BannerData<T> implements SerialItemData<T> {
   @Override
   public JSONObject toJSON() {
     JSONObject json = new JSONObject();
-    json.put("name", "banner");
+    json.put("name", "knowledge");
 
-
-    int i = 0;
-    JSONObject patternsObject = new JSONObject();
-    for(PatternData pattern : patterns) {
-      JSONObject patternObj = new JSONObject();
-      patternObj.put("colour", pattern.getColor());
-      patternObj.put("pattern", pattern.getPattern());
-      patternsObject.put(i, patternObj);
-      i++;
+    if(recipes.size() > 0) {
+      JSONObject recipesObj = new JSONObject();
+      for(String recipe : recipes) {
+        JSONObject recObject = new JSONObject();
+        recObject.put("recipe", recipe);
+        recipesObj.put(recipe, recObject);
+      }
+      json.put("recipes", recipesObj);
     }
-    json.put("patterns", patternsObject);
     return json;
   }
 
@@ -63,12 +60,14 @@ public abstract class BannerData<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-    json.getJSON("patterns").forEach((key, value)->{
-      JSONHelper helperObj = new JSONHelper((JSONObject)value);
-      final PatternData pattern = new PatternData(helperObj.getInteger("colour"),
-                                                  helperObj.getString("pattern"));
-      patterns.add(pattern);
-    });
+
+    if(json.has("effects")) {
+      JSONHelper recipesObj = json.getHelper("recipes");
+      recipesObj.getObject().forEach((key, value)->{
+        final JSONHelper helperObj = new JSONHelper((JSONObject)value);
+        recipes.add(helperObj.getString("recipe"));
+      });
+    }
   }
 
   /**
@@ -81,9 +80,9 @@ public abstract class BannerData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof BannerData) {
-      BannerData<?> compare = (BannerData<?>)data;
-      return patterns.equals(compare.patterns);
+    if(data instanceof KnowledgeBookData) {
+      KnowledgeBookData<?> compare = (KnowledgeBookData<?>)data;
+      return recipes.equals(compare.recipes);
     }
     return false;
   }

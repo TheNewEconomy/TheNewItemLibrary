@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -22,14 +22,15 @@ package net.tnemc.item.bukkit.data;
 
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.data.banner.PatternData;
 import org.json.simple.JSONObject;
 
-public abstract class TropicalFishData<T> implements SerialItemData<T> {
+import java.util.ArrayList;
+import java.util.List;
 
-  protected boolean variant = false;
-  protected int bodyColour;
-  protected int patternColour;
-  protected String pattern;
+public abstract class BannerData<T> implements SerialItemData<T> {
+
+  protected List<PatternData> patterns = new ArrayList<>();
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -39,14 +40,19 @@ public abstract class TropicalFishData<T> implements SerialItemData<T> {
   @Override
   public JSONObject toJSON() {
     JSONObject json = new JSONObject();
-    json.put("name", "tropicalfish");
-    json.put("variant", variant);
+    json.put("name", "banner");
 
-    if(variant) {
-      json.put("bodyColour", bodyColour);
-      json.put("patternColour", patternColour);
-      json.put("pattern", pattern);
+
+    int i = 0;
+    JSONObject patternsObject = new JSONObject();
+    for(PatternData pattern : patterns) {
+      JSONObject patternObj = new JSONObject();
+      patternObj.put("colour", pattern.getColor());
+      patternObj.put("pattern", pattern.getPattern());
+      patternsObject.put(i, patternObj);
+      i++;
     }
+    json.put("patterns", patternsObject);
     return json;
   }
 
@@ -57,15 +63,12 @@ public abstract class TropicalFishData<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-    if(json.has("variant")) {
-      this.variant = json.getBoolean("variant");
-
-      if(variant) {
-        this.bodyColour = json.getInteger("bodyColour");
-        this.patternColour = json.getInteger("patternColour");
-        this.pattern = json.getString("pattern");
-      }
-    }
+    json.getJSON("patterns").forEach((key, value)->{
+      JSONHelper helperObj = new JSONHelper((JSONObject)value);
+      final PatternData pattern = new PatternData(helperObj.getInteger("colour"),
+                                                  helperObj.getString("pattern"));
+      patterns.add(pattern);
+    });
   }
 
   /**
@@ -78,10 +81,9 @@ public abstract class TropicalFishData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof TropicalFishData) {
-      TropicalFishData<?> compare = (TropicalFishData<?>)data;
-      return variant == compare.variant && bodyColour == compare.bodyColour
-          && patternColour == compare.patternColour && pattern.equalsIgnoreCase(compare.pattern);
+    if(data instanceof BannerData) {
+      BannerData<?> compare = (BannerData<?>)data;
+      return patterns.equals(compare.patterns);
     }
     return false;
   }

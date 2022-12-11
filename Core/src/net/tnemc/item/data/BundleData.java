@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.data;
 
 /*
  * The New Economy Minecraft Server Plugin

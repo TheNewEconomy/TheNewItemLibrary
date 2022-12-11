@@ -22,7 +22,8 @@ package net.tnemc.item.bukkit.data;
 
 import net.tnemc.item.bukkit.ParsingUtil;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.data.banner.PatternData;
+import net.tnemc.item.data.BannerData;
+import net.tnemc.item.data.banner.PatternData;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;

@@ -22,6 +22,7 @@ package net.tnemc.item.bukkit.data;
 
 import net.tnemc.item.bukkit.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.data.TropicalFishData;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.TropicalFish;

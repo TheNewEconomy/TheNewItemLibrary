@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -22,22 +22,23 @@ package net.tnemc.item.bukkit.data;
 
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.data.firework.SerialFireworkEffect;
 import org.json.simple.JSONObject;
 
-public abstract class AxolotlData<T> implements SerialItemData<T> {
+public abstract class FireworkEffectData<T> implements SerialItemData<T> {
 
-  protected String variant;
+  private SerialFireworkEffect effect = null;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialItemData}.
    */
-  @Override
   public JSONObject toJSON() {
     JSONObject json = new JSONObject();
-    json.put("name", "axolotl");
-    json.put("variant", variant);
+    json.put("name", "fireworkeffect");
+
+    json.put("effect_info", effect.toJSON());
     return json;
   }
 
@@ -48,38 +49,6 @@ public abstract class AxolotlData<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-    if(json.has("variant")) {
-      this.variant = json.getString("variant");
-    }
-  }
-
-  /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
-   * of this data. For instance, book copies will return false when compared to the original.
-   *
-   * @param data The data to compare.
-   *
-   * @return True if similar, otherwise false.
-   */
-  @Override
-  public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof AxolotlData) {
-      AxolotlData<?> compare = (AxolotlData<?>)data;
-      return variant.equalsIgnoreCase(compare.variant);
-    }
-    return false;
-  }
-
-  /**
-   * Used to determine if some data is similar to this data. This means that it doesn't have to be a
-   * strict equals. For instance, book copies would return true when compared to the original, etc.
-   *
-   * @param data The data to compare.
-   *
-   * @return True if similar, otherwise false.
-   */
-  @Override
-  public boolean similar(SerialItemData<? extends T> data) {
-    return equals(data);
+    this.effect = SerialFireworkEffect.readJSON(new JSONHelper(json.getJSON("effect_info")));
   }
 }

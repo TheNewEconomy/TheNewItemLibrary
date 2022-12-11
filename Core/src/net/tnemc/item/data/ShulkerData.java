@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -24,41 +24,23 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+public abstract class ShulkerData<T> extends ItemStorageData<T> {
 
-public abstract class EnchantStorageData<T> implements SerialItemData<T> {
+  protected int colorRGB;
 
-  protected Map<String, Integer> enchantments = new HashMap<>();
-
-  /**
-   * Converts the {@link SerialItemData} to a JSON object.
-   *
-   * @return The JSONObject representing this {@link SerialItemData}.
-   */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
-    json.put("name", "enchantstorage");
-
-    JSONObject object = new JSONObject();
-    enchantments.forEach(object::put);
-    json.put("enchantments", object);
-
+    JSONObject json = super.toJSON();
+    json.put("name", "shulker");
+    json.put("colour", colorRGB);
+    json.put("items", super.toJSON());
     return json;
   }
 
-  /**
-   * Reads JSON data and converts it back to a {@link SerialItemData} object.
-   *
-   * @param json The JSONHelper instance of the json data.
-   */
   @Override
   public void readJSON(JSONHelper json) {
-    JSONObject enchants = json.getJSON("enchantments");
-    enchants.forEach((key, value)->{
-      enchantments.put(key.toString(), Integer.valueOf(value.toString()));
-    });
+    this.colorRGB = json.getInteger("colour");
+    super.readJSON(json);
   }
 
   /**
@@ -71,9 +53,9 @@ public abstract class EnchantStorageData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof EnchantStorageData) {
-      EnchantStorageData<?> compare = (EnchantStorageData<?>)data;
-      return enchantments.equals(compare.enchantments);
+    if(data instanceof ShulkerData) {
+      ShulkerData<?> compare = (ShulkerData<?>)data;
+      return colorRGB == compare.colorRGB && super.equals(data);
     }
     return false;
   }

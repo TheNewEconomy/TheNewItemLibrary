@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -20,54 +20,39 @@ package net.tnemc.item.bukkit.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
+import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class KnowledgeBookData<T> implements SerialItemData<T> {
+public abstract class ItemStorageData<T> implements SerialItemData<T> {
 
-  protected List<String> recipes = new ArrayList<>();
+  protected Map<Integer, SerialItem<T>> items = new HashMap<>();
 
-  /**
-   * Converts the {@link SerialItemData} to a JSON object.
-   *
-   * @return The JSONObject representing this {@link SerialItemData}.
-   */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
-    json.put("name", "knowledge");
-
-    if(recipes.size() > 0) {
-      JSONObject recipesObj = new JSONObject();
-      for(String recipe : recipes) {
-        JSONObject recObject = new JSONObject();
-        recObject.put("recipe", recipe);
-        recipesObj.put(recipe, recObject);
-      }
-      json.put("recipes", recipesObj);
-    }
-    return json;
+    JSONObject itemsObj = new JSONObject();
+    items.forEach((slot, item)->{
+      itemsObj.put(slot, item.toJSON());
+    });
+    return itemsObj;
   }
 
-  /**
-   * Reads JSON data and converts it back to a {@link SerialItemData} object.
-   *
-   * @param json The JSONHelper instance of the json data.
-   */
   @Override
   public void readJSON(JSONHelper json) {
+    json.getJSON("items").forEach((key, value)->{
+      final int slot = Integer.valueOf(String.valueOf(key));
+      try {
+        items.put(slot, (SerialItem<T>)SerialItem.unserialize((JSONObject)value).get());
+      } catch(ParseException ignore) {
 
-    if(json.has("effects")) {
-      JSONHelper recipesObj = json.getHelper("recipes");
-      recipesObj.getObject().forEach((key, value)->{
-        final JSONHelper helperObj = new JSONHelper((JSONObject)value);
-        recipes.add(helperObj.getString("recipe"));
-      });
-    }
+      }
+    });
   }
 
   /**
@@ -80,9 +65,21 @@ public abstract class KnowledgeBookData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof KnowledgeBookData) {
-      KnowledgeBookData<?> compare = (KnowledgeBookData<?>)data;
-      return recipes.equals(compare.recipes);
+    if(data instanceof ItemStorageData) {
+      ItemStorageData<?> compare = (ItemStorageData<?>)data;
+
+      if(items.size() != compare.items.size()) return false;
+
+      for(Map.Entry<Integer, SerialItem<T>> entry : items.entrySet()) {
+
+        if(!compare.items.containsKey(entry.getKey())) return false;
+
+        final SerialItem<? extends T> item = (SerialItem<? extends T>)compare.items.get(entry.getKey());
+        final AbstractItemStack<? extends T> stack = item.getStack();
+
+        if(!entry.getValue().getStack().similar(stack)) return false;
+      }
+      return true;
     }
     return false;
   }
@@ -98,5 +95,9 @@ public abstract class KnowledgeBookData<T> implements SerialItemData<T> {
   @Override
   public boolean similar(SerialItemData<? extends T> data) {
     return equals(data);
+  }
+
+  public Map<Integer, SerialItem<T>> getItems() {
+    return items;
   }
 }

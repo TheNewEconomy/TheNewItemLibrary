@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -24,9 +24,12 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-public abstract class SkullData<T> implements SerialItemData<T> {
+import java.util.HashMap;
+import java.util.Map;
 
-  protected String owner;
+public abstract class EnchantStorageData<T> implements SerialItemData<T> {
+
+  protected Map<String, Integer> enchantments = new HashMap<>();
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -36,8 +39,12 @@ public abstract class SkullData<T> implements SerialItemData<T> {
   @Override
   public JSONObject toJSON() {
     JSONObject json = new JSONObject();
-    json.put("name", "skull");
-    if(owner != null) json.put("owner", owner);
+    json.put("name", "enchantstorage");
+
+    JSONObject object = new JSONObject();
+    enchantments.forEach(object::put);
+    json.put("enchantments", object);
+
     return json;
   }
 
@@ -48,7 +55,10 @@ public abstract class SkullData<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-    if(json.has("owner")) owner = json.getString("owner");
+    JSONObject enchants = json.getJSON("enchantments");
+    enchants.forEach((key, value)->{
+      enchantments.put(key.toString(), Integer.valueOf(value.toString()));
+    });
   }
 
   /**
@@ -61,9 +71,9 @@ public abstract class SkullData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof SkullData) {
-      SkullData<?> compare = (SkullData<?>)data;
-      return owner.equalsIgnoreCase(compare.owner);
+    if(data instanceof EnchantStorageData) {
+      EnchantStorageData<?> compare = (EnchantStorageData<?>)data;
+      return enchantments.equals(compare.enchantments);
     }
     return false;
   }

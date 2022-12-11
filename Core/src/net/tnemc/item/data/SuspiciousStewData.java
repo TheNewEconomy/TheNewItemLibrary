@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -22,7 +22,7 @@ package net.tnemc.item.bukkit.data;
 
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.data.potion.PotionEffectData;
+import net.tnemc.item.data.potion.PotionEffectData;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
