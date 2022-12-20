@@ -26,6 +26,7 @@ import net.tnemc.item.InventoryType;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Represents a provider that is utilized for item-based calculations and comparisons.

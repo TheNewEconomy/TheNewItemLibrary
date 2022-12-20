@@ -1,4 +1,4 @@
-package net.tnemc.item.sponge;
+package net.tnemc.sponge;
 
 public class SpongeItemCalculations {
 }

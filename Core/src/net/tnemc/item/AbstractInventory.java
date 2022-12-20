@@ -2,6 +2,7 @@ package net.tnemc.item;
 
 import java.util.Optional;
 
+//not close to being done yet
 public interface AbstractInventory<T, I> {
 
   /**
@@ -9,6 +10,8 @@ public interface AbstractInventory<T, I> {
    * @return The platform's inventory object.
    */
   T inventory();
+
+  boolean canFit(SerialItem<I> item);
 
   /**
    * Used to add an item to the inventory.

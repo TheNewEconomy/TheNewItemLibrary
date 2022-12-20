@@ -6,7 +6,6 @@ import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import org.json.simple.JSONObject;
 import org.spongepowered.api.item.ItemType;
-import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.util.generator.dummy.DummyObjectProvider;
 
@@ -15,10 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SpongeItemStack implements AbstractItemStack<ItemStack> {
+public class Sponge7ItemStack implements AbstractItemStack<ItemStack> {
 
   private final List<String> flags = new ArrayList<>();
-  private final Map<String, AttributeModifier> attributes = new HashMap<>();
   private final Map<String, Integer> enchantments = new HashMap<>();
   private final List<String> lore = new ArrayList<>();
 
@@ -37,7 +35,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> of(String material, int amount) {
     try {
-      this.material = (ItemType)DummyObjectProvider.createFor(ItemType.class, "ANVIL");
+      this.material = (ItemType)DummyObjectProvider.createFor(ItemType.class, material);
     } catch(Exception ignore) {
 
     }
@@ -132,27 +130,27 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public List<String> flags() {
-    return this;
+    return null;
   }
 
   @Override
   public List<String> lore() {
-    return this;
+    return null;
   }
 
   @Override
   public Map<String, SerialAttribute> attributes() {
-    return this;
+    return null;
   }
 
   @Override
   public Map<String, Integer> enchantments() {
-    return this;
+    return null;
   }
 
   @Override
   public String material() {
-    return this;
+    return null;
   }
 
   @Override
@@ -167,7 +165,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public String display() {
-    return this;
+    return null;
   }
 
   @Override
@@ -187,7 +185,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public SerialItemData<ItemStack> data() {
-    return this;
+    return null;
   }
 
   @Override
@@ -197,6 +195,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public ItemStack locale() {
-    return this;
+    return stack;
   }
 }
