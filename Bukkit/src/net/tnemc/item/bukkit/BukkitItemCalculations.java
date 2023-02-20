@@ -25,6 +25,7 @@ import net.tnemc.item.providers.CalculationsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -37,7 +38,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 
 /**
  * Represents a Bukkit implementation of the {@link CalculationsProvider}.
@@ -46,6 +46,26 @@ import java.util.function.Consumer;
  * @since 0.1.5.0
  */
 public class BukkitItemCalculations implements CalculationsProvider<BukkitItemStack, ItemStack, Inventory> {
+
+  /**
+   * Used to drop items near a player.
+   *
+   * @param left A Collection containing the items to drop.
+   * @param player The UUID of the player to drop the items near.
+   *
+   * @return True if the items were successfully dropped, otherwise false.
+   */
+  @Override
+  public boolean drop(Collection<BukkitItemStack> left, UUID player) {
+    final Player playerObj = Bukkit.getPlayer(player);
+
+    if(playerObj != null) {
+      for(BukkitItemStack stack : left) {
+        Objects.requireNonNull(playerObj.getWorld()).dropItemNaturally(playerObj.getLocation(), stack.locale());
+      }
+    }
+    return false;
+  }
 
   /**
    * Removes all items that are equal to the stack from an inventory.
@@ -147,6 +167,7 @@ public class BukkitItemCalculations implements CalculationsProvider<BukkitItemSt
       }
     }
 
+    //Helmet check, because Bukkit includes this in the count but not in removal.
     if(left > 0 && inventory instanceof PlayerInventory) {
       final ItemStack helmet = ((PlayerInventory) inventory).getHelmet();
       if(helmet != null && helmet.isSimilar(stack.locale())) {
@@ -160,6 +181,7 @@ public class BukkitItemCalculations implements CalculationsProvider<BukkitItemSt
         }
       }
 
+      //Off-hand check, because Bukkit includes this in the count but not in removal.
       if(left > 0) {
         final ItemStack hand = ((PlayerInventory) inventory).getItemInOffHand();
 
@@ -179,7 +201,7 @@ public class BukkitItemCalculations implements CalculationsProvider<BukkitItemSt
   }
 
   /**
-   * Used to locate an invetory for a UUID identifier.
+   * Used to locate an inventory for a UUID identifier.
    *
    * @param identifier The identifier to use for the search.
    * @param type       The inventory type to return.

@@ -85,6 +85,10 @@ public class SerialItem<T> {
     return toJSON().toJSONString();
   }
 
+  public static <T extends AbstractItemStack<T>> SerialItem<T> of(T stack) {
+    return new SerialItem<>(stack);
+  }
+
   public static <T> Optional<SerialItem<T>> unserialize(String serialized) throws ParseException {
     return new SerialItem().parse((JSONObject)new JSONParser().parse(serialized));
   }

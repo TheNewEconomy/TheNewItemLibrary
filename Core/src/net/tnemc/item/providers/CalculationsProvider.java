@@ -24,9 +24,9 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.InventoryType;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 /**
  * Represents a provider that is utilized for item-based calculations and comparisons.
@@ -38,6 +38,16 @@ import java.util.function.Consumer;
  * @since 0.1.5.0
  */
 public interface CalculationsProvider<T extends AbstractItemStack<S>, S, U> {
+
+  /**
+   * Used to drop items near a player.
+   *
+   * @param left A Collection containing the items to drop.
+   * @param player The UUID of the player to drop the items near.
+   *
+   * @return True if the items were successfully dropped, otherwise false.
+   */
+  boolean drop(Collection<T> left, UUID player);
 
   /**
    * Removes all items that are equal to the stack from an inventory.
