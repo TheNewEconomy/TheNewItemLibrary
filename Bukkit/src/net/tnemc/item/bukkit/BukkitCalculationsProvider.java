@@ -45,7 +45,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author creatorfromhell
  * @since 0.1.5.0
  */
-public class BukkitItemCalculations implements CalculationsProvider<BukkitItemStack, ItemStack, Inventory> {
+public class BukkitCalculationsProvider implements CalculationsProvider<BukkitItemStack, ItemStack, Inventory> {
 
   /**
    * Used to drop items near a player.
@@ -143,7 +143,7 @@ public class BukkitItemCalculations implements CalculationsProvider<BukkitItemSt
   }
 
   /**
-   * Removes an net.tnemc.item stack with a specific amount from an inventory.
+   * Removes an ItemStack with a specific amount from an inventory.
    * @param stack The stack, with the correct amount, to remove.
    * @param inventory The inventory to return the net.tnemc.item stack from.
    * @return The remaining amount of items to remove.
