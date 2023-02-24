@@ -211,6 +211,15 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
+  public BukkitItemStack enchant(List<String> enchantments) {
+    this.enchantments.clear();
+    for(String str : enchantments) {
+      this.enchantments.put(str, 1);
+    }
+    return this;
+  }
+
+  @Override
   public BukkitItemStack material(String material) {
     this.material = Material.getMaterial(material);
     return this;

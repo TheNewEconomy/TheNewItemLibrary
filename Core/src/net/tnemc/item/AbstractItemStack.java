@@ -48,6 +48,8 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   AbstractItemStack<T> enchant(Map<String, Integer> enchantments);
 
+  AbstractItemStack<T> enchant(List<String> enchantments);
+
   AbstractItemStack<T> material(String material);
 
   AbstractItemStack<T> amount(final int amount);

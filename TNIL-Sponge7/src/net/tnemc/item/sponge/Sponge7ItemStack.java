@@ -89,6 +89,11 @@ public class Sponge7ItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
+  public AbstractItemStack<ItemStack> enchant(List<String> enchantments) {
+    return null;
+  }
+
+  @Override
   public AbstractItemStack<ItemStack> material(String material) {
     return this;
   }
