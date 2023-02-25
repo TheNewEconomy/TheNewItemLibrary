@@ -168,10 +168,11 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    */
   default boolean itemsEqual(I original, I compare) {
     if(original.similar(compare)) {
-      if(original.data() != null && compare.data() != null) {
-        return original.similar(compare) && original.data().similar(compare.data());
+      if(original.data().isPresent() && compare.data().isPresent()) {
+        return original.similar(compare) && original.data().get().similar(compare.data().get());
       }
-      return original.data() == null && compare.data() == null;
+
+      return original.data().isEmpty() && compare.data().isEmpty();
     }
     return false;
   }

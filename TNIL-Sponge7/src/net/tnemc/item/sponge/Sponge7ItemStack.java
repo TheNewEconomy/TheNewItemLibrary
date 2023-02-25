@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Sponge7ItemStack implements AbstractItemStack<ItemStack> {
 
@@ -189,8 +190,8 @@ public class Sponge7ItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public SerialItemData<ItemStack> data() {
-    return null;
+  public Optional<SerialItemData<ItemStack>> data() {
+    return Optional.empty();
   }
 
   @Override

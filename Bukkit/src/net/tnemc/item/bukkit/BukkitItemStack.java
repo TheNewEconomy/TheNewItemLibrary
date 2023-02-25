@@ -338,8 +338,8 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public SerialItemData<ItemStack> data() {
-    return data;
+  public Optional<SerialItemData<ItemStack>> data() {
+    return Optional.ofNullable(data);
   }
 
   /**

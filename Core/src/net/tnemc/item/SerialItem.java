@@ -71,8 +71,8 @@ public class SerialItem<T> {
       json.put("attributes", attr);
     }
 
-    if(stack.data() != null) {
-      json.put("data", stack.data().toJSON());
+    if(stack.data().isPresent()) {
+      json.put("data", stack.data().get().toJSON());
     }
     return json;
   }

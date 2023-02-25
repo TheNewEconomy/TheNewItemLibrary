@@ -98,15 +98,32 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
    */
   @Override
   public int count(BukkitItemStack stack, Inventory inventory) {
-    ItemStack compare = stack.locale().clone();
+    final ItemStack compare = stack.locale().clone();
     compare.setAmount(1);
-    return Arrays
+
+    int amount = 0;
+
+    for(ItemStack itemStack : inventory.getContents()) {
+      if(itemStack != null) {
+        final boolean equal = itemsEqual(BukkitItemStack.locale(compare),
+                                         BukkitItemStack.locale(itemStack)
+        );
+
+        if(equal) {
+          amount += itemStack.getAmount();
+        }
+      }
+    }
+    return amount;
+    /*return Arrays
         .stream(inventory.getContents())
         .filter(Objects::nonNull)
-        .filter(itemStack -> itemsEqual(BukkitItemStack.locale(compare),
-                                        BukkitItemStack.locale(itemStack)))
+        .filter(itemStack ->
+          itemsEqual(BukkitItemStack.locale(compare),
+                     BukkitItemStack.locale(itemStack))
+        )
         .mapToInt(ItemStack::getAmount)
-        .sum();
+        .sum();*/
   }
 
   /**

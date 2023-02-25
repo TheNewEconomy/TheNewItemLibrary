@@ -25,6 +25,7 @@ import org.json.simple.JSONObject;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface AbstractItemStack<T> extends Cloneable {
 
@@ -88,7 +89,7 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   boolean unbreakable();
 
-  SerialItemData<T> data();
+  Optional<SerialItemData<T>> data();
 
   /**
    * Returns true if the provided item is similar to this.
