@@ -112,7 +112,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
       }
 
       // Check 1.13 version for compatibility with customModelData
-      if(VersionUtil.isOneFourteen(Bukkit.getVersion()) && stack.getItemMeta().hasCustomModelData()) {
+      if(VersionUtil.isOneFourteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && stack.getItemMeta().hasCustomModelData()) {
         customModelData = stack.getItemMeta().getCustomModelData();
       }
 
@@ -120,7 +120,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
         flags.add(flag.name());
       }
 
-      if(VersionUtil.isOneThirteen(Bukkit.getVersion()) && stack.getItemMeta().getAttributeModifiers() != null) {
+      if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && stack.getItemMeta().getAttributeModifiers() != null) {
         stack.getItemMeta().getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.name(), modifier));
       }
 
@@ -396,7 +396,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
           meta.setCustomModelData(customModelData);
         }
 
-        if(VersionUtil.isOneThirteen(Bukkit.getVersion())) {
+        if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0])) {
           attributes.forEach((name, attribute)->meta.addAttributeModifier(Attribute.valueOf(name), attribute));
         }
       }

@@ -167,6 +167,12 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    * @return True if the net.tnemc.item stacks are equal, otherwise false.
    */
   default boolean itemsEqual(I original, I compare) {
-    return original.similar(compare) && original.data().similar(compare.data());
+    if(original.similar(compare)) {
+      if(original.data() != null && compare.data() != null) {
+        return original.similar(compare) && original.data().similar(compare.data());
+      }
+      return original.data() == null && compare.data() == null;
+    }
+    return false;
   }
 }
