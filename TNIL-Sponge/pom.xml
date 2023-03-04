@@ -5,7 +5,7 @@
     <parent>
         <artifactId>TNIL</artifactId>
         <groupId>net.tnemc</groupId>
-        <version>0.1.5.0</version>
+        <version>0.1.7.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -52,6 +52,12 @@
             <version>8.0.0</version>
             <type>jar</type>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.tnemc</groupId>

@@ -363,6 +363,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public boolean similar(AbstractItemStack<? extends ItemStack> compare) {
+    if(stack == null) return false;
     return stack.isSimilar(compare.locale());
   }
 
