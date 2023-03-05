@@ -11,6 +11,7 @@
         <module>Bukkit</module>
         <module>TNIL-Sponge7</module>
         <module>TNIL-Sponge</module>
+        <module>Minestom</module>
     </modules>
 
     <properties>
