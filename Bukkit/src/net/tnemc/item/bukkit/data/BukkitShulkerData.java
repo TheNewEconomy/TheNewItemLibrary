@@ -47,7 +47,9 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
 
       final ShulkerBox box = (ShulkerBox)meta.getBlockState();
 
-      colorRGB = box.getColor().getColor().asRGB();
+      if(box.getColor() != null) {
+        colorRGB = box.getColor().getColor().asRGB();
+      }
 
       final Inventory inventory = box.getInventory();
       for(int i = 0; i < inventory.getSize(); i++) {
