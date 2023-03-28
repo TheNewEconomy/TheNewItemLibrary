@@ -21,6 +21,8 @@ package net.tnemc.item.bukkit;
  */
 
 import net.tnemc.item.InventoryType;
+import net.tnemc.item.SerialItem;
+import net.tnemc.item.data.ItemStorageData;
 import net.tnemc.item.providers.CalculationsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -75,17 +77,23 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
    */
   @Override
   public int removeAll(BukkitItemStack stack, Inventory inventory) {
-    final AtomicInteger taken = new AtomicInteger();
+    final ItemStack compare = stack.locale().clone();
+    compare.setAmount(1);
 
-    Arrays.stream(inventory.getContents())
-        .filter(Objects::nonNull)
-        .filter(itemStack -> itemsEqual(stack, BukkitItemStack.locale(itemStack)))
-        .forEach((itemStack -> {
-          taken.addAndGet(itemStack.getAmount());
-          inventory.remove(itemStack);
-        }));
+    int amount = 0;
 
-    return taken.get();
+    for(ItemStack itemStack : inventory.getContents()) {
+      if(itemStack != null) {
+        final boolean equal = itemsEqual(BukkitItemStack.locale(compare),
+                                         BukkitItemStack.locale(itemStack)
+        );
+
+        if(equal) {
+          amount += itemStack.getAmount();
+        }
+      }
+    }
+    return amount;
   }
 
   /**
@@ -105,9 +113,20 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     for(ItemStack itemStack : inventory.getContents()) {
       if(itemStack != null) {
-        final boolean equal = itemsEqual(BukkitItemStack.locale(compare),
-                                         BukkitItemStack.locale(itemStack)
-        );
+        final BukkitItemStack locale = BukkitItemStack.locale(itemStack);
+        final boolean equal = itemsEqual(BukkitItemStack.locale(compare), locale);
+
+        if(locale.data().isPresent()) {
+          if(locale.data().get() instanceof ItemStorageData) {
+            for(Object obj : ((ItemStorageData)locale.data().get()).getItems().entrySet()) {
+              final Map.Entry<Integer, SerialItem> entry = ((Map.Entry<Integer, SerialItem>)obj);
+
+              if(itemsEqual(BukkitItemStack.locale(compare), new BukkitItemStack().of(entry.getValue()))) {
+                amount += entry.getValue().getStack().amount();
+              }
+            }
+          }
+        }
 
         if(equal) {
           amount += itemStack.getAmount();
@@ -115,15 +134,6 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
       }
     }
     return amount;
-    /*return Arrays
-        .stream(inventory.getContents())
-        .filter(Objects::nonNull)
-        .filter(itemStack ->
-          itemsEqual(BukkitItemStack.locale(compare),
-                     BukkitItemStack.locale(itemStack))
-        )
-        .mapToInt(ItemStack::getAmount)
-        .sum();*/
   }
 
   /**

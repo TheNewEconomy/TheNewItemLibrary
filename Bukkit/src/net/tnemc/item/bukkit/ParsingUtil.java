@@ -28,6 +28,7 @@ import net.tnemc.item.bukkit.data.BukkitBannerData;
 import net.tnemc.item.bukkit.data.BukkitBookData;
 import net.tnemc.item.bukkit.data.BukkitBundleData;
 import net.tnemc.item.bukkit.data.BukkitCompassData;
+import net.tnemc.item.bukkit.data.BukkitCrossbowMeta;
 import net.tnemc.item.bukkit.data.BukkitEnchantData;
 import net.tnemc.item.bukkit.data.BukkitFireworkData;
 import net.tnemc.item.bukkit.data.BukkitFireworkEffectData;
@@ -35,6 +36,7 @@ import net.tnemc.item.bukkit.data.BukkitKnowledgeBookData;
 import net.tnemc.item.bukkit.data.BukkitLeatherData;
 import net.tnemc.item.bukkit.data.BukkitMapData;
 import net.tnemc.item.bukkit.data.BukkitPotionData;
+import net.tnemc.item.bukkit.data.BukkitRepairableMeta;
 import net.tnemc.item.bukkit.data.BukkitShulkerData;
 import net.tnemc.item.bukkit.data.BukkitSkullData;
 import net.tnemc.item.bukkit.data.BukkitSuspiciousStewData;
@@ -53,6 +55,7 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.BundleMeta;
 import org.bukkit.inventory.meta.CompassMeta;
+import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -61,6 +64,7 @@ import org.bukkit.inventory.meta.KnowledgeBookMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.Repairable;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.SuspiciousStewMeta;
 import org.bukkit.inventory.meta.TropicalFishBucketMeta;
@@ -217,6 +221,8 @@ public class ParsingUtil {
         data = new BukkitBundleData();
       } else if(meta instanceof CompassMeta) {
         data = new BukkitCompassData();
+      } else if(meta instanceof CrossbowMeta) {
+        data = new BukkitCrossbowMeta();
       } else if(meta instanceof EnchantmentStorageMeta) {
         data = new BukkitEnchantData();
       } else if(meta instanceof FireworkEffectMeta) {
@@ -231,6 +237,8 @@ public class ParsingUtil {
         data = new BukkitMapData();
       } else if(meta instanceof PotionMeta) {
         data = new BukkitPotionData();
+      } else if(meta instanceof Repairable) {
+        data = new BukkitRepairableMeta();
       } else if(meta instanceof SkullMeta) {
         data = new BukkitSkullData();
       } else if(meta instanceof SuspiciousStewMeta) {

@@ -30,6 +30,7 @@ import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.Repairable;
 
 public class BukkitShulkerData extends ShulkerData<ItemStack> {
 
