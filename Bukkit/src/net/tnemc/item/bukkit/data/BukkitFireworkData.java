@@ -20,8 +20,8 @@ package net.tnemc.item.bukkit.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.bukkit.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.bukkit.ParsingUtil;
 import net.tnemc.item.data.FireworkData;
 import net.tnemc.item.data.firework.SerialFireworkEffect;
 import org.bukkit.FireworkEffect;

@@ -20,8 +20,8 @@ package net.tnemc.item.bukkit.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.bukkit.ParsingUtil;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.bukkit.ParsingUtil;
 import net.tnemc.item.data.EnchantStorageData;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
