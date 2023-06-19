@@ -80,14 +80,16 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     int amount = 0;
 
-    for(ItemStack itemStack : inventory.getContents()) {
-      if(itemStack != null) {
+    for(int i = 0; i < inventory.getStorageContents().length; i++) {
+      ItemStack item = inventory.getItem(i);
+      if(item != null) {
         final boolean equal = itemsEqual(BukkitItemStack.locale(compare),
-                                         BukkitItemStack.locale(itemStack)
+                                         BukkitItemStack.locale(item)
         );
 
         if(equal) {
-          amount += itemStack.getAmount();
+          amount += item.getAmount();
+          inventory.setItem(i, null);
         }
       }
     }
