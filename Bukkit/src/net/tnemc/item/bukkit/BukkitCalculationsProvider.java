@@ -181,8 +181,9 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
       if(left <= 0) break;
-      ItemStack item = inventory.getItem(i);
-      if(item == null || !itemsEqual(stack, BukkitItemStack.locale(item))) continue;
+      final ItemStack item = inventory.getItem(i);
+
+      if(item == null || !item.isSimilar(stack.locale())) continue;
 
       if(item.getAmount() <= left) {
         left -= item.getAmount();

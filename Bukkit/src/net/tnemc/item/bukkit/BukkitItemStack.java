@@ -37,11 +37,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Represents an ItemStack object related to the Bukkit API.
@@ -364,11 +360,31 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public boolean similar(AbstractItemStack<? extends ItemStack> compare) {
     if(stack == null) return false;
-    return stack.isSimilar(compare.locale());
+    //return stack.isSimilar(compare.locale());
+    return similarStack((BukkitItemStack)compare);
   }
 
   public static BukkitItemStack locale(ItemStack stack) {
     return new BukkitItemStack().of(stack);
+  }
+
+  public boolean similarStack(BukkitItemStack stack) {
+
+    if(!material.equals(stack.material)) return false;
+    if(!display.equals(stack.display)) return false;
+    if(!Objects.equals(damage, stack.damage)) return false;
+    if(!Objects.equals(customModelData, stack.customModelData)) return false;
+    if(unbreakable != stack.unbreakable) return false;
+
+    if(!listsEquals(lore, stack.lore)) return false;
+    if(!listsEquals(flags, stack.flags)) return false;
+    if(!attributes.equals(stack.attributes)) return false;
+    if(!enchantments.equals(stack.enchantments)) return false;
+    if(data != null) {
+      return data.equals(stack.data);
+    }
+
+    return stack.data == null;
   }
 
   /**
@@ -385,7 +401,17 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
           meta.setDisplayName(display);
         }
         meta.setLore(lore);
-        enchantments.forEach((name, level)->meta.addEnchant(Enchantment.getByKey(NamespacedKey.fromString(name)), level, true));
+        enchantments.forEach((name, level)->{
+
+          final NamespacedKey space = NamespacedKey.fromString(name);
+          if(space != null) {
+
+            final Enchantment enchant = Enchantment.getByKey(space);
+            if(enchant != null) {
+              meta.addEnchant(enchant, level, true);
+            }
+          }
+        });
 
         if(flags.size() > 0) {
           for(String str : flags) {
@@ -408,5 +434,9 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
       }
     }
     return stack;
+  }
+
+  private <T> boolean listsEquals(final List<T> list1, final List<T> list2) {
+    return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
   }
 }

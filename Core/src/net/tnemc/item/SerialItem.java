@@ -77,6 +77,10 @@ public class SerialItem<T> {
     return json;
   }
 
+  public boolean jsonEquals(final SerialItem<T> serial) {
+    return serialize().equals(serial.serialize());
+  }
+
   public AbstractItemStack<T> getStack() {
     return stack;
   }
