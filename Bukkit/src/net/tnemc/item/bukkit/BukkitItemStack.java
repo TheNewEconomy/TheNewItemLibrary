@@ -435,8 +435,4 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     }
     return stack;
   }
-
-  private <T> boolean listsEquals(final List<T> list1, final List<T> list2) {
-    return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
-  }
 }

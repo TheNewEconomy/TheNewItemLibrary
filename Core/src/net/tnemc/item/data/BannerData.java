@@ -26,11 +26,12 @@ import net.tnemc.item.data.banner.PatternData;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class BannerData<T> implements SerialItemData<T> {
 
-  protected List<PatternData> patterns = new ArrayList<>();
+  protected List<PatternData> patterns = new LinkedList<>();
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -65,7 +66,7 @@ public abstract class BannerData<T> implements SerialItemData<T> {
   public void readJSON(JSONHelper json) {
     json.getJSON("patterns").forEach((key, value)->{
       JSONHelper helperObj = new JSONHelper((JSONObject)value);
-      final PatternData pattern = new PatternData(helperObj.getInteger("colour"),
+      final PatternData pattern = new PatternData(helperObj.getString("colour"),
                                                   helperObj.getString("pattern"));
       patterns.add(pattern);
     });

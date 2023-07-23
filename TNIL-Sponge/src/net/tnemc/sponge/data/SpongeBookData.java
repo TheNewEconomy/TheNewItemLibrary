@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.sponge.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -20,18 +20,19 @@ package net.tnemc.item.bukkit.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.BannerData;
-import net.tnemc.item.data.banner.PatternData;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
+import net.tnemc.item.data.BookData;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.item.inventory.ItemStack;
 
-public class BukkitBannerData extends BannerData<ItemStack> {
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+
+public class SpongeBookData extends BookData<ItemStack> {
+
+  protected boolean applies = false;
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -41,14 +42,26 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final BannerMeta meta = (BannerMeta)stack.getItemMeta();
 
-    if(meta != null) {
-      for(final Pattern pattern : meta.getPatterns()) {
-        patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                     pattern.getPattern().getIdentifier()));
+    final Optional<List<Component>> pages = stack.get(Keys.PAGES);
+    if(pages.isPresent()) {
+      applies = true;
+      for(Component comp : pages.get()) {
+        this.pages.add(comp.toString());
       }
     }
+
+    final Optional<Component> author = stack.get(Keys.AUTHOR);
+    author.ifPresent(component ->{
+      this.author = component.toString();
+      applies = true;
+    });
+
+    final Optional<Integer> generation = stack.get(Keys.GENERATION);
+    generation.ifPresent(integer ->{
+      this.generation = String.valueOf(integer);
+      applies = true;
+    });
   }
 
   /**
@@ -59,14 +72,25 @@ public class BukkitBannerData extends BannerData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
-
-    for(final PatternData pattern : patterns) {
-      meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
-                                  PatternType.valueOf(pattern.getPattern())));
+    if(!author.equalsIgnoreCase("")) {
+      stack.offer(Keys.AUTHOR, Component.text(author));
     }
-    stack.setItemMeta(meta);
+
+    if(!this.generation.equalsIgnoreCase("")) {
+      stack.offer(Keys.GENERATION, Integer.valueOf(this.generation));
+    }
+
+    final List<Component> pages = new LinkedList<>();
+    for(String page : this.pages) {
+      pages.add(Component.text(page));
+    }
+    stack.offer(Keys.PAGES, pages);
 
     return stack;
+  }
+
+  @Override
+  public boolean applies() {
+    return applies;
   }
 }

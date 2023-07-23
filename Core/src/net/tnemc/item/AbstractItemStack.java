@@ -23,9 +23,7 @@ package net.tnemc.item;
 import net.tnemc.item.attribute.SerialAttribute;
 import org.json.simple.JSONObject;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public interface AbstractItemStack<T> extends Cloneable {
 
@@ -115,4 +113,12 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @return An instance of the implementation's locale version of AbstractItemStack.
    */
   T locale();
+
+  default <V> boolean listsEquals(final List<V> list1, final List<V> list2) {
+    return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
+  }
+
+  default <V> boolean setsEquals(final Set<V> list1, final Set<V> list2) {
+    return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
+  }
 }

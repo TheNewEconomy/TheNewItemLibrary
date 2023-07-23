@@ -25,12 +25,15 @@ import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public abstract class MapData<T> implements SerialItemData<T> {
 
   protected String location = null;
   protected int colorRGB = -1;
   protected boolean scaling = false;
+
+  protected UUID id;
 
   //TODO: MapView?
 
@@ -41,6 +44,7 @@ public abstract class MapData<T> implements SerialItemData<T> {
     if(location != null) json.put("location", location);
     if(colorRGB != -1) json.put("colour", colorRGB);
     json.put("scaling", scaling);
+    if(id != null) json.put("id", id);
     return json;
   }
 
@@ -49,6 +53,7 @@ public abstract class MapData<T> implements SerialItemData<T> {
     if(json.has("location")) location = json.getString("location");
     if(json.has("colour")) colorRGB = json.getInteger("colour");
     scaling = json.getBoolean("scaling");
+    if(json.has("id")) id = json.getUUID("id");
   }
 
   /**

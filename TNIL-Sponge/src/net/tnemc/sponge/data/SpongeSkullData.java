@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.sponge.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -21,17 +21,19 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.BannerData;
-import net.tnemc.item.data.banner.PatternData;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
+import net.tnemc.item.data.SkullData;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.entity.living.player.server.ServerPlayer;
+import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.profile.GameProfile;
 
-public class BukkitBannerData extends BannerData<ItemStack> {
+import java.util.Optional;
+import java.util.UUID;
+
+public class SpongeSkullData extends SkullData<ItemStack> {
+
+  protected boolean applies = false;
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -41,14 +43,12 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final BannerMeta meta = (BannerMeta)stack.getItemMeta();
 
-    if(meta != null) {
-      for(final Pattern pattern : meta.getPatterns()) {
-        patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                     pattern.getPattern().getIdentifier()));
-      }
-    }
+    final Optional<GameProfile> profile = stack.get(Keys.GAME_PROFILE);
+    profile.ifPresent(gameProfile ->{
+      owner = gameProfile.uuid().toString();
+      applies = true;
+    });
   }
 
   /**
@@ -59,14 +59,16 @@ public class BukkitBannerData extends BannerData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
-
-    for(final PatternData pattern : patterns) {
-      meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
-                                  PatternType.valueOf(pattern.getPattern())));
+    if(!owner.equalsIgnoreCase("")) {
+      final Optional<ServerPlayer> player = Sponge.server().player(UUID.fromString(owner));
+      player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
     }
-    stack.setItemMeta(meta);
 
     return stack;
+  }
+
+  @Override
+  public boolean applies() {
+    return applies;
   }
 }

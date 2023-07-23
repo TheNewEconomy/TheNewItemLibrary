@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.sponge.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -21,17 +21,23 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.BannerData;
-import net.tnemc.item.data.banner.PatternData;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
+import net.tnemc.item.data.EnchantStorageData;
+import org.spongepowered.api.ResourceKey;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.item.enchantment.Enchantment;
+import org.spongepowered.api.item.enchantment.EnchantmentType;
+import org.spongepowered.api.item.enchantment.EnchantmentTypes;
+import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.registry.RegistryTypes;
 
-public class BukkitBannerData extends BannerData<ItemStack> {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+public class SpongeEnchantData extends EnchantStorageData<ItemStack> {
+
+  protected boolean applies = false;
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -41,12 +47,13 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final BannerMeta meta = (BannerMeta)stack.getItemMeta();
 
-    if(meta != null) {
-      for(final Pattern pattern : meta.getPatterns()) {
-        patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                     pattern.getPattern().getIdentifier()));
+    final Optional<List<Enchantment>> enchants = stack.get(Keys.STORED_ENCHANTMENTS);
+
+    if(enchants.isPresent()) {
+      applies = true;
+      for(Enchantment enchant : enchants.get()) {
+        enchantments.put(enchant.type().key(RegistryTypes.ENCHANTMENT_TYPE).formatted(), enchant.level());
       }
     }
   }
@@ -59,14 +66,17 @@ public class BukkitBannerData extends BannerData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
-
-    for(final PatternData pattern : patterns) {
-      meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
-                                  PatternType.valueOf(pattern.getPattern())));
+    final List<Enchantment> enchants = new ArrayList<>();
+    for(final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
+      enchants.add(Enchantment.of((EnchantmentType)EnchantmentTypes.registry().value(ResourceKey.resolve(entry.getKey())), entry.getValue()));
     }
-    stack.setItemMeta(meta);
+    stack.offer(Keys.STORED_ENCHANTMENTS, enchants);
 
     return stack;
+  }
+
+  @Override
+  public boolean applies() {
+    return applies;
   }
 }

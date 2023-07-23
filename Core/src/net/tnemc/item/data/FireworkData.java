@@ -32,7 +32,7 @@ public abstract class FireworkData<T> implements SerialItemData<T> {
 
   protected List<SerialFireworkEffect> effects = new ArrayList<>();
 
-  protected int power;
+  protected long power;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.

@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.sponge.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -21,17 +21,21 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.BannerData;
-import net.tnemc.item.data.banner.PatternData;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
+import net.tnemc.item.data.FireworkData;
+import net.tnemc.item.data.firework.SerialFireworkEffect;
+import net.tnemc.sponge.ParsingUtil;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.item.FireworkEffect;
+import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.util.Ticks;
 
-public class BukkitBannerData extends BannerData<ItemStack> {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class SpongeFireworkData extends FireworkData<ItemStack> {
+
+  protected boolean applies = false;
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -41,12 +45,18 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final BannerMeta meta = (BannerMeta)stack.getItemMeta();
 
-    if(meta != null) {
-      for(final Pattern pattern : meta.getPatterns()) {
-        patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                     pattern.getPattern().getIdentifier()));
+    final Optional<Ticks> power = stack.get(Keys.FIREWORK_FLIGHT_MODIFIER);
+    power.ifPresent(ticks ->{
+      this.power = ticks.ticks();
+      applies = true;
+    });
+
+    final Optional<List<FireworkEffect>> effs = stack.get(Keys.FIREWORK_EFFECTS);
+    if(effs.isPresent()) {
+      applies = true;
+      for(FireworkEffect effect : effs.get()) {
+        effects.add(ParsingUtil.fromEffect(effect));
       }
     }
   }
@@ -59,14 +69,22 @@ public class BukkitBannerData extends BannerData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
+    stack.offer(Keys.FIREWORK_FLIGHT_MODIFIER, Ticks.of(power));
 
-    for(final PatternData pattern : patterns) {
-      meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
-                                  PatternType.valueOf(pattern.getPattern())));
+    final List<FireworkEffect> effs = new ArrayList<>();
+    for(SerialFireworkEffect effect : effects) {
+      effs.add(ParsingUtil.fromSerial(effect));
     }
-    stack.setItemMeta(meta);
+
+    if(effs.size() > 0) {
+      stack.offer(Keys.FIREWORK_EFFECTS, effs);
+    }
 
     return stack;
+  }
+
+  @Override
+  public boolean applies() {
+    return applies;
   }
 }

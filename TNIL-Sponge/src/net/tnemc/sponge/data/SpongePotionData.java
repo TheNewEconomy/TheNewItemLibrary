@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.sponge.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -21,17 +21,21 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.BannerData;
-import net.tnemc.item.data.banner.PatternData;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
+import net.tnemc.item.data.SerialPotionData;
+import net.tnemc.item.data.potion.PotionEffectData;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.effect.potion.PotionEffect;
+import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.util.weighted.TableEntry;
+import org.spongepowered.api.util.weighted.WeightedTable;
 
-public class BukkitBannerData extends BannerData<ItemStack> {
+import java.util.Optional;
+
+public class SpongePotionData extends SerialPotionData<ItemStack> {
+
+  protected boolean applies = false;
+
+  protected WeightedTable<PotionEffectData> customEffects = new WeightedTable<>();
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -41,14 +45,16 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final BannerMeta meta = (BannerMeta)stack.getItemMeta();
 
-    if(meta != null) {
-      for(final Pattern pattern : meta.getPatterns()) {
-        patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                     pattern.getPattern().getIdentifier()));
+      final Optional<WeightedTable<PotionEffect>> effects = stack.get(Keys.APPLICABLE_POTION_EFFECTS);
+      if(effects.isPresent()) {
+        applies = true;
+
+        while(effects.get().iterator().hasNext()) {
+          final TableEntry<PotionEffect> entry = effects.get().iterator().next();
+
+        }
       }
-    }
   }
 
   /**
@@ -58,15 +64,11 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-
-    final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
-
-    for(final PatternData pattern : patterns) {
-      meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
-                                  PatternType.valueOf(pattern.getPattern())));
-    }
-    stack.setItemMeta(meta);
-
     return stack;
+  }
+
+  @Override
+  public boolean applies() {
+    return applies;
   }
 }

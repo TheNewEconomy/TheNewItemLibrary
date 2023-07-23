@@ -65,4 +65,12 @@ public interface SerialItemData<T> {
    * @param stack The locale itemstack object of the implementation.
    */
   T apply(T stack);
+
+  /**
+   * Used to determine if this SerialItemData applies to the specific item during {@link #of(T)}.
+   * @return True if the data applied, otherwise false;
+   */
+  default boolean applies() {
+    return false;
+  }
 }

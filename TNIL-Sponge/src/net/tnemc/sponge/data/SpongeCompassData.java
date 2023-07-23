@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.sponge.data;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -21,17 +21,19 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.BannerData;
-import net.tnemc.item.data.banner.PatternData;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
+import net.tnemc.item.data.CompassData;
+import org.spongepowered.api.ResourceKey;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.world.server.ServerLocation;
+import org.spongepowered.math.vector.Vector3d;
 
-public class BukkitBannerData extends BannerData<ItemStack> {
+import java.util.Optional;
+
+public class SpongeCompassData extends CompassData<ItemStack> {
+
+  protected boolean applies = false;
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -41,13 +43,16 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final BannerMeta meta = (BannerMeta)stack.getItemMeta();
 
-    if(meta != null) {
-      for(final Pattern pattern : meta.getPatterns()) {
-        patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                     pattern.getPattern().getIdentifier()));
-      }
+    Optional<ServerLocation> location = stack.get(Keys.LODESTONE);
+    if(location.isPresent()) {
+      tracked = true;
+      applies = true;
+
+      this.world = location.get().world().uniqueId();
+      this.x = location.get().x();
+      this.y = location.get().y();
+      this.z = location.get().z();
     }
   }
 
@@ -58,15 +63,16 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-
-    final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
-
-    for(final PatternData pattern : patterns) {
-      meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
-                                  PatternType.valueOf(pattern.getPattern())));
+    if(tracked) {
+      final Optional<ResourceKey> key = Sponge.server().worldManager().worldKey(world);
+      key.ifPresent(resourceKey -> stack.offer(Keys.LODESTONE, ServerLocation.of(resourceKey, new Vector3d(x, y, z))));
     }
-    stack.setItemMeta(meta);
 
     return stack;
+  }
+
+  @Override
+  public boolean applies() {
+    return applies;
   }
 }

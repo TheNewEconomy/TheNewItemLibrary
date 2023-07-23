@@ -22,19 +22,19 @@ package net.tnemc.item.data.banner;
 
 public class PatternData {
 
-  private int color;
+  private String color;
   private String pattern;
 
-  public PatternData(int color, String pattern) {
+  public PatternData(String color, String pattern) {
     this.color = color;
     this.pattern = pattern;
   }
 
-  public int getColor() {
+  public String getColor() {
     return color;
   }
 
-  public void setColor(int color) {
+  public void setColor(String color) {
     this.color = color;
   }
 

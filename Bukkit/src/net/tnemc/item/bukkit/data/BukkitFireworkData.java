@@ -62,7 +62,7 @@ public class BukkitFireworkData extends FireworkData<ItemStack> {
 
     final FireworkMeta meta = (FireworkMeta)ParsingUtil.buildFor(stack, FireworkMeta.class);
 
-    meta.setPower(power);
+    meta.setPower((int)power);
     for(final SerialFireworkEffect effect : effects) {
       meta.addEffect(ParsingUtil.fromSerial(effect));
     }
