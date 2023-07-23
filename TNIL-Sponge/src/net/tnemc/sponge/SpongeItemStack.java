@@ -329,7 +329,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
         if(stack == null) {
             stack = ItemStack.builder().itemType((ItemType) ItemTypes.registry().value(fromString())).quantity(amount).build();
 
-            if(!display.equalsIgnoreCase("")) {
+            if(display!= null && !display.equalsIgnoreCase("")) {
                 stack.offer(Keys.CUSTOM_NAME, Component.text(display));
             }
 
@@ -359,6 +359,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
         final String namespace = (split.length >= 2)? split[0] : "minecraft";
         final String value = (split.length >= 2)? split[1] : split[0];
-        return ResourceKey.of(namespace, value);
+        return ResourceKey.of(namespace, value.toLowerCase());
     }
 }
