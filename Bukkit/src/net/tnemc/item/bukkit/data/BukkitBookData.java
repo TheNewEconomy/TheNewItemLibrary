@@ -41,8 +41,13 @@ public class BukkitBookData extends BookData<ItemStack> {
     if(meta != null) {
       this.title = meta.getTitle();
       this.author = meta.getAuthor();
-      this.generation = meta.getGeneration().name();
       this.pages = meta.getPages();
+
+      if(meta.getGeneration() != null) {
+        this.generation = meta.getGeneration().name();
+      } else {
+        this.generation = "";
+      }
     }
   }
 
@@ -58,7 +63,10 @@ public class BukkitBookData extends BookData<ItemStack> {
 
     meta.setTitle(title);
     meta.setAuthor(author);
-    meta.setGeneration(BookMeta.Generation.valueOf(generation));
+
+    if(!this.generation.equalsIgnoreCase("")) {
+      meta.setGeneration(BookMeta.Generation.valueOf(generation));
+    }
     meta.setPages(pages);
     stack.setItemMeta(meta);
 
