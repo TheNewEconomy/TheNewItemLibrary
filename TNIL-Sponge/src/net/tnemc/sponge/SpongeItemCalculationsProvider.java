@@ -15,7 +15,7 @@ import org.spongepowered.api.world.Location;
 
 import java.util.*;
 
-public class SpongeItemCalculations implements CalculationsProvider<SpongeItemStack, ItemStack, Inventory> {
+public class SpongeItemCalculationsProvider implements CalculationsProvider<SpongeItemStack, ItemStack, Inventory> {
 
     @Override
     public boolean drop(Collection<SpongeItemStack> left, UUID identifier) {
@@ -41,9 +41,15 @@ public class SpongeItemCalculations implements CalculationsProvider<SpongeItemSt
         int amount = 0;
         for (Inventory slot : inventory.slots()) {
             final ItemStack slotItem = slot.peek();
-            if (slotItem != null && slotItem.equalTo(stack.locale())) {
-                amount += slotItem.quantity();
-                slot.clear();
+
+            if (slotItem != null) {
+
+                final ItemStack compareI = slotItem.copy();
+                compareI.setQuantity(1);
+                if(compareI.equalTo(stack.locale())) {
+                    amount += slotItem.quantity();
+                    slot.clear();
+                }
             }
         }
         return amount;
@@ -51,11 +57,20 @@ public class SpongeItemCalculations implements CalculationsProvider<SpongeItemSt
 
     @Override
     public int count(SpongeItemStack stack, Inventory inventory) {
+        final ItemStack compare = stack.locale().copy();
+        compare.setQuantity(1);
         int count = 0;
 
         for (Inventory slot : inventory.slots()) {
-            if (!slot.peek().isEmpty() && slot.peek().equalTo(stack.locale())) {
-                count += slot.totalQuantity();
+            final ItemStack slotItem = slot.peek();
+
+            if (slotItem != null) {
+
+                final ItemStack compareI = slotItem.copy();
+                compareI.setQuantity(1);
+                if(compareI.equalTo(stack.locale())) {
+                    count += slot.totalQuantity();
+                }
             }
         }
         return count;
@@ -74,7 +89,7 @@ public class SpongeItemCalculations implements CalculationsProvider<SpongeItemSt
             final InventoryTransactionResult result = inventory.offer(stack.locale());
             final List<ItemStackSnapshot> rejected = result.rejectedItems();
             if(rejected.size() > 0) {
-                rejected.forEach(snapshot->leftOver.add((SpongeItemStack) new SpongeItemStack().of(snapshot.createStack())));
+                rejected.forEach(snapshot->leftOver.add(new SpongeItemStack().of(snapshot.createStack())));
             }
         }
         return leftOver;
@@ -90,15 +105,22 @@ public class SpongeItemCalculations implements CalculationsProvider<SpongeItemSt
             if(left <= 0) break;
 
             final ItemStack slotItem = slot.peek();
-            if (slotItem != null && slotItem.equalTo(compare)) {
-                final int quantity = slotItem.quantity();
+            if (slotItem != null) {
 
-                if(quantity > left) {
-                    slotItem.setQuantity(quantity - left);
-                    left = 0;
-                } else {
-                    left -= quantity;
-                    slot.clear();
+
+                final ItemStack compare1 = slotItem.copy();
+                compare1.setQuantity(1);
+                if(compare.equalTo(compare1)) {
+                    final int quantity = slotItem.quantity();
+
+                    if (quantity > left) {
+                        slotItem.setQuantity(quantity - left);
+                        slot.set(0, slotItem);
+                        left = 0;
+                    } else {
+                        left -= quantity;
+                        slot.clear();
+                    }
                 }
             }
         }
