@@ -106,7 +106,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     int amount = 0;
 
-    for(ItemStack itemStack : inventory.getContents()) {
+    for(ItemStack itemStack : inventory.getStorageContents()) {
       if(itemStack != null) {
         final BukkitItemStack locale = BukkitItemStack.locale(itemStack);
         final boolean equal = itemsEqual(BukkitItemStack.locale(compare), locale);
@@ -146,10 +146,10 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
    * @param inventory The inventory to add the collection of items to.
    */
   public Collection<BukkitItemStack> giveItems(Collection<BukkitItemStack> items, Inventory inventory) {
-    Collection<BukkitItemStack> leftOver = new ArrayList<>();
+    final Collection<BukkitItemStack> leftOver = new ArrayList<>();
 
     for(BukkitItemStack item : items) {
-      Map<Integer, ItemStack> left = inventory.addItem(item.locale());
+      final Map<Integer, ItemStack> left = inventory.addItem(item.locale());
 
       if(left.size() > 0 && inventory instanceof PlayerInventory) {
         for(Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
@@ -190,7 +190,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
       }
     }
 
-    //Helmet check, because Bukkit includes this in the count but not in removal.
+    /*//Helmet check, because Bukkit includes this in the count but not in removal.
     if(left > 0 && inventory instanceof PlayerInventory) {
       final ItemStack helmet = ((PlayerInventory) inventory).getHelmet();
       if(helmet != null && helmet.isSimilar(stack.locale())) {
@@ -218,8 +218,8 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
             left = 0;
           }
         }
-      }
-    }
+      }*/
+    //}
     return left;
   }
 

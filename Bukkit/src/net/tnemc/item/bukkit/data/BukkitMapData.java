@@ -40,7 +40,9 @@ public class BukkitMapData extends MapData<ItemStack> {
     final MapMeta meta = (MapMeta)stack.getItemMeta();
 
     if(meta != null) {
-      this.colorRGB = meta.getColor().asRGB();
+      if(meta.getColor() != null) {
+        this.colorRGB = meta.getColor().asRGB();
+      }
       this.scaling = meta.isScaling();
       this.location = meta.getLocationName();
     }
