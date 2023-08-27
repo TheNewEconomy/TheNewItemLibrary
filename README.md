@@ -20,7 +20,7 @@ Core Dependency:
 <dependency>
     <groupId>net.tnemc</groupId>
     <artifactId>TNIL-Core</artifactId>
-    <version>0.1.5.0</version>
+    <version>0.1.7.4-Pre-17</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -30,11 +30,21 @@ Bukkit Dependency:
 <dependency>
     <groupId>net.tnemc</groupId>
     <artifactId>TNIL-Bukkit</artifactId>
-    <version>0.1.5.0</version>
+    <version>0.1.7.4-Pre-17</version>
     <scope>compile</scope>
 </dependency>
 ```
 
-Sponge Dependency:
+Sponge 8 Dependency:
+```XML
+<dependency>
+    <groupId>net.tnemc</groupId>
+    <artifactId>TNIL-Sponge</artifactId>
+    <version>0.1.7.4-Pre-17</version>
+    <scope>compile</scope>
+</dependency>
+```
 
-*Coming Soon*
+Sponge 7 Dependency:
+
+*coming soon*
