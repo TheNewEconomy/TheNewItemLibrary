@@ -1,4 +1,4 @@
-package net.tnemc.sponge;
+package net.tnemc.item.sponge;
 
 /*
  * The New Economy Minecraft Server Plugin
@@ -23,7 +23,6 @@ package net.tnemc.sponge;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.data.firework.SerialFireworkEffect;
-import net.tnemc.sponge.data.*;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.item.FireworkEffect;
 import org.spongepowered.api.item.FireworkShape;
@@ -32,7 +31,10 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.registry.RegistryTypes;
 import org.spongepowered.api.util.Color;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ParsingUtil {
 
@@ -54,15 +56,15 @@ public class ParsingUtil {
     public static SerialFireworkEffect fromEffect(final FireworkEffect eff) {
         final SerialFireworkEffect effect = new SerialFireworkEffect();
 
-        for(Color color : eff.colors()) {
-            effect.getColors().add(color.rgb());
+        for(Color color : eff.getColors()) {
+            effect.getColors().add(color.getRgb());
         }
 
-        for(Color color : eff.fadeColors()) {
-            effect.getFadeColors().add(color.rgb());
+        for(Color color : eff.getFadeColors()) {
+            effect.getFadeColors().add(color.getRgb());
         }
 
-        effect.setType(eff.shape().key(RegistryTypes.FIREWORK_SHAPE).formatted());
+        effect.setType(eff.getShape().getId());
         effect.setTrail(eff.hasTrail());
         effect.setFlicker(eff.flickers());
 

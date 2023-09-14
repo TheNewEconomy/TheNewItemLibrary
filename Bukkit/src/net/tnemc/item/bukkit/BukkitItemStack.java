@@ -59,6 +59,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   private SerialItemData<ItemStack> data;
 
   //our locale stack
+  private boolean dirty = false;
   private ItemStack stack;
 
   @Override
@@ -227,6 +228,14 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  public void setAmount(int amount) {
+    this.amount = amount;
+
+    if(stack != null) {
+      stack.setAmount(amount);
+    }
+  }
+
   @Override
   public BukkitItemStack slot(int slot) {
     this.slot = slot;
@@ -334,6 +343,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
+  public void markDirty() {
+    this.dirty = true;
+  }
+
+  @Override
   public Optional<SerialItemData<ItemStack>> data() {
     return Optional.ofNullable(data);
   }
@@ -392,7 +406,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public ItemStack locale() {
-    if(stack == null) {
+    if(stack == null || dirty) {
       stack = new ItemStack(material, amount, damage);
 
       ItemMeta meta = Bukkit.getItemFactory().getItemMeta(material);

@@ -1,32 +1,28 @@
-package net.tnemc.sponge;
+package net.tnemc.item.sponge;
 
-import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
-import org.spongepowered.api.ResourceKey;
-import org.spongepowered.api.data.Keys;
-import org.spongepowered.api.entity.attribute.AttributeModifier;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.enchantment.Enchantment;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.enchantment.EnchantmentTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.registry.RegistryTypes;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.Color;
 
 import java.util.*;
-import java.util.List;
 
 public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     private final Map<String, SerialItemData<ItemStack>> data = new HashMap<>();
 
     private final List<String> flags = new ArrayList<>();
-    private final Map<String, AttributeModifier> attributes = new HashMap<>();
     private final Map<String, Integer> enchantments = new HashMap<>();
     private final List<String> lore = new ArrayList<>();
     private String resource = "";
@@ -41,7 +37,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     private int color = -1;
 
     //our locale stack
-    private boolean dirty = false;
     private ItemStack stack;
 
     @Override
@@ -57,7 +52,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
         final SpongeItemStack stack = (SpongeItemStack)serialItem.getStack();
 
         flags.addAll(stack.flags);
-        attributes.putAll(stack.attributes);
         enchantments.putAll(stack.enchantments);
         lore.addAll(stack.lore);
 
@@ -78,22 +72,22 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     public SpongeItemStack of(ItemStack locale) {
         this.stack = locale;
 
-        this.resource = stack.type().toString();
-        this.amount = stack.quantity();
+        this.resource = stack.getType().toString();
+        this.amount = stack.getQuantity();
 
-        final Optional<Component> display = stack.get(Keys.CUSTOM_NAME);
+        final Optional<Text> display = stack.get(Keys.DISPLAY_NAME);
         display.ifPresent(component -> this.display = component.toString());
 
-        final Optional<List<Enchantment>> enchants = stack.get(Keys.APPLIED_ENCHANTMENTS);
+        final Optional<List<Enchantment>> enchants = stack.get(Keys.ITEM_ENCHANTMENTS);
 
         if(enchants.isPresent()) {
             for(Enchantment enchant : enchants.get()) {
-                enchantments.put(enchant.type().key(RegistryTypes.ENCHANTMENT_TYPE).formatted(), enchant.level());
+                enchantments.put(enchant.getType().getId(), enchant.getLevel());
             }
         }
 
         final Optional<Color> color = stack.get(Keys.COLOR);
-        color.ifPresent(color1 -> this.color = color1.rgb());
+        color.ifPresent(color1 -> this.color = color1.getRgb());
 
         data.putAll(ParsingUtil.parseMeta(locale));
 
@@ -221,8 +215,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
     @Override
     public Map<String, SerialAttribute> attributes() {
-        final Map<String, SerialAttribute> serialAttributes = new HashMap<>();
-        return serialAttributes;
+        return new HashMap<>();
     }
 
     @Override
@@ -240,6 +233,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
         return amount;
     }
 
+    @Override
     public void setAmount(int amount) {
         this.amount = amount;
 
@@ -271,11 +265,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     @Override
     public boolean unbreakable() {
         return unbreakable;
-    }
-
-    @Override
-    public void markDirty() {
-        this.dirty = true;
     }
 
     @Override
@@ -325,7 +314,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
         if(!listsEquals(lore, stack.lore)) return false;
         if(!listsEquals(flags, stack.flags)) return false;
-        if(!attributes.equals(stack.attributes)) return false;
         if(!enchantments.equals(stack.enchantments)) return false;
         if(color != stack.color) return false;
         if(!setsEquals(data.keySet(), stack.data.keySet())) return false;
@@ -340,39 +328,39 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
     @Override
     public ItemStack locale() {
-        if(stack == null || dirty) {
-            stack = ItemStack.builder().itemType((ItemType) ItemTypes.registry().value(fromString())).quantity(amount).build();
+        if(stack == null) {
+            final Optional<ItemType> type = Sponge.getRegistry().getType(ItemType.class, fromString());
+            if(type.isPresent()) {
+                stack = ItemStack.builder().itemType(type.get()).quantity(amount).build();
 
-            if(display!= null && !display.equalsIgnoreCase("")) {
-                stack.offer(Keys.CUSTOM_NAME, Component.text(display));
-            }
+                if (display != null && !display.equalsIgnoreCase("")) {
+                    stack.offer(Keys.DISPLAY_NAME, Text.of(display));
+                }
 
-            if(customModelData > 0) {
-                stack.offer(Keys.CUSTOM_MODEL_DATA, customModelData);
-            }
+                if (color != -1) {
+                    stack.offer(Keys.COLOR, Color.ofRgb(color));
+                }
 
-            if(color != -1) {
-                stack.offer(Keys.COLOR, Color.ofRgb(color));
-            }
+                final List<Enchantment> enchants = new ArrayList<>();
+                for (final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
+                    final Optional<EnchantmentType> en = Sponge.getRegistry().getType(EnchantmentType.class, entry.getKey());
+                    en.ifPresent(enchantmentType -> enchants.add(Enchantment.of(enchantmentType, entry.getValue())));
+                }
+                stack.offer(Keys.ITEM_ENCHANTMENTS, enchants);
 
-            final List<Enchantment> enchants = new ArrayList<>();
-            for(final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
-                enchants.add(Enchantment.of((EnchantmentType) EnchantmentTypes.registry().value(ResourceKey.resolve(entry.getKey())), entry.getValue()));
-            }
-            stack.offer(Keys.APPLIED_ENCHANTMENTS, enchants);
-
-            for(SerialItemData<ItemStack> serialData : data.values()) {
-                serialData.apply(stack);
+                for (SerialItemData<ItemStack> serialData : data.values()) {
+                    serialData.apply(stack);
+                }
             }
         }
         return stack;
     }
 
-    private ResourceKey fromString() {
+    private String fromString() {
         final String[] split = resource.split("\\:");
 
         final String namespace = (split.length >= 2)? split[0] : "minecraft";
         final String value = (split.length >= 2)? split[1] : split[0];
-        return ResourceKey.of(namespace, value.toLowerCase());
+        return namespace + ":" + value;
     }
 }

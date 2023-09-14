@@ -32,7 +32,7 @@ import java.util.Map;
 
 public abstract class ItemStorageData<T> implements SerialItemData<T> {
 
-  protected Map<Integer, SerialItem<T>> items = new HashMap<>();
+  protected final Map<Integer, SerialItem<T>> items = new HashMap<>();
 
   @Override
   public JSONObject toJSON() {

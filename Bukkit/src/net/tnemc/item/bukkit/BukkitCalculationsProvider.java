@@ -74,17 +74,33 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     compare.setAmount(1);
 
     int amount = 0;
+    final BukkitItemStack comp = BukkitItemStack.locale(compare);
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
       ItemStack item = inventory.getItem(i);
       if(item != null) {
-        final boolean equal = itemsEqual(BukkitItemStack.locale(compare),
-                                         BukkitItemStack.locale(item)
-        );
+        final BukkitItemStack locale = BukkitItemStack.locale(item);
+        final boolean equal = itemsEqual(comp, locale);
 
         if(equal) {
           amount += item.getAmount();
           inventory.setItem(i, null);
+        } else {
+          /*if(locale.data().isPresent() && locale.data().get() instanceof ItemStorageData) {
+
+            final Iterator<Map.Entry<Integer, SerialItem>> it = ((ItemStorageData)locale.data().get()).getItems().entrySet().iterator();
+            while(it.hasNext()) {
+              final Map.Entry<Integer, SerialItem> entry = it.next();
+
+              if(itemsEqual(comp, new BukkitItemStack().of(entry.getValue()))) {
+                amount += entry.getValue().getStack().amount();
+                it.remove();
+                locale.markDirty();
+              }
+
+            }
+            inventory.setItem(i, locale.locale());
+          }*/
         }
       }
     }
@@ -104,23 +120,24 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     final ItemStack compare = stack.locale().clone();
     compare.setAmount(1);
 
+    final BukkitItemStack comp = BukkitItemStack.locale(compare);
     int amount = 0;
 
     for(ItemStack itemStack : inventory.getStorageContents()) {
       if(itemStack != null) {
         final BukkitItemStack locale = BukkitItemStack.locale(itemStack);
-        final boolean equal = itemsEqual(BukkitItemStack.locale(compare), locale);
+        final boolean equal = itemsEqual(comp, locale);
 
         if(locale.data().isPresent()) {
-          if(locale.data().get() instanceof ItemStorageData) {
+          /*if(locale.data().get() instanceof ItemStorageData) {
             for(Object obj : ((ItemStorageData)locale.data().get()).getItems().entrySet()) {
               final Map.Entry<Integer, SerialItem> entry = ((Map.Entry<Integer, SerialItem>)obj);
 
-              if(itemsEqual(BukkitItemStack.locale(compare), new BukkitItemStack().of(entry.getValue()))) {
+              if(itemsEqual(comp, new BukkitItemStack().of(entry.getValue()))) {
                 amount += entry.getValue().getStack().amount();
               }
             }
-          }
+          }*/
         }
 
         if(equal) {
@@ -174,19 +191,52 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
   public int removeItem(BukkitItemStack stack, Inventory inventory) {
     int left = stack.locale().clone().getAmount();
 
+    final ItemStack compare = stack.locale().clone();
+    compare.setAmount(1);
+
+    final BukkitItemStack comp = BukkitItemStack.locale(compare);
+
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
       if(left <= 0) break;
       final ItemStack item = inventory.getItem(i);
+      final BukkitItemStack itemLocale = BukkitItemStack.locale(item);
 
-      if(item == null || !item.isSimilar(stack.locale())) continue;
+      if(item == null) continue;
 
-      if(item.getAmount() <= left) {
-        left -= item.getAmount();
-        inventory.setItem(i, null);
+      if(item.isSimilar(stack.locale())) {
+        if(item.getAmount() <= left) {
+          left -= item.getAmount();
+          inventory.setItem(i, null);
+        } else {
+          item.setAmount(item.getAmount() - left);
+          inventory.setItem(i, item);
+          left = 0;
+        }
       } else {
-        item.setAmount(item.getAmount() - left);
-        inventory.setItem(i, item);
-        left = 0;
+        /*if(itemLocale.data().isPresent() && itemLocale.data().get() instanceof ItemStorageData) {
+
+          final Iterator<Map.Entry<Integer, SerialItem>> it = ((ItemStorageData)itemLocale.data().get()).getItems().entrySet().iterator();
+          while(it.hasNext()) {
+            if(left <= 0) break;
+
+            final Map.Entry<Integer, SerialItem> entry = it.next();
+
+            if(itemsEqual(comp, new BukkitItemStack().of(entry.getValue()))) {
+
+              if(entry.getValue().getStack().amount() <= left) {
+
+                left -= entry.getValue().getStack().amount();
+
+                it.remove();
+              } else {
+                entry.getValue().getStack().setAmount(entry.getValue().getStack().amount() - left);
+                left = 0;
+              }
+              itemLocale.markDirty();
+            }
+          }
+          inventory.setItem(i, itemLocale.locale());
+        }*/
       }
     }
 

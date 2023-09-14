@@ -77,6 +77,8 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   int amount();
 
+  void setAmount(final int amount);
+
   int slot();
 
   String display();
@@ -86,6 +88,8 @@ public interface AbstractItemStack<T> extends Cloneable {
   int modelData();
 
   boolean unbreakable();
+
+  void markDirty();
 
   Optional<SerialItemData<T>> data();
 
