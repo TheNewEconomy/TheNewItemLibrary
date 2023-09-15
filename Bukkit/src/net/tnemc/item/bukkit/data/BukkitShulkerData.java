@@ -43,9 +43,7 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
   public void of(ItemStack stack) {
     final BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
 
-    if(meta != null && meta.getBlockState() instanceof ShulkerBox) {
-
-      final ShulkerBox box = (ShulkerBox)meta.getBlockState();
+    if(meta != null && meta.getBlockState() instanceof ShulkerBox box) {
 
       if(box.getColor() != null) {
         colorRGB = box.getColor().getColor().asRGB();
@@ -53,11 +51,7 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
 
       final Inventory inventory = box.getInventory();
       for(int i = 0; i < inventory.getSize(); i++) {
-        if(inventory.getItem(i) == null || inventory.getItem(i).getType().equals(Material.AIR)) {
-          if(items.containsKey(i)) {
-            items.remove(i);
-          }
-        } else {
+        if(inventory.getItem(i) != null && !inventory.getItem(i).getType().equals(Material.AIR)) {
           items.put(i, new SerialItem<>(BukkitItemStack.locale(inventory.getItem(i))));
         }
       }
@@ -74,13 +68,13 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
 
     final BlockStateMeta meta = (BlockStateMeta)ParsingUtil.buildFor(stack, BlockStateMeta.class);
 
-    if(meta.getBlockState() instanceof ShulkerBox) {
-
-      final ShulkerBox box = (ShulkerBox)meta.getBlockState();
+    if(meta.getBlockState() instanceof ShulkerBox box) {
 
       items.forEach((slot, item)->box.getInventory().setItem(slot, item.getStack().locale()));
+      box.update(true);
+      meta.setBlockState(box);
+      stack.setItemMeta(meta);
     }
-
     return stack;
   }
 }

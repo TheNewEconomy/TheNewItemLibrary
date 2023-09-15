@@ -85,6 +85,19 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
         if(equal) {
           amount += item.getAmount();
           inventory.setItem(i, null);
+        } else {
+          if(locale.data().isPresent() && locale.data().get() instanceof ItemStorageData) {
+            final Iterator<Map.Entry<Integer, SerialItem>> it = ((ItemStorageData)locale.data().get()).getItems().entrySet().iterator();
+            while(it.hasNext()) {
+              final Map.Entry<Integer, SerialItem> entry = it.next();
+              if(itemsEqual(comp, new BukkitItemStack().of(entry.getValue()))) {
+                amount += entry.getValue().getStack().amount();
+                it.remove();
+                locale.markDirty();
+              }
+            }
+            inventory.setItem(i, locale.locale());
+          }
         }
       }
     }
@@ -111,6 +124,17 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
       if(itemStack != null) {
         final BukkitItemStack locale = BukkitItemStack.locale(itemStack);
         final boolean equal = itemsEqual(comp, locale);
+
+        if(locale.data().isPresent()) {
+          if(locale.data().get() instanceof ItemStorageData) {
+            for(Object obj : ((ItemStorageData)locale.data().get()).getItems().entrySet()) {
+              final Map.Entry<Integer, SerialItem> entry = ((Map.Entry<Integer, SerialItem>)obj);
+              if(itemsEqual(comp, new BukkitItemStack().of(entry.getValue()))) {
+                amount += entry.getValue().getStack().amount();
+              }
+            }
+          }
+        }
 
         if(equal) {
           amount += itemStack.getAmount();
@@ -171,6 +195,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
       if(left <= 0) break;
       final ItemStack item = inventory.getItem(i);
+      final BukkitItemStack itemLocale = BukkitItemStack.locale(item);
 
       if(item == null) continue;
 
@@ -182,6 +207,25 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
           item.setAmount(item.getAmount() - left);
           inventory.setItem(i, item);
           left = 0;
+        }
+      } else {
+        if(itemLocale.data().isPresent() && itemLocale.data().get() instanceof ItemStorageData) {
+          final Iterator<Map.Entry<Integer, SerialItem>> it = ((ItemStorageData)itemLocale.data().get()).getItems().entrySet().iterator();
+          while(it.hasNext()) {
+            if(left <= 0) break;
+            final Map.Entry<Integer, SerialItem> entry = it.next();
+            if(itemsEqual(comp, new BukkitItemStack().of(entry.getValue()))) {
+              if(entry.getValue().getStack().amount() <= left) {
+                left -= entry.getValue().getStack().amount();
+                it.remove();
+              } else {
+                entry.getValue().getStack().setAmount(entry.getValue().getStack().amount() - left);
+                left = 0;
+              }
+              itemLocale.markDirty();
+            }
+          }
+          inventory.setItem(i, itemLocale.locale());
         }
       }
     }
