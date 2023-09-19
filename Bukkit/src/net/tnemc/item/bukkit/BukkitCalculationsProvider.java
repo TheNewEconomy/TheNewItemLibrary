@@ -195,9 +195,10 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
       if(left <= 0) break;
       final ItemStack item = inventory.getItem(i);
-      final BukkitItemStack itemLocale = BukkitItemStack.locale(item);
 
       if(item == null) continue;
+
+      final BukkitItemStack itemLocale = BukkitItemStack.locale(item);
 
       if(item.isSimilar(stack.locale())) {
         if(item.getAmount() <= left) {
@@ -210,6 +211,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
         }
       } else {
         if(itemLocale.data().isPresent() && itemLocale.data().get() instanceof ItemStorageData) {
+
           final Iterator<Map.Entry<Integer, SerialItem>> it = ((ItemStorageData)itemLocale.data().get()).getItems().entrySet().iterator();
           while(it.hasNext()) {
             if(left <= 0) break;
