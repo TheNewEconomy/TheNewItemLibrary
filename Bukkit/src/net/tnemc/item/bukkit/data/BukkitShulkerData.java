@@ -43,7 +43,9 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
   public void of(ItemStack stack) {
     final BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
 
-    if(meta != null && meta.getBlockState() instanceof ShulkerBox box) {
+    if(meta != null && meta.getBlockState() instanceof ShulkerBox) {
+
+      final ShulkerBox box = (ShulkerBox)meta.getBlockState();
 
       if(box.getColor() != null) {
         colorRGB = box.getColor().getColor().asRGB();
@@ -68,7 +70,8 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
 
     final BlockStateMeta meta = (BlockStateMeta)ParsingUtil.buildFor(stack, BlockStateMeta.class);
 
-    if(meta.getBlockState() instanceof ShulkerBox box) {
+    if(meta.getBlockState() instanceof ShulkerBox) {
+      ShulkerBox box = (ShulkerBox)meta.getBlockState();
 
       items.forEach((slot, item)->box.getInventory().setItem(slot, item.getStack().locale()));
       box.update(true);
