@@ -429,7 +429,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
         if(flags.size() > 0) {
           for(String str : flags) {
-            meta.addItemFlags(ItemFlag.valueOf(str));
+            try {
+              meta.addItemFlags(ItemFlag.valueOf(str));
+            } catch(Exception ignore) {
+              //do nothing, invalid value
+            }
           }
         }
 
@@ -438,7 +442,13 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
         }
 
         if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0])) {
-          attributes.forEach((name, attribute)->meta.addAttributeModifier(Attribute.valueOf(name), attribute));
+          attributes.forEach((name, attribute)->{
+            try {
+              meta.addAttributeModifier(Attribute.valueOf(name), attribute);
+            } catch(Exception ignore) {
+              //catched invalid Attribute names.
+            }
+          });
         }
       }
 
