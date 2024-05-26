@@ -164,7 +164,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     for(BukkitItemStack item : items) {
       final Map<Integer, ItemStack> left = inventory.addItem(item.locale());
 
-      if(left.size() > 0 && inventory instanceof PlayerInventory) {
+      if(left.size() > 0) {
         for(Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
           final ItemStack i = entry.getValue();
           if(i == null || i.getType() == Material.AIR) {
