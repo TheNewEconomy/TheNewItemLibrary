@@ -1,0 +1,10 @@
+repositories {
+    maven { url = 'https://repo.spongepowered.org/maven' }
+}
+
+dependencies {
+    api project(':TNIL-Core')
+    compileOnly 'org.spongepowered:spongeapi:7.4.0'
+}
+
+description = 'The New Item Library Sponge 7'
