@@ -5,8 +5,9 @@ plugins {
 
 subprojects {
 
-    apply plugin: "java-library"
-    apply plugin: "com.github.johnrengelman.shadow"
+    apply plugin: 'java-library'
+    apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'java'
 
     repositories {
         mavenCentral()
