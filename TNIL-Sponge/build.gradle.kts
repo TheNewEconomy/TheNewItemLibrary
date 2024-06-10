@@ -4,10 +4,11 @@
 
 plugins {
     id("java")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 dependencies {
-    shadow(project(":TNIL-Core"))
+    api(project(":TNIL-Core"))
     compileOnly("org.spongepowered:spongeapi:8.2.0-SNAPSHOT")
 }
 

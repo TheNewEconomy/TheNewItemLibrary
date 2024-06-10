@@ -25,8 +25,10 @@ allprojects {
     }
 
     dependencies {
-        shadow("com.googlecode.json-simple:json-simple:1.1.1")
-        shadow("com.vdurmont:semver4j:3.1.0")
+        implementation("com.googlecode.json-simple:json-simple:1.1.1") {
+            exclude("junit", "junit")
+        }
+        implementation("com.vdurmont:semver4j:3.1.0")
     }
 
     tasks {
@@ -35,8 +37,6 @@ allprojects {
         }
 
         shadowJar {
-            relocate("org.json.simple", "net.tnemc.libs.json")
-            relocate("com.vdurmont", "net.tnemc.libs.semver")
         }
 
         processResources {
