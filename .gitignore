@@ -12,3 +12,8 @@
 /.gradle/workspace-id.txt
 /.gradle/workspace-id.txt.lock
 /build/
+/.gradle/
+/Bukkit/build/
+/Core/build/
+/TNIL-Sponge/build/
+/build/
