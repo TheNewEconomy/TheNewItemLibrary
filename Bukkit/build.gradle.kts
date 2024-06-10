@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":TNIL-Core"))
+    shadow(project(":TNIL-Core"))
     compileOnly("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
 }
 

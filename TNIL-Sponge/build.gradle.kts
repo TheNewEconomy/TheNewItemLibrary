@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":TNIL-Core"))
+    shadow(project(":TNIL-Core"))
     compileOnly("org.spongepowered:spongeapi:8.2.0-SNAPSHOT")
 }
 

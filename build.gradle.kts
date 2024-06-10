@@ -8,27 +8,37 @@ plugins {
     id("java-library")
     id("java")
     id("maven-publish")
-    id("io.github.goooler.shadow") version "8.1.7"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 allprojects {
 
     apply(plugin = "java-library")
-    apply(plugin = "io.github.goooler.shadow")
+    apply(plugin = "com.github.johnrengelman.shadow")
     apply(plugin = "maven-publish")
 
     repositories {
         mavenCentral()
+        maven("https://jitpack.io")
+        maven("https://plugins.gradle.org/m2/")
+        maven("https://repo.codemc.io/repository/maven-public/")
     }
 
-    tasks.withType<ShadowJar> {
-
+    dependencies {
+        shadow("com.googlecode.json-simple:json-simple:1.1.1")
+        shadow("com.vdurmont:semver4j:3.1.0")
     }
 
     tasks {
         compileJava {
             options.encoding = "UTF-8"
         }
+
+        shadowJar {
+            relocate("org.json.simple", "net.tnemc.libs.json")
+            relocate("com.vdurmont", "net.tnemc.libs.semver")
+        }
+
         processResources {
             filesMatching("**/resources/*") {
                 expand(rootProject.project.properties)
