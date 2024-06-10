@@ -5,7 +5,15 @@
 rootProject.name = "TNIL"
 include(":TNIL-Bukkit")
 include(":TNIL-Sponge")
-include(":TNIL-Sponge7")
+include(":TNIL-Fabric")
+//include(":TNIL-Sponge7")
 include(":TNIL-Core")
 project(":TNIL-Bukkit").projectDir = file("Bukkit")
 project(":TNIL-Core").projectDir = file("Core")
+
+pluginManagement {
+    repositories {
+        maven("https://maven.fabricmc.net")
+        maven("https://plugins.gradle.org/m2/")
+    }
+}

@@ -19,6 +19,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven("https://maven.fabricmc.net")
         maven("https://jitpack.io")
         maven("https://plugins.gradle.org/m2/")
         maven("https://repo.codemc.io/repository/maven-public/")
@@ -47,9 +48,4 @@ allprojects {
             outputs.upToDateWhen { false }
         }
     }
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
 }

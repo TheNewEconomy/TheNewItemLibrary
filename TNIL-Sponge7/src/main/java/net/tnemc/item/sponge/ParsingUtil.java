@@ -22,12 +22,10 @@ package net.tnemc.item.sponge;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.data.firework.SerialFireworkEffect;
-import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.item.FireworkEffect;
 import org.spongepowered.api.item.FireworkShape;
 import org.spongepowered.api.item.FireworkShapes;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.registry.RegistryTypes;
 import org.spongepowered.api.util.Color;
 
 import java.util.ArrayList;

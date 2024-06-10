@@ -288,6 +288,11 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     }
 
     @Override
+    public void markDirty() {
+
+    }
+
+    @Override
     public Optional<SerialItemData<ItemStack>> data() {
         return Optional.ofNullable(data.get(0));
     }

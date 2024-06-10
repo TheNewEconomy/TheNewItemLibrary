@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "tnil-fabric",
+	"version": "${version}",
+	"name": "TNIL-Fabric",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/tnil-fabric/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.tnemc.TNILFabric"
+		],
+		"client": [
+			"net.tnemc.TNILFabricClient"
+		]
+	},
+	"mixins": [
+		"tnil-fabric.mixins.json",
+		{
+			"config": "tnil-fabric.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.20.6",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
