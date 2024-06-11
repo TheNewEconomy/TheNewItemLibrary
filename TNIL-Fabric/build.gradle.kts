@@ -6,7 +6,6 @@ plugins {
 }
 
 group = property("maven_group")!!
-version = property("tnil_version")!!
 
 repositories {
     // Add repositories to retrieve artifacts from in here.

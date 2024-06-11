@@ -19,6 +19,8 @@ subprojects {
     apply(plugin = "org.cadixdev.licenser")
     apply(plugin = "maven-publish")
 
+    version = property("tnil_version")!!
+
     repositories {
         mavenCentral()
         maven("https://maven.fabricmc.net")

@@ -3,23 +3,20 @@
 	"id": "tnil-fabric",
 	"version": "${version}",
 	"name": "TNIL-Fabric",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A library used by The New Economy for item-based operations, including calculations, removal, comparisons, and serialization of any items, including potions, shulker boxes, and other \"special\" items.",
 	"authors": [
-		"Me!"
+		"creatorfromhell"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://tnemc.net/",
+		"sources": "https://github.com/TheNewEconomy/TheNewItemLibrary"
 	},
-	"license": "CC0-1.0",
+	"license": "LGPLv3",
 	"icon": "assets/tnil-fabric/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
           "net.tnemc.item.fabric.TNILFabric"
-		],
-		"client": [
-			"net.tnemc.TNILFabricClient"
 		]
 	},
 	"mixins": [

@@ -21,6 +21,14 @@ tasks {
         sourceCompatibility = "17"
         targetCompatibility = "17"
     }
+
+    shadowJar {
+        archiveFileName = "TNIL-Bukkit-${project.version}-shadow.jar"
+
+        dependencies {
+            include(dependency(":TNIL-Core"))
+        }
+    }
 }
 
 description = "The New Item Library Bukkit"

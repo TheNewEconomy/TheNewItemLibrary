@@ -21,6 +21,14 @@ tasks {
         sourceCompatibility = "17"
         targetCompatibility = "17"
     }
+
+    shadowJar {
+        archiveFileName = "TNIL-Sponge-${project.version}-shadow.jar"
+
+        dependencies {
+            include(dependency(":TNIL-Core"))
+        }
+    }
 }
 
 description = "The New Item Library Sponge"
