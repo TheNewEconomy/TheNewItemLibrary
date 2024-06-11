@@ -17,3 +17,5 @@
 /Core/build/
 /TNIL-Sponge/build/
 *.lock
+/TNIL-Fabric/build/
+/TNIL-Fabric/.gradle/

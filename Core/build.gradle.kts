@@ -4,12 +4,14 @@
 
 plugins {
     id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.github.johnrengelman.shadow") version "8.1.1" apply true
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+tasks {
+    compileJava {
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
+    }
 }
 
 description = "The New Item Library Core"

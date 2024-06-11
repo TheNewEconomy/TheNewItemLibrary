@@ -16,7 +16,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.tnemc.TNILFabric"
+          "net.tnemc.item.fabric.TNILFabric"
 		],
 		"client": [
 			"net.tnemc.TNILFabricClient"

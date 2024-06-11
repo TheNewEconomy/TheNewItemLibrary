@@ -1,4 +1,4 @@
-package net.tnemc.mixin;
+package net.tnemc.item.fabric.mixin;
 
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;

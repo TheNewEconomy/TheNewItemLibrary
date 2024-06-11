@@ -1,4 +1,4 @@
-package net.tnemc;
+package net.tnemc.item.fabric;
 
 import net.fabricmc.api.ModInitializer;
 

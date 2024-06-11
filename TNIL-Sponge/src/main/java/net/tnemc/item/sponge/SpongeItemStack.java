@@ -307,8 +307,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
         return data;
     }
 
-
-
     /**
      * Returns true if the provided item is similar to this.
      * An item is similar if the basic information is the same, except for the amount.
