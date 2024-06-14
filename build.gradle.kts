@@ -8,7 +8,6 @@ plugins {
     id("maven-publish")
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("fabric-loom") version "1.6-SNAPSHOT" apply false
-    id("org.cadixdev.licenser") version "0.6.1" apply false
 }
 
 subprojects {
@@ -16,7 +15,6 @@ subprojects {
     apply(plugin = "java-library")
     apply(plugin = "java")
     apply(plugin = "com.github.johnrengelman.shadow")
-    apply(plugin = "org.cadixdev.licenser")
     apply(plugin = "maven-publish")
 
     version = property("tnil_version")!!
