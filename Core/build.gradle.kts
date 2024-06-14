@@ -12,6 +12,15 @@ tasks {
         sourceCompatibility = "17"
         targetCompatibility = "17"
     }
+
+    jar {
+        dependsOn(shadowJar)
+        archiveFileName = "original-TNIL-Core-${project.version}.jar"
+    }
+
+    shadowJar {
+        archiveFileName = "TNIL-Core-${project.version}.jar"
+    }
 }
 
 description = "The New Item Library Core"
