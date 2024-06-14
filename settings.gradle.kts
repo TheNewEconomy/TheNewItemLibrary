@@ -6,7 +6,7 @@ rootProject.name = "TNIL"
 include(":TNIL-Bukkit")
 include(":TNIL-Sponge")
 include(":TNIL-Fabric")
-//include(":TNIL-Sponge7")
+include(":TNIL-Sponge7")
 include(":TNIL-Core")
 project(":TNIL-Bukkit").projectDir = file("Bukkit")
 project(":TNIL-Core").projectDir = file("Core")

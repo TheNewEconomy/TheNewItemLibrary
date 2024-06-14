@@ -22,6 +22,7 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
+import org.json.simple.JSONObject;
 
 import java.util.List;
 import java.util.Map;
@@ -236,7 +237,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public AbstractItemStack<ItemStack> of(org.json.simple.JSONObject json) {
+  public AbstractItemStack<ItemStack> of(JSONObject json) {
     return null;
   }
 }
