@@ -22,8 +22,13 @@ tasks {
         targetCompatibility = "17"
     }
 
+    jar {
+        dependsOn(shadowJar)
+        archiveFileName = "original-TNIL-Sponge-${project.version}.jar"
+    }
+
     shadowJar {
-        archiveFileName = "TNIL-Sponge-${project.version}-shadow.jar"
+        archiveFileName = "TNIL-Sponge-${project.version}.jar"
 
         dependencies {
             include(dependency(":TNIL-Core"))

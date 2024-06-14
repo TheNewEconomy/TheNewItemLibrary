@@ -22,8 +22,13 @@ tasks {
         targetCompatibility = "17"
     }
 
+    jar {
+        dependsOn(shadowJar)
+        archiveFileName = "original-TNIL-Bukkit-${project.version}.jar"
+    }
+
     shadowJar {
-        archiveFileName = "TNIL-Bukkit-${project.version}-shadow.jar"
+        archiveFileName = "TNIL-Bukkit-${project.version}.jar"
 
         dependencies {
             include(dependency(":TNIL-Core"))
