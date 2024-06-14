@@ -44,9 +44,10 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
   public void of(ItemStack stack) {
 
     final PotionMeta meta = (PotionMeta)stack.getItemMeta();
-    if(meta != null) {
+    if(meta != null && meta.getBasePotionData() != null) {
 
       if(meta.hasColor()) colorRGB = meta.getColor().asRGB();
+
       type = meta.getBasePotionData().getType().name();
       extended = meta.getBasePotionData().isExtended();
       upgraded = meta.getBasePotionData().isUpgraded();
