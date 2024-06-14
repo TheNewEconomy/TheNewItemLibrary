@@ -31,11 +31,11 @@ import java.util.LinkedList;
  * SpongeHelper
  *
  * @author creatorfromhell
- * @since 0.1.7.5-Pre-2
+ * @since 0.1.7.5-Pre-3
  */
 public class SpongeHelper implements HelperMethods {
   @Override
-  public Collection<String> materials() {
+  public LinkedList<String> materials() {
     final LinkedList<String> materials = new LinkedList<>();
 
     Sponge.game().registry(RegistryTypes.ITEM_TYPE).stream().forEach(itemType ->materials.add(Sponge.game().registry(RegistryTypes.ITEM_TYPE).valueKey(itemType).asString()));
@@ -44,7 +44,7 @@ public class SpongeHelper implements HelperMethods {
   }
 
   @Override
-  public Collection<String> enchantments() {
+  public LinkedList<String> enchantments() {
     final LinkedList<String> enchantments = new LinkedList<>();
 
     Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).stream().forEach(enchantment ->enchantments.add(Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).valueKey(enchantment).asString()));
@@ -53,7 +53,7 @@ public class SpongeHelper implements HelperMethods {
   }
 
   @Override
-  public Collection<String> flags() {
+  public LinkedList<String> flags() {
     final LinkedList<String> flags = new LinkedList<>();
 
     flags.add("HIDE_ATTRIBUTES");

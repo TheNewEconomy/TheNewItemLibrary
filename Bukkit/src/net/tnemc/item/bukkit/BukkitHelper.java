@@ -32,12 +32,12 @@ import java.util.LinkedList;
  * BukkitHelper
  *
  * @author creatorfromhell
- * @since 0.1.7.5-Pre-2
+ * @since 0.1.7.5-Pre-3
  */
 public class BukkitHelper implements HelperMethods {
 
   @Override
-  public Collection<String> materials() {
+  public LinkedList<String> materials() {
     final LinkedList<String> materialKeys = new LinkedList<>();
 
     for(Material material : Material.values()) {
@@ -47,7 +47,7 @@ public class BukkitHelper implements HelperMethods {
   }
 
   @Override
-  public Collection<String> enchantments() {
+  public LinkedList<String> enchantments() {
     final LinkedList<String> enchantmentKeys = new LinkedList<>();
 
     for(Enchantment enchantment : Enchantment.values()) {
@@ -57,7 +57,7 @@ public class BukkitHelper implements HelperMethods {
   }
 
   @Override
-  public Collection<String> flags() {
+  public LinkedList<String> flags() {
     final LinkedList<String> itemFlagKeys = new LinkedList<>();
 
     for (ItemFlag itemFlag : ItemFlag.values()) {

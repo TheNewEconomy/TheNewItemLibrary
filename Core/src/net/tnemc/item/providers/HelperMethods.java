@@ -21,12 +21,13 @@ package net.tnemc.item.providers;
  */
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * HelperMethods
  *
  * @author creatorfromhell
- * @since 0.1.7.5-Pre-2
+ * @since 0.1.7.5-Pre-3
  */
 public interface HelperMethods {
 
@@ -35,19 +36,19 @@ public interface HelperMethods {
    *
    * @return a collection of materials
    */
-  Collection<String> materials();
+  LinkedList<String> materials();
 
   /**
    * Returns a collection of enchantments.
    *
    * @return a collection of enchantments
    */
-  Collection<String> enchantments();
+  LinkedList<String> enchantments();
 
   /**
    * Returns a collection of flags.
    *
    * @return a collection of flags
    */
-  Collection<String> flags();
+  LinkedList<String> flags();
 }
