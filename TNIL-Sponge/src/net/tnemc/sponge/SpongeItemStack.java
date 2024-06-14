@@ -355,6 +355,31 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
                 stack.offer(Keys.COLOR, Color.ofRgb(color));
             }
 
+            //Flags
+            if(flags.contains("HIDE_ATTRIBUTES")) {
+                stack.offer(Keys.HIDE_ATTRIBUTES, true);
+            }
+
+            if(flags.contains("HIDE_DESTROYS")) {
+                stack.offer(Keys.HIDE_CAN_DESTROY, true);
+            }
+
+            if(flags.contains("HIDE_ENCHANTS")) {
+                stack.offer(Keys.HIDE_ENCHANTMENTS, true);
+            }
+
+            if(flags.contains("HIDE_MISCELLANEOUS")) {
+                stack.offer(Keys.HIDE_MISCELLANEOUS, true);
+            }
+
+            if(flags.contains("HIDE_UNBREAKABLE")) {
+                stack.offer(Keys.HIDE_UNBREAKABLE, true);
+            }
+
+            if(flags.contains("HIDE_PLACES")) {
+                stack.offer(Keys.HIDE_CAN_PLACE, true);
+            }
+
             final List<Enchantment> enchants = new ArrayList<>();
             for(final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
                 enchants.add(Enchantment.of((EnchantmentType) EnchantmentTypes.registry().value(ResourceKey.resolve(entry.getKey())), entry.getValue()));

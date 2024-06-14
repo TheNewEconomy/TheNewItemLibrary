@@ -1,4 +1,4 @@
-package net.tnemc.sponge.version;
+package net.tnemc.item.providers;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -20,18 +20,34 @@ package net.tnemc.sponge.version;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItemData;
-import org.spongepowered.api.item.inventory.ItemStack;
+import java.util.Collection;
 
-import java.util.Optional;
+/**
+ * HelperMethods
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.5-Pre-2
+ */
+public interface HelperMethods {
 
-public interface Version {
+  /**
+   * Returns a collection of materials.
+   *
+   * @return a collection of materials
+   */
+  Collection<String> materials();
 
-    /**
-     * Used to attempt to get the {@link SerialItemData item data} from an item stack.
-     * @param stack The stack to use for this operation.
-     * @param itemType The item type, including the namespace to use.
-     * @return An optional containing the item data if it was possible to get, otherwise an empty optional.
-     */
-    Optional<SerialItemData<ItemStack>> findData(final ItemStack stack, final String itemType);
+  /**
+   * Returns a collection of enchantments.
+   *
+   * @return a collection of enchantments
+   */
+  Collection<String> enchantments();
+
+  /**
+   * Returns a collection of flags.
+   *
+   * @return a collection of flags
+   */
+  Collection<String> flags();
 }
