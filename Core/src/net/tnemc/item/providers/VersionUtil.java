@@ -28,7 +28,7 @@ public class VersionUtil {
    * @return Whether the bukkit in use is for MC >= 1.8
    */
   public static boolean isVersion(final String version, final String compare) {
-    return new Semver(version).isGreaterThanOrEqualTo(compare);
+    return new Semver(version, Semver.SemverType.LOOSE).isGreaterThanOrEqualTo(compare);
   }
 
   /**
