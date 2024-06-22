@@ -31,38 +31,38 @@ import java.util.LinkedList;
  * SpongeHelper
  *
  * @author creatorfromhell
- * @since 0.1.7.5-Pre-3
+ * @since 0.1.7.5-Pre-4
  */
 public class SpongeHelper implements HelperMethods {
+  final LinkedList<String> materialKeys = new LinkedList<>();
+  final LinkedList<String> enchantmentKeys = new LinkedList<>();
+  final LinkedList<String> itemFlagKeys = new LinkedList<>();
+
+  public SpongeHelper() {
+
+    Sponge.game().registry(RegistryTypes.ITEM_TYPE).stream().forEach(itemType ->materialKeys.add(Sponge.game().registry(RegistryTypes.ITEM_TYPE).valueKey(itemType).asString()));
+    Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).stream().forEach(enchantment ->enchantmentKeys.add(Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).valueKey(enchantment).asString()));
+
+    itemFlagKeys.add("HIDE_ATTRIBUTES");
+    itemFlagKeys.add("HIDE_DESTROYS");
+    itemFlagKeys.add("HIDE_ENCHANTS");
+    itemFlagKeys.add("HIDE_MISCELLANEOUS");
+    itemFlagKeys.add("HIDE_UNBREAKABLE");
+    itemFlagKeys.add("HIDE_PLACES");
+  }
+
   @Override
   public LinkedList<String> materials() {
-    final LinkedList<String> materials = new LinkedList<>();
-
-    Sponge.game().registry(RegistryTypes.ITEM_TYPE).stream().forEach(itemType ->materials.add(Sponge.game().registry(RegistryTypes.ITEM_TYPE).valueKey(itemType).asString()));
-
-    return materials;
+    return materialKeys;
   }
 
   @Override
   public LinkedList<String> enchantments() {
-    final LinkedList<String> enchantments = new LinkedList<>();
-
-    Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).stream().forEach(enchantment ->enchantments.add(Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).valueKey(enchantment).asString()));
-
-    return enchantments;
+    return enchantmentKeys;
   }
 
   @Override
   public LinkedList<String> flags() {
-    final LinkedList<String> flags = new LinkedList<>();
-
-    flags.add("HIDE_ATTRIBUTES");
-    flags.add("HIDE_DESTROYS");
-    flags.add("HIDE_ENCHANTS");
-    flags.add("HIDE_MISCELLANEOUS");
-    flags.add("HIDE_UNBREAKABLE");
-    flags.add("HIDE_PLACES");
-
-    return flags;
+    return itemFlagKeys;
   }
 }

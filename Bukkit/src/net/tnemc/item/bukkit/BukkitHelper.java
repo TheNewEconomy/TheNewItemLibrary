@@ -32,37 +32,40 @@ import java.util.LinkedList;
  * BukkitHelper
  *
  * @author creatorfromhell
- * @since 0.1.7.5-Pre-3
+ * @since 0.1.7.5-Pre-4
  */
 public class BukkitHelper implements HelperMethods {
+  final LinkedList<String> materialKeys = new LinkedList<>();
+  final LinkedList<String> enchantmentKeys = new LinkedList<>();
+  final LinkedList<String> itemFlagKeys = new LinkedList<>();
 
-  @Override
-  public LinkedList<String> materials() {
-    final LinkedList<String> materialKeys = new LinkedList<>();
+  public BukkitHelper() {
 
     for(Material material : Material.values()) {
       materialKeys.add(material.getKey().toString());
     }
+
+    for(Enchantment enchantment : Enchantment.values()) {
+      enchantmentKeys.add(enchantment.getKey().toString());
+    }
+
+    for (ItemFlag itemFlag : ItemFlag.values()) {
+      itemFlagKeys.add(itemFlag.name());
+    }
+  }
+
+  @Override
+  public LinkedList<String> materials() {
     return materialKeys;
   }
 
   @Override
   public LinkedList<String> enchantments() {
-    final LinkedList<String> enchantmentKeys = new LinkedList<>();
-
-    for(Enchantment enchantment : Enchantment.values()) {
-      enchantmentKeys.add(enchantment.getKey().toString());
-    }
     return enchantmentKeys;
   }
 
   @Override
   public LinkedList<String> flags() {
-    final LinkedList<String> itemFlagKeys = new LinkedList<>();
-
-    for (ItemFlag itemFlag : ItemFlag.values()) {
-      itemFlagKeys.add(itemFlag.name());
-    }
     return itemFlagKeys;
   }
 }
