@@ -21,6 +21,7 @@ package net.tnemc.item;
  */
 
 import net.tnemc.item.attribute.SerialAttribute;
+import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
 
 import java.util.*;
@@ -58,6 +59,8 @@ public interface AbstractItemStack<T> extends Cloneable {
   AbstractItemStack<T> display(String display);
 
   AbstractItemStack<T> damage(short damage);
+
+  AbstractItemStack<T> profile(final SkullProfile profile);
 
   AbstractItemStack<T> modelData(int modelData);
 

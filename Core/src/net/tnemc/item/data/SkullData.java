@@ -22,11 +22,14 @@ package net.tnemc.item.data;
 
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
+
+import java.util.UUID;
 
 public abstract class SkullData<T> implements SerialItemData<T> {
 
-  protected String owner;
+  protected SkullProfile profile;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -37,7 +40,11 @@ public abstract class SkullData<T> implements SerialItemData<T> {
   public JSONObject toJSON() {
     JSONObject json = new JSONObject();
     json.put("name", "skull");
-    if(owner != null) json.put("owner", owner);
+    if(profile != null) {
+      if(profile.getName() != null) json.put("name", profile.getName());
+      if(profile.getUuid() != null) json.put("uuid", profile.getUuid());
+      if(profile.getTexture() != null) json.put("texture", profile.getTexture());
+    }
     return json;
   }
 
@@ -48,7 +55,16 @@ public abstract class SkullData<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-    if(json.has("owner")) owner = json.getString("owner");
+    profile = new SkullProfile();
+    if(json.has("name")) profile.setName(json.getString("name"));
+
+    try {
+
+      if(json.has("uuid")) profile.setUuid(UUID.fromString(json.getString("uuid")));
+
+    } catch(Exception ignore) {}
+
+    if(json.has("texture")) profile.setTexture(json.getString("texture"));
   }
 
   /**
@@ -62,8 +78,13 @@ public abstract class SkullData<T> implements SerialItemData<T> {
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
     if(data instanceof SkullData) {
-      SkullData<?> compare = (SkullData<?>)data;
-      return owner.equalsIgnoreCase(compare.owner);
+
+      final SkullData<?> compare = (SkullData<?>)data;
+
+      if(profile == null && compare.profile == null) return true;
+      if(profile == null || compare.profile == null) return false;
+
+      return profile.equals(compare.profile);
     }
     return false;
   }
@@ -79,5 +100,9 @@ public abstract class SkullData<T> implements SerialItemData<T> {
   @Override
   public boolean similar(SerialItemData<? extends T> data) {
     return equals(data);
+  }
+
+  public SkullProfile getProfile() {
+    return profile;
   }
 }

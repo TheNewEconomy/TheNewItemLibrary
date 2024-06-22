@@ -23,6 +23,7 @@ package net.tnemc.item.bukkit.data;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.ParsingUtil;
 import net.tnemc.item.data.SkullData;
+import net.tnemc.item.providers.SkullProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -41,8 +42,17 @@ public class BukkitSkullData extends SkullData<ItemStack> {
   public void of(ItemStack stack) {
     final SkullMeta meta = (SkullMeta)stack.getItemMeta();
 
-    if(meta != null && meta.getOwningPlayer() != null) {
-      owner = meta.getOwningPlayer().getUniqueId().toString();
+    profile = new SkullProfile();
+
+    try {
+
+      if(meta != null && meta.getOwningPlayer() != null) {
+        profile.setUuid(meta.getOwningPlayer().getUniqueId());
+      }
+
+    } catch(Exception ignore) {
+
+      profile.setName(meta.getOwner());
     }
   }
 
@@ -56,7 +66,19 @@ public class BukkitSkullData extends SkullData<ItemStack> {
 
     final SkullMeta meta = (SkullMeta)ParsingUtil.buildFor(stack, SkullMeta.class);
 
-    meta.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString(owner)));
+    if(profile != null) {
+
+      try {
+
+        if(profile.getUuid() != null) {
+          meta.setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
+        }
+
+      } catch(Exception ignore) {
+
+        meta.setOwner(profile.getName());
+      }
+    }
     stack.setItemMeta(meta);
 
     return stack;

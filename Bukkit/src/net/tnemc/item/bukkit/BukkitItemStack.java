@@ -24,6 +24,9 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
+import net.tnemc.item.bukkit.data.BukkitSkullData;
+import net.tnemc.item.data.SkullData;
+import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -34,6 +37,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -50,6 +54,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   private final List<String> lore = new ArrayList<>();
 
   private int slot = 0;
+  private SkullProfile profile = null;
   private Material material;
   private Integer amount = 1;
   private String display = "";
@@ -87,6 +92,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     customModelData = stack.customModelData;
     unbreakable = stack.unbreakable;
     data = stack.data;
+
+    if(stack.profile != null) {
+      this.profile = stack.profile;
+    }
+
     this.stack = stack.stack;
 
     return this;
@@ -125,6 +135,15 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
         stack.getItemMeta().getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().toString(), level)));
       }
+
+      if(stack.hasItemMeta() && stack.getItemMeta() instanceof SkullMeta) {
+        final BukkitSkullData skullData = new BukkitSkullData();
+        skullData.of(locale);
+
+        this.profile = skullData.getProfile();
+
+      }
+
     }
 
     //Parse the meta data.
@@ -251,6 +270,12 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack damage(short damage) {
     this.damage = damage;
+    return this;
+  }
+
+  @Override
+  public AbstractItemStack<ItemStack> profile(SkullProfile profile) {
+    this.profile = profile;
     return this;
   }
 
@@ -398,6 +423,14 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
       return data.equals(stack.data);
     }
 
+    if(profile != null) {
+      return stack.profile != null && profile.equals(stack.profile);
+    }
+
+    if(stack.profile != null) {
+      return false;
+    }
+
     return stack.data == null;
   }
 
@@ -449,6 +482,15 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
               //catched invalid Attribute names.
             }
           });
+        }
+      }
+
+      if(profile != null && stack.getItemMeta() != null && stack.getItemMeta() instanceof SkullMeta) {
+
+        if(profile.getUuid() != null) {
+          ((SkullMeta)stack.getItemMeta()).setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
+        } else if(profile.getName() != null) {
+          ((SkullMeta)stack.getItemMeta()).setOwner(profile.getName());
         }
       }
 

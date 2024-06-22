@@ -5,11 +5,14 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
+import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.spongepowered.api.ResourceKey;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.entity.attribute.AttributeModifier;
+import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.enchantment.Enchantment;
@@ -31,6 +34,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     private final List<String> lore = new ArrayList<>();
     private String resource = "";
 
+    private SkullProfile profile = null;
     private int slot = 0;
     private Integer amount = 1;
     private String display = "";
@@ -69,6 +73,10 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
         customModelData = stack.customModelData;
         unbreakable = stack.unbreakable;
 
+        if(stack.profile != null) {
+            this.profile = stack.profile;
+        }
+
         this.stack = stack.stack;
 
         return this;
@@ -94,6 +102,11 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
         final Optional<Color> color = stack.get(Keys.COLOR);
         color.ifPresent(color1 -> this.color = color1.rgb());
+
+        if(profile != null && profile.getUuid() != null) {
+            final Optional<ServerPlayer> player = Sponge.server().player(profile.getUuid());
+            player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
+        }
 
         data.putAll(ParsingUtil.parseMeta(locale));
 
@@ -188,6 +201,12 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     @Override
     public SpongeItemStack damage(short damage) {
         this.damage = damage;
+        return this;
+    }
+
+    @Override
+    public AbstractItemStack<ItemStack> profile(SkullProfile profile) {
+        this.profile = profile;
         return this;
     }
 
@@ -335,6 +354,14 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
             if(compare == null || !entry.getValue().similar(compare)) return false;
         }
 
+        if(profile != null) {
+            return stack.profile != null && profile.equals(stack.profile);
+        }
+
+        if(stack.profile != null) {
+            return false;
+        }
+
         return true;
     }
 
@@ -388,6 +415,11 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
             for(SerialItemData<ItemStack> serialData : data.values()) {
                 serialData.apply(stack);
+            }
+
+            if(profile != null && profile.getUuid() != null) {
+                final Optional<ServerPlayer> player = Sponge.server().player(profile.getUuid());
+                player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
             }
         }
         return stack;

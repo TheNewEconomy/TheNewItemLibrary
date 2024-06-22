@@ -27,7 +27,7 @@ import java.util.LinkedList;
  * HelperMethods
  *
  * @author creatorfromhell
- * @since 0.1.7.5-Pre-4
+ * @since 0.1.7.5-Pre-5
  */
 public interface HelperMethods {
 

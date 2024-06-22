@@ -22,6 +22,7 @@ package net.tnemc.sponge.data;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.data.SkullData;
+import net.tnemc.item.providers.SkullProfile;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
@@ -44,9 +45,10 @@ public class SpongeSkullData extends SkullData<ItemStack> {
   @Override
   public void of(ItemStack stack) {
 
-    final Optional<GameProfile> profile = stack.get(Keys.GAME_PROFILE);
-    profile.ifPresent(gameProfile ->{
-      owner = gameProfile.uuid().toString();
+    final Optional<GameProfile> gameProfileOpt = stack.get(Keys.GAME_PROFILE);
+    this.profile = new SkullProfile();
+    gameProfileOpt.ifPresent(gameProfile ->{
+      profile.setUuid(gameProfile.uuid());
       applies = true;
     });
   }
@@ -59,8 +61,8 @@ public class SpongeSkullData extends SkullData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    if(!owner.equalsIgnoreCase("")) {
-      final Optional<ServerPlayer> player = Sponge.server().player(UUID.fromString(owner));
+    if(profile != null && profile.getUuid() != null) {
+      final Optional<ServerPlayer> player = Sponge.server().player(profile.getUuid());
       player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
     }
 
