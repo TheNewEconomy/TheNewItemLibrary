@@ -485,12 +485,15 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
         }
       }
 
-      if(profile != null && stack.getItemMeta() != null && stack.getItemMeta() instanceof SkullMeta) {
+      if(profile != null && meta != null && meta instanceof SkullMeta) {
 
         if(profile.getUuid() != null) {
-          ((SkullMeta)stack.getItemMeta()).setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
-        } else if(profile.getName() != null) {
-          ((SkullMeta)stack.getItemMeta()).setOwner(profile.getName());
+
+          ((SkullMeta)meta).setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
+
+        } else if(profile.getUuid() == null && profile.getName() != null) {
+
+          ((SkullMeta)meta).setOwner(profile.getName());
         }
       }
 
