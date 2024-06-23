@@ -25,7 +25,6 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 
-import java.util.Collection;
 import java.util.LinkedList;
 
 /**
@@ -41,7 +40,10 @@ public class BukkitHelper implements HelperMethods {
 
   public BukkitHelper() {
 
-    for(Material material : Material.values()) {
+    for(final Material material : Material.values()) {
+
+      if(!material.isItem()) continue;
+
       materialKeys.add(material.getKey().toString());
     }
 
