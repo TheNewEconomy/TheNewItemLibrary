@@ -337,12 +337,12 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     public boolean similarStack(SpongeItemStack stack) {
 
         if(!resource.equals(stack.resource)) return false;
-        if(!display.equals(stack.display)) return false;
+        if(!Component.EQUALS.test(display, stack.display)) return false;
         if(!Objects.equals(damage, stack.damage)) return false;
         if(!Objects.equals(customModelData, stack.customModelData)) return false;
         if(unbreakable != stack.unbreakable) return false;
 
-        if(!listsEquals(lore, stack.lore)) return false;
+        if(!componentsEqual(lore, stack.lore)) return false;
         if(!listsEquals(flags, stack.flags)) return false;
         if(!attributes.equals(stack.attributes)) return false;
         if(!enchantments.equals(stack.enchantments)) return false;

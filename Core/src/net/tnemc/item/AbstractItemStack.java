@@ -21,6 +21,7 @@ package net.tnemc.item;
  */
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
@@ -121,6 +122,19 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @return An instance of the implementation's locale version of AbstractItemStack.
    */
   T locale();
+
+  default boolean componentsEqual(final List<Component> list1, final List<Component> list2) {
+    final LinkedList<String> list1Copy = new LinkedList<>();
+    for(Component component : list1) {
+      list1Copy.add(JSONComponentSerializer.json().serialize(component));
+    }
+
+    final LinkedList<String> list2Copy = new LinkedList<>();
+    for(Component component : list2) {
+      list2Copy.add(JSONComponentSerializer.json().serialize(component));
+    }
+    return listsEquals(list1Copy, list2Copy);
+  }
 
   default <V> boolean listsEquals(final List<V> list1, final List<V> list2) {
     return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
