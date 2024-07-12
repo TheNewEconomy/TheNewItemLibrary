@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit;
+package net.tnemc.paper;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -33,22 +33,22 @@ import java.util.LinkedList;
  * @author creatorfromhell
  * @since 0.1.7.5-Pre-5
  */
-public class BukkitHelper implements HelperMethods {
+public class PaperHelper implements HelperMethods {
   final LinkedList<String> materialKeys = new LinkedList<>();
   final LinkedList<String> enchantmentKeys = new LinkedList<>();
   final LinkedList<String> itemFlagKeys = new LinkedList<>();
 
-  public BukkitHelper() {
+  public PaperHelper() {
 
     for(final Material material : Material.values()) {
 
       if(!material.isItem()) continue;
 
-      materialKeys.add(material.getKey().toString());
+      materialKeys.add(material.translationKey());
     }
 
     for(Enchantment enchantment : Enchantment.values()) {
-      enchantmentKeys.add(enchantment.getKey().toString());
+      enchantmentKeys.add(enchantment.translationKey());
     }
 
     for(ItemFlag itemFlag : ItemFlag.values()) {
