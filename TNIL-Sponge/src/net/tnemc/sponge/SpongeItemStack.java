@@ -31,13 +31,13 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     private final List<String> flags = new ArrayList<>();
     private final Map<String, AttributeModifier> attributes = new HashMap<>();
     private final Map<String, Integer> enchantments = new HashMap<>();
-    private final List<String> lore = new ArrayList<>();
+    private final List<Component> lore = new ArrayList<>();
     private String resource = "";
 
     private SkullProfile profile = null;
     private int slot = 0;
     private Integer amount = 1;
-    private String display = "";
+    private Component display = Component.empty();
     private short damage = 0;
     private int customModelData = -1;
     private boolean unbreakable = false;
@@ -90,7 +90,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
         this.amount = stack.quantity();
 
         final Optional<Component> display = stack.get(Keys.CUSTOM_NAME);
-        display.ifPresent(component -> this.display = component.toString());
+        display.ifPresent(component -> this.display = component);
 
         final Optional<List<Enchantment>> enchants = stack.get(Keys.APPLIED_ENCHANTMENTS);
 
@@ -136,7 +136,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     }
 
     @Override
-    public SpongeItemStack lore(List<String> lore) {
+    public SpongeItemStack lore(List<Component> lore) {
         this.lore.clear();
         this.lore.addAll(lore);
         return this;
@@ -193,7 +193,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     }
 
     @Override
-    public SpongeItemStack display(String display) {
+    public SpongeItemStack display(Component display) {
         this.display = display;
         return this;
     }
@@ -234,7 +234,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     }
 
     @Override
-    public List<String> lore() {
+    public List<Component> lore() {
         return lore;
     }
 
@@ -273,7 +273,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     }
 
     @Override
-    public String display() {
+    public Component display() {
         return display;
     }
 
@@ -337,12 +337,12 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     public boolean similarStack(SpongeItemStack stack) {
 
         if(!resource.equals(stack.resource)) return false;
-        if(!display.equals(stack.display)) return false;
+        if(!Component.EQUALS.test(display, stack.display)) return false;
         if(!Objects.equals(damage, stack.damage)) return false;
         if(!Objects.equals(customModelData, stack.customModelData)) return false;
         if(unbreakable != stack.unbreakable) return false;
 
-        if(!listsEquals(lore, stack.lore)) return false;
+        if(!componentsEqual(lore, stack.lore)) return false;
         if(!listsEquals(flags, stack.flags)) return false;
         if(!attributes.equals(stack.attributes)) return false;
         if(!enchantments.equals(stack.enchantments)) return false;
@@ -370,8 +370,8 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
         if(stack == null || dirty) {
             stack = ItemStack.builder().itemType((ItemType) ItemTypes.registry().value(fromString())).quantity(amount).build();
 
-            if(display!= null && !display.equalsIgnoreCase("")) {
-                stack.offer(Keys.CUSTOM_NAME, Component.text(display));
+            if(display != null && !Component.EQUALS.test(display, Component.empty())) {
+                stack.offer(Keys.CUSTOM_NAME, display);
             }
 
             if(customModelData > 0) {

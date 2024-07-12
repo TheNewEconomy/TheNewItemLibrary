@@ -20,10 +20,13 @@ package net.tnemc.item;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.LinkedList;
 import java.util.Optional;
 
 public class SerialItem<T> {
@@ -43,18 +46,26 @@ public class SerialItem<T> {
     json.put("material", stack.material());
     json.put("amount", stack.amount());
     json.put("unbreakable", stack.unbreakable());
-    if(stack.display() != null && !stack.display().equalsIgnoreCase("")) json.put("display", stack.display());
+    if(stack.display() != null && !Component.EQUALS.test(stack.display(), Component.empty())) json.put("display", JSONComponentSerializer.json().serialize(stack.display()));
     json.put("damage", stack.damage());
     if(stack.modelData() != -1) json.put("modelData", stack.modelData());
-    if(stack.lore() != null && stack.lore().size() > 0) json.put("lore", String.join(",", stack.lore()));
+    if(stack.lore() != null && !stack.lore().isEmpty()) {
 
-    if(stack.flags() != null && stack.flags().size() > 0) json.put("flags", String.join(",", stack.flags()));
+      final LinkedList<String> str = new LinkedList<>();
+      for(Component comp : stack.lore()) {
+        str.add(JSONComponentSerializer.json().serialize(comp));
+      }
+
+      json.put("lore", String.join(",", str));
+    }
+
+    if(stack.flags() != null && !stack.flags().isEmpty()) json.put("flags", String.join(",", stack.flags()));
 
     JSONObject object = new JSONObject();
     stack.enchantments().forEach(object::put);
     json.put("enchantments", object);
 
-    if(stack.attributes().size() > 0) {
+    if(!stack.attributes().isEmpty()) {
       JSONObject attr = new JSONObject();
 
       stack.attributes().forEach((name, modifier)->{

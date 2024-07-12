@@ -20,6 +20,8 @@ package net.tnemc.item;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
@@ -38,7 +40,7 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   AbstractItemStack<T> flags(List<String> flags);
 
-  AbstractItemStack<T> lore(List<String> lore);
+  AbstractItemStack<T> lore(List<Component> lore);
 
   AbstractItemStack<T> attribute(String name, SerialAttribute attribute);
 
@@ -56,7 +58,7 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   AbstractItemStack<T> slot(int slot);
 
-  AbstractItemStack<T> display(String display);
+  AbstractItemStack<T> display(Component display);
 
   AbstractItemStack<T> damage(short damage);
 
@@ -70,7 +72,7 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   List<String> flags();
 
-  List<String> lore();
+  List<Component> lore();
 
   Map<String, SerialAttribute> attributes();
 
@@ -84,7 +86,7 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   int slot();
 
-  String display();
+  Component display();
 
   short damage();
 
@@ -120,6 +122,19 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @return An instance of the implementation's locale version of AbstractItemStack.
    */
   T locale();
+
+  default boolean componentsEqual(final List<Component> list1, final List<Component> list2) {
+    final LinkedList<String> list1Copy = new LinkedList<>();
+    for(Component component : list1) {
+      list1Copy.add(JSONComponentSerializer.json().serialize(component));
+    }
+
+    final LinkedList<String> list2Copy = new LinkedList<>();
+    for(Component component : list2) {
+      list2Copy.add(JSONComponentSerializer.json().serialize(component));
+    }
+    return listsEquals(list1Copy, list2Copy);
+  }
 
   default <V> boolean listsEquals(final List<V> list1, final List<V> list2) {
     return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);

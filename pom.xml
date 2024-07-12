@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.tnemc</groupId>
     <artifactId>TNIL</artifactId>
-    <version>0.1.7.5-Pre-7</version>
+    <version>0.1.7.6-Pre-1</version>
     <packaging>pom</packaging>
     <name>The New Item Library</name>
 
@@ -10,6 +10,7 @@
         <module>Core</module>
         <module>Bukkit</module>
         <module>TNIL-Sponge</module>
+        <module>Paper</module>
     </modules>
 
     <properties>
@@ -92,6 +93,11 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>4.17.0</version>
+        </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>

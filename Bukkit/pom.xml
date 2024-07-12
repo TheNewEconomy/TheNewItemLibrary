@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.tnemc</groupId>
         <artifactId>TNIL</artifactId>
-        <version>0.1.7.5-Pre-7</version>
+        <version>0.1.7.6-Pre-1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -37,9 +37,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M7</version>
-                <configuration>
-                    <argLine>--enable-preview</argLine>
-                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.surefire</groupId>
@@ -95,9 +92,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-legacy</artifactId>
+            <version>4.17.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-Core</artifactId>
-            <version>0.1.7.5-Pre-7</version>
+            <version>0.1.7.6-Pre-1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -1,8 +1,7 @@
-package net.tnemc.item.bukkit;
+package net.tnemc.paper;
 
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -21,13 +20,12 @@ package net.tnemc.item.bukkit;
  */
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
+import net.tnemc.item.bukkit.ParsingUtil;
 import net.tnemc.item.bukkit.data.BukkitSkullData;
-import net.tnemc.item.data.SkullData;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -43,12 +41,20 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
- * Represents an ItemStack object related to the Bukkit API.
+ * PaperItemStack
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.5
  */
-public class BukkitItemStack implements AbstractItemStack<ItemStack> {
+public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   private final List<String> flags = new ArrayList<>();
   private final Map<String, AttributeModifier> attributes = new HashMap<>();
@@ -60,7 +66,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   private Material material;
   private Integer amount = 1;
   private Component display = Component.empty();
-  private short damage = 0;
   private int customModelData = -1;
   private boolean unbreakable = false;
   private SerialItemData<ItemStack> data;
@@ -70,16 +75,16 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   private ItemStack stack;
 
   @Override
-  public BukkitItemStack of(String material, int amount) {
+  public PaperItemStack of(String material, int amount) {
     this.material = Material.matchMaterial(material);
     this.amount = amount;
     return this;
   }
 
   @Override
-  public BukkitItemStack of(SerialItem<ItemStack> serialItem) {
+  public PaperItemStack of(SerialItem<ItemStack> serialItem) {
 
-    final BukkitItemStack stack = (BukkitItemStack)serialItem.getStack();
+    final PaperItemStack stack = (PaperItemStack)serialItem.getStack();
 
     flags.addAll(stack.flags);
     attributes.putAll(stack.attributes);
@@ -90,7 +95,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     material = stack.material;
     amount = stack.amount;
     display = stack.display;
-    damage = stack.damage;
     customModelData = stack.customModelData;
     unbreakable = stack.unbreakable;
     data = stack.data;
@@ -105,22 +109,18 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack of(ItemStack locale) {
+  public PaperItemStack of(ItemStack locale) {
     this.stack = locale;
 
     material = stack.getType();
     amount = stack.getAmount();
-    damage = stack.getDurability();
 
-    if(stack.hasItemMeta() && stack.getItemMeta()!= null) {
-      display = LegacyComponentSerializer.legacySection().deserialize(stack.getItemMeta().getDisplayName());
+    if(stack.hasItemMeta() && stack.getItemMeta() != null) {
+      display = stack.displayName();
 
-      if(stack.getItemMeta().getLore() != null) {
+      if(stack.getItemMeta().lore() != null) {
         lore.clear();
-
-        for(String str : stack.getItemMeta().getLore()) {
-          lore.add(LegacyComponentSerializer.legacySection().deserialize(str));
-        }
+        lore.addAll(stack.getItemMeta().lore());
       }
 
       // Check 1.13 version for compatibility with customModelData
@@ -153,13 +153,13 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
     //Parse the meta data.
     ParsingUtil.parseMeta(locale)
-               .ifPresent(itemStackSerialItemData->this.data = itemStackSerialItemData);
+            .ifPresent(itemStackSerialItemData->this.data = itemStackSerialItemData);
 
     return this;
   }
 
   @Override
-  public BukkitItemStack of(JSONObject json) {
+  public PaperItemStack of(JSONObject json) {
 
     try {
       final Optional<SerialItem<ItemStack>> serialStack = SerialItem.unserialize(json);
@@ -174,26 +174,26 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack flags(List<String> flags) {
+  public PaperItemStack flags(List<String> flags) {
     this.flags.clear();
     this.flags.addAll(flags);
     return this;
   }
 
   @Override
-  public BukkitItemStack lore(List<Component> lore) {
+  public PaperItemStack lore(List<Component> lore) {
     this.lore.clear();
     this.lore.addAll(lore);
     return this;
   }
 
   @Override
-  public BukkitItemStack attribute(String name, SerialAttribute attribute) {
+  public PaperItemStack attribute(String name, SerialAttribute attribute) {
     final AttributeModifier attr = new AttributeModifier(attribute.getIdentifier(),
-                                                         attribute.getName(),
-                                                         attribute.getAmount(),
-                                                         ParsingUtil.attributeOperation(attribute.getOperation()),
-                                                         ParsingUtil.attributeSlot(attribute.getSlot()));
+            attribute.getName(),
+            attribute.getAmount(),
+            ParsingUtil.attributeOperation(attribute.getOperation()),
+            ParsingUtil.attributeSlot(attribute.getSlot()));
 
 
     attributes.put(name, attr);
@@ -201,16 +201,16 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack attribute(Map<String, SerialAttribute> attributes) {
+  public PaperItemStack attribute(Map<String, SerialAttribute> attributes) {
 
     for(Map.Entry<String, SerialAttribute> entry : attributes.entrySet()) {
 
       final SerialAttribute attribute = entry.getValue();
       final AttributeModifier attr = new AttributeModifier(attribute.getIdentifier(),
-                                                           attribute.getName(),
-                                                           attribute.getAmount(),
-                                                           ParsingUtil.attributeOperation(attribute.getOperation()),
-                                                           ParsingUtil.attributeSlot(attribute.getSlot()));
+              attribute.getName(),
+              attribute.getAmount(),
+              ParsingUtil.attributeOperation(attribute.getOperation()),
+              ParsingUtil.attributeSlot(attribute.getSlot()));
 
 
       this.attributes.put(entry.getKey(), attr);
@@ -219,20 +219,20 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack enchant(String enchantment, int level) {
+  public PaperItemStack enchant(String enchantment, int level) {
     enchantments.put(enchantment, level);
     return this;
   }
 
   @Override
-  public BukkitItemStack enchant(Map<String, Integer> enchantments) {
+  public PaperItemStack enchant(Map<String, Integer> enchantments) {
     this.enchantments.clear();
     this.enchantments.putAll(enchantments);
     return this;
   }
 
   @Override
-  public BukkitItemStack enchant(List<String> enchantments) {
+  public PaperItemStack enchant(List<String> enchantments) {
     this.enchantments.clear();
     for(String str : enchantments) {
       this.enchantments.put(str, 1);
@@ -241,13 +241,13 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack material(String material) {
+  public PaperItemStack material(String material) {
     this.material = Material.matchMaterial(material);
     return this;
   }
 
   @Override
-  public BukkitItemStack amount(int amount) {
+  public PaperItemStack amount(int amount) {
     this.amount = amount;
     return this;
   }
@@ -261,20 +261,25 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack slot(int slot) {
+  public PaperItemStack slot(int slot) {
     this.slot = slot;
     return this;
   }
 
   @Override
-  public BukkitItemStack display(Component display) {
+  public PaperItemStack display(Component display) {
     this.display = display;
     return this;
   }
 
+  /**
+   * @deprecated Damage values not supported in modern mc, use the bukkit core for legacy.
+   * @param damage ignored
+   * @return this
+   */
   @Override
-  public BukkitItemStack damage(short damage) {
-    this.damage = damage;
+  @Deprecated
+  public PaperItemStack damage(short damage) {
     return this;
   }
 
@@ -285,19 +290,19 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack modelData(int modelData) {
+  public PaperItemStack modelData(int modelData) {
     this.customModelData = modelData;
     return this;
   }
 
   @Override
-  public BukkitItemStack unbreakable(boolean unbreakable) {
+  public PaperItemStack unbreakable(boolean unbreakable) {
     this.unbreakable = unbreakable;
     return this;
   }
 
   @Override
-  public BukkitItemStack applyData(SerialItemData<ItemStack> data) {
+  public PaperItemStack applyData(SerialItemData<ItemStack> data) {
     this.data = data;
     return this;
   }
@@ -321,9 +326,9 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
       final AttributeModifier attribute = entry.getValue();
 
       final SerialAttribute attr = new SerialAttribute(attribute.getUniqueId(),
-                                                       attribute.getName(),
-                                                       attribute.getAmount(),
-                                                       ParsingUtil.attributeOperation(attribute.getOperation()));
+              attribute.getName(),
+              attribute.getAmount(),
+              ParsingUtil.attributeOperation(attribute.getOperation()));
       if(attribute.getSlot() != null) {
         attr.setSlot(ParsingUtil.attributeSlot(attribute.getSlot()));
       }
@@ -357,9 +362,14 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return display;
   }
 
+  /**
+   * @deprecated Modern minecraft doesn't use damage values, use bukkit for legacy
+   * @return 0
+   */
   @Override
+  @Deprecated
   public short damage() {
-    return damage;
+    return 0;
   }
 
   @Override
@@ -405,21 +415,19 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public boolean similar(AbstractItemStack<? extends ItemStack> compare) {
     if(stack == null) return false;
     //return stack.isSimilar(compare.locale());
-    return similarStack((BukkitItemStack)compare);
+    return similarStack((PaperItemStack)compare);
   }
 
-  public static BukkitItemStack locale(ItemStack stack) {
-    return new BukkitItemStack().of(stack);
+  public static PaperItemStack locale(ItemStack stack) {
+    return new PaperItemStack().of(stack);
   }
 
-  public boolean similarStack(BukkitItemStack stack) {
+  public boolean similarStack(PaperItemStack stack) {
 
     if(!material.equals(stack.material)) return false;
     if(!Component.EQUALS.test(display, stack.display)) return false;
-    if(!Objects.equals(damage, stack.damage)) return false;
     if(!Objects.equals(customModelData, stack.customModelData)) return false;
     if(unbreakable != stack.unbreakable) return false;
-
     if(!componentsEqual(lore, stack.lore)) return false;
     if(!listsEquals(flags, stack.flags)) return false;
     if(!attributes.equals(stack.attributes)) return false;
@@ -445,25 +453,16 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public ItemStack locale() {
     if(stack == null || dirty) {
-
-      try {
-        stack = new ItemStack(material, amount, damage);
-      } catch(Exception ignore) {
-        stack = new ItemStack(material, amount);
-      }
+      stack = new ItemStack(material, amount);
 
       ItemMeta meta = Bukkit.getItemFactory().getItemMeta(material);
       if(meta != null) {
-        if(display != null) {
-          meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(display));
+
+        if(display != null && !Component.EQUALS.test(display, Component.empty())) {
+          meta.displayName(display);
         }
 
-        final LinkedList<String> newLore = new LinkedList<>();
-        for(Component comp : lore) {
-          newLore.add(LegacyComponentSerializer.legacySection().serialize(comp));
-        }
-        meta.setLore(newLore);
-
+        meta.lore(lore);
         enchantments.forEach((name, level)->{
 
           final NamespacedKey space = NamespacedKey.fromString(name);
