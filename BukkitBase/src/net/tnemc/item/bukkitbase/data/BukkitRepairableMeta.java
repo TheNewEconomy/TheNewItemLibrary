@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -21,13 +21,12 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.MapData;
-import org.bukkit.Color;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.RepairableData;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.inventory.meta.Repairable;
 
-public class BukkitMapData extends MapData<ItemStack> {
+public class BukkitRepairableMeta extends RepairableData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -37,14 +36,10 @@ public class BukkitMapData extends MapData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final MapMeta meta = (MapMeta)stack.getItemMeta();
+    final Repairable meta = (Repairable)stack.getItemMeta();
 
-    if(meta != null) {
-      if(meta.getColor() != null) {
-        this.colorRGB = meta.getColor().asRGB();
-      }
-      this.scaling = meta.isScaling();
-      this.location = meta.getLocationName();
+    if(meta != null && meta.hasRepairCost()) {
+      cost = meta.getRepairCost();
     }
   }
 
@@ -56,12 +51,11 @@ public class BukkitMapData extends MapData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final MapMeta meta = (MapMeta)ParsingUtil.buildFor(stack, MapMeta.class);
+    final Repairable meta = (Repairable)ParsingUtil.buildFor(stack, Repairable.class);
 
-    meta.setColor(Color.fromRGB(colorRGB));
-    meta.setScaling(scaling);
-    meta.setLocationName(location);
-
+    if(hasCost()) {
+      meta.setRepairCost(cost);
+    }
     stack.setItemMeta(meta);
 
     return stack;

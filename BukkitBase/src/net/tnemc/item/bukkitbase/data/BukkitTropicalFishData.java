@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -20,15 +20,16 @@ package net.tnemc.item.bukkit.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.data.CrossBowMeta;
+import net.tnemc.item.data.TropicalFishData;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.entity.TropicalFish;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.CrossbowMeta;
+import org.bukkit.inventory.meta.TropicalFishBucketMeta;
 
-public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
+public class BukkitTropicalFishData extends TropicalFishData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -38,14 +39,14 @@ public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final CrossbowMeta meta = (CrossbowMeta)stack.getItemMeta();
+    final TropicalFishBucketMeta meta = (TropicalFishBucketMeta)stack.getItemMeta();
 
-    if(meta != null) {
-      int i = 0;
-      for(final ItemStack item : meta.getChargedProjectiles()) {
-        items.put(i, new SerialItem<>(BukkitItemStack.locale(item)));
-        i++;
-      }
+    if(meta != null && meta.hasVariant()) {
+      variant = true;
+
+      pattern = meta.getPattern().name();
+      patternColour = meta.getPatternColor().getColor().asRGB();
+      bodyColour = meta.getBodyColor().getColor().asRGB();
     }
   }
 
@@ -57,10 +58,14 @@ public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final CrossbowMeta meta = (CrossbowMeta)ParsingUtil.buildFor(stack, CrossbowMeta.class);
+    final TropicalFishBucketMeta meta = (TropicalFishBucketMeta)ParsingUtil.buildFor(stack, TropicalFishBucketMeta.class);
 
-
-    items.forEach((slot, item)->meta.addChargedProjectile(item.getStack().locale()));
+    if(variant) {
+      meta.setBodyColor(DyeColor.getByColor(Color.fromRGB(bodyColour)));
+      meta.setPatternColor(DyeColor.getByColor(Color.fromRGB(patternColour)));
+      meta.setPattern(TropicalFish.Pattern.valueOf(pattern));
+    }
+    stack.setItemMeta(meta);
 
     return stack;
   }

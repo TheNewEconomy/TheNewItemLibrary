@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -21,14 +21,13 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.FireworkData;
-import net.tnemc.item.data.firework.SerialFireworkEffect;
-import org.bukkit.FireworkEffect;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.KnowledgeBookData;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.KnowledgeBookMeta;
 
-public class BukkitFireworkData extends FireworkData<ItemStack> {
+public class BukkitKnowledgeBookData extends KnowledgeBookData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -38,16 +37,11 @@ public class BukkitFireworkData extends FireworkData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final FireworkMeta meta = (FireworkMeta)stack.getItemMeta();
+    final KnowledgeBookMeta meta = (KnowledgeBookMeta)stack.getItemMeta();
 
     if(meta != null) {
-
-      this.power = meta.getPower();
-
-      if(meta.hasEffects()) {
-        for(FireworkEffect eff : meta.getEffects()) {
-          effects.add(ParsingUtil.fromEffect(eff));
-        }
+      for(final NamespacedKey key : meta.getRecipes()) {
+        recipes.add(key.toString());
       }
     }
   }
@@ -60,12 +54,12 @@ public class BukkitFireworkData extends FireworkData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final FireworkMeta meta = (FireworkMeta)ParsingUtil.buildFor(stack, FireworkMeta.class);
+    final KnowledgeBookMeta meta = (KnowledgeBookMeta)ParsingUtil.buildFor(stack, KnowledgeBookMeta.class);
 
-    meta.setPower((int)power);
-    for(final SerialFireworkEffect effect : effects) {
-      meta.addEffect(ParsingUtil.fromSerial(effect));
+    for(final String recipe : recipes) {
+      meta.addRecipe(NamespacedKey.fromString(recipe));
     }
+    stack.setItemMeta(meta);
 
     return stack;
   }

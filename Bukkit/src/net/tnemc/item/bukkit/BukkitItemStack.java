@@ -26,8 +26,8 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
-import net.tnemc.item.bukkit.data.BukkitSkullData;
-import net.tnemc.item.data.SkullData;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -152,7 +152,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     }
 
     //Parse the meta data.
-    ParsingUtil.parseMeta(locale)
+    BukkitMetaBuild.parseMeta(locale)
                .ifPresent(itemStackSerialItemData->this.data = itemStackSerialItemData);
 
     return this;

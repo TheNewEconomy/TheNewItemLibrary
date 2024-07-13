@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -21,12 +21,14 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.RepairableData;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.LeatherData;
+import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Repairable;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 
-public class BukkitRepairableMeta extends RepairableData<ItemStack> {
+public class BukkitLeatherData extends LeatherData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -36,10 +38,10 @@ public class BukkitRepairableMeta extends RepairableData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final Repairable meta = (Repairable)stack.getItemMeta();
 
-    if(meta != null && meta.hasRepairCost()) {
-      cost = meta.getRepairCost();
+    final LeatherArmorMeta meta = (LeatherArmorMeta)stack.getItemMeta();
+    if(meta != null) {
+      colorRGB = meta.getColor().asRGB();
     }
   }
 
@@ -51,11 +53,10 @@ public class BukkitRepairableMeta extends RepairableData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final Repairable meta = (Repairable)ParsingUtil.buildFor(stack, Repairable.class);
 
-    if(hasCost()) {
-      meta.setRepairCost(cost);
-    }
+    final LeatherArmorMeta meta = (LeatherArmorMeta)ParsingUtil.buildFor(stack, PotionMeta.class);
+
+    meta.setColor(Color.fromRGB(colorRGB));
     stack.setItemMeta(meta);
 
     return stack;

@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -21,17 +21,14 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.BannerData;
-import net.tnemc.item.data.banner.PatternData;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.FireworkData;
+import net.tnemc.item.data.firework.SerialFireworkEffect;
+import org.bukkit.FireworkEffect;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.FireworkMeta;
 
-public class BukkitBannerData extends BannerData<ItemStack> {
+public class BukkitFireworkData extends FireworkData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -41,12 +38,16 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final BannerMeta meta = (BannerMeta)stack.getItemMeta();
+    final FireworkMeta meta = (FireworkMeta)stack.getItemMeta();
 
     if(meta != null) {
-      for(final Pattern pattern : meta.getPatterns()) {
-        patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                     pattern.getPattern().getIdentifier()));
+
+      this.power = meta.getPower();
+
+      if(meta.hasEffects()) {
+        for(FireworkEffect eff : meta.getEffects()) {
+          effects.add(ParsingUtil.fromEffect(eff));
+        }
       }
     }
   }
@@ -59,13 +60,12 @@ public class BukkitBannerData extends BannerData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
+    final FireworkMeta meta = (FireworkMeta)ParsingUtil.buildFor(stack, FireworkMeta.class);
 
-    for(final PatternData pattern : patterns) {
-      meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
-                                  PatternType.valueOf(pattern.getPattern())));
+    meta.setPower((int)power);
+    for(final SerialFireworkEffect effect : effects) {
+      meta.addEffect(ParsingUtil.fromSerial(effect));
     }
-    stack.setItemMeta(meta);
 
     return stack;
   }

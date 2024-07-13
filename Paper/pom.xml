@@ -68,6 +68,12 @@
                 </executions>
                 <configuration>
                     <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                    <artifactSet>
+                        <excludes>
+                            <exclude>net.kyori:adventure-api</exclude>
+                            <exclude>net.kyori:adventure-text-serializer-legacy</exclude>
+                        </excludes>
+                    </artifactSet>
                 </configuration>
             </plugin>
         </plugins>
@@ -93,25 +99,9 @@
         </dependency>
         <dependency>
             <groupId>net.tnemc</groupId>
-            <artifactId>TNIL-Core</artifactId>
+            <artifactId>TNIL-BukkitBase</artifactId>
             <version>0.1.7.6-Pre-1</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.tnemc</groupId>
-            <artifactId>TNIL-Bukkit</artifactId>
-            <version>0.1.7.6-Pre-1</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.tnemc</groupId>
-                    <artifactId>TNIL-Core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.kyori</groupId>
-                    <artifactId>adventure-text-serializer-legacy</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 </project>

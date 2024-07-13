@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -21,7 +21,7 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
+import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.data.SuspiciousStewData;
 import net.tnemc.item.data.potion.PotionEffectData;
 import org.bukkit.inventory.ItemStack;

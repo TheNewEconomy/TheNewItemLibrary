@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -20,15 +20,13 @@ package net.tnemc.item.bukkit.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.data.CrossBowMeta;
+import net.tnemc.item.data.BookData;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.CrossbowMeta;
+import org.bukkit.inventory.meta.BookMeta;
 
-public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
+public class BukkitBookData extends BookData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -38,13 +36,17 @@ public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final CrossbowMeta meta = (CrossbowMeta)stack.getItemMeta();
+    final BookMeta meta = (BookMeta)stack.getItemMeta();
 
     if(meta != null) {
-      int i = 0;
-      for(final ItemStack item : meta.getChargedProjectiles()) {
-        items.put(i, new SerialItem<>(BukkitItemStack.locale(item)));
-        i++;
+      this.title = meta.getTitle();
+      this.author = meta.getAuthor();
+      this.pages = meta.getPages();
+
+      if(meta.getGeneration() != null) {
+        this.generation = meta.getGeneration().name();
+      } else {
+        this.generation = "";
       }
     }
   }
@@ -57,10 +59,16 @@ public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final CrossbowMeta meta = (CrossbowMeta)ParsingUtil.buildFor(stack, CrossbowMeta.class);
+    final BookMeta meta = (BookMeta)ParsingUtil.buildFor(stack, BookMeta.class);
 
+    meta.setTitle(title);
+    meta.setAuthor(author);
 
-    items.forEach((slot, item)->meta.addChargedProjectile(item.getStack().locale()));
+    if(!this.generation.equalsIgnoreCase("")) {
+      meta.setGeneration(BookMeta.Generation.valueOf(generation));
+    }
+    meta.setPages(pages);
+    stack.setItemMeta(meta);
 
     return stack;
   }

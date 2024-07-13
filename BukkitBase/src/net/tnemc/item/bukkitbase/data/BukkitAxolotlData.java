@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -21,14 +21,13 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.LeatherData;
-import org.bukkit.Color;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.AxolotlData;
+import org.bukkit.entity.Axolotl;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.AxolotlBucketMeta;
 
-public class BukkitLeatherData extends LeatherData<ItemStack> {
+public class BukkitAxolotlData extends AxolotlData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -38,10 +37,10 @@ public class BukkitLeatherData extends LeatherData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final AxolotlBucketMeta meta = (AxolotlBucketMeta)stack.getItemMeta();
 
-    final LeatherArmorMeta meta = (LeatherArmorMeta)stack.getItemMeta();
-    if(meta != null) {
-      colorRGB = meta.getColor().asRGB();
+    if(meta != null && meta.hasVariant()) {
+      variant = meta.getVariant().name();
     }
   }
 
@@ -53,10 +52,9 @@ public class BukkitLeatherData extends LeatherData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
+    final AxolotlBucketMeta meta = (AxolotlBucketMeta)ParsingUtil.buildFor(stack, AxolotlBucketMeta.class);
 
-    final LeatherArmorMeta meta = (LeatherArmorMeta)ParsingUtil.buildFor(stack, PotionMeta.class);
-
-    meta.setColor(Color.fromRGB(colorRGB));
+    meta.setVariant(Axolotl.Variant.valueOf(variant));
     stack.setItemMeta(meta);
 
     return stack;

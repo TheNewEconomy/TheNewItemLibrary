@@ -1,4 +1,4 @@
-package net.tnemc.paper;
+package net.tnemc.item.paper;
 
 /*
  * The New Item Library Minecraft Server Plugin

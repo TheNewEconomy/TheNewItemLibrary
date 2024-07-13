@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -21,13 +21,14 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.KnowledgeBookData;
-import org.bukkit.NamespacedKey;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.CompassData;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.KnowledgeBookMeta;
+import org.bukkit.inventory.meta.CompassMeta;
 
-public class BukkitKnowledgeBookData extends KnowledgeBookData<ItemStack> {
+public class BukkitCompassData extends CompassData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -37,12 +38,22 @@ public class BukkitKnowledgeBookData extends KnowledgeBookData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final KnowledgeBookMeta meta = (KnowledgeBookMeta)stack.getItemMeta();
+    final CompassMeta meta = (CompassMeta)stack.getItemMeta();
 
-    if(meta != null) {
-      for(final NamespacedKey key : meta.getRecipes()) {
-        recipes.add(key.toString());
+    if(meta != null && meta.hasLodestone() && meta.isLodestoneTracked()) {
+      this.tracked = true;
+
+      final Location loc = meta.getLodestone();
+
+      if(loc.getWorld() != null) {
+        this.world = loc.getWorld().getUID();
       }
+      this.x = loc.getX();
+      this.y = loc.getY();
+      this.z = loc.getZ();
+
+      this.yaw = loc.getYaw();
+      this.pitch = loc.getPitch();
     }
   }
 
@@ -54,11 +65,13 @@ public class BukkitKnowledgeBookData extends KnowledgeBookData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final KnowledgeBookMeta meta = (KnowledgeBookMeta)ParsingUtil.buildFor(stack, KnowledgeBookMeta.class);
+    final CompassMeta meta = (CompassMeta)ParsingUtil.buildFor(stack, CompassMeta.class);
 
-    for(final String recipe : recipes) {
-      meta.addRecipe(NamespacedKey.fromString(recipe));
+    meta.setLodestoneTracked(tracked);
+    if(tracked) {
+      meta.setLodestone(new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch));
     }
+
     stack.setItemMeta(meta);
 
     return stack;

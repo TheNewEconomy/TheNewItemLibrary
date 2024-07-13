@@ -23,7 +23,7 @@ package net.tnemc.item.bukkit.data;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.ParsingUtil;
+import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.data.ShulkerData;
 import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;

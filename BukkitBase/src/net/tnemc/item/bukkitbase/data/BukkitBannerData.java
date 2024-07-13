@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -21,15 +21,17 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.TropicalFishData;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.BannerData;
+import net.tnemc.item.data.banner.PatternData;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
-import org.bukkit.entity.TropicalFish;
+import org.bukkit.block.banner.Pattern;
+import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.TropicalFishBucketMeta;
+import org.bukkit.inventory.meta.BannerMeta;
 
-public class BukkitTropicalFishData extends TropicalFishData<ItemStack> {
+public class BukkitBannerData extends BannerData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -39,14 +41,13 @@ public class BukkitTropicalFishData extends TropicalFishData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final TropicalFishBucketMeta meta = (TropicalFishBucketMeta)stack.getItemMeta();
+    final BannerMeta meta = (BannerMeta)stack.getItemMeta();
 
-    if(meta != null && meta.hasVariant()) {
-      variant = true;
-
-      pattern = meta.getPattern().name();
-      patternColour = meta.getPatternColor().getColor().asRGB();
-      bodyColour = meta.getBodyColor().getColor().asRGB();
+    if(meta != null) {
+      for(final Pattern pattern : meta.getPatterns()) {
+        patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
+                                     pattern.getPattern().getIdentifier()));
+      }
     }
   }
 
@@ -58,12 +59,11 @@ public class BukkitTropicalFishData extends TropicalFishData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final TropicalFishBucketMeta meta = (TropicalFishBucketMeta)ParsingUtil.buildFor(stack, TropicalFishBucketMeta.class);
+    final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
 
-    if(variant) {
-      meta.setBodyColor(DyeColor.getByColor(Color.fromRGB(bodyColour)));
-      meta.setPatternColor(DyeColor.getByColor(Color.fromRGB(patternColour)));
-      meta.setPattern(TropicalFish.Pattern.valueOf(pattern));
+    for(final PatternData pattern : patterns) {
+      meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
+                                  PatternType.valueOf(pattern.getPattern())));
     }
     stack.setItemMeta(meta);
 

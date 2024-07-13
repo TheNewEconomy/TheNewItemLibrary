@@ -8,9 +8,10 @@
 
     <modules>
         <module>Core</module>
+        <module>BukkitBase</module>
+        <module>Paper</module>
         <module>Bukkit</module>
         <module>TNIL-Sponge</module>
-        <module>Paper</module>
     </modules>
 
     <properties>
@@ -64,7 +65,7 @@
             <id>creatorfromhell</id>
             <name>Daniel "creatorfromhell" Vidmar</name>
             <email>daniel.viddy@gmail.com</email>
-            <url>https://creatorfromhell.com</url>
+            <url>https://cfh.dev</url>
             <organization>The New Economy</organization>
             <organizationUrl>https://tnemc.net</organizationUrl>
             <roles>
@@ -93,11 +94,6 @@
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-api</artifactId>
-            <version>4.17.0</version>
-        </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>

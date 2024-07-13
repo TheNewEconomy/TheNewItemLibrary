@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -21,13 +21,14 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.AxolotlData;
-import org.bukkit.entity.Axolotl;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.SkullData;
+import net.tnemc.item.providers.SkullProfile;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.AxolotlBucketMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
-public class BukkitAxolotlData extends AxolotlData<ItemStack> {
+public class BukkitSkullData extends SkullData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -37,10 +38,19 @@ public class BukkitAxolotlData extends AxolotlData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final AxolotlBucketMeta meta = (AxolotlBucketMeta)stack.getItemMeta();
+    final SkullMeta meta = (SkullMeta)stack.getItemMeta();
 
-    if(meta != null && meta.hasVariant()) {
-      variant = meta.getVariant().name();
+    profile = new SkullProfile();
+
+    try {
+
+      if(meta != null && meta.getOwningPlayer() != null) {
+        profile.setUuid(meta.getOwningPlayer().getUniqueId());
+      }
+
+    } catch(Exception ignore) {
+
+      profile.setName(meta.getOwner());
     }
   }
 
@@ -52,9 +62,21 @@ public class BukkitAxolotlData extends AxolotlData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final AxolotlBucketMeta meta = (AxolotlBucketMeta)ParsingUtil.buildFor(stack, AxolotlBucketMeta.class);
+    final SkullMeta meta = (SkullMeta)ParsingUtil.buildFor(stack, SkullMeta.class);
 
-    meta.setVariant(Axolotl.Variant.valueOf(variant));
+    if(profile != null) {
+
+      try {
+
+        if(profile.getUuid() != null) {
+          meta.setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
+        }
+
+      } catch(Exception ignore) {
+
+        meta.setOwner(profile.getName());
+      }
+    }
     stack.setItemMeta(meta);
 
     return stack;

@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit;
+package net.tnemc.item.bukkitbase;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -20,23 +20,19 @@ package net.tnemc.item.bukkit;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttributeOperation;
 import net.tnemc.item.attribute.SerialAttributeSlot;
-import net.tnemc.item.bukkit.data.*;
 import net.tnemc.item.data.firework.SerialFireworkEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.*;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ParsingUtil {
 
@@ -164,58 +160,5 @@ public class ParsingUtil {
       default:
         return AttributeModifier.Operation.ADD_NUMBER;
     }
-  }
-  
-  public static Optional<SerialItemData<ItemStack>> parseMeta(final ItemStack stack) {
-
-    SerialItemData<ItemStack> data = null;
-
-    if(stack.hasItemMeta()) {
-      final ItemMeta meta = stack.getItemMeta();
-      if(meta instanceof AxolotlBucketMeta) {
-        data = new BukkitAxolotlData();
-      } else if(meta instanceof BannerMeta) {
-        data = new BukkitBannerData();
-      } else if(meta instanceof BlockStateMeta) {
-        if(((BlockStateMeta)meta).getBlockState() instanceof ShulkerBox) {
-          data = new BukkitShulkerData();
-        }
-      } else if(meta instanceof BookMeta) {
-        data = new BukkitBookData();
-      } else if(meta instanceof BundleMeta) {
-        data = new BukkitBundleData();
-      } else if(meta instanceof CompassMeta) {
-        data = new BukkitCompassData();
-      } else if(meta instanceof CrossbowMeta) {
-        data = new BukkitCrossbowMeta();
-      } else if(meta instanceof EnchantmentStorageMeta) {
-        data = new BukkitEnchantData();
-      } else if(meta instanceof FireworkEffectMeta) {
-        data = new BukkitFireworkEffectData();
-      } else if(meta instanceof FireworkMeta) {
-        data = new BukkitFireworkData();
-      } else if(meta instanceof KnowledgeBookMeta) {
-        data = new BukkitKnowledgeBookData();
-      } else if(meta instanceof LeatherArmorMeta) {
-        data = new BukkitLeatherData();
-      } else if(meta instanceof MapMeta) {
-        data = new BukkitMapData();
-      } else if(meta instanceof PotionMeta) {
-        data = new BukkitPotionData();
-      } else if(meta instanceof Repairable) {
-        data = new BukkitRepairableMeta();
-      } else if(meta instanceof SkullMeta) {
-        data = new BukkitSkullData();
-      } else if(meta instanceof SuspiciousStewMeta) {
-        data = new BukkitSuspiciousStewData();
-      } else if(meta instanceof TropicalFishBucketMeta) {
-        data = new BukkitTropicalFishData();
-      }
-
-      if(data != null) {
-        data.of(stack);
-      }
-    }
-    return Optional.ofNullable(data);
   }
 }

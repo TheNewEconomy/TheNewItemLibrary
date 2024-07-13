@@ -1,4 +1,4 @@
-package net.tnemc.paper;
+package net.tnemc.item.paper;
 
 /*
  * The New Item Library
@@ -24,8 +24,8 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.bukkit.data.BukkitSkullData;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -152,7 +152,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     }
 
     //Parse the meta data.
-    ParsingUtil.parseMeta(locale)
+    PaperMetaBuild.parseMeta(locale)
             .ifPresent(itemStackSerialItemData->this.data = itemStackSerialItemData);
 
     return this;

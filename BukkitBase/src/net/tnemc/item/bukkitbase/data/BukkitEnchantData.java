@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -21,12 +21,16 @@ package net.tnemc.item.bukkit.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.FireworkData;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.EnchantStorageData;
+import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkEffectMeta;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
-public class BukkitFireworkEffectData extends FireworkData<ItemStack> {
+import java.util.Map;
+
+public class BukkitEnchantData extends EnchantStorageData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -36,10 +40,12 @@ public class BukkitFireworkEffectData extends FireworkData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final FireworkEffectMeta meta = (FireworkEffectMeta)stack.getItemMeta();
+    final EnchantmentStorageMeta meta = (EnchantmentStorageMeta)stack.getItemMeta();
 
-    if(meta != null && meta.hasEffect() && meta.getEffect() != null) {
-      effects.add(ParsingUtil.fromEffect(meta.getEffect()));
+    if(meta != null) {
+      for(final Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
+        enchantments.put(entry.getKey().getKey().toString(), entry.getValue());
+      }
     }
   }
 
@@ -51,11 +57,15 @@ public class BukkitFireworkEffectData extends FireworkData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final FireworkEffectMeta meta = (FireworkEffectMeta)ParsingUtil.buildFor(stack, FireworkEffectMeta.class);
+    final EnchantmentStorageMeta meta = (EnchantmentStorageMeta)ParsingUtil.buildFor(stack, EnchantmentStorageMeta.class);
 
-    if(effects.size() > 0) {
-      meta.setEffect(ParsingUtil.fromSerial(effects.get(0)));
+    for(final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
+      meta.addStoredEnchant(Enchantment.getByKey(NamespacedKey.fromString(entry.getKey())),
+                            entry.getValue(),
+                            true);
     }
+
+    stack.setItemMeta(meta);
 
     return stack;
   }

@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.data;
+package net.tnemc.item.paper.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -20,17 +20,18 @@ package net.tnemc.item.bukkit.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.ParsingUtil;
-import net.tnemc.item.data.SkullData;
-import net.tnemc.item.providers.SkullProfile;
-import org.bukkit.Bukkit;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.ShulkerData;
+import net.tnemc.item.paper.PaperItemStack;
+import org.bukkit.Material;
+import org.bukkit.block.ShulkerBox;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.BlockStateMeta;
 
-import java.util.UUID;
-
-public class BukkitSkullData extends SkullData<ItemStack> {
+public class PaperShulkerData extends ShulkerData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -40,19 +41,20 @@ public class BukkitSkullData extends SkullData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final SkullMeta meta = (SkullMeta)stack.getItemMeta();
+    final BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
 
-    profile = new SkullProfile();
+    if(meta != null && meta.getBlockState() instanceof ShulkerBox box) {
 
-    try {
-
-      if(meta != null && meta.getOwningPlayer() != null) {
-        profile.setUuid(meta.getOwningPlayer().getUniqueId());
+      if(box.getColor() != null) {
+        colorRGB = box.getColor().getColor().asRGB();
       }
 
-    } catch(Exception ignore) {
-
-      profile.setName(meta.getOwner());
+      final Inventory inventory = box.getInventory();
+      for(int i = 0; i < inventory.getSize(); i++) {
+        if(inventory.getItem(i) != null && !inventory.getItem(i).getType().equals(Material.AIR)) {
+          items.put(i, new SerialItem<>(PaperItemStack.locale(inventory.getItem(i))));
+        }
+      }
     }
   }
 
@@ -64,23 +66,15 @@ public class BukkitSkullData extends SkullData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final SkullMeta meta = (SkullMeta)ParsingUtil.buildFor(stack, SkullMeta.class);
+    final BlockStateMeta meta = (BlockStateMeta)ParsingUtil.buildFor(stack, BlockStateMeta.class);
 
-    if(profile != null) {
+    if(meta.getBlockState() instanceof ShulkerBox box) {
 
-      try {
-
-        if(profile.getUuid() != null) {
-          meta.setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
-        }
-
-      } catch(Exception ignore) {
-
-        meta.setOwner(profile.getName());
-      }
+      items.forEach((slot, item)->box.getInventory().setItem(slot, item.getStack().locale()));
+      box.update(true);
+      meta.setBlockState(box);
+      stack.setItemMeta(meta);
     }
-    stack.setItemMeta(meta);
-
     return stack;
   }
 }
