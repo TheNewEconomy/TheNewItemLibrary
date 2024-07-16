@@ -22,6 +22,7 @@ package net.tnemc.item.paper;
 
 import net.tnemc.item.providers.HelperMethods;
 import org.bukkit.Material;
+import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 
@@ -40,16 +41,16 @@ public class PaperHelper implements HelperMethods {
 
   public PaperHelper() {
 
-    for(final Material material : Material.values()) {
+    Registry.MATERIAL.forEach((material)->{
 
-      if(!material.isItem()) continue;
+      if(material.isItem()) {
+        materialKeys.add(material.getKey().getKey());
+      }
+    });
 
-      materialKeys.add(material.translationKey());
-    }
-
-    for(Enchantment enchantment : Enchantment.values()) {
-      enchantmentKeys.add(enchantment.translationKey());
-    }
+    Registry.ENCHANTMENT.forEach((enchant)->{
+      enchantmentKeys.add(enchant.getKey().getKey());
+    });
 
     for(ItemFlag itemFlag : ItemFlag.values()) {
       itemFlagKeys.add(itemFlag.name());

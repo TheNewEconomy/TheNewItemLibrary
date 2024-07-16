@@ -31,6 +31,7 @@ import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -133,12 +134,12 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
       }
 
       if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && stack.getItemMeta().getAttributeModifiers() != null) {
-        stack.getItemMeta().getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.name(), modifier));
+        stack.getItemMeta().getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.getKey().getKey(), modifier));
       }
 
       if(stack.getItemMeta().hasEnchants()) {
 
-        stack.getItemMeta().getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().toString(), level)));
+        stack.getItemMeta().getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().getKey(), level)));
       }
 
       if(stack.hasItemMeta() && stack.getItemMeta() instanceof SkullMeta) {
@@ -468,7 +469,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
           final NamespacedKey space = NamespacedKey.fromString(name);
           if(space != null) {
 
-            final Enchantment enchant = Enchantment.getByKey(space);
+            final Enchantment enchant = Registry.ENCHANTMENT.get(space);
             if(enchant != null) {
               meta.addEnchant(enchant, level, true);
             }
@@ -490,9 +491,17 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
         }
 
         if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0])) {
-          attributes.forEach((name, attribute)->{
+          attributes.forEach((key, attribute)->{
             try {
-              meta.addAttributeModifier(Attribute.valueOf(name), attribute);
+              final NamespacedKey space = NamespacedKey.fromString(key);
+              if(space != null) {
+
+                final Attribute attr = Registry.ATTRIBUTE.get(space);
+                if(attr != null) {
+
+                  meta.addAttributeModifier(attr, attribute);
+                }
+              }
             } catch(Exception ignore) {
               //catched invalid Attribute names.
             }
