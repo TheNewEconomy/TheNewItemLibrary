@@ -46,6 +46,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
     //our locale stack
     private boolean dirty = false;
+    private boolean debug = false;
     private ItemStack stack;
 
     @Override
@@ -195,6 +196,12 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     @Override
     public SpongeItemStack display(Component display) {
         this.display = display;
+        return this;
+    }
+
+    @Override
+    public SpongeItemStack debug(boolean debug) {
+        this.debug = debug;
         return this;
     }
 

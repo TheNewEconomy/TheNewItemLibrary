@@ -73,6 +73,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   //our locale stack
   private boolean dirty = false;
+  private boolean debug = false;
   private ItemStack stack;
 
   @Override
@@ -273,6 +274,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  public PaperItemStack debug(boolean debug) {
+    this.debug = debug;
+    return this;
+  }
+
   /**
    * @deprecated Damage values not supported in modern mc, use the bukkit core for legacy.
    * @param damage ignored
@@ -388,6 +394,10 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     this.dirty = true;
   }
 
+  public boolean debug() {
+    return debug;
+  }
+
   @Override
   public Optional<SerialItemData<ItemStack>> data() {
     return Optional.ofNullable(data);
@@ -425,23 +435,37 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   public boolean similarStack(PaperItemStack stack) {
 
+    if(debug) System.out.println("Similar Stack Check");
+
     if(!material.equals(stack.material)) return false;
+    if(debug) System.out.println("Material Check Passed");
     if(!Component.EQUALS.test(display, stack.display)) return false;
+    if(debug) System.out.println("Display Check Passed");
     if(!Objects.equals(customModelData, stack.customModelData)) return false;
+    if(debug) System.out.println("CustomData Check Passed");
     if(unbreakable != stack.unbreakable) return false;
+    if(debug) System.out.println("Unbreakable Check Passed");
     if(!componentsEqual(lore, stack.lore)) return false;
+    if(debug) System.out.println("Lore Check Passed");
     if(!listsEquals(flags, stack.flags)) return false;
+    if(debug) System.out.println("Flags Check Passed");
     if(!attributes.equals(stack.attributes)) return false;
+    if(debug) System.out.println("Attributes Check Passed");
     if(!enchantments.equals(stack.enchantments)) return false;
-    if(data != null) {
-      return data.equals(stack.data);
-    }
+    if(debug) System.out.println("Enchants Check Passed");
 
     if(profile != null) {
+      if(debug) System.out.println("Profile Check Entered");
       return stack.profile != null && profile.equals(stack.profile);
     }
 
+    if(data != null) {
+      if(debug) System.out.println("Data Check Entered");
+      return data.equals(stack.data);
+    }
+
     if(stack.profile != null) {
+      if(debug) System.out.println("Profile Check Failed");
       return false;
     }
 

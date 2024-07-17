@@ -60,6 +60,8 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   AbstractItemStack<T> display(Component display);
 
+  AbstractItemStack<T> debug(boolean debug);
+
   AbstractItemStack<T> damage(short damage);
 
   AbstractItemStack<T> profile(final SkullProfile profile);

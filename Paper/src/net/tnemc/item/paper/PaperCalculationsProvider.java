@@ -129,6 +129,9 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
       if(itemStack != null) {
         final PaperItemStack locale = PaperItemStack.locale(itemStack);
         final boolean equal = itemsEqual(comp, locale);
+        if(stack.debug()) {
+          System.out.println("Equal: " + equal);
+        }
 
         if(locale.data().isPresent()) {
           if(locale.data().get() instanceof ItemStorageData) {

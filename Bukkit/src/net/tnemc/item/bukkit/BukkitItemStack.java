@@ -67,6 +67,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   //our locale stack
   private boolean dirty = false;
+  private boolean debug = false;
   private ItemStack stack;
 
   @Override
@@ -293,6 +294,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack unbreakable(boolean unbreakable) {
     this.unbreakable = unbreakable;
+    return this;
+  }
+
+  public BukkitItemStack debug(boolean debug) {
+    this.debug = debug;
     return this;
   }
 
