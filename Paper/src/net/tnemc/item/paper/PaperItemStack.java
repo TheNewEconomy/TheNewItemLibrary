@@ -435,39 +435,40 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   public boolean similarStack(PaperItemStack stack) {
 
-    if(debug) System.out.println("Similar Stack Check");
+    if(debug || stack.debug) System.out.println("Similar Stack Check");
 
     if(!material.equals(stack.material)) return false;
-    if(debug) System.out.println("Material Check Passed");
+    if(debug || stack.debug) System.out.println("Material Check Passed");
     if(!Component.EQUALS.test(display, stack.display)) return false;
-    if(debug) System.out.println("Display Check Passed");
+    if(debug || stack.debug) System.out.println("Display Check Passed");
     if(!Objects.equals(customModelData, stack.customModelData)) return false;
-    if(debug) System.out.println("CustomData Check Passed");
+    if(debug || stack.debug) System.out.println("CustomData Check Passed");
     if(unbreakable != stack.unbreakable) return false;
-    if(debug) System.out.println("Unbreakable Check Passed");
+    if(debug || stack.debug) System.out.println("Unbreakable Check Passed");
     if(!componentsEqual(lore, stack.lore)) return false;
-    if(debug) System.out.println("Lore Check Passed");
+    if(debug || stack.debug) System.out.println("Lore Check Passed");
     if(!listsEquals(flags, stack.flags)) return false;
-    if(debug) System.out.println("Flags Check Passed");
+    if(debug || stack.debug) System.out.println("Flags Check Passed");
     if(!attributes.equals(stack.attributes)) return false;
-    if(debug) System.out.println("Attributes Check Passed");
+    if(debug || stack.debug) System.out.println("Attributes Check Passed");
     if(!enchantments.equals(stack.enchantments)) return false;
-    if(debug) System.out.println("Enchants Check Passed");
+    if(debug || stack.debug) System.out.println("Enchants Check Passed");
 
     if(profile != null) {
-      if(debug) System.out.println("Profile Check Entered");
+      if(debug || stack.debug) System.out.println("Profile Check Entered");
       return stack.profile != null && profile.equals(stack.profile);
     }
 
     if(data != null) {
-      if(debug) System.out.println("Data Check Entered");
+      if(debug || stack.debug) System.out.println("Data Check Entered");
       return data.equals(stack.data);
     }
 
     if(stack.profile != null) {
-      if(debug) System.out.println("Profile Check Failed");
+      if(debug || stack.debug) System.out.println("Profile Check Failed");
       return false;
     }
+    if(debug || stack.debug) System.out.println("Profile Check Passed. Final Check.");
 
     return stack.data == null;
   }
