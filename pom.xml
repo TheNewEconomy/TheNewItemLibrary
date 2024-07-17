@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.tnemc</groupId>
     <artifactId>TNIL</artifactId>
-    <version>0.1.7.6-Pre-5</version>
+    <version>0.1.7.6-Pre-6</version>
     <packaging>pom</packaging>
     <name>The New Item Library</name>
 

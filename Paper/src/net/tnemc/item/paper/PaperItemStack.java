@@ -244,7 +244,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public PaperItemStack material(String material) {
-    this.material = Material.matchMaterial(material);
+    this.material = Registry.MATERIAL.get(NamespacedKey.fromString(material));
     return this;
   }
 
@@ -351,7 +351,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public String material() {
-    return material.getKey().toString();
+    return material.getKey().getKey();
   }
 
   @Override
@@ -433,11 +433,18 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     return new PaperItemStack().of(stack);
   }
 
+  public Material getType() {
+    return material;
+  }
+
   public boolean similarStack(PaperItemStack stack) {
 
     if(debug || stack.debug) System.out.println("Similar Stack Check");
 
-    if(!material.equals(stack.material)) return false;
+    System.out.println("Material 1: " + material.name());
+    System.out.println("Material 2: " + stack.material.name());
+
+    if(material != stack.material) return false;
     if(debug || stack.debug) System.out.println("Material Check Passed");
     if(!Component.EQUALS.test(display, stack.display)) return false;
     if(debug || stack.debug) System.out.println("Display Check Passed");

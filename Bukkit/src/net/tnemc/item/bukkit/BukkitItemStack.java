@@ -345,7 +345,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public String material() {
-    return material.getKey().toString();
+    return material.getKey().getKey();
   }
 
   @Override
@@ -420,7 +420,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   public boolean similarStack(BukkitItemStack stack) {
 
-    if(!material.equals(stack.material)) return false;
+    if(material != stack.material) return false;
     if(!Component.EQUALS.test(display, stack.display)) return false;
     if(!Objects.equals(damage, stack.damage)) return false;
     if(!Objects.equals(customModelData, stack.customModelData)) return false;
