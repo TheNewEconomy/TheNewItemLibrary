@@ -446,9 +446,6 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
     if(debug || stack.debug) System.out.println("Similar Stack Check");
 
-    System.out.println("Material 1: " + material.name());
-    System.out.println("Material 2: " + stack.material.name());
-
     if(material != stack.material) return false;
     if(debug || stack.debug) System.out.println("Material Check Passed");
     if(!displayPlain().equals(stack.displayPlain())) return false;
