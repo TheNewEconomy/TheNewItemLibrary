@@ -20,6 +20,7 @@ package net.tnemc.item.paper;
  */
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
@@ -349,6 +350,10 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     return enchantments;
   }
 
+  public Material getType() {
+    return material;
+  }
+
   @Override
   public String material() {
     return material.getKey().getKey();
@@ -362,6 +367,10 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public int slot() {
     return slot;
+  }
+
+  public String displayPlain() {
+    return PlainTextComponentSerializer.plainText().serialize(display);
   }
 
   @Override
@@ -433,10 +442,6 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     return new PaperItemStack().of(stack);
   }
 
-  public Material getType() {
-    return material;
-  }
-
   public boolean similarStack(PaperItemStack stack) {
 
     if(debug || stack.debug) System.out.println("Similar Stack Check");
@@ -446,7 +451,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
     if(material != stack.material) return false;
     if(debug || stack.debug) System.out.println("Material Check Passed");
-    if(!Component.EQUALS.test(display, stack.display)) return false;
+    if(!displayPlain().equals(stack.displayPlain())) return false;
     if(debug || stack.debug) System.out.println("Display Check Passed");
     if(!Objects.equals(customModelData, stack.customModelData)) return false;
     if(debug || stack.debug) System.out.println("CustomData Check Passed");

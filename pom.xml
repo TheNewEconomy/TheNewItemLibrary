@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.tnemc</groupId>
     <artifactId>TNIL</artifactId>
-    <version>0.1.7.6-Pre-6</version>
+    <version>0.1.7.6-Pre-7</version>
     <packaging>pom</packaging>
     <name>The New Item Library</name>
 
@@ -94,6 +94,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-plain</artifactId>
+            <version>4.17.0</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
