@@ -22,6 +22,7 @@ package net.tnemc.item.bukkit;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
@@ -358,6 +359,10 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return slot;
   }
 
+  public String displayPlain() {
+    return PlainTextComponentSerializer.plainText().serialize(display);
+  }
+
   @Override
   public Component display() {
     return display;
@@ -421,7 +426,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public boolean similarStack(BukkitItemStack stack) {
 
     if(material != stack.material) return false;
-    if(!Component.EQUALS.test(display, stack.display)) return false;
+    if(!displayPlain().equals(stack.displayPlain())) return false;
     if(!Objects.equals(damage, stack.damage)) return false;
     if(!Objects.equals(customModelData, stack.customModelData)) return false;
     if(unbreakable != stack.unbreakable) return false;
