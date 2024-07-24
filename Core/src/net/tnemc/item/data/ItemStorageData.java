@@ -77,6 +77,8 @@ public abstract class ItemStorageData<T> implements SerialItemData<T> {
         final SerialItem<? extends T> item = (SerialItem<? extends T>)compare.items.get(entry.getKey());
         final AbstractItemStack<? extends T> stack = item.getStack();
 
+        if(entry.getValue().getStack().amount() != stack.amount()) return false;
+
         if(!entry.getValue().getStack().similar(stack)) return false;
       }
       return true;
