@@ -30,7 +30,7 @@ import java.util.List;
 
 public abstract class SuspiciousStewData<T> implements SerialItemData<T> {
 
-  protected List<PotionEffectData> customEffects = new ArrayList<>();
+  protected final List<PotionEffectData> customEffects = new ArrayList<>();
 
 
   /**

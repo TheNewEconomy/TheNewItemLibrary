@@ -29,6 +29,7 @@ import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.bukkitbase.data.BukkitSkullData;
+import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -56,6 +57,8 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   private final Map<String, Integer> enchantments = new HashMap<>();
   private final List<Component> lore = new ArrayList<>();
 
+  private final Map<String, SerialComponent<ItemStack>> components = new HashMap<>();
+
   private int slot = 0;
   private SkullProfile profile = null;
   private Material material;
@@ -64,6 +67,10 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   private short damage = 0;
   private int customModelData = -1;
   private boolean unbreakable = false;
+  private boolean hideTooltip = false;
+  private boolean fireResistant = false;
+  private boolean enchantGlint = false;
+  private String rarity = "COMMON";
   private SerialItemData<ItemStack> data;
 
   //our locale stack
@@ -298,6 +305,30 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  @Override
+  public AbstractItemStack<ItemStack> hideTooltip(boolean hideTooltip) {
+    this.hideTooltip = hideTooltip;
+    return this;
+  }
+
+  @Override
+  public AbstractItemStack<ItemStack> fireResistant(boolean fireResistant) {
+    this.fireResistant = fireResistant;
+    return this;
+  }
+
+  @Override
+  public AbstractItemStack<ItemStack> enchantGlint(boolean enchantGlint) {
+    this.enchantGlint = enchantGlint;
+    return this;
+  }
+
+  @Override
+  public AbstractItemStack<ItemStack> rarity(String rarity) {
+    this.rarity = rarity;
+    return this;
+  }
+
   public BukkitItemStack debug(boolean debug) {
     this.debug = debug;
     return this;
@@ -306,6 +337,12 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack applyData(SerialItemData<ItemStack> data) {
     this.data = data;
+    return this;
+  }
+
+  @Override
+  public AbstractItemStack<ItemStack> applyComponent(SerialComponent<ItemStack> component) {
+    this.components.put(component.getType(), component);
     return this;
   }
 
@@ -345,6 +382,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
+  public Map<String, SerialComponent<ItemStack>> components() {
+    return components;
+  }
+
+  @Override
   public String material() {
     return material.getKey().getKey();
   }
@@ -381,6 +423,26 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public boolean unbreakable() {
     return unbreakable;
+  }
+
+  @Override
+  public boolean hideTooltip() {
+    return hideTooltip;
+  }
+
+  @Override
+  public boolean fireResistant() {
+    return fireResistant;
+  }
+
+  @Override
+  public boolean enchantGlint() {
+    return enchantGlint;
+  }
+
+  @Override
+  public String rarity() {
+    return rarity;
   }
 
   @Override
@@ -430,6 +492,8 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     if(!Objects.equals(damage, stack.damage)) return false;
     if(!Objects.equals(customModelData, stack.customModelData)) return false;
     if(unbreakable != stack.unbreakable) return false;
+
+    //TODO: 1.21 comps
 
     if(!componentsEqual(lore, stack.lore)) return false;
     if(!listsEquals(flags, stack.flags)) return false;
@@ -509,6 +573,10 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
               //catched invalid Attribute names.
             }
           });
+        }
+
+        if(VersionUtil.isVersion("1.21.0", Bukkit.getServer().getBukkitVersion().split("-")[0])) {
+
         }
       }
 

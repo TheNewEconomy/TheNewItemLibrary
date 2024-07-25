@@ -1,8 +1,6 @@
-package net.tnemc.item.data;
-
+package net.tnemc.item.component.impl;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -20,18 +18,37 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.banner.PatternData;
+import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.data.firework.SerialFireworkEffect;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class BannerData<T> implements SerialItemData<T> {
+/**
+ * ToolComponent
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public abstract class ToolComponent<T> implements SerialComponent<T> {
 
-  protected final List<PatternData> patterns = new LinkedList<>();
+  protected final List<ToolRule> rules = new LinkedList<>();
+
+  protected float defaultSpeed;
+  protected int blockDamage;
+
+  /**
+   * @return the type of component this is.
+   */
+  @Override
+  public String getType() {
+    return "tool";
+  }
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -40,21 +57,19 @@ public abstract class BannerData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
-    json.put("name", "banner");
+    JSONObject tool = new JSONObject();
+    tool.put("name", "tool-component");
+    tool.put("defaultSpeed", defaultSpeed);
+    tool.put("blockDamage", blockDamage);
 
-
-    int i = 0;
-    JSONObject patternsObject = new JSONObject();
-    for(PatternData pattern : patterns) {
-      JSONObject patternObj = new JSONObject();
-      patternObj.put("colour", pattern.getColor());
-      patternObj.put("pattern", pattern.getPattern());
-      patternsObject.put(i, patternObj);
-      i++;
+    if(rules.size() > 0) {
+      final JSONObject rulesObj = new JSONObject();
+      for(int it = 0; it < rules.size(); it++) {
+        rulesObj.put(it, rules.get(it).toJSON());
+      }
+      tool.put("rules", rulesObj);
     }
-    json.put("patterns", patternsObject);
-    return json;
+    return tool;
   }
 
   /**
@@ -64,41 +79,31 @@ public abstract class BannerData<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-    json.getJSON("patterns").forEach((key, value)->{
-      JSONHelper helperObj = new JSONHelper((JSONObject)value);
-      final PatternData pattern = new PatternData(helperObj.getString("colour"),
-                                                  helperObj.getString("pattern"));
-      patterns.add(pattern);
-    });
+    defaultSpeed = json.getFloat("defaultSpeed");
+    blockDamage = json.getInteger("blockDamage");
+
+    if(json.has("rules")) {
+      JSONHelper rulesObj = json.getHelper("rules");
+      rules.clear();
+
+      rulesObj.getObject().forEach((key, value)->rules.add(ToolRule.readJSON(new JSONHelper((JSONObject)value))));
+    }
   }
 
   /**
    * Used to determine if some data is equal to this data. This means that it has to be an exact copy
    * of this data. For instance, book copies will return false when compared to the original.
    *
-   * @param data The data to compare.
+   * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof BannerData) {
-      BannerData<?> compare = (BannerData<?>)data;
-      return patterns.equals(compare.patterns);
+  public boolean equals(SerialComponent<? extends T> component) {
+    if(component instanceof ToolComponent<?> tool) {
+
+      //TODO: This.
     }
     return false;
-  }
-
-  /**
-   * Used to determine if some data is similar to this data. This means that it doesn't have to be a
-   * strict equals. For instance, book copies would return true when compared to the original, etc.
-   *
-   * @param data The data to compare.
-   *
-   * @return True if similar, otherwise false.
-   */
-  @Override
-  public boolean similar(SerialItemData<? extends T> data) {
-    return equals(data);
   }
 }

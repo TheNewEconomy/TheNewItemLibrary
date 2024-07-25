@@ -31,7 +31,7 @@ import java.util.Objects;
 
 public abstract class BookData<T> implements SerialItemData<T> {
 
-  protected List<String> pages = new ArrayList<>();
+  protected final List<String> pages = new LinkedList<>();
 
   protected String title;
   protected String author;
@@ -70,7 +70,7 @@ public abstract class BookData<T> implements SerialItemData<T> {
     if(json.has("author")) author = json.getString("author");
     if(json.has("generation")) generation = json.getString("generation");
     JSONObject pagesObj = json.getJSON("pages");
-    pages = new LinkedList<>();
+    pages.clear();
     pagesObj.forEach((key, page)->pages.add(String.valueOf(page)));
   }
 

@@ -1,8 +1,6 @@
-package net.tnemc.item.data;
-
+package net.tnemc.item.component.impl;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -22,14 +20,31 @@ package net.tnemc.item.data;
 
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.component.SerialComponent;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
-public abstract class KnowledgeBookData<T> implements SerialItemData<T> {
+/**
+ * JukeBoxComponent
+ *
+ * @author creatorfromhell
+ * @since 0.0.1.0
+ */
+public abstract class JukeBoxComponent<T> implements SerialComponent<T> {
 
-  protected final List<String> recipes = new ArrayList<>();
+  protected String song;
+  protected boolean toolTip;
+
+  /**
+   * @return the type of component this is.
+   */
+  @Override
+  public String getType() {
+    return "jukebox";
+  }
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -38,19 +53,12 @@ public abstract class KnowledgeBookData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
-    json.put("name", "knowledge");
+    JSONObject jukebox = new JSONObject();
+    jukebox.put("name", "jukebox-component");
+    jukebox.put("song", song);
+    jukebox.put("toolTip", toolTip);
 
-    if(recipes.size() > 0) {
-      JSONObject recipesObj = new JSONObject();
-      for(String recipe : recipes) {
-        JSONObject recObject = new JSONObject();
-        recObject.put("recipe", recipe);
-        recipesObj.put(recipe, recObject);
-      }
-      json.put("recipes", recipesObj);
-    }
-    return json;
+    return jukebox;
   }
 
   /**
@@ -60,43 +68,24 @@ public abstract class KnowledgeBookData<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-
-    if(json.has("effects")) {
-      JSONHelper recipesObj = json.getHelper("recipes");
-      recipesObj.getObject().forEach((key, value)->{
-        final JSONHelper helperObj = new JSONHelper((JSONObject)value);
-        recipes.add(helperObj.getString("recipe"));
-      });
-    }
+    song = json.getString("song");
+    toolTip = json.getBoolean("toolTip");
   }
 
   /**
    * Used to determine if some data is equal to this data. This means that it has to be an exact copy
    * of this data. For instance, book copies will return false when compared to the original.
    *
-   * @param data The data to compare.
+   * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof KnowledgeBookData) {
-      KnowledgeBookData<?> compare = (KnowledgeBookData<?>)data;
-      return recipes.equals(compare.recipes);
+  public boolean equals(SerialComponent<? extends T> component) {
+    if(component instanceof JukeBoxComponent<?> jukeBox) {
+
+      return jukeBox.toolTip == toolTip && Objects.equals(jukeBox.song, song);
     }
     return false;
-  }
-
-  /**
-   * Used to determine if some data is similar to this data. This means that it doesn't have to be a
-   * strict equals. For instance, book copies would return true when compared to the original, etc.
-   *
-   * @param data The data to compare.
-   *
-   * @return True if similar, otherwise false.
-   */
-  @Override
-  public boolean similar(SerialItemData<? extends T> data) {
-    return equals(data);
   }
 }

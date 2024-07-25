@@ -41,7 +41,8 @@ public class BukkitBookData extends BookData<ItemStack> {
     if(meta != null) {
       this.title = meta.getTitle();
       this.author = meta.getAuthor();
-      this.pages = meta.getPages();
+      this.pages.clear();
+      this.pages.addAll(meta.getPages());
 
       if(meta.getGeneration() != null) {
         this.generation = meta.getGeneration().name();

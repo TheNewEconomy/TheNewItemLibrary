@@ -24,6 +24,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.attribute.SerialAttribute;
+import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
 
@@ -71,7 +72,22 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   AbstractItemStack<T> unbreakable(boolean unbreakable);
 
+  //since 0.1.7.6
+  AbstractItemStack<T> hideTooltip(boolean hideTooltip);
+
+  //since 0.1.7.6
+  AbstractItemStack<T> fireResistant(boolean fireResistant);
+
+  //since 0.1.7.6
+  AbstractItemStack<T> enchantGlint(boolean enchantGlint);
+
+  //since 0.1.7.6
+  AbstractItemStack<T> rarity(String rarity);
+
   AbstractItemStack<T> applyData(SerialItemData<T> data);
+
+  //since 0.1.7.6
+  AbstractItemStack<T> applyComponent(SerialComponent<T> component);
 
   List<String> flags();
 
@@ -80,6 +96,9 @@ public interface AbstractItemStack<T> extends Cloneable {
   Map<String, SerialAttribute> attributes();
 
   Map<String, Integer> enchantments();
+
+  //since 0.1.7.6
+  Map<String, SerialComponent<T>> components();
 
   String material();
 
@@ -96,6 +115,18 @@ public interface AbstractItemStack<T> extends Cloneable {
   int modelData();
 
   boolean unbreakable();
+
+  //since 0.1.7.6
+  boolean hideTooltip();
+
+  //since 0.1.7.6
+  boolean fireResistant();
+
+  //since 0.1.7.6
+  boolean enchantGlint();
+
+  //since 0.1.7.6
+  String rarity();
 
   void markDirty();
 

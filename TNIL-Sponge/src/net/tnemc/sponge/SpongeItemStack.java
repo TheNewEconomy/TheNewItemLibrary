@@ -5,6 +5,7 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
+import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -27,6 +28,7 @@ import java.util.List;
 
 public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     private final Map<String, SerialItemData<ItemStack>> data = new HashMap<>();
+    private final Map<String, SerialComponent<ItemStack>> components = new HashMap<>();
 
     private final List<String> flags = new ArrayList<>();
     private final Map<String, AttributeModifier> attributes = new HashMap<>();
@@ -41,6 +43,10 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     private short damage = 0;
     private int customModelData = -1;
     private boolean unbreakable = false;
+    private boolean hideTooltip = false;
+    private boolean fireResistant = false;
+    private boolean enchantGlint = false;
+    private String rarity = "COMMON";
 
     private int color = -1;
 
@@ -230,8 +236,38 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     }
 
     @Override
+    public AbstractItemStack<ItemStack> hideTooltip(boolean hideTooltip) {
+        this.hideTooltip = hideTooltip;
+        return this;
+    }
+
+    @Override
+    public AbstractItemStack<ItemStack> fireResistant(boolean fireResistant) {
+        this.fireResistant = fireResistant;
+        return this;
+    }
+
+    @Override
+    public AbstractItemStack<ItemStack> enchantGlint(boolean enchantGlint) {
+        this.enchantGlint = enchantGlint;
+        return this;
+    }
+
+    @Override
+    public AbstractItemStack<ItemStack> rarity(String rarity) {
+        this.rarity = rarity;
+        return this;
+    }
+
+    @Override
     public SpongeItemStack applyData(SerialItemData<ItemStack> data) {
         this.data.put(data.getClass().getSimpleName(), data);
+        return this;
+    }
+
+    @Override
+    public AbstractItemStack<ItemStack> applyComponent(SerialComponent<ItemStack> component) {
+        this.components.put(component.getType(), component);
         return this;
     }
 
@@ -254,6 +290,11 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     @Override
     public Map<String, Integer> enchantments() {
         return enchantments;
+    }
+
+    @Override
+    public Map<String, SerialComponent<ItemStack>> components() {
+        return components;
     }
 
     @Override
@@ -297,6 +338,26 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     @Override
     public boolean unbreakable() {
         return unbreakable;
+    }
+
+    @Override
+    public boolean hideTooltip() {
+        return hideTooltip;
+    }
+
+    @Override
+    public boolean fireResistant() {
+        return fireResistant;
+    }
+
+    @Override
+    public boolean enchantGlint() {
+        return enchantGlint;
+    }
+
+    @Override
+    public String rarity() {
+        return rarity;
     }
 
     @Override
