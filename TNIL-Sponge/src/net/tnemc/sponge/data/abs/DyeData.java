@@ -30,7 +30,7 @@ public abstract class DyeData<T> implements SerialItemData<T> {
 
     @Override
     public JSONObject toJSON() {
-        JSONObject json = new JSONObject();
+        final JSONObject json = new JSONObject();
         json.put("name", "dye");
         json.put("dye", dye);
         return json;
@@ -51,8 +51,7 @@ public abstract class DyeData<T> implements SerialItemData<T> {
      */
     @Override
     public boolean equals(SerialItemData<? extends T> data) {
-        if(data instanceof DyeData<? extends T>) {
-            DyeData<?> compare = (DyeData<?>)data;
+        if(data instanceof DyeData<?> compare) {
             return dye.equals(compare.dye);
         }
         return false;

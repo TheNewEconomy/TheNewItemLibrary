@@ -82,7 +82,7 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
                                                                         effect.isAmbient(),
                                                                         effect.hasParticles(),
                                                                         effect.hasIcon()), true));
-    PotionData data = new PotionData(PotionType.valueOf(type), extended, upgraded);
+    final PotionData data = new PotionData(PotionType.valueOf(type), extended, upgraded);
     meta.setBasePotionData(data);
     stack.setItemMeta(meta);
     return stack;
