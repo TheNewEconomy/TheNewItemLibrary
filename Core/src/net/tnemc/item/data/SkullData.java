@@ -38,7 +38,7 @@ public abstract class SkullData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "skull");
     if(profile != null) {
       if(profile.getName() != null) json.put("name", profile.getName());
@@ -77,9 +77,7 @@ public abstract class SkullData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof SkullData) {
-
-      final SkullData<?> compare = (SkullData<?>)data;
+    if(data instanceof SkullData<?> compare) {
 
       if(profile == null && compare.profile == null) return true;
       if(profile == null || compare.profile == null) return false;

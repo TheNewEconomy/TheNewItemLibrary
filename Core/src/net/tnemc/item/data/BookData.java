@@ -1,8 +1,6 @@
 package net.tnemc.item.data;
-
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -24,14 +22,15 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 
-public abstract class BookData<T> implements SerialItemData<T> {
-
-  protected final List<String> pages = new LinkedList<>();
+/**
+ * BookMeta
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public abstract class BookData<T> extends WritableBookData<T> {
 
   protected String title;
   protected String author;
@@ -45,17 +44,11 @@ public abstract class BookData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = super.toJSON();
     json.put("name", "book");
     if(title != null) json.put("title", title);
     if(author != null) json.put("author", author);
     if(author != null) json.put("generation", generation);
-
-    JSONObject pagesObj = new JSONObject();
-    for(int i = 0; i < pages.size(); i++) {
-      pagesObj.put(i, pages.get(i));
-    }
-    json.put("pages", pagesObj);
     return json;
   }
 
@@ -69,9 +62,7 @@ public abstract class BookData<T> implements SerialItemData<T> {
     if(json.has("title")) title = json.getString("title");
     if(json.has("author")) author = json.getString("author");
     if(json.has("generation")) generation = json.getString("generation");
-    JSONObject pagesObj = json.getJSON("pages");
-    pages.clear();
-    pagesObj.forEach((key, page)->pages.add(String.valueOf(page)));
+    super.readJSON(json);
   }
 
   /**
@@ -85,11 +76,9 @@ public abstract class BookData<T> implements SerialItemData<T> {
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
 
-    if(data instanceof BookData) {
-      final BookData<?> bookData = (BookData<?>)data;
-
+    if(data instanceof BookData<?> bookData) {
       return Objects.equals(author, bookData.author) && Objects.equals(title, bookData.title)
-          && Objects.equals(generation, bookData.generation) && pages.equals(bookData.pages);
+              && Objects.equals(generation, bookData.generation) && pages.equals(bookData.pages);
     }
     return false;
   }
@@ -105,11 +94,9 @@ public abstract class BookData<T> implements SerialItemData<T> {
   @Override
   public boolean similar(SerialItemData<? extends T> data) {
 
-    if(data instanceof BookData) {
-      final BookData<?> bookData = (BookData<?>)data;
-
+    if(data instanceof BookData<?> bookData) {
       return Objects.equals(author, bookData.author) && Objects.equals(title, bookData.title)
-          && pages.equals(bookData.pages);
+              && pages.equals(bookData.pages);
     }
     return false;
   }

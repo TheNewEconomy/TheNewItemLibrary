@@ -29,8 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import static net.tnemc.item.SerialItem.unserialize;
-
 /**
  * FoodComponent
  *
@@ -63,7 +61,7 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject food = new JSONObject();
+    final JSONObject food = new JSONObject();
     food.put("name", "food-component");
     food.put("noHunger", noHunger);
     food.put("eatTime", eatTime);
@@ -71,7 +69,7 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
     food.put("nutrition", nutrition);
     food.put("convertsTo", convertsTo.toJSON());
 
-    if(rules.size() > 0) {
+    if(!rules.isEmpty()) {
       final JSONObject rulesObj = new JSONObject();
       for(int it = 0; it < rules.size(); it++) {
         rulesObj.put(it, rules.get(it).toJSON());
@@ -104,7 +102,7 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
     }
 
     if(json.has("rules")) {
-      JSONHelper rulesObj = json.getHelper("rules");
+      final JSONHelper rulesObj = json.getHelper("rules");
       rules.clear();
 
       rulesObj.getObject().forEach((key, value)->rules.add(FoodRule.readJSON(new JSONHelper((JSONObject)value))));

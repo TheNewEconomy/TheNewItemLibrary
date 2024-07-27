@@ -1,4 +1,4 @@
-package net.tnemc.sponge.data;
+package net.tnemc.item.bukkitbase.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -21,19 +21,12 @@ package net.tnemc.sponge.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.SkullData;
-import net.tnemc.item.providers.SkullProfile;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.Keys;
-import org.spongepowered.api.entity.living.player.server.ServerPlayer;
-import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.profile.GameProfile;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.WritableBookData;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.WritableBookMeta;
 
-import java.util.Optional;
-
-public class SpongeSkullData extends SkullData<ItemStack> {
-
-  protected boolean applies = false;
+public class BukkitWritableBookData extends WritableBookData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -43,13 +36,12 @@ public class SpongeSkullData extends SkullData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final WritableBookMeta meta = (WritableBookMeta)stack.getItemMeta();
 
-    final Optional<GameProfile> gameProfileOpt = stack.get(Keys.GAME_PROFILE);
-    this.profile = new SkullProfile();
-    gameProfileOpt.ifPresent(gameProfile ->{
-      profile.setUuid(gameProfile.uuid());
-      applies = true;
-    });
+    if(meta != null) {
+      this.pages.clear();
+      this.pages.addAll(meta.getPages());
+    }
   }
 
   /**
@@ -60,16 +52,10 @@ public class SpongeSkullData extends SkullData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    if(profile != null && profile.getUuid() != null) {
-      final Optional<ServerPlayer> player = Sponge.server().player(profile.getUuid());
-      player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
-    }
+    final WritableBookMeta meta = (WritableBookMeta)ParsingUtil.buildFor(stack, WritableBookMeta.class);
+    meta.setPages(pages);
+    stack.setItemMeta(meta);
 
     return stack;
-  }
-
-  @Override
-  public boolean applies() {
-    return applies;
   }
 }

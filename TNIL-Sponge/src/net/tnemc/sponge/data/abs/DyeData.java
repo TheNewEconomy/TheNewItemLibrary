@@ -22,7 +22,6 @@ package net.tnemc.sponge.data.abs;
 
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.LeatherData;
 import org.json.simple.JSONObject;
 
 public abstract class DyeData<T> implements SerialItemData<T> {

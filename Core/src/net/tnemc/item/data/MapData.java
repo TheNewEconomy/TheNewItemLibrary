@@ -39,7 +39,7 @@ public abstract class MapData<T> implements SerialItemData<T> {
 
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "map");
     if(location != null) json.put("location", location);
     if(colorRGB != -1) json.put("colour", colorRGB);
@@ -66,8 +66,7 @@ public abstract class MapData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof MapData) {
-      MapData<?> compare = (MapData<?>)data;
+    if(data instanceof MapData<?> compare) {
       return Objects.equals(location, compare.location) && colorRGB == compare.colorRGB
           && scaling == compare.scaling;
     }

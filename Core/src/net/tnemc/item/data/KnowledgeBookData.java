@@ -38,13 +38,13 @@ public abstract class KnowledgeBookData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "knowledge");
 
     if(recipes.size() > 0) {
-      JSONObject recipesObj = new JSONObject();
+      final JSONObject recipesObj = new JSONObject();
       for(String recipe : recipes) {
-        JSONObject recObject = new JSONObject();
+        final JSONObject recObject = new JSONObject();
         recObject.put("recipe", recipe);
         recipesObj.put(recipe, recObject);
       }
@@ -62,7 +62,7 @@ public abstract class KnowledgeBookData<T> implements SerialItemData<T> {
   public void readJSON(JSONHelper json) {
 
     if(json.has("effects")) {
-      JSONHelper recipesObj = json.getHelper("recipes");
+      final JSONHelper recipesObj = json.getHelper("recipes");
       recipesObj.getObject().forEach((key, value)->{
         final JSONHelper helperObj = new JSONHelper((JSONObject)value);
         recipes.add(helperObj.getString("recipe"));
@@ -80,8 +80,7 @@ public abstract class KnowledgeBookData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof KnowledgeBookData) {
-      KnowledgeBookData<?> compare = (KnowledgeBookData<?>)data;
+    if(data instanceof KnowledgeBookData<?> compare) {
       return recipes.equals(compare.recipes);
     }
     return false;

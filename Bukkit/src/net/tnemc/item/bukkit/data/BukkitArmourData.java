@@ -1,8 +1,6 @@
-package net.tnemc.sponge.data;
-
+package net.tnemc.item.bukkit.data;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -21,22 +19,23 @@ package net.tnemc.sponge.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.FireworkData;
-import net.tnemc.item.data.firework.SerialFireworkEffect;
-import net.tnemc.sponge.ParsingUtil;
-import org.spongepowered.api.data.Keys;
-import org.spongepowered.api.item.FireworkEffect;
-import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.util.Ticks;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.ArmourData;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ArmorMeta;
+import org.bukkit.inventory.meta.trim.ArmorTrim;
+import org.bukkit.inventory.meta.trim.TrimMaterial;
+import org.bukkit.inventory.meta.trim.TrimPattern;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-public class SpongeFireworkData extends FireworkData<ItemStack> {
-
-  protected boolean applies = false;
-
+/**
+ * BukkitArmourData
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public class BukkitArmourData extends ArmourData<ItemStack> {
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -45,19 +44,12 @@ public class SpongeFireworkData extends FireworkData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final ArmorMeta meta = (ArmorMeta)stack.getItemMeta();
 
-    final Optional<Ticks> power = stack.get(Keys.FIREWORK_FLIGHT_MODIFIER);
-    power.ifPresent(ticks ->{
-      this.power = ticks.ticks();
-      applies = true;
-    });
+    if(meta != null && meta.getTrim() != null) {
 
-    final Optional<List<FireworkEffect>> effs = stack.get(Keys.FIREWORK_EFFECTS);
-    if(effs.isPresent()) {
-      applies = true;
-      for(FireworkEffect effect : effs.get()) {
-        effects.add(ParsingUtil.fromEffect(effect));
-      }
+      this.material = meta.getTrim().getMaterial().getKey().getKey();
+      this.pattern = meta.getTrim().getPattern().getKey().getKey();
     }
   }
 
@@ -69,22 +61,23 @@ public class SpongeFireworkData extends FireworkData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    stack.offer(Keys.FIREWORK_FLIGHT_MODIFIER, Ticks.of(power));
+    final ArmorMeta meta = (ArmorMeta)ParsingUtil.buildFor(stack, ArmorMeta.class);
 
-    final List<FireworkEffect> effs = new ArrayList<>();
-    for(SerialFireworkEffect effect : effects) {
-      effs.add(ParsingUtil.fromSerial(effect));
-    }
+    if(material != null && pattern != null) {
+      try {
 
-    if(!effs.isEmpty()) {
-      stack.offer(Keys.FIREWORK_EFFECTS, effs);
+        final TrimMaterial materialObj = Registry.TRIM_MATERIAL.get(NamespacedKey.fromString(material));
+        final TrimPattern patternObj = Registry.TRIM_PATTERN.get(NamespacedKey.fromString(pattern));
+        if(materialObj != null && patternObj != null) {
+
+          meta.setTrim(new ArmorTrim(materialObj, patternObj));
+        }
+
+      } catch(Exception ignore) {
+      }
     }
+    stack.setItemMeta(meta);
 
     return stack;
-  }
-
-  @Override
-  public boolean applies() {
-    return applies;
   }
 }

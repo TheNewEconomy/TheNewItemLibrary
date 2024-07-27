@@ -23,7 +23,6 @@ import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * ArmourData

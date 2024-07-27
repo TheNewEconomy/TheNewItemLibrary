@@ -1,4 +1,4 @@
-package net.tnemc.item.providers;
+package net.tnemc.sponge.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -20,34 +20,37 @@ package net.tnemc.item.providers;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import java.util.LinkedList;
+import net.tnemc.item.SerialItemData;
+import net.tnemc.item.data.CrossBowData;
+import org.spongepowered.api.item.inventory.ItemStack;
 
-/**
- * HelperMethods
- *
- * @author creatorfromhell
- * @since 0.1.7.5-Pre-5
- */
-public interface HelperMethods {
+public class SpongeCrossbowData extends CrossBowData<ItemStack> {
+
+  protected boolean applies = false;
 
   /**
-   * Returns a collection of materials.
+   * This method is used to convert from the implementation's ItemStack object to a valid
+   * {@link SerialItemData} object.
    *
-   * @return a collection of materials
+   * @param stack The locale itemstack object of the implementation.
    */
-  LinkedList<String> materials();
+  @Override
+  public void of(ItemStack stack) {
+  }
 
   /**
-   * Returns a collection of enchantments.
+   * This method is used to apply the data to the implementation's locale itemstack format.
    *
-   * @return a collection of enchantments
+   * @param stack The locale itemstack object of the implementation.
    */
-  LinkedList<String> enchantments();
+  @Override
+  public ItemStack apply(ItemStack stack) {
 
-  /**
-   * Returns a collection of flags.
-   *
-   * @return a collection of flags
-   */
-  LinkedList<String> flags();
+    return stack;
+  }
+
+  @Override
+  public boolean applies() {
+    return applies;
+  }
 }

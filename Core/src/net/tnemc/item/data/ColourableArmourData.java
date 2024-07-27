@@ -1,8 +1,6 @@
 package net.tnemc.item.data;
-
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -24,22 +22,27 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-public abstract class ShulkerData<T> extends ItemStorageData<T> {
+/**
+ * ColourableArmourData
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public abstract class ColourableArmourData<T> extends ArmourData<T> {
 
   protected int colorRGB;
 
   @Override
   public JSONObject toJSON() {
     final JSONObject json = super.toJSON();
-    json.put("name", "shulker");
+    json.put("name", "colourable_armor");
     json.put("colour", colorRGB);
-    json.put("items", super.toJSON());
     return json;
   }
 
   @Override
   public void readJSON(JSONHelper json) {
-    this.colorRGB = json.getInteger("colour");
+    if(json.has("color")) colorRGB = json.getInteger("colour");
     super.readJSON(json);
   }
 
@@ -53,8 +56,8 @@ public abstract class ShulkerData<T> extends ItemStorageData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof ShulkerData<?> compare) {
-      return colorRGB == compare.colorRGB && super.equals(data);
+    if(data instanceof ColourableArmourData<?> compare) {
+      return colorRGB == compare.colorRGB && super.equals(compare);
     }
     return false;
   }

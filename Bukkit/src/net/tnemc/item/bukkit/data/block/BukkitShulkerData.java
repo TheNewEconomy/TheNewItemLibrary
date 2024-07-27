@@ -1,4 +1,4 @@
-package net.tnemc.sponge.data;
+package net.tnemc.item.bukkit.data.block;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -20,20 +20,18 @@ package net.tnemc.sponge.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.SkullData;
-import net.tnemc.item.providers.SkullProfile;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.Keys;
-import org.spongepowered.api.entity.living.player.server.ServerPlayer;
-import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.profile.GameProfile;
+import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.ShulkerData;
+import org.bukkit.Material;
+import org.bukkit.block.ShulkerBox;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 
-import java.util.Optional;
-
-public class SpongeSkullData extends SkullData<ItemStack> {
-
-  protected boolean applies = false;
+public class BukkitShulkerData extends ShulkerData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -43,13 +41,21 @@ public class SpongeSkullData extends SkullData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
 
-    final Optional<GameProfile> gameProfileOpt = stack.get(Keys.GAME_PROFILE);
-    this.profile = new SkullProfile();
-    gameProfileOpt.ifPresent(gameProfile ->{
-      profile.setUuid(gameProfile.uuid());
-      applies = true;
-    });
+    if(meta != null && meta.getBlockState() instanceof ShulkerBox box) {
+
+      if(box.getColor() != null) {
+        colorRGB = box.getColor().getColor().asRGB();
+      }
+
+      final Inventory inventory = box.getInventory();
+      for(int i = 0; i < inventory.getSize(); i++) {
+        if(inventory.getItem(i) != null && !inventory.getItem(i).getType().equals(Material.AIR)) {
+          items.put(i, new SerialItem<>(BukkitItemStack.locale(inventory.getItem(i))));
+        }
+      }
+    }
   }
 
   /**
@@ -60,16 +66,15 @@ public class SpongeSkullData extends SkullData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    if(profile != null && profile.getUuid() != null) {
-      final Optional<ServerPlayer> player = Sponge.server().player(profile.getUuid());
-      player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
+    final BlockStateMeta meta = (BlockStateMeta)ParsingUtil.buildFor(stack, BlockStateMeta.class);
+
+    if(meta.getBlockState() instanceof ShulkerBox box) {
+
+      items.forEach((slot, item)->box.getInventory().setItem(slot, item.getStack().locale()));
+      box.update(true);
+      meta.setBlockState(box);
+      stack.setItemMeta(meta);
     }
-
     return stack;
-  }
-
-  @Override
-  public boolean applies() {
-    return applies;
   }
 }

@@ -22,9 +22,6 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.data.potion.PotionEffectData;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * FoodRule
  *
@@ -45,7 +42,7 @@ public class FoodRule {
   }
 
   public JSONObject toJSON() {
-    JSONObject rule = new JSONObject();
+    final JSONObject rule = new JSONObject();
     rule.put("effect", potionEffect.toJSON());
     rule.put("chance", chance);
 

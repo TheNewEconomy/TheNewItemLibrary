@@ -36,7 +36,7 @@ public abstract class ItemStorageData<T> implements SerialItemData<T> {
 
   @Override
   public JSONObject toJSON() {
-    JSONObject itemsObj = new JSONObject();
+    final JSONObject itemsObj = new JSONObject();
     items.forEach((slot, item)->{
       itemsObj.put(slot, item.toJSON());
     });
@@ -65,8 +65,7 @@ public abstract class ItemStorageData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof ItemStorageData) {
-      ItemStorageData<?> compare = (ItemStorageData<?>)data;
+    if(data instanceof ItemStorageData<?> compare) {
 
       if(items.size() != compare.items.size()) return false;
 

@@ -21,11 +21,7 @@ package net.tnemc.item.data.potion;
  */
 
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.component.impl.FoodRule;
 import org.json.simple.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PotionEffectData {
 
@@ -48,7 +44,7 @@ public class PotionEffectData {
   }
 
   public JSONObject toJSON() {
-    JSONObject effObject = new JSONObject();
+    final JSONObject effObject = new JSONObject();
     effObject.put("name", name);
     effObject.put("amplifier", amplifier);
     effObject.put("duration", duration);

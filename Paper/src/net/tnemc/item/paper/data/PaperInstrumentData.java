@@ -1,8 +1,6 @@
-package net.tnemc.sponge.data;
-
+package net.tnemc.item.paper.data;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -20,21 +18,22 @@ package net.tnemc.sponge.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.key.Key;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.SkullData;
-import net.tnemc.item.providers.SkullProfile;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.Keys;
-import org.spongepowered.api.entity.living.player.server.ServerPlayer;
-import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.profile.GameProfile;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.InstrumentData;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.MusicInstrumentMeta;
 
-import java.util.Optional;
-
-public class SpongeSkullData extends SkullData<ItemStack> {
-
-  protected boolean applies = false;
-
+/**
+ * BukkitInstrumentData
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public class PaperInstrumentData extends InstrumentData<ItemStack> {
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -43,13 +42,16 @@ public class SpongeSkullData extends SkullData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final MusicInstrumentMeta meta = (MusicInstrumentMeta)stack.getItemMeta();
 
-    final Optional<GameProfile> gameProfileOpt = stack.get(Keys.GAME_PROFILE);
-    this.profile = new SkullProfile();
-    gameProfileOpt.ifPresent(gameProfile ->{
-      profile.setUuid(gameProfile.uuid());
-      applies = true;
-    });
+    if(meta != null && meta.getInstrument() != null) {
+
+      try {
+        this.instrument = meta.getInstrument().getKey().getKey();
+      } catch(Exception ignore) {
+        this.instrument = meta.getInstrument().key().asString();
+      }
+    }
   }
 
   /**
@@ -60,16 +62,18 @@ public class SpongeSkullData extends SkullData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    if(profile != null && profile.getUuid() != null) {
-      final Optional<ServerPlayer> player = Sponge.server().player(profile.getUuid());
-      player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
+    final MusicInstrumentMeta meta = (MusicInstrumentMeta)ParsingUtil.buildFor(stack, MusicInstrumentMeta.class);
+
+    if(this.instrument != null) {
+
+      try {
+        meta.setInstrument(Registry.INSTRUMENT.get(NamespacedKey.fromString(this.instrument)));
+      } catch(Exception ignore) {
+        meta.setInstrument(Registry.INSTRUMENT.get(Key.key(this.instrument)));
+      }
     }
+    stack.setItemMeta(meta);
 
     return stack;
-  }
-
-  @Override
-  public boolean applies() {
-    return applies;
   }
 }

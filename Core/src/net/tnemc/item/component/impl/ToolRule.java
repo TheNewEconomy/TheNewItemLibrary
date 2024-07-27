@@ -19,7 +19,6 @@ package net.tnemc.item.component.impl;
  */
 
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.data.firework.SerialFireworkEffect;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
@@ -48,11 +47,11 @@ public class ToolRule {
   }
 
   public JSONObject toJSON() {
-    JSONObject rule = new JSONObject();
+    final JSONObject rule = new JSONObject();
     rule.put("speed", speed);
     rule.put("drops", drops);
 
-    if(materials.size() > 0) {
+    if(!materials.isEmpty()) {
       final JSONObject materialsObj = new JSONObject();
       for (int i = 0; i < materials.size(); i++) {
         materialsObj.put(i, materials.get(i));
@@ -75,7 +74,7 @@ public class ToolRule {
 
     final List<String> materials = new ArrayList<>();
     if(json.has("materials")) {
-      JSONObject materialsObj = json.getJSON("materials");
+      final JSONObject materialsObj = json.getJSON("materials");
       materialsObj.forEach((ignore, value)->materials.add(String.valueOf(value)));
     }
     rule.setMaterials(materials);

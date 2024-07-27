@@ -1,8 +1,6 @@
-package net.tnemc.sponge.data;
-
+package net.tnemc.item.bukkitbase.data;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -21,12 +19,19 @@ package net.tnemc.sponge.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.CrossBowMeta;
-import org.spongepowered.api.item.inventory.ItemStack;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.BookData;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 
-public class SpongeCrossbowMeta extends CrossBowMeta<ItemStack> {
+/**
+ * BukkitBookMeta
+ *
+ * @author creatorfromhell
+ * @since 0.0.1.0
+ */
+public class BukkitBookMeta extends BookData<ItemStack> {
 
-  protected boolean applies = false;
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -36,6 +41,20 @@ public class SpongeCrossbowMeta extends CrossBowMeta<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final BookMeta meta = (BookMeta)stack.getItemMeta();
+
+    if(meta != null) {
+      this.title = meta.getTitle();
+      this.author = meta.getAuthor();
+      this.pages.clear();
+      this.pages.addAll(meta.getPages());
+
+      if(meta.getGeneration() != null) {
+        this.generation = meta.getGeneration().name();
+      } else {
+        this.generation = "";
+      }
+    }
   }
 
   /**
@@ -46,11 +65,17 @@ public class SpongeCrossbowMeta extends CrossBowMeta<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    return stack;
-  }
+    final BookMeta meta = (BookMeta)ParsingUtil.buildFor(stack, BookMeta.class);
 
-  @Override
-  public boolean applies() {
-    return applies;
+    meta.setTitle(title);
+    meta.setAuthor(author);
+
+    if(!this.generation.equalsIgnoreCase("")) {
+      meta.setGeneration(BookMeta.Generation.valueOf(generation));
+    }
+    meta.setPages(pages);
+    stack.setItemMeta(meta);
+
+    return stack;
   }
 }

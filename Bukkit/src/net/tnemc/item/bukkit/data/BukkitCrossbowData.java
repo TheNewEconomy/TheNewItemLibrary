@@ -1,4 +1,4 @@
-package net.tnemc.sponge.data;
+package net.tnemc.item.bukkit.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -20,20 +20,15 @@ package net.tnemc.sponge.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.SkullData;
-import net.tnemc.item.providers.SkullProfile;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.Keys;
-import org.spongepowered.api.entity.living.player.server.ServerPlayer;
-import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.profile.GameProfile;
+import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.CrossBowData;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CrossbowMeta;
 
-import java.util.Optional;
-
-public class SpongeSkullData extends SkullData<ItemStack> {
-
-  protected boolean applies = false;
+public class BukkitCrossbowData extends CrossBowData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -43,13 +38,15 @@ public class SpongeSkullData extends SkullData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final CrossbowMeta meta = (CrossbowMeta)stack.getItemMeta();
 
-    final Optional<GameProfile> gameProfileOpt = stack.get(Keys.GAME_PROFILE);
-    this.profile = new SkullProfile();
-    gameProfileOpt.ifPresent(gameProfile ->{
-      profile.setUuid(gameProfile.uuid());
-      applies = true;
-    });
+    if(meta != null) {
+      int i = 0;
+      for(final ItemStack item : meta.getChargedProjectiles()) {
+        items.put(i, new SerialItem<>(BukkitItemStack.locale(item)));
+        i++;
+      }
+    }
   }
 
   /**
@@ -60,16 +57,11 @@ public class SpongeSkullData extends SkullData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    if(profile != null && profile.getUuid() != null) {
-      final Optional<ServerPlayer> player = Sponge.server().player(profile.getUuid());
-      player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
-    }
+    final CrossbowMeta meta = (CrossbowMeta)ParsingUtil.buildFor(stack, CrossbowMeta.class);
+
+
+    items.forEach((slot, item)->meta.addChargedProjectile(item.getStack().locale()));
 
     return stack;
-  }
-
-  @Override
-  public boolean applies() {
-    return applies;
   }
 }

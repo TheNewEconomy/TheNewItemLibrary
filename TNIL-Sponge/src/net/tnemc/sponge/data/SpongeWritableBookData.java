@@ -30,7 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class SpongeBookData extends BookData<ItemStack> {
+public class SpongeWritableBookData extends BookData<ItemStack> {
 
   protected boolean applies = false;
 

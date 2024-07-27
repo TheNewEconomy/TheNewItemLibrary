@@ -24,23 +24,30 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-public abstract class ShulkerData<T> extends ItemStorageData<T> {
+public abstract class InstrumentData<T> implements SerialItemData<T> {
 
-  protected int colorRGB;
+  protected String instrument;
 
+  /**
+   * Converts the {@link SerialItemData} to a JSON object.
+   *
+   * @return The JSONObject representing this {@link SerialItemData}.
+   */
   @Override
   public JSONObject toJSON() {
-    final JSONObject json = super.toJSON();
-    json.put("name", "shulker");
-    json.put("colour", colorRGB);
-    json.put("items", super.toJSON());
+    final JSONObject json = new JSONObject();
+    json.put("instrument", instrument);
     return json;
   }
 
+  /**
+   * Reads JSON data and converts it back to a {@link SerialItemData} object.
+   *
+   * @param json The JSONHelper instance of the json data.
+   */
   @Override
   public void readJSON(JSONHelper json) {
-    this.colorRGB = json.getInteger("colour");
-    super.readJSON(json);
+    if(json.has("instrument")) instrument = json.getString("instrument");
   }
 
   /**
@@ -53,8 +60,10 @@ public abstract class ShulkerData<T> extends ItemStorageData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof ShulkerData<?> compare) {
-      return colorRGB == compare.colorRGB && super.equals(data);
+
+    if(data instanceof InstrumentData<?> instrumentMeta ) {
+
+      return instrumentMeta.instrument.equalsIgnoreCase(instrument);
     }
     return false;
   }

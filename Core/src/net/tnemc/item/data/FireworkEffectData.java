@@ -35,7 +35,7 @@ public abstract class FireworkEffectData<T> implements SerialItemData<T> {
    * @return The JSONObject representing this {@link SerialItemData}.
    */
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "fireworkeffect");
 
     json.put("effect_info", effect.toJSON());

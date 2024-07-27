@@ -25,7 +25,6 @@ import net.tnemc.item.SerialItemData;
 import net.tnemc.item.data.banner.PatternData;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,14 +39,14 @@ public abstract class BannerData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "banner");
 
 
     int i = 0;
-    JSONObject patternsObject = new JSONObject();
+    final JSONObject patternsObject = new JSONObject();
     for(PatternData pattern : patterns) {
-      JSONObject patternObj = new JSONObject();
+      final JSONObject patternObj = new JSONObject();
       patternObj.put("colour", pattern.getColor());
       patternObj.put("pattern", pattern.getPattern());
       patternsObject.put(i, patternObj);
@@ -65,7 +64,7 @@ public abstract class BannerData<T> implements SerialItemData<T> {
   @Override
   public void readJSON(JSONHelper json) {
     json.getJSON("patterns").forEach((key, value)->{
-      JSONHelper helperObj = new JSONHelper((JSONObject)value);
+      final JSONHelper helperObj = new JSONHelper((JSONObject)value);
       final PatternData pattern = new PatternData(helperObj.getString("colour"),
                                                   helperObj.getString("pattern"));
       patterns.add(pattern);
@@ -82,8 +81,7 @@ public abstract class BannerData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof BannerData) {
-      BannerData<?> compare = (BannerData<?>)data;
+    if(data instanceof BannerData<?> compare) {
       return patterns.equals(compare.patterns);
     }
     return false;

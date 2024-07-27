@@ -93,7 +93,7 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof SerialPotionData compare) {
+    if(data instanceof SerialPotionData<?> compare) {
       return customEffects.equals(compare.customEffects) &&  type.equalsIgnoreCase(compare.type)
           && colorRGB == compare.colorRGB && extended == compare.extended
           && upgraded == compare.upgraded;

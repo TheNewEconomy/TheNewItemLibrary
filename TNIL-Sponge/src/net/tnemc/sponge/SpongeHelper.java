@@ -24,7 +24,6 @@ import net.tnemc.item.providers.HelperMethods;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.registry.RegistryTypes;
 
-import java.util.Collection;
 import java.util.LinkedList;
 
 /**

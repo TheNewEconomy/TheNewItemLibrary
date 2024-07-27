@@ -30,7 +30,7 @@ public abstract class LeatherData<T> implements SerialItemData<T> {
 
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "leather");
     json.put("colour", colorRGB);
     return json;
@@ -51,8 +51,7 @@ public abstract class LeatherData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof LeatherData) {
-      LeatherData<?> compare = (LeatherData<?>)data;
+    if(data instanceof LeatherData<?> compare) {
       return colorRGB == compare.colorRGB;
     }
     return false;

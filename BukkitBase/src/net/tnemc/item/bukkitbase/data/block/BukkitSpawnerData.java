@@ -1,8 +1,6 @@
-package net.tnemc.sponge.data;
-
+package net.tnemc.item.bukkitbase.data.block;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -21,19 +19,20 @@ package net.tnemc.sponge.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.SkullData;
-import net.tnemc.item.providers.SkullProfile;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.Keys;
-import org.spongepowered.api.entity.living.player.server.ServerPlayer;
-import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.profile.GameProfile;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.CreatureData;
+import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 
-import java.util.Optional;
-
-public class SpongeSkullData extends SkullData<ItemStack> {
-
-  protected boolean applies = false;
+/**
+ * BukkitSpawnerData
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public class BukkitSpawnerData extends CreatureData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -43,13 +42,14 @@ public class SpongeSkullData extends SkullData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
 
-    final Optional<GameProfile> gameProfileOpt = stack.get(Keys.GAME_PROFILE);
-    this.profile = new SkullProfile();
-    gameProfileOpt.ifPresent(gameProfile ->{
-      profile.setUuid(gameProfile.uuid());
-      applies = true;
-    });
+    if(meta != null && meta.getBlockState() instanceof CreatureSpawner spawner) {
+
+      if(spawner.getSpawnedType() != null) {
+        entity = spawner.getSpawnedType().name();
+      }
+    }
   }
 
   /**
@@ -60,16 +60,14 @@ public class SpongeSkullData extends SkullData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    if(profile != null && profile.getUuid() != null) {
-      final Optional<ServerPlayer> player = Sponge.server().player(profile.getUuid());
-      player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
+    final BlockStateMeta meta = (BlockStateMeta)ParsingUtil.buildFor(stack, BlockStateMeta.class);
+
+    if(meta.getBlockState() instanceof CreatureSpawner spawner) {
+
+      spawner.setSpawnedType(EntityType.valueOf(entity));
+      meta.setBlockState(spawner);
+      stack.setItemMeta(meta);
     }
-
     return stack;
-  }
-
-  @Override
-  public boolean applies() {
-    return applies;
   }
 }

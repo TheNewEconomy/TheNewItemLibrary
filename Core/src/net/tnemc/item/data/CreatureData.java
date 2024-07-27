@@ -1,8 +1,6 @@
 package net.tnemc.item.data;
-
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -24,23 +22,39 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-public abstract class ShulkerData<T> extends ItemStorageData<T> {
+/**
+ * CreatureData
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public abstract class CreatureData<T> implements SerialItemData<T> {
 
-  protected int colorRGB;
+  protected String entity;
 
+  /**
+   * Converts the {@link SerialItemData} to a JSON object.
+   *
+   * @return The JSONObject representing this {@link SerialItemData}.
+   */
   @Override
   public JSONObject toJSON() {
-    final JSONObject json = super.toJSON();
-    json.put("name", "shulker");
-    json.put("colour", colorRGB);
-    json.put("items", super.toJSON());
+    final JSONObject json = new JSONObject();
+    json.put("name", "creature");
+    json.put("entity", entity);
     return json;
   }
 
+  /**
+   * Reads JSON data and converts it back to a {@link SerialItemData} object.
+   *
+   * @param json The JSONHelper instance of the json data.
+   */
   @Override
   public void readJSON(JSONHelper json) {
-    this.colorRGB = json.getInteger("colour");
-    super.readJSON(json);
+    if(json.has("entity")) {
+      this.entity = json.getString("entity");
+    }
   }
 
   /**
@@ -53,8 +67,8 @@ public abstract class ShulkerData<T> extends ItemStorageData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof ShulkerData<?> compare) {
-      return colorRGB == compare.colorRGB && super.equals(data);
+    if(data instanceof CreatureData<?> compare) {
+      return entity.equalsIgnoreCase(compare.entity);
     }
     return false;
   }

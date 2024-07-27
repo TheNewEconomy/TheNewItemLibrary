@@ -30,7 +30,7 @@ import java.util.List;
 
 public abstract class FireworkData<T> implements SerialItemData<T> {
 
-  protected List<SerialFireworkEffect> effects = new ArrayList<>();
+  protected final List<SerialFireworkEffect> effects = new ArrayList<>();
 
   protected long power;
 
@@ -41,12 +41,12 @@ public abstract class FireworkData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject firework = new JSONObject();
+    final JSONObject firework = new JSONObject();
     firework.put("name", "firework");
     firework.put("power", power);
 
     if(effects.size() > 0) {
-      JSONObject effectsObj = new JSONObject();
+      final JSONObject effectsObj = new JSONObject();
       for(int it = 0; it < effects.size(); it++) {
         effectsObj.put(it, effects.get(it).toJSON());
       }
@@ -66,7 +66,7 @@ public abstract class FireworkData<T> implements SerialItemData<T> {
     if(json.has("effects")) {
       JSONHelper effectsObj = json.getHelper("effects");
 
-      effects = new ArrayList<>();
+      effects.clear();
       effectsObj.getObject().forEach((key, value)->effects.add(SerialFireworkEffect.readJSON(new JSONHelper((JSONObject)value))));
     }
   }
@@ -81,8 +81,7 @@ public abstract class FireworkData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof FireworkData) {
-      FireworkData<?> compare = (FireworkData<?>)data;
+    if(data instanceof FireworkData<?> compare) {
       return effects.equals(compare.effects) && power == compare.power;
     }
     return false;

@@ -20,11 +20,10 @@ package net.tnemc.item.bukkit;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.data.BukkitBundleData;
-import net.tnemc.item.bukkit.data.BukkitCrossbowMeta;
-import net.tnemc.item.bukkit.data.BukkitShulkerData;
+import net.tnemc.item.bukkit.data.BukkitCrossbowData;
+import net.tnemc.item.bukkit.data.block.BukkitShulkerData;
 import net.tnemc.item.bukkitbase.data.BukkitAxolotlData;
 import net.tnemc.item.bukkitbase.data.BukkitBannerData;
-import net.tnemc.item.bukkitbase.data.BukkitBookData;
 import net.tnemc.item.bukkitbase.data.BukkitCompassData;
 import net.tnemc.item.bukkitbase.data.BukkitEnchantData;
 import net.tnemc.item.bukkitbase.data.BukkitFireworkData;
@@ -37,8 +36,12 @@ import net.tnemc.item.bukkitbase.data.BukkitRepairableMeta;
 import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.bukkitbase.data.BukkitSuspiciousStewData;
 import net.tnemc.item.bukkitbase.data.BukkitTropicalFishData;
+import net.tnemc.item.bukkitbase.data.BukkitWritableBookData;
+import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BlockStateMeta;
@@ -46,6 +49,7 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.BundleMeta;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.CrossbowMeta;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -71,8 +75,11 @@ public class BukkitMetaBuild {
 
   public static Optional<SerialItemData<ItemStack>> parseMeta(final ItemStack stack) {
 
+    final String currentVersion = Bukkit.getServer().getBukkitVersion().split("-")[0];
     SerialItemData<ItemStack> data = null;
 
+    //TODO: Armour data
+    //TODO: DamageableData
     if(stack.hasItemMeta()) {
       final ItemMeta meta = stack.getItemMeta();
       if(meta instanceof AxolotlBucketMeta) {
@@ -80,17 +87,17 @@ public class BukkitMetaBuild {
       } else if(meta instanceof BannerMeta) {
         data = new BukkitBannerData();
       } else if(meta instanceof BlockStateMeta) {
-        if(((BlockStateMeta)meta).getBlockState() instanceof ShulkerBox) {
+        if(VersionUtil.isOneEleven(currentVersion) && ((BlockStateMeta)meta).getBlockState() instanceof ShulkerBox) {
           data = new BukkitShulkerData();
         }
       } else if(meta instanceof BookMeta) {
-        data = new BukkitBookData();
+        data = new BukkitWritableBookData();
       } else if(meta instanceof BundleMeta) {
         data = new BukkitBundleData();
       } else if(meta instanceof CompassMeta) {
         data = new BukkitCompassData();
       } else if(meta instanceof CrossbowMeta) {
-        data = new BukkitCrossbowMeta();
+        data = new BukkitCrossbowData();
       } else if(meta instanceof EnchantmentStorageMeta) {
         data = new BukkitEnchantData();
       } else if(meta instanceof FireworkEffectMeta) {
@@ -113,6 +120,15 @@ public class BukkitMetaBuild {
         data = new BukkitSuspiciousStewData();
       } else if(meta instanceof TropicalFishBucketMeta) {
         data = new BukkitTropicalFishData();
+      }
+
+      if(VersionUtil.isVersion("1.21.0", currentVersion)) {
+
+        if(meta instanceof ArmorMeta) {
+
+        } else if(meta instanceof Damageable) {
+
+        }
       }
 
       if(data != null) {

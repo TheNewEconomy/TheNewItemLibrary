@@ -23,8 +23,12 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.registry.RegistryTypes;
 import org.spongepowered.api.util.Color;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     private final Map<String, SerialItemData<ItemStack>> data = new HashMap<>();
@@ -266,12 +270,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     }
 
     @Override
-    public AbstractItemStack<ItemStack> applyComponent(SerialComponent<ItemStack> component) {
-        this.components.put(component.getType(), component);
-        return this;
-    }
-
-    @Override
     public List<String> flags() {
         return flags;
     }
@@ -410,7 +408,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
         if(!Objects.equals(customModelData, stack.customModelData)) return false;
         if(unbreakable != stack.unbreakable) return false;
 
-        if(!componentsEqual(lore, stack.lore)) return false;
+        if(!textComponentsEqual(lore, stack.lore)) return false;
         if(!listsEquals(flags, stack.flags)) return false;
         if(!attributes.equals(stack.attributes)) return false;
         if(!enchantments.equals(stack.enchantments)) return false;

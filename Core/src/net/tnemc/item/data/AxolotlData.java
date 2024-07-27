@@ -35,7 +35,7 @@ public abstract class AxolotlData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "axolotl");
     json.put("variant", variant);
     return json;
@@ -63,8 +63,7 @@ public abstract class AxolotlData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof AxolotlData) {
-      AxolotlData<?> compare = (AxolotlData<?>)data;
+    if(data instanceof AxolotlData<?> compare) {
       return variant.equalsIgnoreCase(compare.variant);
     }
     return false;

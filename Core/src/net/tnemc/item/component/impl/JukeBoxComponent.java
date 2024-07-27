@@ -23,8 +23,6 @@ import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
 import org.json.simple.JSONObject;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -53,7 +51,7 @@ public abstract class JukeBoxComponent<T> implements SerialComponent<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject jukebox = new JSONObject();
+    final JSONObject jukebox = new JSONObject();
     jukebox.put("name", "jukebox-component");
     jukebox.put("song", song);
     jukebox.put("toolTip", toolTip);

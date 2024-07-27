@@ -21,7 +21,6 @@ package net.tnemc.item.paper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.data.BukkitAxolotlData;
 import net.tnemc.item.bukkitbase.data.BukkitBannerData;
-import net.tnemc.item.bukkitbase.data.BukkitBookData;
 import net.tnemc.item.bukkitbase.data.BukkitCompassData;
 import net.tnemc.item.bukkitbase.data.BukkitEnchantData;
 import net.tnemc.item.bukkitbase.data.BukkitFireworkData;
@@ -34,9 +33,11 @@ import net.tnemc.item.bukkitbase.data.BukkitRepairableMeta;
 import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.bukkitbase.data.BukkitSuspiciousStewData;
 import net.tnemc.item.bukkitbase.data.BukkitTropicalFishData;
+import net.tnemc.item.bukkitbase.data.BukkitWritableBookData;
 import net.tnemc.item.paper.data.PaperBundleData;
-import net.tnemc.item.paper.data.PaperCrossbowMeta;
-import net.tnemc.item.paper.data.PaperShulkerData;
+import net.tnemc.item.paper.data.PaperCrossbowData;
+import net.tnemc.item.paper.data.block.PaperShulkerData;
+import org.bukkit.Bukkit;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
@@ -71,6 +72,7 @@ public class PaperMetaBuild {
 
   public static Optional<SerialItemData<ItemStack>> parseMeta(final ItemStack stack) {
 
+    final String currentVersion = Bukkit.getServer().getBukkitVersion().split("-")[0];
     SerialItemData<ItemStack> data = null;
 
     if(stack.hasItemMeta()) {
@@ -84,13 +86,13 @@ public class PaperMetaBuild {
           data = new PaperShulkerData();
         }
       } else if(meta instanceof BookMeta) {
-        data = new BukkitBookData();
+        data = new BukkitWritableBookData();
       } else if(meta instanceof BundleMeta) {
         data = new PaperBundleData();
       } else if(meta instanceof CompassMeta) {
         data = new BukkitCompassData();
       } else if(meta instanceof CrossbowMeta) {
-        data = new PaperCrossbowMeta();
+        data = new PaperCrossbowData();
       } else if(meta instanceof EnchantmentStorageMeta) {
         data = new BukkitEnchantData();
       } else if(meta instanceof FireworkEffectMeta) {

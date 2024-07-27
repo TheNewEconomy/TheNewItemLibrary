@@ -147,6 +147,32 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
         stack.getItemMeta().getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.getKey().getKey(), modifier));
       }
 
+      //1.21 compat
+      if(VersionUtil.isVersion("1.21.0", Bukkit.getServer().getBukkitVersion().split("-")[0])) {
+        if(stack.getItemMeta().hasRarity()) {
+          this.rarity = stack.getItemMeta().getRarity().name();
+        }
+
+        if(stack.getItemMeta().hasEnchantmentGlintOverride()) {
+          this.enchantGlint = stack.getItemMeta().getEnchantmentGlintOverride();
+        }
+
+        this.fireResistant = stack.getItemMeta().isFireResistant();
+        this.hideTooltip = stack.getItemMeta().isHideTooltip();
+
+        if(stack.getItemMeta().hasFood()) {
+          //TODO: This.
+        }
+
+        if(stack.getItemMeta().hasTool()) {
+          //TODO: This.
+        }
+
+        if(stack.getItemMeta().hasJukeboxPlayable()) {
+          //TODO: This.
+        }
+      }
+
       if(stack.getItemMeta().hasEnchants()) {
 
         stack.getItemMeta().getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().getKey(), level)));
@@ -348,12 +374,6 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public AbstractItemStack<ItemStack> applyComponent(SerialComponent<ItemStack> component) {
-    this.components.put(component.getType(), component);
-    return this;
-  }
-
-  @Override
   public List<String> flags() {
     return flags;
   }
@@ -520,7 +540,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
     //TODO: 1.21 comps
 
-    if(!componentsEqual(lore, stack.lore)) return false;
+    if(!textComponentsEqual(lore, stack.lore)) return false;
     if(debug || stack.debug) System.out.println("Lore Check Passed");
     if(!listsEquals(flags, stack.flags)) return false;
     if(debug || stack.debug) System.out.println("Flags Check Passed");

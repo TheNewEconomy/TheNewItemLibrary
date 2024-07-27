@@ -22,8 +22,6 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-import java.util.Objects;
-
 /**
  * DamageableData
  *
@@ -32,8 +30,8 @@ import java.util.Objects;
  */
 public abstract  class DamageableData<T> implements SerialItemData<T> {
 
-  protected int damage;
-  protected int maxDamage;
+  protected int damage = -1;
+  protected int maxDamage = -1;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -71,8 +69,8 @@ public abstract  class DamageableData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof DamageableData<?> damage) {
-      return damage.damage == this.damage && damage.maxDamage == this.maxDamage;
+    if(data instanceof DamageableData<?> damageData) {
+      return damageData.damage == this.damage && damageData.maxDamage == this.maxDamage;
     }
     return false;
   }

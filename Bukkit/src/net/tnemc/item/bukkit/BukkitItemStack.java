@@ -45,7 +45,13 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Represents an ItemStack object related to the Bukkit API.
@@ -341,12 +347,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public AbstractItemStack<ItemStack> applyComponent(SerialComponent<ItemStack> component) {
-    this.components.put(component.getType(), component);
-    return this;
-  }
-
-  @Override
   public List<String> flags() {
     return flags;
   }
@@ -495,7 +495,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
     //TODO: 1.21 comps
 
-    if(!componentsEqual(lore, stack.lore)) return false;
+    if(!textComponentsEqual(lore, stack.lore)) return false;
     if(!listsEquals(flags, stack.flags)) return false;
     if(!attributes.equals(stack.attributes)) return false;
     if(!enchantments.equals(stack.enchantments)) return false;

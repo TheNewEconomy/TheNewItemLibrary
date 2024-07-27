@@ -21,14 +21,18 @@ package net.tnemc.item;
  */
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 public interface AbstractItemStack<T> extends Cloneable {
 
@@ -87,7 +91,10 @@ public interface AbstractItemStack<T> extends Cloneable {
   AbstractItemStack<T> applyData(SerialItemData<T> data);
 
   //since 0.1.7.6
-  AbstractItemStack<T> applyComponent(SerialComponent<T> component);
+  default AbstractItemStack<T> applyComponent(SerialComponent<T> component) {
+    components().put(component.getType(), component);
+    return this;
+  }
 
   List<String> flags();
 
@@ -157,7 +164,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    */
   T locale();
 
-  default boolean componentsEqual(final List<Component> list1, final List<Component> list2) {
+  default boolean textComponentsEqual(final List<Component> list1, final List<Component> list2) {
     final LinkedList<String> list1Copy = new LinkedList<>();
     for(Component component : list1) {
       list1Copy.add(PlainTextComponentSerializer.plainText().serialize(component));

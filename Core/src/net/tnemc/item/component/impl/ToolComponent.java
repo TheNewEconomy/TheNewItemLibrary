@@ -22,10 +22,8 @@ package net.tnemc.item.component.impl;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.data.firework.SerialFireworkEffect;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,12 +55,12 @@ public abstract class ToolComponent<T> implements SerialComponent<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject tool = new JSONObject();
+    final JSONObject tool = new JSONObject();
     tool.put("name", "tool-component");
     tool.put("defaultSpeed", defaultSpeed);
     tool.put("blockDamage", blockDamage);
 
-    if(rules.size() > 0) {
+    if(!rules.isEmpty()) {
       final JSONObject rulesObj = new JSONObject();
       for(int it = 0; it < rules.size(); it++) {
         rulesObj.put(it, rules.get(it).toJSON());
@@ -83,7 +81,7 @@ public abstract class ToolComponent<T> implements SerialComponent<T> {
     blockDamage = json.getInteger("blockDamage");
 
     if(json.has("rules")) {
-      JSONHelper rulesObj = json.getHelper("rules");
+      final JSONHelper rulesObj = json.getHelper("rules");
       rules.clear();
 
       rulesObj.getObject().forEach((key, value)->rules.add(ToolRule.readJSON(new JSONHelper((JSONObject)value))));

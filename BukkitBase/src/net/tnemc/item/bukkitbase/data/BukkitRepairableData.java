@@ -1,8 +1,6 @@
-package net.tnemc.item.bukkit.data;
-
+package net.tnemc.item.bukkitbase.data;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -20,16 +18,19 @@ package net.tnemc.item.bukkit.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.data.CrossBowMeta;
+import net.tnemc.item.data.RepairableData;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.CrossbowMeta;
+import org.bukkit.inventory.meta.Repairable;
 
-public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
-
+/**
+ * BukkitDamageData
+ *
+ * @author creatorfromhell
+ * @since 0.0.1.0
+ */
+public class BukkitRepairableData extends RepairableData<ItemStack> {
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -38,14 +39,10 @@ public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final CrossbowMeta meta = (CrossbowMeta)stack.getItemMeta();
-
+    final Repairable meta = (Repairable)stack.getItemMeta();
     if(meta != null) {
-      int i = 0;
-      for(final ItemStack item : meta.getChargedProjectiles()) {
-        items.put(i, new SerialItem<>(BukkitItemStack.locale(item)));
-        i++;
-      }
+
+      this.cost = meta.getRepairCost();
     }
   }
 
@@ -57,11 +54,14 @@ public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final CrossbowMeta meta = (CrossbowMeta)ParsingUtil.buildFor(stack, CrossbowMeta.class);
+    final Repairable meta = (Repairable)ParsingUtil.buildFor(stack, Repairable.class);
 
+    if(this.cost > -1) {
+      meta.setRepairCost(this.cost);
+      stack.setItemMeta(meta);
+    }
 
-    items.forEach((slot, item)->meta.addChargedProjectile(item.getStack().locale()));
-
+    stack.setItemMeta(meta);
     return stack;
   }
 }

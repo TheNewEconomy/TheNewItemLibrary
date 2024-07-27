@@ -24,23 +24,47 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-public abstract class ShulkerData<T> extends ItemStorageData<T> {
+import java.util.LinkedList;
+import java.util.List;
 
-  protected int colorRGB;
+/**
+ * WritableBookMeta
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public abstract class WritableBookData<T> implements SerialItemData<T> {
 
+  protected final List<String> pages = new LinkedList<>();
+
+  /**
+   * Converts the {@link SerialItemData} to a JSON object.
+   *
+   * @return The JSONObject representing this {@link SerialItemData}.
+   */
   @Override
   public JSONObject toJSON() {
-    final JSONObject json = super.toJSON();
-    json.put("name", "shulker");
-    json.put("colour", colorRGB);
-    json.put("items", super.toJSON());
+    final JSONObject json = new JSONObject();
+    json.put("name", "writtable_book");
+
+    final JSONObject pagesObj = new JSONObject();
+    for(int i = 0; i < pages.size(); i++) {
+      pagesObj.put(i, pages.get(i));
+    }
+    json.put("pages", pagesObj);
     return json;
   }
 
+  /**
+   * Reads JSON data and converts it back to a {@link SerialItemData} object.
+   *
+   * @param json The JSONHelper instance of the json data.
+   */
   @Override
   public void readJSON(JSONHelper json) {
-    this.colorRGB = json.getInteger("colour");
-    super.readJSON(json);
+    final JSONObject pagesObj = json.getJSON("pages");
+    pages.clear();
+    pagesObj.forEach((key, page)->pages.add(String.valueOf(page)));
   }
 
   /**
@@ -53,8 +77,9 @@ public abstract class ShulkerData<T> extends ItemStorageData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof ShulkerData<?> compare) {
-      return colorRGB == compare.colorRGB && super.equals(data);
+
+    if(data instanceof WritableBookData<?> bookData) {
+      return pages.equals(bookData.pages);
     }
     return false;
   }
@@ -69,6 +94,10 @@ public abstract class ShulkerData<T> extends ItemStorageData<T> {
    */
   @Override
   public boolean similar(SerialItemData<? extends T> data) {
-    return equals(data);
+
+    if(data instanceof WritableBookData<?> bookData) {
+      return pages.equals(bookData.pages);
+    }
+    return false;
   }
 }

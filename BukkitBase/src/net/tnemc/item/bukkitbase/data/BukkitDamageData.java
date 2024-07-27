@@ -1,8 +1,6 @@
 package net.tnemc.item.bukkitbase.data;
-
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -22,12 +20,17 @@ package net.tnemc.item.bukkitbase.data;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.data.BookData;
+import net.tnemc.item.data.DamageableData;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.Damageable;
 
-public class BukkitBookData extends BookData<ItemStack> {
-
+/**
+ * BukkitDamageData
+ *
+ * @author creatorfromhell
+ * @since 0.0.1.0
+ */
+public class BukkitDamageData extends DamageableData<ItemStack> {
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -36,19 +39,11 @@ public class BukkitBookData extends BookData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final BookMeta meta = (BookMeta)stack.getItemMeta();
-
+    final Damageable meta = (Damageable)stack.getItemMeta();
     if(meta != null) {
-      this.title = meta.getTitle();
-      this.author = meta.getAuthor();
-      this.pages.clear();
-      this.pages.addAll(meta.getPages());
 
-      if(meta.getGeneration() != null) {
-        this.generation = meta.getGeneration().name();
-      } else {
-        this.generation = "";
-      }
+      this.damage = meta.getDamage();
+      this.maxDamage = meta.getDamage();
     }
   }
 
@@ -60,15 +55,16 @@ public class BukkitBookData extends BookData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final BookMeta meta = (BookMeta)ParsingUtil.buildFor(stack, BookMeta.class);
+    final Damageable meta = (Damageable)ParsingUtil.buildFor(stack, Damageable.class);
 
-    meta.setTitle(title);
-    meta.setAuthor(author);
-
-    if(!this.generation.equalsIgnoreCase("")) {
-      meta.setGeneration(BookMeta.Generation.valueOf(generation));
+    if(this.damage > -1) {
+      meta.setDamage(this.damage);
     }
-    meta.setPages(pages);
+
+    if(this.maxDamage > -1) {
+      meta.setDamage(this.maxDamage);
+    }
+
     stack.setItemMeta(meta);
 
     return stack;
