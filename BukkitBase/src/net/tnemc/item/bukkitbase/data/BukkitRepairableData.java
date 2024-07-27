@@ -25,10 +25,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Repairable;
 
 /**
- * BukkitDamageData
+ * BukkitRepairableData
  *
  * @author creatorfromhell
- * @since 0.0.1.0
+ * @since 0.1.7.7
  */
 public class BukkitRepairableData extends RepairableData<ItemStack> {
   /**
@@ -58,7 +58,6 @@ public class BukkitRepairableData extends RepairableData<ItemStack> {
 
     if(this.cost > -1) {
       meta.setRepairCost(this.cost);
-      stack.setItemMeta(meta);
     }
 
     stack.setItemMeta(meta);

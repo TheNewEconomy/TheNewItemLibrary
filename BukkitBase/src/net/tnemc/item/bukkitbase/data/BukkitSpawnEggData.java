@@ -1,8 +1,6 @@
 package net.tnemc.item.bukkitbase.data;
-
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -21,13 +19,16 @@ package net.tnemc.item.bukkitbase.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.data.RepairableData;
+import net.tnemc.item.data.CreatureData;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Repairable;
 
-public class BukkitRepairableMeta extends RepairableData<ItemStack> {
-
+/**
+ * BukkitSpawnEggData
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public class BukkitSpawnEggData extends CreatureData<ItemStack> {
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -36,11 +37,7 @@ public class BukkitRepairableMeta extends RepairableData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final Repairable meta = (Repairable)stack.getItemMeta();
 
-    if(meta != null && meta.hasRepairCost()) {
-      cost = meta.getRepairCost();
-    }
   }
 
   /**
@@ -50,14 +47,6 @@ public class BukkitRepairableMeta extends RepairableData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
-
-    final Repairable meta = (Repairable)ParsingUtil.buildFor(stack, Repairable.class);
-
-    if(hasCost()) {
-      meta.setRepairCost(cost);
-    }
-    stack.setItemMeta(meta);
-
-    return stack;
+    return null;
   }
 }

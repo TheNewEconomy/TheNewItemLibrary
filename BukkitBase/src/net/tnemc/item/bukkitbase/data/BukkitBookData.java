@@ -30,7 +30,7 @@ import org.bukkit.inventory.meta.BookMeta;
  * @author creatorfromhell
  * @since 0.0.1.0
  */
-public class BukkitBookMeta extends BookData<ItemStack> {
+public class BukkitBookData extends BookData<ItemStack> {
 
 
   /**
