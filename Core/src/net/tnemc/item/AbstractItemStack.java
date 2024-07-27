@@ -143,6 +143,24 @@ public interface AbstractItemStack<T> extends Cloneable {
     return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
   }
 
+  default <V> boolean listsEquals(final List<V> list1, final List<V> list2, boolean debug) {
+
+    if(debug) {
+
+      System.out.println("List 1");
+      for(V item : list1) {
+        System.out.println("Item: " + item);
+      }
+
+      System.out.println("List 2");
+      for(V item : list2) {
+        System.out.println("Item: " + item);
+      }
+    }
+
+    return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
+  }
+
   default <V> boolean setsEquals(final Set<V> list1, final Set<V> list2) {
     return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
   }
