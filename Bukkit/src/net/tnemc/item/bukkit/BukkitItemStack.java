@@ -27,7 +27,10 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
+import net.tnemc.item.bukkit.component.BukkitToolComponent;
 import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.bukkitbase.component.BukkitBaseFoodComponent;
+import net.tnemc.item.bukkitbase.component.BukkitJukeBoxComponent;
 import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.SkullProfile;
@@ -39,6 +42,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -68,6 +72,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   private int slot = 0;
   private SkullProfile profile = null;
   private Material material;
+  private Integer maxStack = 64;
   private Integer amount = 1;
   private Component display = Component.empty();
   private short damage = 0;
@@ -100,14 +105,22 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     attributes.putAll(stack.attributes);
     enchantments.putAll(stack.enchantments);
     lore.addAll(stack.lore);
+    components.putAll(stack.components);
 
+    profile = stack.profile;
     slot = stack.slot;
     material = stack.material;
+    maxStack = stack.maxStack;
     amount = stack.amount;
     display = stack.display;
     damage = stack.damage;
     customModelData = stack.customModelData;
     unbreakable = stack.unbreakable;
+    hideTooltip = stack.hideTooltip;
+    fireResistant = stack.fireResistant;
+    enchantGlint = stack.enchantGlint;
+    rarity = stack.rarity;
+
     data = stack.data;
 
     if(stack.profile != null) {
@@ -128,41 +141,72 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     damage = stack.getDurability();
 
     if(stack.hasItemMeta() && stack.getItemMeta()!= null) {
-      display = LegacyComponentSerializer.legacySection().deserialize(stack.getItemMeta().getDisplayName());
 
-      if(stack.getItemMeta().getLore() != null) {
+      final ItemMeta meta = stack.getItemMeta();
+      
+      display = LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName());
+
+      if(meta.getLore() != null) {
         lore.clear();
 
-        for(String str : stack.getItemMeta().getLore()) {
+        for(String str : meta.getLore()) {
           lore.add(LegacyComponentSerializer.legacySection().deserialize(str));
         }
       }
 
       // Check 1.13 version for compatibility with customModelData
-      if(VersionUtil.isOneFourteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && stack.getItemMeta().hasCustomModelData()) {
-        customModelData = stack.getItemMeta().getCustomModelData();
+      if(VersionUtil.isOneFourteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && meta.hasCustomModelData()) {
+        customModelData = meta.getCustomModelData();
       }
 
-      for(ItemFlag flag : stack.getItemMeta().getItemFlags()) {
+      //1.21 compat
+      if(VersionUtil.isVersion("1.21.0", Bukkit.getServer().getBukkitVersion().split("-")[0])) {
+
+        this.maxStack = meta.getMaxStackSize();
+        if(meta.hasRarity()) {
+          this.rarity = meta.getRarity().name();
+        }
+
+        if(meta.hasEnchantmentGlintOverride()) {
+          this.enchantGlint = meta.getEnchantmentGlintOverride();
+        }
+
+        this.fireResistant = meta.isFireResistant();
+        this.hideTooltip = meta.isHideTooltip();
+
+        if(meta.hasFood()) {
+          components.put("food", BukkitBaseFoodComponent.create(stack));
+        }
+
+        if(meta.hasTool()) {
+          components.put("tool", BukkitToolComponent.create(stack));
+        }
+
+        if(meta.hasJukeboxPlayable()) {
+          components.put("jukebox", BukkitJukeBoxComponent.create(stack));
+        }
+      }
+
+      for(ItemFlag flag : meta.getItemFlags()) {
         flags.add(flag.name());
       }
 
-      if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && stack.getItemMeta().getAttributeModifiers() != null) {
-        stack.getItemMeta().getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.name(), modifier));
+      if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && meta.getAttributeModifiers() != null) {
+        meta.getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.name(), modifier));
       }
 
-      if(stack.getItemMeta().hasEnchants()) {
+      if(meta.hasEnchants()) {
 
-        stack.getItemMeta().getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().toString(), level)));
+        meta.getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().toString(), level)));
       }
 
-      if(stack.hasItemMeta() && stack.getItemMeta() instanceof SkullMeta) {
+      if(stack.hasItemMeta() && meta instanceof SkullMeta) {
         final BukkitSkullData skullData = new BukkitSkullData();
         skullData.of(locale);
 
         this.profile = skullData.getProfile();
-
       }
+
 
     }
 
@@ -312,6 +356,12 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
+  public AbstractItemStack<ItemStack> maxStack(int maxStack) {
+    this.maxStack = maxStack;
+    return this;
+  }
+
+  @Override
   public AbstractItemStack<ItemStack> hideTooltip(boolean hideTooltip) {
     this.hideTooltip = hideTooltip;
     return this;
@@ -423,6 +473,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public boolean unbreakable() {
     return unbreakable;
+  }
+
+  @Override
+  public int maxStack() {
+    return maxStack;
   }
 
   @Override
@@ -577,6 +632,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
         if(VersionUtil.isVersion("1.21.0", Bukkit.getServer().getBukkitVersion().split("-")[0])) {
 
+          meta.setMaxStackSize(maxStack);
+          meta.setRarity(ItemRarity.valueOf(rarity));
+          meta.setEnchantmentGlintOverride(enchantGlint);
+          meta.setFireResistant(fireResistant);
+          meta.setHideTooltip(hideTooltip);
         }
       }
 
@@ -593,6 +653,14 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
       }
 
       stack.setItemMeta(meta);
+
+      if(VersionUtil.isVersion("1.21.0", Bukkit.getServer().getBukkitVersion().split("-")[0])) {
+
+        for(SerialComponent<ItemStack> component : components.values()) {
+          component.apply(stack);
+        }
+      }
+
       if(data != null) {
         stack = data.apply(stack);
       }

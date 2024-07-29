@@ -26,14 +26,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /**
  * BukkitFoodComponent
  *
  * @author creatorfromhell
- * @since 0.0.1.0
+ * @since 0.1.7.7
  */
 public class BukkitBaseFoodComponent extends FoodComponent<ItemStack> {
+
+  public static BukkitBaseFoodComponent create(ItemStack stack) {
+
+    final BukkitBaseFoodComponent component = new BukkitBaseFoodComponent();
+    component.of(stack);
+    return component;
+  }
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -67,7 +75,6 @@ public class BukkitBaseFoodComponent extends FoodComponent<ItemStack> {
 
         }
       }
-
     }
   }
 
@@ -83,7 +90,25 @@ public class BukkitBaseFoodComponent extends FoodComponent<ItemStack> {
       meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
     }
 
-    //TODO: How do you initialize a component?
+    final org.bukkit.inventory.meta.components.FoodComponent foodComponent = meta.getFood();
+    foodComponent.setCanAlwaysEat(noHunger);
+    foodComponent.setEatSeconds(eatTime);
+    foodComponent.setSaturation(saturation);
+    foodComponent.setNutrition(nutrition);
+
+    for(FoodRule rule : rules) {
+
+      final PotionEffectData effect = rule.getPotionEffect();
+
+      foodComponent.addEffect(new PotionEffect(PotionEffectType.getByName(effect.getName()),
+              effect.getDuration(),
+              effect.getAmplifier(),
+              effect.isAmbient(),
+              effect.hasParticles(),
+              effect.hasIcon()), rule.getChance());
+    }
+    meta.setFood(foodComponent);
+    stack.setItemMeta(meta);
     return stack;
   }
 }

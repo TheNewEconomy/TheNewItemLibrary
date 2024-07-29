@@ -26,8 +26,11 @@ import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.bukkitbase.component.BukkitBaseFoodComponent;
+import net.tnemc.item.bukkitbase.component.BukkitJukeBoxComponent;
 import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.paper.component.PaperToolComponent;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -38,6 +41,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -69,6 +73,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   private int slot = 0;
   private SkullProfile profile = null;
   private Material material;
+  private Integer maxStack = 64;
   private Integer amount = 1;
   private Component display = Component.empty();
   private int customModelData = -1;
@@ -101,14 +106,20 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     attributes.putAll(stack.attributes);
     enchantments.putAll(stack.enchantments);
     lore.addAll(stack.lore);
+    components.putAll(stack.components);
 
+    profile = stack.profile;
     slot = stack.slot;
     material = stack.material;
+    maxStack = stack.maxStack;
     amount = stack.amount;
     display = stack.display;
     customModelData = stack.customModelData;
     unbreakable = stack.unbreakable;
-    data = stack.data;
+    hideTooltip = stack.hideTooltip;
+    fireResistant = stack.fireResistant;
+    enchantGlint = stack.enchantGlint;
+    rarity = stack.rarity;
 
     if(stack.profile != null) {
       this.profile = stack.profile;
@@ -127,58 +138,63 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     amount = stack.getAmount();
 
     if(stack.hasItemMeta() && stack.getItemMeta() != null) {
+      
+      final ItemMeta meta = stack.getItemMeta();
+      
       display = stack.displayName();
 
-      if(stack.getItemMeta().lore() != null) {
+      if(meta.lore() != null) {
         lore.clear();
-        lore.addAll(stack.getItemMeta().lore());
+        lore.addAll(meta.lore());
       }
 
       // Check 1.13 version for compatibility with customModelData
-      if(VersionUtil.isOneFourteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && stack.getItemMeta().hasCustomModelData()) {
-        customModelData = stack.getItemMeta().getCustomModelData();
+      if(VersionUtil.isOneFourteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && meta.hasCustomModelData()) {
+        customModelData = meta.getCustomModelData();
       }
 
-      for(ItemFlag flag : stack.getItemMeta().getItemFlags()) {
+      for(ItemFlag flag : meta.getItemFlags()) {
         flags.add(flag.name());
       }
 
-      if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && stack.getItemMeta().getAttributeModifiers() != null) {
-        stack.getItemMeta().getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.getKey().getKey(), modifier));
+      if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && meta.getAttributeModifiers() != null) {
+        meta.getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.getKey().getKey(), modifier));
       }
 
       //1.21 compat
       if(VersionUtil.isVersion("1.21.0", Bukkit.getServer().getBukkitVersion().split("-")[0])) {
-        if(stack.getItemMeta().hasRarity()) {
-          this.rarity = stack.getItemMeta().getRarity().name();
+
+        this.maxStack = meta.getMaxStackSize();
+        if(meta.hasRarity()) {
+          this.rarity = meta.getRarity().name();
         }
 
-        if(stack.getItemMeta().hasEnchantmentGlintOverride()) {
-          this.enchantGlint = stack.getItemMeta().getEnchantmentGlintOverride();
+        if(meta.hasEnchantmentGlintOverride()) {
+          this.enchantGlint = meta.getEnchantmentGlintOverride();
         }
 
-        this.fireResistant = stack.getItemMeta().isFireResistant();
-        this.hideTooltip = stack.getItemMeta().isHideTooltip();
+        this.fireResistant = meta.isFireResistant();
+        this.hideTooltip = meta.isHideTooltip();
 
-        if(stack.getItemMeta().hasFood()) {
-          //TODO: This.
+        if(meta.hasFood()) {
+          components.put("food", BukkitBaseFoodComponent.create(stack));
         }
 
-        if(stack.getItemMeta().hasTool()) {
-          //TODO: This.
+        if(meta.hasTool()) {
+          components.put("tool", PaperToolComponent.create(stack));
         }
 
-        if(stack.getItemMeta().hasJukeboxPlayable()) {
-          //TODO: This.
+        if(meta.hasJukeboxPlayable()) {
+          components.put("jukebox", BukkitJukeBoxComponent.create(stack));
         }
       }
 
-      if(stack.getItemMeta().hasEnchants()) {
+      if(meta.hasEnchants()) {
 
-        stack.getItemMeta().getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().getKey(), level)));
+        meta.getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().getKey(), level)));
       }
 
-      if(stack.hasItemMeta() && stack.getItemMeta() instanceof SkullMeta) {
+      if(stack.hasItemMeta() && meta instanceof SkullMeta) {
         final BukkitSkullData skullData = new BukkitSkullData();
         skullData.of(locale);
 
@@ -224,6 +240,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  @SuppressWarnings("removal")
   @Override
   public PaperItemStack attribute(String name, SerialAttribute attribute) {
     final AttributeModifier attr = new AttributeModifier(attribute.getIdentifier(),
@@ -237,6 +254,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  @SuppressWarnings("removal")
   @Override
   public PaperItemStack attribute(Map<String, SerialAttribute> attributes) {
 
@@ -344,6 +362,12 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
+  public AbstractItemStack<ItemStack> maxStack(int maxStack) {
+    this.maxStack = maxStack;
+    return this;
+  }
+
+  @Override
   public AbstractItemStack<ItemStack> hideTooltip(boolean hideTooltip) {
     this.hideTooltip = hideTooltip;
     return this;
@@ -391,6 +415,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
       final AttributeModifier attribute = entry.getValue();
 
+      @SuppressWarnings("removal")
       final SerialAttribute attr = new SerialAttribute(attribute.getUniqueId(),
               attribute.getName(),
               attribute.getAmount(),
@@ -459,6 +484,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public boolean unbreakable() {
     return unbreakable;
+  }
+
+  @Override
+  public int maxStack() {
+    return maxStack;
   }
 
   @Override
@@ -627,6 +657,15 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
             }
           });
         }
+
+        if(VersionUtil.isVersion("1.21.0", Bukkit.getServer().getBukkitVersion().split("-")[0])) {
+
+          meta.setMaxStackSize(maxStack);
+          meta.setRarity(ItemRarity.valueOf(rarity));
+          meta.setEnchantmentGlintOverride(enchantGlint);
+          meta.setFireResistant(fireResistant);
+          meta.setHideTooltip(hideTooltip);
+        }
       }
 
       if(profile != null && meta instanceof SkullMeta) {
@@ -642,6 +681,14 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
       }
 
       stack.setItemMeta(meta);
+
+      if(VersionUtil.isVersion("1.21.0", Bukkit.getServer().getBukkitVersion().split("-")[0])) {
+
+        for(SerialComponent<ItemStack> component : components.values()) {
+          component.apply(stack);
+        }
+      }
+
       if(data != null) {
         stack = data.apply(stack);
       }

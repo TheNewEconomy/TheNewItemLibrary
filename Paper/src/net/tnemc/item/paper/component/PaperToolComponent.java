@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkitbase.component;
+package net.tnemc.item.paper.component;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,23 +19,30 @@ package net.tnemc.item.bukkitbase.component;
  */
 
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.impl.FoodRule;
 import net.tnemc.item.component.impl.ToolComponent;
 import net.tnemc.item.component.impl.ToolRule;
-import net.tnemc.item.data.potion.PotionEffectData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
- * BukkitToolComponent
+ * PaperToolComponent
  *
  * @author creatorfromhell
- * @since 0.0.1.0
+ * @since 0.1.7.7
  */
-public class BukkitToolComponent extends ToolComponent<ItemStack> {
+public class PaperToolComponent extends ToolComponent<ItemStack> {
+
+  public static PaperToolComponent create(ItemStack stack) {
+
+    final PaperToolComponent component = new PaperToolComponent();
+    component.of(stack);
+    return component;
+  }
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialComponent} object.
@@ -55,7 +62,7 @@ public class BukkitToolComponent extends ToolComponent<ItemStack> {
 
         for(org.bukkit.inventory.meta.components.ToolComponent.ToolRule rule : tool.getRules()) {
 
-          ToolRule newRule = new ToolRule(rule.getSpeed(), rule.isCorrectForDrops());
+          final ToolRule newRule = new ToolRule(rule.getSpeed(), rule.isCorrectForDrops());
 
 
           for(Material material : rule.getBlocks()) {
@@ -83,7 +90,23 @@ public class BukkitToolComponent extends ToolComponent<ItemStack> {
       meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
     }
 
-    //TODO: How do you initialize a component?
+    final org.bukkit.inventory.meta.components.ToolComponent toolComponent = meta.getTool();
+    toolComponent.setDamagePerBlock(blockDamage);
+    toolComponent.setDefaultMiningSpeed(defaultSpeed);
+
+    for(ToolRule rule : rules) {
+
+      final Collection<Material> mats = new ArrayList<>();
+
+      for(final String material : rule.getMaterials()) {
+        mats.add(Material.matchMaterial(material));
+      }
+
+      toolComponent.addRule(mats, rule.getSpeed(), rule.isDrops());
+    }
+
+    meta.setTool(toolComponent);
+    stack.setItemMeta(meta);
     return stack;
   }
 }

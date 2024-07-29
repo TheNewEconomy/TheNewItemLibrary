@@ -36,8 +36,8 @@ public class BukkitWritableBookData extends WritableBookData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final WritableBookMeta meta = (WritableBookMeta)stack.getItemMeta();
 
+    final WritableBookMeta meta = (WritableBookMeta)stack.getItemMeta();
     if(meta != null) {
       this.pages.clear();
       this.pages.addAll(meta.getPages());

@@ -76,21 +76,24 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   AbstractItemStack<T> unbreakable(boolean unbreakable);
 
-  //since 0.1.7.6
+  //since 0.1.7.7
+  AbstractItemStack<T> maxStack(int maxStack);
+
+  //since 0.1.7.7
   AbstractItemStack<T> hideTooltip(boolean hideTooltip);
 
-  //since 0.1.7.6
+  //since 0.1.7.7
   AbstractItemStack<T> fireResistant(boolean fireResistant);
 
-  //since 0.1.7.6
+  //since 0.1.7.7
   AbstractItemStack<T> enchantGlint(boolean enchantGlint);
 
-  //since 0.1.7.6
+  //since 0.1.7.7
   AbstractItemStack<T> rarity(String rarity);
 
   AbstractItemStack<T> applyData(SerialItemData<T> data);
 
-  //since 0.1.7.6
+  //since 0.1.7.7
   default AbstractItemStack<T> applyComponent(SerialComponent<T> component) {
     components().put(component.getType(), component);
     return this;
@@ -104,7 +107,7 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   Map<String, Integer> enchantments();
 
-  //since 0.1.7.6
+  //since 0.1.7.7
   Map<String, SerialComponent<T>> components();
 
   String material();
@@ -123,16 +126,19 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   boolean unbreakable();
 
-  //since 0.1.7.6
+  //since 0.1.7.7
+  int maxStack();
+
+  //since 0.1.7.7
   boolean hideTooltip();
 
-  //since 0.1.7.6
+  //since 0.1.7.7
   boolean fireResistant();
 
-  //since 0.1.7.6
+  //since 0.1.7.7
   boolean enchantGlint();
 
-  //since 0.1.7.6
+  //since 0.1.7.7
   String rarity();
 
   void markDirty();

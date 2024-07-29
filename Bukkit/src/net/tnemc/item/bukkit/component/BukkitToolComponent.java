@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkitbase.component;
+package net.tnemc.item.bukkit.component;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,31 +19,36 @@ package net.tnemc.item.bukkitbase.component;
  */
 
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.impl.FoodRule;
-import net.tnemc.item.component.impl.JukeBoxComponent;
+import net.tnemc.item.component.impl.ToolComponent;
+import net.tnemc.item.component.impl.ToolRule;
 import net.tnemc.item.data.potion.PotionEffectData;
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.components.JukeboxPlayableComponent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
- * BukkitJukeBoxComponent
+ * BukkitToolComponent
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitJukeBoxComponent extends JukeBoxComponent<ItemStack> {
+public class BukkitToolComponent extends ToolComponent<ItemStack> {
 
-  public static BukkitJukeBoxComponent create(ItemStack stack) {
+  public static BukkitToolComponent create(ItemStack stack) {
 
-    final BukkitJukeBoxComponent component = new BukkitJukeBoxComponent();
+    final BukkitToolComponent component = new BukkitToolComponent();
     component.of(stack);
     return component;
   }
+
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialComponent} object.
@@ -53,11 +58,29 @@ public class BukkitJukeBoxComponent extends JukeBoxComponent<ItemStack> {
   @Override
   public void of(ItemStack stack) {
     if(stack.hasItemMeta()) {
-      if(stack.getItemMeta().hasJukeboxPlayable()) {
 
-        final JukeboxPlayableComponent juke = stack.getItemMeta().getJukeboxPlayable();
-        this.song = juke.getSongKey().getKey();
+      final ItemMeta meta = stack.getItemMeta();
+      if(meta.hasTool()) {
+
+        final org.bukkit.inventory.meta.components.ToolComponent tool = meta.getTool();
+        this.blockDamage = tool.getDamagePerBlock();
+        this.defaultSpeed = tool.getDefaultMiningSpeed();
+
+        for(org.bukkit.inventory.meta.components.ToolComponent.ToolRule rule : tool.getRules()) {
+
+          final ToolRule newRule = new ToolRule(rule.getSpeed(), rule.isCorrectForDrops());
+
+
+          for(Material material : rule.getBlocks()) {
+            newRule.getMaterials().add(material.getKey().getKey());
+          }
+
+          rules.add(newRule);
+
+        }
+
       }
+
     }
   }
 
@@ -73,10 +96,22 @@ public class BukkitJukeBoxComponent extends JukeBoxComponent<ItemStack> {
       meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
     }
 
-    final JukeboxPlayableComponent juke = meta.getJukeboxPlayable();
-    juke.setSongKey(NamespacedKey.fromString(song));
+    final org.bukkit.inventory.meta.components.ToolComponent toolComponent = meta.getTool();
+    toolComponent.setDamagePerBlock(blockDamage);
+    toolComponent.setDefaultMiningSpeed(defaultSpeed);
 
-    meta.setJukeboxPlayable(juke);
+    for(ToolRule rule : rules) {
+
+      final Collection<Material> mats = new ArrayList<>();
+
+      for(final String material : rule.getMaterials()) {
+        mats.add(Material.matchMaterial(material));
+      }
+
+      toolComponent.addRule(mats, rule.getSpeed(), rule.isDrops());
+    }
+
+    meta.setTool(toolComponent);
     stack.setItemMeta(meta);
     return stack;
   }
