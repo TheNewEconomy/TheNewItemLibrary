@@ -579,7 +579,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
     if(!textComponentsEqual(lore, stack.lore)) return false;
     if(debug || stack.debug) System.out.println("Lore Check Passed");
-    if(!listsEquals(flags, stack.flags)) return false;
+    if(!listsEquals(flags, stack.flags, debug)) return false;
     if(debug || stack.debug) System.out.println("Flags Check Passed");
     if(!attributes.equals(stack.attributes)) return false;
     if(debug || stack.debug) System.out.println("Attributes Check Passed");
