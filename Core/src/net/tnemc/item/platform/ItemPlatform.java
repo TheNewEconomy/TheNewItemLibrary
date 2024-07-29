@@ -18,9 +18,12 @@ package net.tnemc.item.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
+import net.tnemc.item.platform.check.LocaleItemCheck;
 import net.tnemc.item.platform.deserialize.ItemDeserializer;
 
 import java.util.Arrays;
@@ -37,7 +40,7 @@ import java.util.Map;
  */
 public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
-  protected final Map<String, ItemCheck> checks = new LinkedHashMap<>();
+  protected final Map<String, ItemCheck<T>> checks = new LinkedHashMap<>();
   protected final Map<String, ItemApplicator<I, T>> applicators = new HashMap<>();
   protected final Map<String, ItemDeserializer<I, T>> deserializer = new HashMap<>();
 
@@ -52,7 +55,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   /**
    * @param check the {@link ItemCheck check} to add.
    */
-  public void addCheck(final ItemCheck check) {
+  public void addCheck(final ItemCheck<T> check) {
     checks.put(check.identifier(), check);
   }
 
@@ -64,7 +67,34 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   }
 
   /**
-   * Used to check if two stacks are comparable.
+   * Used to check if two locale stacks are comparable.
+   * @param original the original stack
+   * @param check the stack to use for the check
+   * @param disabledChecks the {@link ItemCheck#identifier()} check identifiers that should be disabled for the check.
+   *
+   * @return True if the check passes, otherwise false.
+   */
+  public boolean check(final T original, final T check, final String... disabledChecks) {
+
+    final List<String> disabled = Arrays.asList(disabledChecks);
+    for(final ItemCheck<T> checkItem : checks.values()) {
+
+      if(disabled.contains(checkItem.identifier())) {
+        continue;
+      }
+
+      if(checkItem instanceof LocaleItemCheck<T> locale) {
+
+        if(locale.enabled(version()) && !locale.check(original, check)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Used to check if two serialized stacks are comparable.
    * @param original the original stack
    * @param check the stack to use for the check
    * @param disabledChecks the {@link ItemCheck#identifier()} check identifiers that should be disabled for the check.
@@ -74,7 +104,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   public boolean check(final I original, final I check, final String... disabledChecks) {
 
     final List<String> disabled = Arrays.asList(disabledChecks);
-    for(final ItemCheck checkItem : checks.values()) {
+    for(final ItemCheck<T> checkItem : checks.values()) {
 
       if(disabled.contains(checkItem.identifier())) {
         continue;
@@ -117,5 +147,9 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
       }
     }
     return serialized;
+  }
+
+  public static String componentString(final Component component) {
+    return PlainTextComponentSerializer.plainText().serialize(component);
   }
 }

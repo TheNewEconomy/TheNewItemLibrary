@@ -1,5 +1,4 @@
 package net.tnemc.item.platform.check;
-
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -22,35 +21,29 @@ package net.tnemc.item.platform.check;
 import net.tnemc.item.AbstractItemStack;
 
 /**
- * ItemCheck
+ * LocaleItemCheck
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public interface ItemCheck<T> {
+public interface LocaleItemCheck<T> extends ItemCheck<T> {
 
-  /**
-   * @return the identifier for this check.
-   */
-  String identifier();
-
-  /**
-   * @return true if the checks after this one should be skipped.
-   */
-  default boolean skipRest() {
-    return false;
-  }
-
-  /**
-   * @param version the version being used when this check is called.
-   * @return true if this check is enabled for the version, otherwise false
-   */
-  boolean enabled(final String version);
 
   /**
    * @param original the original stack
    * @param check the stack to use for the check
    * @return True if the check passes, otherwise false.
    */
-  boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check);
+  boolean check(final T original, final T check);
+
+  /**
+   * @param original the original stack
+   * @param check    the stack to use for the check
+   *
+   * @return True if the check passes, otherwise false.
+   */
+  @Override
+  default boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+    return true;//always return true because this shouldn't be used for locale checks.
+  }
 }

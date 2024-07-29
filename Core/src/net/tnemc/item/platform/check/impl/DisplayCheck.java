@@ -1,5 +1,4 @@
-package net.tnemc.item.platform.check;
-
+package net.tnemc.item.platform.check.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -20,37 +19,43 @@ package net.tnemc.item.platform.check;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.platform.ItemPlatform;
+import net.tnemc.item.platform.check.ItemCheck;
 
 /**
- * ItemCheck
+ * DisplayCheck
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public interface ItemCheck<T> {
+public class DisplayCheck<T> implements ItemCheck<T> {
 
   /**
    * @return the identifier for this check.
    */
-  String identifier();
-
-  /**
-   * @return true if the checks after this one should be skipped.
-   */
-  default boolean skipRest() {
-    return false;
+  @Override
+  public String identifier() {
+    return "display-check";
   }
 
   /**
    * @param version the version being used when this check is called.
+   *
    * @return true if this check is enabled for the version, otherwise false
    */
-  boolean enabled(final String version);
+  @Override
+  public boolean enabled(String version) {
+    return true;
+  }
 
   /**
    * @param original the original stack
-   * @param check the stack to use for the check
+   * @param check    the stack to use for the check
+   *
    * @return True if the check passes, otherwise false.
    */
-  boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check);
+  @Override
+  public boolean check(AbstractItemStack<T> original, AbstractItemStack<T> check) {
+    return ItemPlatform.componentString(original.display()).equals(ItemPlatform.componentString(check.display()));
+  }
 }
