@@ -149,7 +149,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
       }
 
       // Check 1.13 version for compatibility with customModelData
-      if(VersionUtil.isOneFourteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && meta.hasCustomModelData()) {
+      if(VersionUtil.isOneFourteen(ParsingUtil.version()) && meta.hasCustomModelData()) {
         customModelData = meta.getCustomModelData();
       }
 
@@ -157,12 +157,12 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
         flags.add(flag.name());
       }
 
-      if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && meta.getAttributeModifiers() != null) {
+      if(VersionUtil.isOneThirteen(ParsingUtil.version()) && meta.getAttributeModifiers() != null) {
         meta.getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.getKey().getKey(), modifier));
       }
 
       //1.21 compat
-      if(VersionUtil.isVersion("1.21.0", Bukkit.getServer().getBukkitVersion().split("-")[0])) {
+      if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
 
         this.maxStack = meta.getMaxStackSize();
         if(meta.hasRarity()) {
@@ -568,7 +568,14 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     if(unbreakable != stack.unbreakable) return false;
     if(debug || stack.debug) System.out.println("Unbreakable Check Passed");
 
-    //TODO: 1.21 comps
+    //1.21 comps
+    if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
+      if(!Objects.equals(maxStack, stack.maxStack)) return false;
+      if(!Objects.equals(rarity, stack.rarity)) return false;
+      if(enchantGlint != stack.enchantGlint) return false;
+      if(fireResistant != stack.fireResistant) return false;
+      if(hideTooltip != stack.hideTooltip) return false;
+    }
 
     if(!textComponentsEqual(lore, stack.lore)) return false;
     if(debug || stack.debug) System.out.println("Lore Check Passed");
@@ -640,7 +647,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
           meta.setCustomModelData(customModelData);
         }
 
-        if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0])) {
+        if(VersionUtil.isOneThirteen(ParsingUtil.version())) {
           attributes.forEach((key, attribute)->{
             try {
               final NamespacedKey space = NamespacedKey.fromString(key);
@@ -658,7 +665,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
           });
         }
 
-        if(VersionUtil.isVersion("1.21.0", Bukkit.getServer().getBukkitVersion().split("-")[0])) {
+        if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
 
           meta.setMaxStackSize(maxStack);
           meta.setRarity(ItemRarity.valueOf(rarity));
@@ -682,7 +689,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
       stack.setItemMeta(meta);
 
-      if(VersionUtil.isVersion("1.21.0", Bukkit.getServer().getBukkitVersion().split("-")[0])) {
+      if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
 
         for(SerialComponent<ItemStack> component : components.values()) {
           component.apply(stack);

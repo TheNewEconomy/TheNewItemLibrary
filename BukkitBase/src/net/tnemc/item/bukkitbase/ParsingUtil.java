@@ -161,4 +161,8 @@ public class ParsingUtil {
         return AttributeModifier.Operation.ADD_NUMBER;
     }
   }
+
+  public static String version() {
+    return Bukkit.getServer().getBukkitVersion().split("-")[0];
+  }
 }

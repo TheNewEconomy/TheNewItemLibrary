@@ -7,6 +7,7 @@ import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.SkullProfile;
+import net.tnemc.item.providers.VersionUtil;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.spongepowered.api.ResourceKey;
@@ -42,6 +43,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
     private SkullProfile profile = null;
     private int slot = 0;
+    private Integer maxStack = 64;
     private Integer amount = 1;
     private Component display = Component.empty();
     private short damage = 0;
@@ -75,14 +77,18 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
         attributes.putAll(stack.attributes);
         enchantments.putAll(stack.enchantments);
         lore.addAll(stack.lore);
+        components.putAll(stack.components);
 
-        slot = stack.slot;
         resource = stack.resource;
         amount = stack.amount;
         display = stack.display;
         damage = stack.damage;
         customModelData = stack.customModelData;
         unbreakable = stack.unbreakable;
+        hideTooltip = stack.hideTooltip;
+        fireResistant = stack.fireResistant;
+        enchantGlint = stack.enchantGlint;
+        rarity = stack.rarity;
 
         if(stack.profile != null) {
             this.profile = stack.profile;
@@ -118,6 +124,23 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
             final Optional<ServerPlayer> player = Sponge.server().player(profile.getUuid());
             player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
         }
+
+        // TODO: 1.21 compat sponge
+        // Set maxStack to the maximum stack size from meta
+
+        // Set rarity to meta's rarity name
+
+        // Set enchantGlint to meta's enchantment glint override
+
+        // Set fireResistant based on meta's fire-resistant status
+
+        // Set hideTooltip based on meta's hide tooltip status
+
+        // Add food component to components
+
+        // Add tool component to components
+
+        // Add jukebox component to components
 
         data.putAll(ParsingUtil.parseMeta(locale));
 
@@ -240,6 +263,12 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     }
 
     @Override
+    public AbstractItemStack<ItemStack> maxStack(int maxStack) {
+        this.maxStack = maxStack;
+        return this;
+    }
+
+    @Override
     public AbstractItemStack<ItemStack> hideTooltip(boolean hideTooltip) {
         this.hideTooltip = hideTooltip;
         return this;
@@ -339,6 +368,11 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     }
 
     @Override
+    public int maxStack() {
+        return maxStack;
+    }
+
+    @Override
     public boolean hideTooltip() {
         return hideTooltip;
     }
@@ -408,6 +442,13 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
         if(!Objects.equals(customModelData, stack.customModelData)) return false;
         if(unbreakable != stack.unbreakable) return false;
 
+        //1.21
+        if(!Objects.equals(maxStack, stack.maxStack)) return false;
+        if(!Objects.equals(rarity, stack.rarity)) return false;
+        if(enchantGlint != stack.enchantGlint) return false;
+        if(fireResistant != stack.fireResistant) return false;
+        if(hideTooltip != stack.hideTooltip) return false;
+
         if(!textComponentsEqual(lore, stack.lore)) return false;
         if(!listsEquals(flags, stack.flags)) return false;
         if(!attributes.equals(stack.attributes)) return false;
@@ -473,6 +514,8 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
                 stack.offer(Keys.HIDE_CAN_PLACE, true);
             }
 
+            //TODO: 1.21 compat
+
             final List<Enchantment> enchants = new ArrayList<>();
             for(final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
                 enchants.add(Enchantment.of((EnchantmentType) EnchantmentTypes.registry().value(ResourceKey.resolve(entry.getKey())), entry.getValue()));
@@ -486,6 +529,10 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
             if(profile != null && profile.getUuid() != null) {
                 final Optional<ServerPlayer> player = Sponge.server().player(profile.getUuid());
                 player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
+            }
+
+            for(SerialComponent<ItemStack> component : components.values()) {
+                component.apply(stack);
             }
         }
         return stack;
