@@ -21,18 +21,13 @@ package net.tnemc.item.bukkit.component;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.impl.ToolComponent;
 import net.tnemc.item.component.impl.ToolRule;
-import net.tnemc.item.data.potion.PotionEffectData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * BukkitToolComponent

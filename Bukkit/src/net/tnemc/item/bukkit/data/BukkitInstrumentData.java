@@ -18,7 +18,6 @@ package net.tnemc.item.bukkit.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.kyori.adventure.key.Key;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.data.InstrumentData;

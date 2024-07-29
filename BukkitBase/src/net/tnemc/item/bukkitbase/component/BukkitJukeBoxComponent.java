@@ -19,16 +19,12 @@ package net.tnemc.item.bukkitbase.component;
  */
 
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.impl.FoodRule;
 import net.tnemc.item.component.impl.JukeBoxComponent;
-import net.tnemc.item.data.potion.PotionEffectData;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.JukeboxPlayableComponent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 /**
  * BukkitJukeBoxComponent

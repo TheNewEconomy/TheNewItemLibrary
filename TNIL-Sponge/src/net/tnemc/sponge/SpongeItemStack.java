@@ -7,7 +7,6 @@ import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.SkullProfile;
-import net.tnemc.item.providers.VersionUtil;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.spongepowered.api.ResourceKey;

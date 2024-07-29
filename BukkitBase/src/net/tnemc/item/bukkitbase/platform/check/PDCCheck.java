@@ -18,8 +18,6 @@ package net.tnemc.item.bukkitbase.platform.check;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.check.LocaleItemCheck;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
