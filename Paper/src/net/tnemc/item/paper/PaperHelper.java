@@ -21,9 +21,7 @@ package net.tnemc.item.paper;
  */
 
 import net.tnemc.item.providers.HelperMethods;
-import org.bukkit.Material;
 import org.bukkit.Registry;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 
 import java.util.LinkedList;

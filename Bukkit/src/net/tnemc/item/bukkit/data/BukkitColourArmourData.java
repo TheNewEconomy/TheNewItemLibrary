@@ -1,8 +1,6 @@
 package net.tnemc.item.bukkit.data;
-
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -20,19 +18,25 @@ package net.tnemc.item.bukkit.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.data.ShulkerData;
-import org.bukkit.Material;
-import org.bukkit.block.ShulkerBox;
-import org.bukkit.inventory.Inventory;
+import net.tnemc.item.data.ColourableArmourData;
+import org.bukkit.Color;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.ColorableArmorMeta;
+import org.bukkit.inventory.meta.trim.ArmorTrim;
+import org.bukkit.inventory.meta.trim.TrimMaterial;
+import org.bukkit.inventory.meta.trim.TrimPattern;
 
-public class BukkitShulkerData extends ShulkerData<ItemStack> {
-
+/**
+ * BukkitColourArmourData
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public class BukkitColourArmourData extends ColourableArmourData<ItemStack> {
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -41,20 +45,13 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
+    final ColorableArmorMeta meta = (ColorableArmorMeta)stack.getItemMeta();
 
-    if(meta != null && meta.getBlockState() instanceof ShulkerBox box) {
+    if(meta != null && meta.getTrim() != null) {
 
-      if(box.getColor() != null) {
-        colorRGB = box.getColor().getColor().asRGB();
-      }
-
-      final Inventory inventory = box.getInventory();
-      for(int i = 0; i < inventory.getSize(); i++) {
-        if(inventory.getItem(i) != null && !inventory.getItem(i).getType().equals(Material.AIR)) {
-          items.put(i, new SerialItem<>(BukkitItemStack.locale(inventory.getItem(i))));
-        }
-      }
+      this.colorRGB = meta.getColor().asRGB();
+      this.material = meta.getTrim().getMaterial().getKey().getKey();
+      this.pattern = meta.getTrim().getPattern().getKey().getKey();
     }
   }
 
@@ -66,15 +63,25 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final BlockStateMeta meta = (BlockStateMeta)ParsingUtil.buildFor(stack, BlockStateMeta.class);
+    final ColorableArmorMeta meta = (ColorableArmorMeta)ParsingUtil.buildFor(stack, ColorableArmorMeta.class);
 
-    if(meta.getBlockState() instanceof ShulkerBox box) {
+    if(material != null && pattern != null) {
 
-      items.forEach((slot, item)->box.getInventory().setItem(slot, item.getStack().locale()));
-      box.update(true);
-      meta.setBlockState(box);
-      stack.setItemMeta(meta);
+      meta.setColor(Color.fromRGB(colorRGB));
+      try {
+
+        final TrimMaterial materialObj = Registry.TRIM_MATERIAL.get(NamespacedKey.fromString(material));
+        final TrimPattern patternObj = Registry.TRIM_PATTERN.get(NamespacedKey.fromString(pattern));
+        if(materialObj != null && patternObj != null) {
+
+          meta.setTrim(new ArmorTrim(materialObj, patternObj));
+        }
+
+      } catch(Exception ignore) {
+      }
     }
+    stack.setItemMeta(meta);
+
     return stack;
   }
 }

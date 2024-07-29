@@ -38,7 +38,7 @@ public abstract class TropicalFishData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "tropicalfish");
     json.put("variant", variant);
 
@@ -78,8 +78,7 @@ public abstract class TropicalFishData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof TropicalFishData) {
-      TropicalFishData<?> compare = (TropicalFishData<?>)data;
+    if(data instanceof TropicalFishData<?> compare) {
       return variant == compare.variant && bodyColour == compare.bodyColour
           && patternColour == compare.patternColour && pattern.equalsIgnoreCase(compare.pattern);
     }

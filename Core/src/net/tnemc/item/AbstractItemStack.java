@@ -21,13 +21,18 @@ package net.tnemc.item;
  */
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.attribute.SerialAttribute;
+import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 public interface AbstractItemStack<T> extends Cloneable {
 
@@ -71,7 +76,28 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   AbstractItemStack<T> unbreakable(boolean unbreakable);
 
+  //since 0.1.7.7
+  AbstractItemStack<T> maxStack(int maxStack);
+
+  //since 0.1.7.7
+  AbstractItemStack<T> hideTooltip(boolean hideTooltip);
+
+  //since 0.1.7.7
+  AbstractItemStack<T> fireResistant(boolean fireResistant);
+
+  //since 0.1.7.7
+  AbstractItemStack<T> enchantGlint(boolean enchantGlint);
+
+  //since 0.1.7.7
+  AbstractItemStack<T> rarity(String rarity);
+
   AbstractItemStack<T> applyData(SerialItemData<T> data);
+
+  //since 0.1.7.7
+  default AbstractItemStack<T> applyComponent(SerialComponent<T> component) {
+    components().put(component.getType(), component);
+    return this;
+  }
 
   List<String> flags();
 
@@ -80,6 +106,9 @@ public interface AbstractItemStack<T> extends Cloneable {
   Map<String, SerialAttribute> attributes();
 
   Map<String, Integer> enchantments();
+
+  //since 0.1.7.7
+  Map<String, SerialComponent<T>> components();
 
   String material();
 
@@ -96,6 +125,21 @@ public interface AbstractItemStack<T> extends Cloneable {
   int modelData();
 
   boolean unbreakable();
+
+  //since 0.1.7.7
+  int maxStack();
+
+  //since 0.1.7.7
+  boolean hideTooltip();
+
+  //since 0.1.7.7
+  boolean fireResistant();
+
+  //since 0.1.7.7
+  boolean enchantGlint();
+
+  //since 0.1.7.7
+  String rarity();
 
   void markDirty();
 
@@ -126,7 +170,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    */
   T locale();
 
-  default boolean componentsEqual(final List<Component> list1, final List<Component> list2) {
+  default boolean textComponentsEqual(final List<Component> list1, final List<Component> list2) {
     final LinkedList<String> list1Copy = new LinkedList<>();
     for(Component component : list1) {
       list1Copy.add(PlainTextComponentSerializer.plainText().serialize(component));

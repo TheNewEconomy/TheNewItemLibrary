@@ -1,8 +1,6 @@
 package net.tnemc.item.bukkitbase.data;
-
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -26,7 +24,14 @@ import net.tnemc.item.data.BookData;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
+/**
+ * BukkitBookMeta
+ *
+ * @author creatorfromhell
+ * @since 0.0.1.0
+ */
 public class BukkitBookData extends BookData<ItemStack> {
+
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -41,7 +46,8 @@ public class BukkitBookData extends BookData<ItemStack> {
     if(meta != null) {
       this.title = meta.getTitle();
       this.author = meta.getAuthor();
-      this.pages = meta.getPages();
+      this.pages.clear();
+      this.pages.addAll(meta.getPages());
 
       if(meta.getGeneration() != null) {
         this.generation = meta.getGeneration().name();

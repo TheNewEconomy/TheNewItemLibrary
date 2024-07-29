@@ -44,7 +44,7 @@ public class SpongeCompassData extends CompassData<ItemStack> {
   @Override
   public void of(ItemStack stack) {
 
-    Optional<ServerLocation> location = stack.get(Keys.LODESTONE);
+    final Optional<ServerLocation> location = stack.get(Keys.LODESTONE);
     if(location.isPresent()) {
       tracked = true;
       applies = true;

@@ -29,7 +29,7 @@ import java.util.Map;
 
 public abstract class EnchantStorageData<T> implements SerialItemData<T> {
 
-  protected Map<String, Integer> enchantments = new HashMap<>();
+  protected final Map<String, Integer> enchantments = new HashMap<>();
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -38,10 +38,10 @@ public abstract class EnchantStorageData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "enchantstorage");
 
-    JSONObject object = new JSONObject();
+    final JSONObject object = new JSONObject();
     enchantments.forEach(object::put);
     json.put("enchantments", object);
 
@@ -55,7 +55,7 @@ public abstract class EnchantStorageData<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-    JSONObject enchants = json.getJSON("enchantments");
+    final JSONObject enchants = json.getJSON("enchantments");
     enchants.forEach((key, value)->{
       enchantments.put(key.toString(), Integer.valueOf(value.toString()));
     });
@@ -71,8 +71,7 @@ public abstract class EnchantStorageData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof EnchantStorageData) {
-      EnchantStorageData<?> compare = (EnchantStorageData<?>)data;
+    if(data instanceof EnchantStorageData<?> compare) {
       return enchantments.equals(compare.enchantments);
     }
     return false;

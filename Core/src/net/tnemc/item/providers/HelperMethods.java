@@ -20,7 +20,6 @@ package net.tnemc.item.providers;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import java.util.Collection;
 import java.util.LinkedList;
 
 /**

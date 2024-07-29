@@ -1,4 +1,4 @@
-package net.tnemc.sponge.data;
+package net.tnemc.item.bukkit.data.block;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -20,19 +20,18 @@ package net.tnemc.sponge.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.kyori.adventure.text.Component;
+import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.BookData;
-import org.spongepowered.api.data.Keys;
-import org.spongepowered.api.item.inventory.ItemStack;
+import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.data.ShulkerData;
+import org.bukkit.Material;
+import org.bukkit.block.ShulkerBox;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-
-public class SpongeBookData extends BookData<ItemStack> {
-
-  protected boolean applies = false;
+public class BukkitShulkerData extends ShulkerData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -42,26 +41,21 @@ public class SpongeBookData extends BookData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+    final BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
 
-    final Optional<List<Component>> pages = stack.get(Keys.PAGES);
-    if(pages.isPresent()) {
-      applies = true;
-      for(Component comp : pages.get()) {
-        this.pages.add(comp.toString());
+    if(meta != null && meta.getBlockState() instanceof ShulkerBox box) {
+
+      if(box.getColor() != null) {
+        colorRGB = box.getColor().getColor().asRGB();
+      }
+
+      final Inventory inventory = box.getInventory();
+      for(int i = 0; i < inventory.getSize(); i++) {
+        if(inventory.getItem(i) != null && !inventory.getItem(i).getType().equals(Material.AIR)) {
+          items.put(i, new SerialItem<>(BukkitItemStack.locale(inventory.getItem(i))));
+        }
       }
     }
-
-    final Optional<Component> author = stack.get(Keys.AUTHOR);
-    author.ifPresent(component ->{
-      this.author = component.toString();
-      applies = true;
-    });
-
-    final Optional<Integer> generation = stack.get(Keys.GENERATION);
-    generation.ifPresent(integer ->{
-      this.generation = String.valueOf(integer);
-      applies = true;
-    });
   }
 
   /**
@@ -72,25 +66,15 @@ public class SpongeBookData extends BookData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    if(!author.equalsIgnoreCase("")) {
-      stack.offer(Keys.AUTHOR, Component.text(author));
-    }
+    final BlockStateMeta meta = (BlockStateMeta)ParsingUtil.buildFor(stack, BlockStateMeta.class);
 
-    if(!this.generation.equalsIgnoreCase("")) {
-      stack.offer(Keys.GENERATION, Integer.valueOf(this.generation));
-    }
+    if(meta.getBlockState() instanceof ShulkerBox box) {
 
-    final List<Component> pages = new LinkedList<>();
-    for(String page : this.pages) {
-      pages.add(Component.text(page));
+      items.forEach((slot, item)->box.getInventory().setItem(slot, item.getStack().locale()));
+      box.update(true);
+      meta.setBlockState(box);
+      stack.setItemMeta(meta);
     }
-    stack.offer(Keys.PAGES, pages);
-
     return stack;
-  }
-
-  @Override
-  public boolean applies() {
-    return applies;
   }
 }

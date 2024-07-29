@@ -26,7 +26,11 @@ import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.bukkitbase.component.BukkitBaseFoodComponent;
+import net.tnemc.item.bukkitbase.component.BukkitJukeBoxComponent;
 import net.tnemc.item.bukkitbase.data.BukkitSkullData;
+import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.paper.component.PaperToolComponent;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -37,6 +41,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -63,13 +68,21 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   private final Map<String, Integer> enchantments = new HashMap<>();
   private final List<Component> lore = new ArrayList<>();
 
+  private final Map<String, SerialComponent<ItemStack>> components = new HashMap<>();
+
   private int slot = 0;
   private SkullProfile profile = null;
   private Material material;
+  private Integer maxStack = 64;
   private Integer amount = 1;
   private Component display = Component.empty();
   private int customModelData = -1;
   private boolean unbreakable = false;
+  private boolean hideTooltip = false;
+  private boolean fireResistant = false;
+  private boolean enchantGlint = false;
+  private String rarity = "COMMON";
+
   private SerialItemData<ItemStack> data;
 
   //our locale stack
@@ -93,14 +106,20 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     attributes.putAll(stack.attributes);
     enchantments.putAll(stack.enchantments);
     lore.addAll(stack.lore);
+    components.putAll(stack.components);
 
+    profile = stack.profile;
     slot = stack.slot;
     material = stack.material;
+    maxStack = stack.maxStack;
     amount = stack.amount;
     display = stack.display;
     customModelData = stack.customModelData;
     unbreakable = stack.unbreakable;
-    data = stack.data;
+    hideTooltip = stack.hideTooltip;
+    fireResistant = stack.fireResistant;
+    enchantGlint = stack.enchantGlint;
+    rarity = stack.rarity;
 
     if(stack.profile != null) {
       this.profile = stack.profile;
@@ -119,32 +138,63 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     amount = stack.getAmount();
 
     if(stack.hasItemMeta() && stack.getItemMeta() != null) {
+      
+      final ItemMeta meta = stack.getItemMeta();
+      
       display = stack.displayName();
 
-      if(stack.getItemMeta().lore() != null) {
+      if(meta.lore() != null) {
         lore.clear();
-        lore.addAll(stack.getItemMeta().lore());
+        lore.addAll(meta.lore());
       }
 
       // Check 1.13 version for compatibility with customModelData
-      if(VersionUtil.isOneFourteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && stack.getItemMeta().hasCustomModelData()) {
-        customModelData = stack.getItemMeta().getCustomModelData();
+      if(VersionUtil.isOneFourteen(ParsingUtil.version()) && meta.hasCustomModelData()) {
+        customModelData = meta.getCustomModelData();
       }
 
-      for(ItemFlag flag : stack.getItemMeta().getItemFlags()) {
+      for(ItemFlag flag : meta.getItemFlags()) {
         flags.add(flag.name());
       }
 
-      if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0]) && stack.getItemMeta().getAttributeModifiers() != null) {
-        stack.getItemMeta().getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.getKey().getKey(), modifier));
+      if(VersionUtil.isOneThirteen(ParsingUtil.version()) && meta.getAttributeModifiers() != null) {
+        meta.getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.getKey().getKey(), modifier));
       }
 
-      if(stack.getItemMeta().hasEnchants()) {
+      //1.21 compat
+      if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
 
-        stack.getItemMeta().getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().getKey(), level)));
+        this.maxStack = meta.getMaxStackSize();
+        if(meta.hasRarity()) {
+          this.rarity = meta.getRarity().name();
+        }
+
+        if(meta.hasEnchantmentGlintOverride()) {
+          this.enchantGlint = meta.getEnchantmentGlintOverride();
+        }
+
+        this.fireResistant = meta.isFireResistant();
+        this.hideTooltip = meta.isHideTooltip();
+
+        if(meta.hasFood()) {
+          components.put("food", BukkitBaseFoodComponent.create(stack));
+        }
+
+        if(meta.hasTool()) {
+          components.put("tool", PaperToolComponent.create(stack));
+        }
+
+        if(meta.hasJukeboxPlayable()) {
+          components.put("jukebox", BukkitJukeBoxComponent.create(stack));
+        }
       }
 
-      if(stack.hasItemMeta() && stack.getItemMeta() instanceof SkullMeta) {
+      if(meta.hasEnchants()) {
+
+        meta.getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().getKey(), level)));
+      }
+
+      if(stack.hasItemMeta() && meta instanceof SkullMeta) {
         final BukkitSkullData skullData = new BukkitSkullData();
         skullData.of(locale);
 
@@ -190,6 +240,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  @SuppressWarnings("removal")
   @Override
   public PaperItemStack attribute(String name, SerialAttribute attribute) {
     final AttributeModifier attr = new AttributeModifier(attribute.getIdentifier(),
@@ -203,6 +254,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  @SuppressWarnings("removal")
   @Override
   public PaperItemStack attribute(Map<String, SerialAttribute> attributes) {
 
@@ -310,6 +362,36 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
+  public AbstractItemStack<ItemStack> maxStack(int maxStack) {
+    this.maxStack = maxStack;
+    return this;
+  }
+
+  @Override
+  public AbstractItemStack<ItemStack> hideTooltip(boolean hideTooltip) {
+    this.hideTooltip = hideTooltip;
+    return this;
+  }
+
+  @Override
+  public AbstractItemStack<ItemStack> fireResistant(boolean fireResistant) {
+    this.fireResistant = fireResistant;
+    return this;
+  }
+
+  @Override
+  public AbstractItemStack<ItemStack> enchantGlint(boolean enchantGlint) {
+    this.enchantGlint = enchantGlint;
+    return this;
+  }
+
+  @Override
+  public AbstractItemStack<ItemStack> rarity(String rarity) {
+    this.rarity = rarity;
+    return this;
+  }
+
+  @Override
   public PaperItemStack applyData(SerialItemData<ItemStack> data) {
     this.data = data;
     return this;
@@ -333,6 +415,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
       final AttributeModifier attribute = entry.getValue();
 
+      @SuppressWarnings("removal")
       final SerialAttribute attr = new SerialAttribute(attribute.getUniqueId(),
               attribute.getName(),
               attribute.getAmount(),
@@ -348,6 +431,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public Map<String, Integer> enchantments() {
     return enchantments;
+  }
+
+  @Override
+  public Map<String, SerialComponent<ItemStack>> components() {
+    return components;
   }
 
   public Material getType() {
@@ -396,6 +484,31 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public boolean unbreakable() {
     return unbreakable;
+  }
+
+  @Override
+  public int maxStack() {
+    return maxStack;
+  }
+
+  @Override
+  public boolean hideTooltip() {
+    return hideTooltip;
+  }
+
+  @Override
+  public boolean fireResistant() {
+    return fireResistant;
+  }
+
+  @Override
+  public boolean enchantGlint() {
+    return enchantGlint;
+  }
+
+  @Override
+  public String rarity() {
+    return rarity;
   }
 
   @Override
@@ -454,7 +567,17 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     if(debug || stack.debug) System.out.println("CustomData Check Passed");
     if(unbreakable != stack.unbreakable) return false;
     if(debug || stack.debug) System.out.println("Unbreakable Check Passed");
-    if(!componentsEqual(lore, stack.lore)) return false;
+
+    //1.21 comps
+    if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
+      if(!Objects.equals(maxStack, stack.maxStack)) return false;
+      if(!Objects.equals(rarity, stack.rarity)) return false;
+      if(enchantGlint != stack.enchantGlint) return false;
+      if(fireResistant != stack.fireResistant) return false;
+      if(hideTooltip != stack.hideTooltip) return false;
+    }
+
+    if(!textComponentsEqual(lore, stack.lore)) return false;
     if(debug || stack.debug) System.out.println("Lore Check Passed");
     if(!listsEquals(flags, stack.flags, debug)) return false;
     if(debug || stack.debug) System.out.println("Flags Check Passed");
@@ -524,7 +647,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
           meta.setCustomModelData(customModelData);
         }
 
-        if(VersionUtil.isOneThirteen(Bukkit.getServer().getBukkitVersion().split("-")[0])) {
+        if(VersionUtil.isOneThirteen(ParsingUtil.version())) {
           attributes.forEach((key, attribute)->{
             try {
               final NamespacedKey space = NamespacedKey.fromString(key);
@@ -541,6 +664,15 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
             }
           });
         }
+
+        if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
+
+          meta.setMaxStackSize(maxStack);
+          meta.setRarity(ItemRarity.valueOf(rarity));
+          meta.setEnchantmentGlintOverride(enchantGlint);
+          meta.setFireResistant(fireResistant);
+          meta.setHideTooltip(hideTooltip);
+        }
       }
 
       if(profile != null && meta instanceof SkullMeta) {
@@ -556,6 +688,14 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
       }
 
       stack.setItemMeta(meta);
+
+      if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
+
+        for(SerialComponent<ItemStack> component : components.values()) {
+          component.apply(stack);
+        }
+      }
+
       if(data != null) {
         stack = data.apply(stack);
       }

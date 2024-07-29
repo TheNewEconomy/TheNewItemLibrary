@@ -35,7 +35,7 @@ public abstract class RepairableData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("repairCost", cost);
     return json;
   }
@@ -61,8 +61,7 @@ public abstract class RepairableData<T> implements SerialItemData<T> {
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
 
-    if(data instanceof RepairableData) {
-      final RepairableData<?> repair = (RepairableData<?>)data;
+    if(data instanceof RepairableData<?> repair ) {
 
       return repair.cost == cost;
     }
@@ -79,13 +78,7 @@ public abstract class RepairableData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean similar(SerialItemData<? extends T> data) {
-
-    if(data instanceof RepairableData) {
-      final RepairableData<?> repair = (RepairableData<?>)data;
-
-      return repair.cost == cost;
-    }
-    return false;
+    return equals(data);
   }
 
   public boolean hasCost() {

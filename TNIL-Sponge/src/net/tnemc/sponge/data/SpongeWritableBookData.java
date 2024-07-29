@@ -20,11 +20,17 @@ package net.tnemc.sponge.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.CrossBowMeta;
+import net.tnemc.item.data.BookData;
+import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.item.inventory.ItemStack;
 
-public class SpongeCrossbowMeta extends CrossBowMeta<ItemStack> {
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+
+public class SpongeWritableBookData extends BookData<ItemStack> {
 
   protected boolean applies = false;
 
@@ -36,6 +42,26 @@ public class SpongeCrossbowMeta extends CrossBowMeta<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+
+    final Optional<List<Component>> pages = stack.get(Keys.PAGES);
+    if(pages.isPresent()) {
+      applies = true;
+      for(Component comp : pages.get()) {
+        this.pages.add(comp.toString());
+      }
+    }
+
+    final Optional<Component> author = stack.get(Keys.AUTHOR);
+    author.ifPresent(component ->{
+      this.author = component.toString();
+      applies = true;
+    });
+
+    final Optional<Integer> generation = stack.get(Keys.GENERATION);
+    generation.ifPresent(integer ->{
+      this.generation = String.valueOf(integer);
+      applies = true;
+    });
   }
 
   /**
@@ -45,6 +71,20 @@ public class SpongeCrossbowMeta extends CrossBowMeta<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
+
+    if(!author.equalsIgnoreCase("")) {
+      stack.offer(Keys.AUTHOR, Component.text(author));
+    }
+
+    if(!this.generation.equalsIgnoreCase("")) {
+      stack.offer(Keys.GENERATION, Integer.valueOf(this.generation));
+    }
+
+    final List<Component> pages = new LinkedList<>();
+    for(String page : this.pages) {
+      pages.add(Component.text(page));
+    }
+    stack.offer(Keys.PAGES, pages);
 
     return stack;
   }

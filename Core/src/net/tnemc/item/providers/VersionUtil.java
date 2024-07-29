@@ -86,4 +86,39 @@ public class VersionUtil {
   public static boolean isOneFourteen(final String version) {
     return isVersion(version, "1.14.0");
   }
+
+  /**
+   * @return Whether the bukkit in use is for MC >= 1.15
+   */
+  public static boolean isOneFifteen(final String version) {
+    return isVersion(version, "1.15.0");
+  }
+
+  /**
+   * @return Whether the bukkit in use is for MC >= 1.16
+   */
+  public static boolean isOneSixteen(final String version) {
+    return isVersion(version, "1.16.0");
+  }
+
+  /**
+   * @return Whether the bukkit in use is for MC >= 1.17
+   */
+  public static boolean isOneSeventeen(final String version) {
+    return isVersion(version, "1.17.0");
+  }
+
+  /**
+   * @return Whether the bukkit in use is for MC >= 1.20
+   */
+  public static boolean isOneTwenty(final String version) {
+    return isVersion(version, "1.20.0");
+  }
+
+  /**
+   * @return Whether the bukkit in use is for MC >= 1.21
+   */
+  public static boolean isOneTwentyOne(final String version) {
+    return isVersion(version, "1.21.0");
+  }
 }

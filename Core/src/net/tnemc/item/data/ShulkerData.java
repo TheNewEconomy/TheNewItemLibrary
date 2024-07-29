@@ -30,7 +30,7 @@ public abstract class ShulkerData<T> extends ItemStorageData<T> {
 
   @Override
   public JSONObject toJSON() {
-    JSONObject json = super.toJSON();
+    final JSONObject json = super.toJSON();
     json.put("name", "shulker");
     json.put("colour", colorRGB);
     json.put("items", super.toJSON());
@@ -53,8 +53,7 @@ public abstract class ShulkerData<T> extends ItemStorageData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof ShulkerData) {
-      ShulkerData<?> compare = (ShulkerData<?>)data;
+    if(data instanceof ShulkerData<?> compare) {
       return colorRGB == compare.colorRGB && super.equals(data);
     }
     return false;

@@ -1,8 +1,6 @@
-package net.tnemc.item.data;
-
+package net.tnemc.item.bukkitbase.data;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -20,21 +18,35 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.JSONHelper;
-import org.json.simple.JSONObject;
+import net.tnemc.item.SerialItemData;
+import net.tnemc.item.data.CreatureData;
+import org.bukkit.inventory.ItemStack;
 
-public abstract class CrossBowMeta<T> extends ItemStorageData<T> {
-
+/**
+ * BukkitSpawnEggData
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public class BukkitSpawnEggData extends CreatureData<ItemStack> {
+  /**
+   * This method is used to convert from the implementation's ItemStack object to a valid
+   * {@link SerialItemData} object.
+   *
+   * @param stack The locale itemstack object of the implementation.
+   */
   @Override
-  public JSONObject toJSON() {
-    JSONObject json = super.toJSON();
-    json.put("name", "crossbow");
+  public void of(ItemStack stack) {
 
-    return json;
   }
 
+  /**
+   * This method is used to apply the data to the implementation's locale itemstack format.
+   *
+   * @param stack The locale itemstack object of the implementation.
+   */
   @Override
-  public void readJSON(JSONHelper json) {
-    super.readJSON(json);
+  public ItemStack apply(ItemStack stack) {
+    return null;
   }
 }

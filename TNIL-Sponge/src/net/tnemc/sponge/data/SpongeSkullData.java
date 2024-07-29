@@ -30,7 +30,6 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.profile.GameProfile;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public class SpongeSkullData extends SkullData<ItemStack> {
 

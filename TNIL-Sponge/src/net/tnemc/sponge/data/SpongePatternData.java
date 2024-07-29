@@ -55,7 +55,7 @@ public class SpongePatternData extends BannerData<ItemStack> {
     @Override
     public ItemStack apply(ItemStack stack) {
 
-        if(patterns.size() > 0) {
+        if(!patterns.isEmpty()) {
             final List<BannerPatternLayer> layers = new LinkedList<>();
 
             for(PatternData data : patterns) {

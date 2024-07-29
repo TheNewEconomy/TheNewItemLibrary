@@ -30,7 +30,7 @@ import java.util.List;
 
 public abstract class SerialPotionData<T> implements SerialItemData<T> {
 
-  protected List<PotionEffectData> customEffects = new ArrayList<>();
+  protected final List<PotionEffectData> customEffects = new ArrayList<>();
   protected String type;
   protected int colorRGB = -1;
   protected boolean extended;
@@ -43,7 +43,7 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "potion");
     json.put("type", type);
     if(colorRGB != -1) json.put("colour", colorRGB);
@@ -51,16 +51,10 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
     json.put("upgraded", upgraded);
 
     if(customEffects.size() > 0) {
-      JSONObject effects = new JSONObject();
+      final JSONObject effects = new JSONObject();
       for(PotionEffectData effect : customEffects) {
-        JSONObject effObject = new JSONObject();
-        effObject.put("name", effect.getName());
-        effObject.put("amplifier", effect.getAmplifier());
-        effObject.put("duration", effect.getDuration());
-        effObject.put("ambient", effect.isAmbient());
-        effObject.put("particles", effect.hasParticles());
-        effObject.put("icon", effect.hasIcon());
-        effects.put(effect.getName(), effObject);
+
+        effects.put(effect.getName(), effect.toJSON());
       }
       json.put("effects", effects);
     }
@@ -81,15 +75,10 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
     upgraded = json.getBoolean("upgraded");
 
     if(json.has("effects")) {
-      JSONHelper effects = json.getHelper("effects");
+      final JSONHelper effects = json.getHelper("effects");
       effects.getObject().forEach((key, value)->{
         final JSONHelper helperObj = new JSONHelper((JSONObject)value);
-        customEffects.add(new PotionEffectData(helperObj.getString("name"),
-                                           helperObj.getInteger("amplifier"),
-                                               helperObj.getInteger("duration"),
-                                           helperObj.getBoolean("ambient"),
-                                               helperObj.getBoolean("particles"),
-                                           helperObj.getBoolean("icon")));
+        customEffects.add(PotionEffectData.readJSON(helperObj));
       });
     }
   }
@@ -104,8 +93,7 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof SerialPotionData) {
-      SerialPotionData<?> compare = (SerialPotionData<?>)data;
+    if(data instanceof SerialPotionData<?> compare) {
       return customEffects.equals(compare.customEffects) &&  type.equalsIgnoreCase(compare.type)
           && colorRGB == compare.colorRGB && extended == compare.extended
           && upgraded == compare.upgraded;

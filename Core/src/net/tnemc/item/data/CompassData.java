@@ -44,7 +44,7 @@ public abstract class CompassData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "compass");
     json.put("tracked", tracked);
     json.put("world", world.toString());
@@ -85,8 +85,7 @@ public abstract class CompassData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof CompassData) {
-      CompassData<?> compare = (CompassData<?>)data;
+    if(data instanceof CompassData<?> compare) {
       return tracked == compare.tracked && x == compare.x && y == compare.y && z == compare.z
           && world.toString().equalsIgnoreCase(compare.world.toString()) && yaw == compare.yaw
           && pitch == compare.pitch;

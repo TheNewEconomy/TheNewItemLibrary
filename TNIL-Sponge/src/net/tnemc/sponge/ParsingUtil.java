@@ -23,7 +23,15 @@ package net.tnemc.sponge;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.data.firework.SerialFireworkEffect;
-import net.tnemc.sponge.data.*;
+import net.tnemc.sponge.data.SpongeCompassData;
+import net.tnemc.sponge.data.SpongeCrossbowData;
+import net.tnemc.sponge.data.SpongeDyeData;
+import net.tnemc.sponge.data.SpongeEnchantData;
+import net.tnemc.sponge.data.SpongeFireworkData;
+import net.tnemc.sponge.data.SpongePatternData;
+import net.tnemc.sponge.data.SpongePotionData;
+import net.tnemc.sponge.data.SpongeSkullData;
+import net.tnemc.sponge.data.SpongeWritableBookData;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.item.FireworkEffect;
 import org.spongepowered.api.item.FireworkShape;
@@ -32,7 +40,10 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.registry.RegistryTypes;
 import org.spongepowered.api.util.Color;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ParsingUtil {
 
@@ -73,7 +84,8 @@ public class ParsingUtil {
 
         final Map<String, SerialItemData<ItemStack>> data = new HashMap<>();
 
-        final SpongeBookData book = new SpongeBookData();
+        //https://jd.spongepowered.org/spongeapi/8.0.0/org/spongepowered/api/data/Keys.html
+        final SpongeWritableBookData book = new SpongeWritableBookData();
         book.of(stack);
         if(book.applies()) {
             data.put(book.getClass().getSimpleName(), book);
@@ -85,7 +97,7 @@ public class ParsingUtil {
             data.put(compass.getClass().getSimpleName(), compass);
         }
 
-        final SpongeCrossbowMeta crossbow = new SpongeCrossbowMeta();
+        final SpongeCrossbowData crossbow = new SpongeCrossbowData();
         crossbow.of(stack);
         if(crossbow.applies()) {
             data.put(crossbow.getClass().getSimpleName(), crossbow);

@@ -1,8 +1,6 @@
 package net.tnemc.item.data;
-
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -24,9 +22,15 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import org.json.simple.JSONObject;
 
-public abstract class InstrumentMeta<T> implements SerialItemData<T> {
+/**
+ * ShieldData
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public abstract class ShieldData<T> extends BannerData<T> {
 
-  protected String instrument;
+  protected int colorRGB = -1;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -35,8 +39,10 @@ public abstract class InstrumentMeta<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
-    json.put("instrument", instrument);
+    final JSONObject json = super.toJSON();
+    json.put("name", "shield");
+    json.put("colour", colorRGB);
+
     return json;
   }
 
@@ -47,7 +53,12 @@ public abstract class InstrumentMeta<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-    if(json.has("instrument")) instrument = json.getString("instrument");
+
+    if(json.has("colour")) {
+      this.colorRGB = json.getInteger("colour");
+    }
+
+    super.readJSON(json);
   }
 
   /**
@@ -60,11 +71,8 @@ public abstract class InstrumentMeta<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-
-    if(data instanceof InstrumentMeta) {
-      final InstrumentMeta<?> instrumentMeta = (InstrumentMeta<?>)data;
-
-      return instrumentMeta.instrument.equalsIgnoreCase(instrument);
+    if(data instanceof ShieldData<?> compare) {
+      return compare.colorRGB == this.colorRGB && super.equals(compare);
     }
     return false;
   }
@@ -79,12 +87,6 @@ public abstract class InstrumentMeta<T> implements SerialItemData<T> {
    */
   @Override
   public boolean similar(SerialItemData<? extends T> data) {
-
-    if(data instanceof InstrumentMeta) {
-      final InstrumentMeta<?> instrumentMeta = (InstrumentMeta<?>)data;
-
-      return instrumentMeta.instrument.equalsIgnoreCase(instrument);
-    }
-    return false;
+    return equals(data);
   }
 }

@@ -1,8 +1,6 @@
-package net.tnemc.item.paper.data;
-
+package net.tnemc.item.bukkitbase.data;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -20,16 +18,19 @@ package net.tnemc.item.paper.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.data.CrossBowMeta;
-import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.data.DamageableData;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.CrossbowMeta;
+import org.bukkit.inventory.meta.Damageable;
 
-public class PaperCrossbowMeta extends CrossBowMeta<ItemStack> {
-
+/**
+ * BukkitDamageData
+ *
+ * @author creatorfromhell
+ * @since 0.0.1.0
+ */
+public class BukkitDamageData extends DamageableData<ItemStack> {
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -38,14 +39,11 @@ public class PaperCrossbowMeta extends CrossBowMeta<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final CrossbowMeta meta = (CrossbowMeta)stack.getItemMeta();
-
+    final Damageable meta = (Damageable)stack.getItemMeta();
     if(meta != null) {
-      int i = 0;
-      for(final ItemStack item : meta.getChargedProjectiles()) {
-        items.put(i, new SerialItem<>(PaperItemStack.locale(item)));
-        i++;
-      }
+
+      this.damage = meta.getDamage();
+      this.maxDamage = meta.getDamage();
     }
   }
 
@@ -57,10 +55,17 @@ public class PaperCrossbowMeta extends CrossBowMeta<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final CrossbowMeta meta = (CrossbowMeta)ParsingUtil.buildFor(stack, CrossbowMeta.class);
+    final Damageable meta = (Damageable)ParsingUtil.buildFor(stack, Damageable.class);
 
+    if(this.damage > -1) {
+      meta.setDamage(this.damage);
+    }
 
-    items.forEach((slot, item)->meta.addChargedProjectile(item.getStack().locale()));
+    if(this.maxDamage > -1) {
+      meta.setDamage(this.maxDamage);
+    }
+
+    stack.setItemMeta(meta);
 
     return stack;
   }

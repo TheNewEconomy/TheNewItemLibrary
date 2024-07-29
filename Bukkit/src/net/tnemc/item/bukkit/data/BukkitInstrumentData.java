@@ -1,8 +1,6 @@
-package net.tnemc.item.bukkitbase.data;
-
+package net.tnemc.item.bukkit.data;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -20,14 +18,22 @@ package net.tnemc.item.bukkitbase.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.key.Key;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.data.RepairableData;
+import net.tnemc.item.data.InstrumentData;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Repairable;
+import org.bukkit.inventory.meta.MusicInstrumentMeta;
 
-public class BukkitRepairableMeta extends RepairableData<ItemStack> {
-
+/**
+ * BukkitInstrumentData
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public class BukkitInstrumentData extends InstrumentData<ItemStack> {
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -36,10 +42,10 @@ public class BukkitRepairableMeta extends RepairableData<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final Repairable meta = (Repairable)stack.getItemMeta();
+    final MusicInstrumentMeta meta = (MusicInstrumentMeta)stack.getItemMeta();
 
-    if(meta != null && meta.hasRepairCost()) {
-      cost = meta.getRepairCost();
+    if(meta != null && meta.getInstrument() != null) {
+      this.instrument = meta.getInstrument().getKey().getKey();
     }
   }
 
@@ -51,10 +57,10 @@ public class BukkitRepairableMeta extends RepairableData<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final Repairable meta = (Repairable)ParsingUtil.buildFor(stack, Repairable.class);
+    final MusicInstrumentMeta meta = (MusicInstrumentMeta)ParsingUtil.buildFor(stack, MusicInstrumentMeta.class);
 
-    if(hasCost()) {
-      meta.setRepairCost(cost);
+    if(this.instrument != null) {
+      meta.setInstrument(Registry.INSTRUMENT.get(NamespacedKey.fromString(this.instrument)));
     }
     stack.setItemMeta(meta);
 

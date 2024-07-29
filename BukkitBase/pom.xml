@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.tnemc</groupId>
         <artifactId>TNIL</artifactId>
-        <version>0.1.7.6-Pre-101</version>
+        <version>0.1.7.6-Pre-12</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -94,13 +94,13 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.19-R0.1-SNAPSHOT</version>
+            <version>1.21-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-Core</artifactId>
-            <version>0.1.7.6-Pre-101</version>
+            <version>0.1.7.6-Pre-12</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>

@@ -20,15 +20,18 @@ package net.tnemc.item.bukkit.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.data.CrossBowMeta;
+import net.tnemc.item.data.ShieldData;
+import net.tnemc.item.data.banner.PatternData;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.block.banner.Pattern;
+import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.CrossbowMeta;
+import org.bukkit.inventory.meta.ShieldMeta;
 
-public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
+public class BukkitShieldData extends ShieldData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -38,13 +41,16 @@ public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
-    final CrossbowMeta meta = (CrossbowMeta)stack.getItemMeta();
+    final ShieldMeta meta = (ShieldMeta)stack.getItemMeta();
 
     if(meta != null) {
-      int i = 0;
-      for(final ItemStack item : meta.getChargedProjectiles()) {
-        items.put(i, new SerialItem<>(BukkitItemStack.locale(item)));
-        i++;
+
+      if(meta.getBaseColor() != null) {
+        this.colorRGB = meta.getBaseColor().getColor().asRGB();
+      }
+      for(final Pattern pattern : meta.getPatterns()) {
+        patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
+                                     pattern.getPattern().getIdentifier()));
       }
     }
   }
@@ -57,10 +63,17 @@ public class BukkitCrossbowMeta extends CrossBowMeta<ItemStack> {
   @Override
   public ItemStack apply(ItemStack stack) {
 
-    final CrossbowMeta meta = (CrossbowMeta)ParsingUtil.buildFor(stack, CrossbowMeta.class);
+    final ShieldMeta meta = (ShieldMeta)ParsingUtil.buildFor(stack, ShieldMeta.class);
 
+    if(this.colorRGB > -1) {
+      meta.setBaseColor(DyeColor.getByColor(Color.fromRGB(this.colorRGB)));
+    }
 
-    items.forEach((slot, item)->meta.addChargedProjectile(item.getStack().locale()));
+    for(final PatternData pattern : patterns) {
+      meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
+                                  PatternType.valueOf(pattern.getPattern())));
+    }
+    stack.setItemMeta(meta);
 
     return stack;
   }

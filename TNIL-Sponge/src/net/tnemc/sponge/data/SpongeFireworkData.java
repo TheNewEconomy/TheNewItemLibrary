@@ -76,7 +76,7 @@ public class SpongeFireworkData extends FireworkData<ItemStack> {
       effs.add(ParsingUtil.fromSerial(effect));
     }
 
-    if(effs.size() > 0) {
+    if(!effs.isEmpty()) {
       stack.offer(Keys.FIREWORK_EFFECTS, effs);
     }
 

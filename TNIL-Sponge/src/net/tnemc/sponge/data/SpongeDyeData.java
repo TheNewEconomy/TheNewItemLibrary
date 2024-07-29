@@ -21,20 +21,15 @@ package net.tnemc.sponge.data;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.SkullData;
 import net.tnemc.sponge.data.abs.DyeData;
 import org.spongepowered.api.ResourceKey;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.data.type.DyeColor;
 import org.spongepowered.api.data.type.DyeColors;
-import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.profile.GameProfile;
 import org.spongepowered.api.registry.RegistryTypes;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public class SpongeDyeData extends DyeData<ItemStack> {
 

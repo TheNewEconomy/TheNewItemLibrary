@@ -45,8 +45,8 @@ public class SerialFireworkEffect {
 
   public JSONObject toJSON() {
     
-    JSONObject json = new JSONObject();
-    if(colors.size() > 0) {
+    final JSONObject json = new JSONObject();
+    if(!colors.isEmpty()) {
       JSONObject colours = new JSONObject();
       for (int i = 0; i < colors.size(); i++) {
         colours.put(i, colors.get(i));
@@ -54,14 +54,15 @@ public class SerialFireworkEffect {
       json.put("colours", colours);
     }
 
-    if(fadeColors.size() > 0) {
-      JSONObject fades = new JSONObject();
+    if(!fadeColors.isEmpty()) {
+      final JSONObject fades = new JSONObject();
       for (int i = 0; i < fadeColors.size(); i++) {
         fades.put(i, fadeColors.get(i));
       }
       json.put("fades", fades);
     }
-    JSONObject eff = new JSONObject();
+
+    final JSONObject eff = new JSONObject();
     eff.put("type", type);
     eff.put("flicker", flicker);
     eff.put("trail", trail);
@@ -74,22 +75,22 @@ public class SerialFireworkEffect {
     final SerialFireworkEffect effect = new SerialFireworkEffect();
 
     if(json.has("effect")) {
-      JSONHelper helper = json.getHelper("effect");
+      final JSONHelper helper = json.getHelper("effect");
       effect.setType(helper.getString("type"));
       effect.setTrail(helper.getBoolean("trail"));
       effect.setFlicker(helper.getBoolean("flicker"));
     }
 
-    List<Integer> colors = new ArrayList<>();
+    final List<Integer> colors = new ArrayList<>();
     if(json.has("colours")) {
-      JSONObject colours = json.getJSON("colours");
+      final JSONObject colours = json.getJSON("colours");
       colours.forEach((ignore, value)->colors.add(Integer.valueOf(String.valueOf(value))));
     }
     effect.setColors(colors);
 
-    List<Integer> fadeColors = new ArrayList<>();
+    final List<Integer> fadeColors = new ArrayList<>();
     if(json.has("fades")) {
-      JSONObject fades = json.getJSON("fades");
+      final JSONObject fades = json.getJSON("fades");
       fades.forEach((ignore, value)->fadeColors.add(Integer.valueOf(String.valueOf(value))));
     }
     effect.setFadeColors(fadeColors);

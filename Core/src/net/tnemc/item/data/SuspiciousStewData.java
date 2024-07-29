@@ -30,7 +30,7 @@ import java.util.List;
 
 public abstract class SuspiciousStewData<T> implements SerialItemData<T> {
 
-  protected List<PotionEffectData> customEffects = new ArrayList<>();
+  protected final List<PotionEffectData> customEffects = new ArrayList<>();
 
 
   /**
@@ -40,13 +40,13 @@ public abstract class SuspiciousStewData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+    final JSONObject json = new JSONObject();
     json.put("name", "stew");
 
-    if(customEffects.size() > 0) {
-      JSONObject effects = new JSONObject();
+    if(!customEffects.isEmpty()) {
+      final JSONObject effects = new JSONObject();
       for(PotionEffectData effect : customEffects) {
-        JSONObject effObject = new JSONObject();
+        final JSONObject effObject = new JSONObject();
         effObject.put("name", effect.getName());
         effObject.put("amplifier", effect.getAmplifier());
         effObject.put("duration", effect.getDuration());
@@ -69,7 +69,7 @@ public abstract class SuspiciousStewData<T> implements SerialItemData<T> {
   public void readJSON(JSONHelper json) {
 
     if(json.has("effects")) {
-      JSONHelper effects = json.getHelper("effects");
+      final JSONHelper effects = json.getHelper("effects");
       effects.getObject().forEach((key, value)->{
         final JSONHelper helperObj = new JSONHelper((JSONObject)value);
         customEffects.add(new PotionEffectData(helperObj.getString("name"),
@@ -92,8 +92,7 @@ public abstract class SuspiciousStewData<T> implements SerialItemData<T> {
    */
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof SuspiciousStewData) {
-      SuspiciousStewData<?> compare = (SuspiciousStewData<?>)data;
+    if(data instanceof SuspiciousStewData<?> compare) {
       return customEffects.equals(compare.customEffects);
     }
     return false;
