@@ -1,5 +1,4 @@
-package net.tnemc.item.platform.check;
-
+package net.tnemc.item.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -20,33 +19,52 @@ package net.tnemc.item.platform.check;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.Identifiable;
+import net.tnemc.item.component.impl.FoodComponent;
+import net.tnemc.item.platform.applier.ItemApplicator;
+import net.tnemc.item.platform.check.ItemCheck;
+import net.tnemc.item.platform.deserialize.ItemDeserializer;
+import net.tnemc.item.providers.VersionUtil;
 
 /**
- * ItemCheck
+ * ItemFood
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public interface ItemCheck<T> extends Identifiable {
+public abstract class ItemFood<I extends AbstractItemStack<T>, T> implements ItemCheck<T>, ItemApplicator<I, T>, ItemDeserializer<I, T> {
 
   /**
-   * @return true if the checks after this one should be skipped.
+   * @return the identifier for this check.
    */
-  default boolean skipRest() {
-    return false;
+  @Override
+  public String identifier() {
+    return "food";
   }
 
   /**
    * @param version the version being used when this check is called.
+   *
    * @return true if this check is enabled for the version, otherwise false
    */
-  boolean enabled(final String version);
+  @Override
+  public boolean enabled(String version) {
+    return VersionUtil.isOneTwentyOne(version);
+  }
 
   /**
    * @param original the original stack
-   * @param check the stack to use for the check
+   * @param check    the stack to use for the check
+   *
    * @return True if the check passes, otherwise false.
    */
-  boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check);
+  @Override
+  public boolean check(AbstractItemStack<T> original, AbstractItemStack<T> check) {
+    if(original.components().containsKey("food") && check.components().containsKey("food")) {
+      final FoodComponent<T> originalFood = (FoodComponent<T>)original.components().get("food");
+      final FoodComponent<T> checkFood = (FoodComponent<T>)check.components().get("food");
+
+      return originalFood.equals(checkFood);
+    }
+    return false;
+  }
 }

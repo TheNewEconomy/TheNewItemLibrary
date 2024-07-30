@@ -1,4 +1,4 @@
-package net.tnemc.item.platform.check.impl;
+package net.tnemc.item.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,23 +19,24 @@ package net.tnemc.item.platform.check.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.ItemPlatform;
+import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
+import net.tnemc.item.platform.deserialize.ItemDeserializer;
 
 /**
- * DisplayCheck
+ * ItemLore
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class DisplayCheck<T> implements ItemCheck<T> {
+public abstract class ItemLore<I extends AbstractItemStack<T>, T> implements ItemCheck<T>, ItemApplicator<I, T>, ItemDeserializer<I, T> {
 
   /**
    * @return the identifier for this check.
    */
   @Override
   public String identifier() {
-    return "display-check";
+    return "lore";
   }
 
   /**
@@ -56,6 +57,6 @@ public class DisplayCheck<T> implements ItemCheck<T> {
    */
   @Override
   public boolean check(AbstractItemStack<T> original, AbstractItemStack<T> check) {
-    return ItemPlatform.componentString(original.display()).equals(ItemPlatform.componentString(check.display()));
+    return original.textComponentsEqual(original.lore(), check.lore());
   }
 }

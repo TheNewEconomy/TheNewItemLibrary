@@ -466,6 +466,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
+  public Optional<SkullProfile> profile() {
+    return Optional.ofNullable(profile);
+  }
+
+  @Override
   public int modelData() {
     return customModelData;
   }

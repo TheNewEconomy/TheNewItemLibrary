@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkitbase.platform.applicator;
+package net.tnemc.item.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,23 +19,27 @@ package net.tnemc.item.bukkitbase.platform.applicator;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.component.impl.JukeBoxComponent;
+import net.tnemc.item.component.impl.ToolComponent;
 import net.tnemc.item.platform.applier.ItemApplicator;
+import net.tnemc.item.platform.check.ItemCheck;
+import net.tnemc.item.platform.deserialize.ItemDeserializer;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.inventory.ItemStack;
 
 /**
- * FoodComponentApplication
+ * ItemTool
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class FoodComponentApplicator implements ItemApplicator<AbstractItemStack<ItemStack>, ItemStack> {
+public abstract class ItemTool<I extends AbstractItemStack<T>, T> implements ItemCheck<T>, ItemApplicator<I, T>, ItemDeserializer<I, T> {
+
   /**
    * @return the identifier for this check.
    */
   @Override
   public String identifier() {
-    return "food-applicator";
+    return "tool";
   }
 
   /**
@@ -49,17 +53,19 @@ public class FoodComponentApplicator implements ItemApplicator<AbstractItemStack
   }
 
   /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
+   * @param original the original stack
+   * @param check    the stack to use for the check
    *
-   * @return the updated item.
+   * @return True if the check passes, otherwise false.
    */
   @Override
-  public ItemStack apply(AbstractItemStack<ItemStack> serialized, ItemStack item) {
+  public boolean check(AbstractItemStack<T> original, AbstractItemStack<T> check) {
+    if(original.components().containsKey("tool") && check.components().containsKey("tool")) {
+      final ToolComponent<T> originalTool = (ToolComponent<T>)original.components().get("tool");
+      final ToolComponent<T> checkTool = (ToolComponent<T>)check.components().get("tool");
 
-    if(serialized.components().containsKey("food")) {
-      return serialized.components().get("food").apply(item);
+      return originalTool.equals(checkTool);
     }
-    return item;
+    return false;
   }
 }

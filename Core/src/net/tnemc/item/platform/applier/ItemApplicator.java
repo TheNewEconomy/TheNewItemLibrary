@@ -20,6 +20,7 @@ package net.tnemc.item.platform.applier;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.platform.Identifiable;
 
 /**
  * ItemApplier
@@ -27,16 +28,11 @@ import net.tnemc.item.AbstractItemStack;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public interface ItemApplicator<I extends AbstractItemStack<T>, T> {
+public interface ItemApplicator<I extends AbstractItemStack<T>, T> extends Identifiable {
 
   /**
-   * @return the identifier for this check.
-   */
-  String identifier();
-
-  /**
-   * @param version the version being used when this check is called.
-   * @return true if this check is enabled for the version, otherwise false
+   * @param version the version being used when this applicator is called.
+   * @return true if this applicator is enabled for the version, otherwise false
    */
   boolean enabled(final String version);
 

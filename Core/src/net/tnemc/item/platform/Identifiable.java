@@ -1,4 +1,4 @@
-package net.tnemc.item.platform.check;
+package net.tnemc.item.platform;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,31 +18,17 @@ package net.tnemc.item.platform.check;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.AbstractItemStack;
-
 /**
- * LocaleItemCheck
+ * Identifiable
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public interface LocaleItemCheck<T> extends ItemCheck<T> {
+public interface Identifiable {
 
   /**
-   * @param original the original stack
-   * @param check the stack to use for the check
-   * @return True if the check passes, otherwise false.
+   * @return the identifier for this check.
    */
-  boolean check(final T original, final T check);
+  String identifier();
 
-  /**
-   * @param original the original stack
-   * @param check    the stack to use for the check
-   *
-   * @return True if the check passes, otherwise false.
-   */
-  @Override
-  default boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
-    return true;//always return true because this shouldn't be used for locale checks.
-  }
 }

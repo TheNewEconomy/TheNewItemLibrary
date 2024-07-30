@@ -122,6 +122,8 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   short damage();
 
+  Optional<SkullProfile> profile();
+
   int modelData();
 
   boolean unbreakable();

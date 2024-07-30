@@ -50,16 +50,6 @@ public abstract class PDCCheck implements LocaleItemCheck<ItemStack> {
   }
 
   /**
-   * @param version the version being used when this check is called.
-   *
-   * @return true if this check is enabled for the version, otherwise false
-   */
-  @Override
-  public boolean enabled(String version) {
-    return false;
-  }
-
-  /**
    * @param original the original stack
    * @param check    the stack to use for the check
    *

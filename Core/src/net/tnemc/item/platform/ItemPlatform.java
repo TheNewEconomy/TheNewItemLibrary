@@ -28,7 +28,6 @@ import net.tnemc.item.platform.deserialize.ItemDeserializer;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,9 +39,9 @@ import java.util.Map;
  */
 public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
-  protected final Map<String, ItemCheck<T>> checks = new LinkedHashMap<>();
+  protected final Map<String, ItemCheck<T>> checks = new HashMap<>();
   protected final Map<String, ItemApplicator<I, T>> applicators = new HashMap<>();
-  protected final Map<String, ItemDeserializer<I, T>> deserializer = new HashMap<>();
+  protected final Map<String, ItemDeserializer<I, T>> deserializers = new HashMap<>();
 
   /**
    * @return the version that is being used currently
@@ -67,6 +66,13 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   }
 
   /**
+   * @param deserializer the deserializer to add
+   */
+  public void addDeserializer(final ItemDeserializer<I, T> deserializer) {
+    deserializers.put(deserializer.identifier(), deserializer);
+  }
+
+  /**
    * Used to check if two locale stacks are comparable.
    * @param original the original stack
    * @param check the stack to use for the check
@@ -88,6 +94,55 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
         if(locale.enabled(version()) && !locale.check(original, check)) {
           return false;
         }
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Used to check if two locale stacks are comparable based on a specific order of checks.
+   * @param original the original stack
+   * @param check the stack to use for the check
+   * @param order the order of the checks to run for the comparison
+   *
+   * @return True if the check passes, otherwise false.
+   */
+  public boolean checkOrder(final T original, final T check, final String... order) {
+
+    for(String id : order) {
+      if(checks.containsKey(id)) {
+
+        final ItemCheck<T> checkItem = checks.get(id);
+        if(checkItem instanceof LocaleItemCheck<T> locale) {
+
+          if(checkItem.enabled(version())) {
+            return locale.check(original, check);
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Used to check if two serialized stacks are comparable based on a specific order of checks.
+   * @param original the original stack
+   * @param check the stack to use for the check
+   * @param order the order of the checks to run for the comparison
+   *
+   * @return True if the check passes, otherwise false.
+   */
+  public boolean checkOrder(final I original, final I check, final String... order) {
+
+    for(String id : order) {
+      if(checks.containsKey(id)) {
+
+        final ItemCheck<T> checkItem = checks.get(id);
+        if(checkItem.enabled(version())) {
+
+          return checkItem.check(original, check);
+        }
+
       }
     }
     return true;
@@ -141,7 +196,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @return the updated serialized item.
    */
   public I deserialize(final T item, I serialized) {
-    for(final ItemDeserializer<I, T> deserializer : deserializer.values()) {
+    for(final ItemDeserializer<I, T> deserializer : deserializers.values()) {
       if(deserializer.enabled(version())) {
         serialized = deserializer.deserialize(item, serialized);
       }
