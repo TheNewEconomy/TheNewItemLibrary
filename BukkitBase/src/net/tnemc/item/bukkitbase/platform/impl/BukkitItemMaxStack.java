@@ -18,9 +18,12 @@ package net.tnemc.item.bukkitbase.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.platform.impl.ItemMaxStack;
+import net.tnemc.item.platform.impl.ItemUnbreakable;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * BukkitItemMaxStack
@@ -28,7 +31,7 @@ import org.bukkit.inventory.ItemStack;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemMaxStack extends ItemMaxStack<BukkitItemStack, ItemStack> {
+public class BukkitItemMaxStack<I extends AbstractItemStack<ItemStack>> extends ItemUnbreakable<I, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -36,8 +39,15 @@ public class BukkitItemMaxStack extends ItemMaxStack<BukkitItemStack, ItemStack>
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
-    return null;
+  public ItemStack apply(I serialized, ItemStack item) {
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && serialized.maxStack() != -1) {
+
+      meta.setMaxStackSize(serialized.maxStack());
+      item.setItemMeta(meta);
+    }
+    return item;
   }
 
   /**
@@ -47,7 +57,12 @@ public class BukkitItemMaxStack extends ItemMaxStack<BukkitItemStack, ItemStack>
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
-    return null;
+  public I deserialize(ItemStack item, I serialized) {
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasMaxStackSize()) {
+      serialized.maxStack(meta.getMaxStackSize());
+    }
+    return serialized;
   }
 }
