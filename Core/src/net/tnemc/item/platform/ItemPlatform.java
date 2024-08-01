@@ -48,8 +48,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    */
   public abstract String version();
 
-  protected void addDefaultChecks() {
-  }
+  public abstract void addDefaults();
 
   /**
    * @param check the {@link ItemCheck check} to add.

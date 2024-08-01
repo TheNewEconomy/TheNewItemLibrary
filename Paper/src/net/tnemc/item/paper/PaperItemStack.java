@@ -191,7 +191,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
       if(meta.hasEnchants()) {
 
-        meta.getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().getKey(), level)));
+        meta.getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().toString(), level)));
       }
 
       if(stack.hasItemMeta() && meta instanceof SkullMeta) {

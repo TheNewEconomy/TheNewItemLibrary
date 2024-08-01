@@ -23,8 +23,6 @@ import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.deserialize.ItemDeserializer;
 
-import java.util.Objects;
-
 /**
  * ItemUnbreakable
  *
