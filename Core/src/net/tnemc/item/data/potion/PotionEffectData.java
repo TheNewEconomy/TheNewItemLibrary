@@ -20,6 +20,9 @@ package net.tnemc.item.data.potion;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.JSONHelper;
+import org.json.simple.JSONObject;
+
 public class PotionEffectData {
 
   private String name;
@@ -38,6 +41,27 @@ public class PotionEffectData {
     this.particles = particles;
     this.ambient = ambient;
     this.icon = icon;
+  }
+
+  public JSONObject toJSON() {
+    final JSONObject effObject = new JSONObject();
+    effObject.put("name", name);
+    effObject.put("amplifier", amplifier);
+    effObject.put("duration", duration);
+    effObject.put("ambient", ambient);
+    effObject.put("particles", particles);
+    effObject.put("icon", icon);
+
+    return effObject;
+  }
+
+  public static PotionEffectData readJSON(JSONHelper json) {
+    return new PotionEffectData(json.getString("name"),
+            json.getInteger("amplifier"),
+            json.getInteger("duration"),
+            json.getBoolean("ambient"),
+            json.getBoolean("particles"),
+            json.getBoolean("icon"));
   }
 
   public String getName() {

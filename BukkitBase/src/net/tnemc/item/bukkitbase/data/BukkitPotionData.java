@@ -25,6 +25,8 @@ import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.data.SerialPotionData;
 import net.tnemc.item.data.potion.PotionEffectData;
 import org.bukkit.Color;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -47,18 +49,21 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
     if(meta != null) {
 
       if(meta.hasColor()) colorRGB = meta.getColor().asRGB();
-      type = meta.getBasePotionData().getType().name();
-      extended = meta.getBasePotionData().isExtended();
-      upgraded = meta.getBasePotionData().isUpgraded();
+
+      if(meta.getBasePotionData() != null) {
+        type = meta.getBasePotionData().getType().name();
+        extended = meta.getBasePotionData().isExtended();
+        upgraded = meta.getBasePotionData().isUpgraded();
+      }
 
       for(final PotionEffect effect : meta.getCustomEffects()) {
 
         customEffects.add(new PotionEffectData(effect.getType().getName(),
-                                               effect.getAmplifier(),
-                                               effect.getDuration(),
-                                               effect.hasParticles(),
-                                               effect.isAmbient(),
-                                               effect.hasIcon()));
+                effect.getAmplifier(),
+                effect.getDuration(),
+                effect.hasParticles(),
+                effect.isAmbient(),
+                effect.hasIcon()));
       }
     }
   }
@@ -77,13 +82,17 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
     if(colorRGB != -1) meta.setColor(Color.fromRGB(colorRGB));
 
     customEffects.forEach((effect)->meta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(effect.getName()),
-                                                                        effect.getDuration(),
-                                                                        effect.getAmplifier(),
-                                                                        effect.isAmbient(),
-                                                                        effect.hasParticles(),
-                                                                        effect.hasIcon()), true));
-    PotionData data = new PotionData(PotionType.valueOf(type), extended, upgraded);
-    meta.setBasePotionData(data);
+            effect.getDuration(),
+            effect.getAmplifier(),
+            effect.isAmbient(),
+            effect.hasParticles(),
+            effect.hasIcon()), true));
+
+    if(type != null) {
+      final PotionData data = new PotionData(PotionType.valueOf(type), extended, upgraded);
+      meta.setBasePotionData(data);
+    }
+
     stack.setItemMeta(meta);
     return stack;
   }
