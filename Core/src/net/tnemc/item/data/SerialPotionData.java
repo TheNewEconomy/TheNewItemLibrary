@@ -31,10 +31,11 @@ import java.util.List;
 public abstract class SerialPotionData<T> implements SerialItemData<T> {
 
   protected final List<PotionEffectData> customEffects = new ArrayList<>();
-  protected String type;
+  protected String type = null;
   protected int colorRGB = -1;
   protected boolean extended;
   protected boolean upgraded;
+  protected boolean updated = false; //magic value for bukkit fuckiness
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -45,12 +46,16 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
     json.put("name", "potion");
-    json.put("type", type);
     if(colorRGB != -1) json.put("colour", colorRGB);
-    json.put("extended", extended);
-    json.put("upgraded", upgraded);
 
-    if(customEffects.size() > 0) {
+    if(type != null) {
+      json.put("type", type);
+      json.put("updated", updated);
+      json.put("extended", extended);
+      json.put("upgraded", upgraded);
+    }
+
+    if(!customEffects.isEmpty()) {
       final JSONObject effects = new JSONObject();
       for(PotionEffectData effect : customEffects) {
 
@@ -68,11 +73,17 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
    */
   @Override
   public void readJSON(JSONHelper json) {
-    type = json.getString("type");
-
     if(json.has("colour")) colorRGB = json.getInteger("colour");
-    extended = json.getBoolean("extended");
-    upgraded = json.getBoolean("upgraded");
+
+    if(json.has("type")) {
+      type = json.getString("type");
+      extended = json.getBoolean("extended");
+      upgraded = json.getBoolean("upgraded");
+
+      if(json.has("updated")) {
+        updated = json.getBoolean("updated");
+      }
+    }
 
     if(json.has("effects")) {
       final JSONHelper effects = json.getHelper("effects");
@@ -94,9 +105,13 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
   @Override
   public boolean equals(SerialItemData<? extends T> data) {
     if(data instanceof SerialPotionData<?> compare) {
-      return customEffects.equals(compare.customEffects) &&  type.equalsIgnoreCase(compare.type)
-          && colorRGB == compare.colorRGB && extended == compare.extended
-          && upgraded == compare.upgraded;
+
+      if(type != null) {
+        return customEffects.equals(compare.customEffects) &&  type.equalsIgnoreCase(compare.type)
+                && colorRGB == compare.colorRGB && extended == compare.extended
+                && upgraded == compare.upgraded;
+      }
+      return customEffects.equals(compare.customEffects) &&  colorRGB == compare.colorRGB;
     }
     return false;
   }

@@ -25,6 +25,8 @@ import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.data.SerialPotionData;
 import net.tnemc.item.data.potion.PotionEffectData;
 import org.bukkit.Color;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -47,9 +49,23 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
     if(meta != null) {
 
       if(meta.hasColor()) colorRGB = meta.getColor().asRGB();
-      type = meta.getBasePotionData().getType().name();
-      extended = meta.getBasePotionData().isExtended();
-      upgraded = meta.getBasePotionData().isUpgraded();
+
+      try {
+
+        if(meta.hasBasePotionType()) {
+          updated = true;
+          type = meta.getBasePotionType().getKey().getKey();
+          extended = meta.getBasePotionType().isExtendable();
+          upgraded = meta.getBasePotionType().isUpgradeable();
+        }
+
+      } catch(Exception ignore) {
+        if(meta.getBasePotionData() != null) {
+          type = meta.getBasePotionData().getType().name();
+          extended = meta.getBasePotionData().isExtended();
+          upgraded = meta.getBasePotionData().isUpgraded();
+        }
+      }
 
       for(final PotionEffect effect : meta.getCustomEffects()) {
 
@@ -82,8 +98,16 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
                                                                         effect.isAmbient(),
                                                                         effect.hasParticles(),
                                                                         effect.hasIcon()), true));
-    final PotionData data = new PotionData(PotionType.valueOf(type), extended, upgraded);
-    meta.setBasePotionData(data);
+
+    if(updated) {
+      try {
+        final PotionType potionType = Registry.POTION.get(NamespacedKey.fromString(type));
+        meta.setBasePotionType(potionType);
+      } catch(Exception ignore) {}
+    } else {
+      final PotionData data = new PotionData(PotionType.valueOf(type), extended, upgraded);
+      meta.setBasePotionData(data);
+    }
     stack.setItemMeta(meta);
     return stack;
   }
