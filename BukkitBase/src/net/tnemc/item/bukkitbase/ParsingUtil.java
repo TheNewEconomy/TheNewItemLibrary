@@ -37,14 +37,7 @@ import java.util.List;
 public class ParsingUtil {
 
   public static ItemMeta buildFor(ItemStack stack, Class<? extends ItemMeta> type) {
-    ItemMeta meta;
-
-    if(stack.hasItemMeta() && type.isInstance(stack.getItemMeta())) {
-      meta = stack.getItemMeta();
-    } else {
-      meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
-    }
-    return meta;
+    return stack.getItemMeta();
   }
 
   public static FireworkEffect fromSerial(final SerialFireworkEffect effect) {
