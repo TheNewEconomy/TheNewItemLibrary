@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform.impl;
+package net.tnemc.item.paper.platform;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,7 +19,7 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.attribute.SerialAttribute;
-import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.platform.impl.ItemAttribute;
 import org.bukkit.attribute.Attribute;
@@ -30,12 +30,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Map;
 
 /**
- * BukkitItemAttribute
+ * PaperItemAttribute
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemAttribute extends ItemAttribute<BukkitItemStack, ItemStack> {
+public class PaperItemAttribute extends ItemAttribute<PaperItemStack, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -43,7 +43,7 @@ public class BukkitItemAttribute extends ItemAttribute<BukkitItemStack, ItemStac
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
+  public ItemStack apply(PaperItemStack serialized, ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
@@ -71,7 +71,7 @@ public class BukkitItemAttribute extends ItemAttribute<BukkitItemStack, ItemStac
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
+  public PaperItemStack deserialize(ItemStack item, PaperItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasAttributeModifiers()) {

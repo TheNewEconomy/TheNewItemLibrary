@@ -61,6 +61,7 @@ public class PaperBundleData extends BundleData<ItemStack> {
 
 
     items.forEach((slot, item)->meta.addItem(item.getStack().locale()));
+    stack.setItemMeta(meta);
 
     return stack;
   }

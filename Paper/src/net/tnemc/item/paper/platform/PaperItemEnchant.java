@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform.impl;
+package net.tnemc.item.paper.platform;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,19 +18,21 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkitbase.component.BukkitJukeBoxComponent;
-import net.tnemc.item.platform.impl.ItemJuke;
+import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.platform.impl.ItemDisplay;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * BukkitItemJuke
+ * PaperItemEnchant
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemJuke extends ItemJuke<BukkitItemStack, ItemStack> {
+public class PaperItemEnchant extends ItemDisplay<PaperItemStack, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -38,14 +40,28 @@ public class BukkitItemJuke extends ItemJuke<BukkitItemStack, ItemStack> {
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
+  public ItemStack apply(PaperItemStack serialized, ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
+      serialized.enchantments().forEach((name, level)->{
 
-      if(serialized.components().containsKey("jukebox")) {
-        return serialized.components().get("jukebox").apply(item);
-      }
+        final NamespacedKey space = NamespacedKey.fromString(name);
+        if(space != null) {
+
+          Enchantment enchant;
+
+          try {
+            enchant = Registry.ENCHANTMENT.get(space);
+          } catch(Exception ignore) {
+            enchant = Enchantment.getByKey(space);
+          }
+
+          if(enchant != null) {
+            meta.addEnchant(enchant, level, true);
+          }
+        }
+      });
     }
     return item;
   }
@@ -57,11 +73,12 @@ public class BukkitItemJuke extends ItemJuke<BukkitItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
+  public PaperItemStack deserialize(ItemStack item, PaperItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasJukeboxPlayable()) {
-      serialized.components().put("jukebox", BukkitJukeBoxComponent.create(item));
+    if(meta != null && meta.hasEnchants()) {
+
+      meta.getEnchants().forEach(((enchantment, level)->serialized.enchantments().put(enchantment.getKey().toString(), level)));
     }
     return serialized;
   }

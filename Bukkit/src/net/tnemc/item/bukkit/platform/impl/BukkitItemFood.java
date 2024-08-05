@@ -19,8 +19,10 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkitbase.component.BukkitBaseFoodComponent;
 import net.tnemc.item.platform.impl.ItemFood;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * BukkitItemFood
@@ -37,7 +39,15 @@ public class BukkitItemFood extends ItemFood<BukkitItemStack, ItemStack> {
    */
   @Override
   public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
-    return null;
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null) {
+
+      if(serialized.components().containsKey("food")) {
+        return serialized.components().get("food").apply(item);
+      }
+    }
+    return item;
   }
 
   /**
@@ -48,6 +58,11 @@ public class BukkitItemFood extends ItemFood<BukkitItemStack, ItemStack> {
    */
   @Override
   public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
-    return null;
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasJukeboxPlayable()) {
+      serialized.components().put("food", BukkitBaseFoodComponent.create(item));
+    }
+    return serialized;
   }
 }

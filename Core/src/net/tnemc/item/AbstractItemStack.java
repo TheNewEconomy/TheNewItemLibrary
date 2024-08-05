@@ -26,6 +26,7 @@ import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -42,7 +43,7 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   AbstractItemStack<T> of(T locale);
 
-  AbstractItemStack<T> of(JSONObject json);
+  AbstractItemStack<T> of(JSONObject json) throws ParseException;
 
   AbstractItemStack<T> flags(List<String> flags);
 

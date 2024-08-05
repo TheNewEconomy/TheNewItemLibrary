@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform;
+package net.tnemc.sponge.platform;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,30 +18,31 @@ package net.tnemc.item.bukkit.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.platform.ItemPlatform;
-import org.bukkit.inventory.ItemStack;
+import net.tnemc.sponge.SpongeItemStack;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.item.inventory.ItemStack;
 
 /**
- * BukkitItemPlatform
+ * SpongeItemPlatform
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack> {
+public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack> {
 
-  public static final BukkitItemPlatform PLATFORM = new BukkitItemPlatform();
+  public static final SpongeItemPlatform PLATFORM = new SpongeItemPlatform();
 
-  private BukkitItemPlatform() {
+  private SpongeItemPlatform() {
 
   }
+
   /**
    * @return the version that is being used currently
    */
   @Override
   public String version() {
-    return ParsingUtil.version();
+    return Sponge.game().platform().minecraftVersion().name();
   }
 
   @Override

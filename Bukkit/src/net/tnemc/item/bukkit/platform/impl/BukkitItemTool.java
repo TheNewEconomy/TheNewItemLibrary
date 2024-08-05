@@ -19,8 +19,10 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.component.BukkitToolComponent;
 import net.tnemc.item.platform.impl.ItemTool;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * BukkitItemTool
@@ -37,7 +39,15 @@ public class BukkitItemTool extends ItemTool<BukkitItemStack, ItemStack> {
    */
   @Override
   public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
-    return null;
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null) {
+
+      if(serialized.components().containsKey("tool")) {
+        return serialized.components().get("tool").apply(item);
+      }
+    }
+    return item;
   }
 
   /**
@@ -48,6 +58,11 @@ public class BukkitItemTool extends ItemTool<BukkitItemStack, ItemStack> {
    */
   @Override
   public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
-    return null;
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasJukeboxPlayable()) {
+      serialized.components().put("tool", BukkitToolComponent.create(item));
+    }
+    return serialized;
   }
 }

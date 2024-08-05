@@ -30,6 +30,13 @@ import org.bukkit.inventory.ItemStack;
  * @since 0.1.7.7
  */
 public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
+
+  public static final PaperItemPlatform PLATFORM = new PaperItemPlatform();
+
+  private PaperItemPlatform() {
+
+  }
+
   /**
    * @return the version that is being used currently
    */

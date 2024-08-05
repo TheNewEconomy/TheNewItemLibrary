@@ -20,7 +20,11 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.platform.impl.ItemDisplay;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * BukkitItemEnchant
@@ -37,7 +41,29 @@ public class BukkitItemEnchant extends ItemDisplay<BukkitItemStack, ItemStack> {
    */
   @Override
   public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
-    return null;
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null) {
+      serialized.enchantments().forEach((name, level)->{
+
+        final NamespacedKey space = NamespacedKey.fromString(name);
+        if(space != null) {
+
+          Enchantment enchant;
+
+          try {
+            enchant = Registry.ENCHANTMENT.get(space);
+          } catch(Exception ignore) {
+            enchant = Enchantment.getByKey(space);
+          }
+
+          if(enchant != null) {
+            meta.addEnchant(enchant, level, true);
+          }
+        }
+      });
+    }
+    return item;
   }
 
   /**
@@ -48,6 +74,12 @@ public class BukkitItemEnchant extends ItemDisplay<BukkitItemStack, ItemStack> {
    */
   @Override
   public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
-    return null;
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasEnchants()) {
+
+      meta.getEnchants().forEach(((enchantment, level)->serialized.enchantments().put(enchantment.getKey().toString(), level)));
+    }
+    return serialized;
   }
 }

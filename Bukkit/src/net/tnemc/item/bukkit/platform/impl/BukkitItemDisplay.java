@@ -18,9 +18,11 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.platform.impl.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * BukkitItemDisplay
@@ -37,7 +39,13 @@ public class BukkitItemDisplay extends ItemDisplay<BukkitItemStack, ItemStack> {
    */
   @Override
   public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
-    return null;
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && serialized.display() != null) {
+
+      meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(serialized.display()));
+    }
+    return item;
   }
 
   /**
@@ -48,6 +56,12 @@ public class BukkitItemDisplay extends ItemDisplay<BukkitItemStack, ItemStack> {
    */
   @Override
   public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
-    return null;
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasDisplayName()) {
+
+      serialized.display(LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName()));
+    }
+    return serialized;
   }
 }

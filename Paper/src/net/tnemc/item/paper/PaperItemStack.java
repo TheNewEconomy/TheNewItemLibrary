@@ -25,26 +25,13 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
-import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.bukkitbase.component.BukkitBaseFoodComponent;
-import net.tnemc.item.bukkitbase.component.BukkitJukeBoxComponent;
-import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.paper.component.PaperToolComponent;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.SkullProfile;
-import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -52,7 +39,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -64,7 +50,7 @@ import java.util.Optional;
 public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   private final List<String> flags = new ArrayList<>();
-  private final Map<String, AttributeModifier> attributes = new HashMap<>();
+  private final Map<String, SerialAttribute> attributes = new HashMap<>();
   private final Map<String, Integer> enchantments = new HashMap<>();
   private final List<Component> lore = new ArrayList<>();
 
@@ -72,7 +58,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   private int slot = 0;
   private SkullProfile profile = null;
-  private Material material;
+  private String material;
   private Integer maxStack = 64;
   private Integer amount = 1;
   private Component display = Component.empty();
@@ -92,7 +78,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public PaperItemStack of(String material, int amount) {
-    this.material = Material.matchMaterial(material);
+    this.material = material;
     this.amount = amount;
     return this;
   }
@@ -108,7 +94,6 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     lore.addAll(stack.lore);
     components.putAll(stack.components);
 
-    profile = stack.profile;
     slot = stack.slot;
     material = stack.material;
     maxStack = stack.maxStack;
@@ -124,6 +109,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     if(stack.profile != null) {
       this.profile = stack.profile;
     }
+    this.data = stack.data;
 
     this.stack = stack.stack;
 
@@ -134,94 +120,15 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   public PaperItemStack of(ItemStack locale) {
     this.stack = locale;
 
-    material = stack.getType();
-    amount = stack.getAmount();
-
-    if(stack.hasItemMeta() && stack.getItemMeta() != null) {
-      
-      final ItemMeta meta = stack.getItemMeta();
-      
-      display = stack.displayName();
-
-      if(meta.lore() != null) {
-        lore.clear();
-        lore.addAll(meta.lore());
-      }
-
-      // Check 1.13 version for compatibility with customModelData
-      if(VersionUtil.isOneFourteen(ParsingUtil.version()) && meta.hasCustomModelData()) {
-        customModelData = meta.getCustomModelData();
-      }
-
-      for(ItemFlag flag : meta.getItemFlags()) {
-        flags.add(flag.name());
-      }
-
-      if(VersionUtil.isOneThirteen(ParsingUtil.version()) && meta.getAttributeModifiers() != null) {
-        meta.getAttributeModifiers().forEach((attr, modifier)->attributes.put(attr.getKey().getKey(), modifier));
-      }
-
-      //1.21 compat
-      if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
-
-        this.maxStack = meta.getMaxStackSize();
-        if(meta.hasRarity()) {
-          this.rarity = meta.getRarity().name();
-        }
-
-        if(meta.hasEnchantmentGlintOverride()) {
-          this.enchantGlint = meta.getEnchantmentGlintOverride();
-        }
-
-        this.fireResistant = meta.isFireResistant();
-        this.hideTooltip = meta.isHideTooltip();
-
-        if(meta.hasFood()) {
-          components.put("food", BukkitBaseFoodComponent.create(stack));
-        }
-
-        if(meta.hasTool()) {
-          components.put("tool", PaperToolComponent.create(stack));
-        }
-
-        if(meta.hasJukeboxPlayable()) {
-          components.put("jukebox", BukkitJukeBoxComponent.create(stack));
-        }
-      }
-
-      if(meta.hasEnchants()) {
-
-        meta.getEnchants().forEach(((enchantment, level) ->enchantments.put(enchantment.getKey().toString(), level)));
-      }
-
-      if(stack.hasItemMeta() && meta instanceof SkullMeta) {
-        final BukkitSkullData skullData = new BukkitSkullData();
-        skullData.of(locale);
-
-        this.profile = skullData.getProfile();
-
-      }
-
-    }
-
-    //Parse the meta data.
-    PaperMetaBuild.parseMeta(locale)
-            .ifPresent(itemStackSerialItemData->this.data = itemStackSerialItemData);
-
-    return this;
+    return PaperItemPlatform.PLATFORM.deserialize(this.stack, this);
   }
 
   @Override
-  public PaperItemStack of(JSONObject json) {
+  public PaperItemStack of(JSONObject json) throws ParseException {
+    final Optional<SerialItem<ItemStack>> serialStack = SerialItem.unserialize(json);
 
-    try {
-      final Optional<SerialItem<ItemStack>> serialStack = SerialItem.unserialize(json);
-
-      if(serialStack.isPresent()) {
-        return of(serialStack.get());
-      }
-    } catch(ParseException e) {
-      e.printStackTrace();
+    if(serialStack.isPresent()) {
+      return of(serialStack.get());
     }
     return this;
   }
@@ -243,14 +150,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @SuppressWarnings("removal")
   @Override
   public PaperItemStack attribute(String name, SerialAttribute attribute) {
-    final AttributeModifier attr = new AttributeModifier(attribute.getIdentifier(),
-            attribute.getName(),
-            attribute.getAmount(),
-            ParsingUtil.attributeOperation(attribute.getOperation()),
-            ParsingUtil.attributeSlot(attribute.getSlot()));
-
-
-    attributes.put(name, attr);
+    this.attributes.put(name, attribute);
     return this;
   }
 
@@ -258,18 +158,8 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack attribute(Map<String, SerialAttribute> attributes) {
 
-    for(Map.Entry<String, SerialAttribute> entry : attributes.entrySet()) {
-
-      final SerialAttribute attribute = entry.getValue();
-      final AttributeModifier attr = new AttributeModifier(attribute.getIdentifier(),
-              attribute.getName(),
-              attribute.getAmount(),
-              ParsingUtil.attributeOperation(attribute.getOperation()),
-              ParsingUtil.attributeSlot(attribute.getSlot()));
-
-
-      this.attributes.put(entry.getKey(), attr);
-    }
+    this.attributes.clear();
+    this.attributes.putAll(attributes);
     return this;
   }
 
@@ -297,7 +187,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public PaperItemStack material(String material) {
-    this.material = Registry.MATERIAL.get(NamespacedKey.fromString(material));
+    this.material = material;
     return this;
   }
 
@@ -409,23 +299,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public Map<String, SerialAttribute> attributes() {
-    final Map<String, SerialAttribute> serialAttributes = new HashMap<>();
-
-    for(Map.Entry<String, AttributeModifier> entry : attributes.entrySet()) {
-
-      final AttributeModifier attribute = entry.getValue();
-
-      @SuppressWarnings("removal")
-      final SerialAttribute attr = new SerialAttribute(attribute.getUniqueId(),
-              attribute.getName(),
-              attribute.getAmount(),
-              ParsingUtil.attributeOperation(attribute.getOperation()));
-      if(attribute.getSlot() != null) {
-        attr.setSlot(ParsingUtil.attributeSlot(attribute.getSlot()));
-      }
-      serialAttributes.put(entry.getKey(), attr);
-    }
-    return serialAttributes;
+    return attributes;
   }
 
   @Override
@@ -438,13 +312,9 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     return components;
   }
 
-  public Material getType() {
-    return material;
-  }
-
   @Override
   public String material() {
-    return material.getKey().getKey();
+    return material;
   }
 
   @Override
@@ -552,7 +422,6 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public boolean similar(AbstractItemStack<? extends ItemStack> compare) {
     if(stack == null) return false;
-    //return stack.isSimilar(compare.locale());
     return similarStack((PaperItemStack)compare);
   }
 
@@ -562,52 +431,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   public boolean similarStack(PaperItemStack stack) {
 
-    if(debug || stack.debug) System.out.println("Similar Stack Check");
-
-    if(material != stack.material) return false;
-    if(debug || stack.debug) System.out.println("Material Check Passed");
-    if(!displayPlain().equals(stack.displayPlain())) return false;
-    if(debug || stack.debug) System.out.println("Display Check Passed");
-    if(!Objects.equals(customModelData, stack.customModelData)) return false;
-    if(debug || stack.debug) System.out.println("CustomData Check Passed");
-    if(unbreakable != stack.unbreakable) return false;
-    if(debug || stack.debug) System.out.println("Unbreakable Check Passed");
-
-    //1.21 comps
-    if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
-      if(!Objects.equals(maxStack, stack.maxStack)) return false;
-      if(!Objects.equals(rarity, stack.rarity)) return false;
-      if(enchantGlint != stack.enchantGlint) return false;
-      if(fireResistant != stack.fireResistant) return false;
-      if(hideTooltip != stack.hideTooltip) return false;
-    }
-
-    if(!textComponentsEqual(lore, stack.lore)) return false;
-    if(debug || stack.debug) System.out.println("Lore Check Passed");
-    if(!listsEquals(flags, stack.flags, debug)) return false;
-    if(debug || stack.debug) System.out.println("Flags Check Passed");
-    if(!attributes.equals(stack.attributes)) return false;
-    if(debug || stack.debug) System.out.println("Attributes Check Passed");
-    if(!enchantments.equals(stack.enchantments)) return false;
-    if(debug || stack.debug) System.out.println("Enchants Check Passed");
-
-    if(profile != null) {
-      if(debug || stack.debug) System.out.println("Profile Check Entered");
-      return stack.profile != null && profile.equals(stack.profile);
-    }
-
-    if(data != null) {
-      if(debug || stack.debug) System.out.println("Data Check Entered");
-      return data.equals(stack.data);
-    }
-
-    if(stack.profile != null) {
-      if(debug || stack.debug) System.out.println("Profile Check Failed");
-      return false;
-    }
-    if(debug || stack.debug) System.out.println("Profile Check Passed. Final Check.");
-
-    return stack.data == null;
+    return PaperItemPlatform.PLATFORM.check(this, stack);
   }
 
   /**
@@ -616,93 +440,18 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public ItemStack locale() {
     if(stack == null || dirty) {
-      stack = new ItemStack(material, amount);
 
-      ItemMeta meta = Bukkit.getItemFactory().getItemMeta(material);
-      if(meta != null) {
+      final NamespacedKey key = NamespacedKey.fromString(material);
 
-        if(display != null && !Component.EQUALS.test(display, Component.empty())) {
-          meta.displayName(display);
+      if(key != null) {
+
+        final Material material = Registry.MATERIAL.get(key);
+        if(material != null) {
+
+          stack = new ItemStack(material, amount);
+
+          stack = PaperItemPlatform.PLATFORM.apply(this, stack);
         }
-
-        meta.lore(lore);
-        enchantments.forEach((name, level)->{
-
-          final NamespacedKey space = NamespacedKey.fromString(name);
-          if(space != null) {
-
-            final Enchantment enchant = Registry.ENCHANTMENT.get(space);
-            if(enchant != null) {
-              meta.addEnchant(enchant, level, true);
-            }
-          }
-        });
-
-        if(!flags.isEmpty()) {
-          for(String str : flags) {
-            try {
-              meta.addItemFlags(ItemFlag.valueOf(str));
-            } catch(Exception ignore) {
-              //do nothing, invalid value
-            }
-          }
-        }
-
-        if(customModelData != -1) {
-          meta.setCustomModelData(customModelData);
-        }
-
-        if(VersionUtil.isOneThirteen(ParsingUtil.version())) {
-          attributes.forEach((key, attribute)->{
-            try {
-              final NamespacedKey space = NamespacedKey.fromString(key);
-              if(space != null) {
-
-                final Attribute attr = Registry.ATTRIBUTE.get(space);
-                if(attr != null) {
-
-                  meta.addAttributeModifier(attr, attribute);
-                }
-              }
-            } catch(Exception ignore) {
-              //catched invalid Attribute names.
-            }
-          });
-        }
-
-        if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
-
-          meta.setMaxStackSize(maxStack);
-          meta.setRarity(ItemRarity.valueOf(rarity));
-          meta.setEnchantmentGlintOverride(enchantGlint);
-          meta.setFireResistant(fireResistant);
-          meta.setHideTooltip(hideTooltip);
-        }
-      }
-
-      if(profile != null && meta instanceof SkullMeta) {
-
-        if(profile.getUuid() != null) {
-
-          ((SkullMeta)meta).setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
-
-        } else if(profile.getUuid() == null && profile.getName() != null) {
-
-          ((SkullMeta)meta).setOwner(profile.getName());
-        }
-      }
-
-      stack.setItemMeta(meta);
-
-      if(VersionUtil.isOneTwentyOne(ParsingUtil.version())) {
-
-        for(SerialComponent<ItemStack> component : components.values()) {
-          component.apply(stack);
-        }
-      }
-
-      if(data != null) {
-        stack = data.apply(stack);
       }
     }
     return stack;

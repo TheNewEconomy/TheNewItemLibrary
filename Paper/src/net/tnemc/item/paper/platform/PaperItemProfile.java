@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform.impl;
+package net.tnemc.item.paper.platform;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,19 +18,21 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkitbase.component.BukkitJukeBoxComponent;
-import net.tnemc.item.platform.impl.ItemJuke;
+import net.tnemc.item.bukkitbase.data.BukkitSkullData;
+import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.platform.impl.ItemProfile;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 /**
- * BukkitItemJuke
+ * PaperItemProfile
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemJuke extends ItemJuke<BukkitItemStack, ItemStack> {
+public class PaperItemProfile extends ItemProfile<PaperItemStack, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -38,14 +40,19 @@ public class BukkitItemJuke extends ItemJuke<BukkitItemStack, ItemStack> {
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
-
+  public ItemStack apply(PaperItemStack serialized, ItemStack item) {
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null) {
+    if(serialized.profile().isPresent() && meta instanceof SkullMeta skull) {
 
-      if(serialized.components().containsKey("jukebox")) {
-        return serialized.components().get("jukebox").apply(item);
+      if(serialized.profile().get().getUuid() != null) {
+
+        skull.setOwningPlayer(Bukkit.getOfflinePlayer(serialized.profile().get().getUuid()));
+
+      } else if(serialized.profile().get().getUuid() == null && serialized.profile().get().getName() != null) {
+
+        skull.setOwner(serialized.profile().get().getName());
       }
+      item.setItemMeta(meta);
     }
     return item;
   }
@@ -57,11 +64,13 @@ public class BukkitItemJuke extends ItemJuke<BukkitItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
+  public PaperItemStack deserialize(ItemStack item, PaperItemStack serialized) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasJukeboxPlayable()) {
-      serialized.components().put("jukebox", BukkitJukeBoxComponent.create(item));
+    if(item.getItemMeta() instanceof SkullMeta) {
+      final BukkitSkullData skullData = new BukkitSkullData();
+      skullData.of(item);
+
+      serialized.profile(skullData.getProfile());
     }
     return serialized;
   }

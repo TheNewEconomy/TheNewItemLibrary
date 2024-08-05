@@ -19,8 +19,12 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.platform.impl.ItemProfile;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 /**
  * BukkitItemProfile
@@ -37,7 +41,20 @@ public class BukkitItemProfile extends ItemProfile<BukkitItemStack, ItemStack> {
    */
   @Override
   public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
-    return null;
+    final ItemMeta meta = item.getItemMeta();
+    if(serialized.profile().isPresent() && meta instanceof SkullMeta skull) {
+
+      if(serialized.profile().get().getUuid() != null) {
+
+        skull.setOwningPlayer(Bukkit.getOfflinePlayer(serialized.profile().get().getUuid()));
+
+      } else if(serialized.profile().get().getUuid() == null && serialized.profile().get().getName() != null) {
+
+        skull.setOwner(serialized.profile().get().getName());
+      }
+      item.setItemMeta(meta);
+    }
+    return item;
   }
 
   /**
@@ -48,6 +65,13 @@ public class BukkitItemProfile extends ItemProfile<BukkitItemStack, ItemStack> {
    */
   @Override
   public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
-    return null;
+
+    if(item.getItemMeta() instanceof SkullMeta) {
+      final BukkitSkullData skullData = new BukkitSkullData();
+      skullData.of(item);
+
+      serialized.profile(skullData.getProfile());
+    }
+    return serialized;
   }
 }

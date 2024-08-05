@@ -18,9 +18,14 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.platform.impl.ItemLore;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.LinkedList;
 
 /**
  * BukkitItemLore
@@ -37,7 +42,18 @@ public class BukkitItemLore extends ItemLore<BukkitItemStack, ItemStack> {
    */
   @Override
   public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
-    return null;
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null) {
+
+      final LinkedList<String> newLore = new LinkedList<>();
+      for(Component comp : serialized.lore()) {
+        newLore.add(LegacyComponentSerializer.legacySection().serialize(comp));
+      }
+      meta.setLore(newLore);
+      item.setItemMeta(meta);
+    }
+    return item;
   }
 
   /**
@@ -48,6 +64,13 @@ public class BukkitItemLore extends ItemLore<BukkitItemStack, ItemStack> {
    */
   @Override
   public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
-    return null;
+    if(item.getItemMeta() != null && item.getItemMeta().getLore() != null) {
+      serialized.lore().clear();
+
+      for(String str : item.getItemMeta().getLore()) {
+        serialized.lore().add(LegacyComponentSerializer.legacySection().deserialize(str));
+      }
+    }
+    return serialized;
   }
 }

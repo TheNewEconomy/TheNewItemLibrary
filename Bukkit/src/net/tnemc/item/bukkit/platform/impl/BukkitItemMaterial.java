@@ -20,6 +20,9 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.platform.impl.ItemMaterial;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -37,7 +40,22 @@ public class BukkitItemMaterial extends ItemMaterial<BukkitItemStack, ItemStack>
    */
   @Override
   public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
-    return null;
+
+    Material material = null;
+    try {
+      final NamespacedKey key = NamespacedKey.fromString(serialized.material());
+      if(key != null) {
+        material = Registry.MATERIAL.get(key);
+      }
+    } catch(Exception ignore) {
+      material = Material.matchMaterial(serialized.material());
+    }
+
+    if(material != null) {
+
+      item.setType(material);
+    }
+    return item;
   }
 
   /**
@@ -48,6 +66,7 @@ public class BukkitItemMaterial extends ItemMaterial<BukkitItemStack, ItemStack>
    */
   @Override
   public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
-    return null;
+    serialized.material(item.getType().getKey().toString());
+    return serialized;
   }
 }
