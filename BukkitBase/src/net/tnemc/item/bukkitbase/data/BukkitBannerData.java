@@ -26,6 +26,8 @@ import net.tnemc.item.data.BannerData;
 import net.tnemc.item.data.banner.PatternData;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
@@ -45,8 +47,14 @@ public class BukkitBannerData extends BannerData<ItemStack> {
 
     if(meta != null) {
       for(final Pattern pattern : meta.getPatterns()) {
-        patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                     pattern.getPattern().getIdentifier()));
+        try {
+          patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
+                  pattern.getPattern().getKey().toString()));
+        } catch(Exception ignore) {
+          //Compatibility
+          patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
+                  pattern.getPattern().getIdentifier()));
+        }
       }
     }
   }
@@ -62,8 +70,18 @@ public class BukkitBannerData extends BannerData<ItemStack> {
     final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
 
     for(final PatternData pattern : patterns) {
-      meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
-                                  PatternType.valueOf(pattern.getPattern())));
+      try {
+        final NamespacedKey key = NamespacedKey.fromString(pattern.getPattern());
+        final DyeColor color = DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor())));
+        if(key != null && color != null && Registry.BANNER_PATTERN.get(key) != null) {
+
+          meta.addPattern(new Pattern(color, Registry.BANNER_PATTERN.get(key)));
+        }
+      } catch(Exception ignore) {
+        //Compatibility
+        meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
+                PatternType.valueOf(pattern.getPattern())));
+      }
     }
     stack.setItemMeta(meta);
 

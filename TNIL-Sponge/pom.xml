@@ -5,7 +5,7 @@
     <parent>
         <artifactId>TNIL</artifactId>
         <groupId>net.tnemc</groupId>
-        <version>0.1.7.6-LEGACY-12</version>
+        <version>0.1.7.6-LEGACY-13</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -105,7 +105,7 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-Core</artifactId>
-            <version>0.1.7.6-LEGACY-12</version>
+            <version>0.1.7.6-LEGACY-13</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
