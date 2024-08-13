@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.data.BukkitArmourData;
+import net.tnemc.item.bukkit.data.BukkitBannerModernData;
 import net.tnemc.item.bukkit.data.BukkitBundleData;
 import net.tnemc.item.bukkit.data.BukkitColourArmourData;
 import net.tnemc.item.bukkit.data.BukkitCrossbowData;
@@ -97,10 +98,12 @@ public class BukkitMetaBuild {
           return Optional.of(new BukkitShieldData());
         } else if(meta instanceof WritableBookMeta) {
           return Optional.of(new BukkitWritableBookData());
+        } else if(meta instanceof BannerMeta) {
+          return Optional.of(new BukkitBannerModernData());
         }
       }
 
-      if(meta instanceof BannerMeta) {
+      if(meta instanceof BannerMeta && !VersionUtil.isOneTwentyOne(currentVersion)) {
 
         return Optional.of(new BukkitBannerData());
 

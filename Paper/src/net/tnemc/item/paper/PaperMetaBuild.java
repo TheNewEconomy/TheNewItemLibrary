@@ -38,6 +38,7 @@ import net.tnemc.item.bukkitbase.data.BukkitSuspiciousStewData;
 import net.tnemc.item.bukkitbase.data.BukkitTropicalFishData;
 import net.tnemc.item.bukkitbase.data.BukkitWritableBookData;
 import net.tnemc.item.paper.data.PaperArmourData;
+import net.tnemc.item.paper.data.PaperBannerModernData;
 import net.tnemc.item.paper.data.PaperBundleData;
 import net.tnemc.item.paper.data.PaperColourArmourData;
 import net.tnemc.item.paper.data.PaperCrossbowData;
@@ -93,10 +94,12 @@ public class PaperMetaBuild {
       if(VersionUtil.isOneTwentyOne(currentVersion)) {
         if(meta instanceof WritableBookMeta) {
           return Optional.of(new BukkitWritableBookData());
+        } else if(meta instanceof BannerMeta) {
+          return Optional.of(new PaperBannerModernData());
         }
       }
 
-      if(meta instanceof BannerMeta) {
+      if(meta instanceof BannerMeta && !VersionUtil.isOneTwentyOne(currentVersion)) {
 
         return Optional.of(new BukkitBannerData());
 

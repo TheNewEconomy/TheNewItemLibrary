@@ -20,6 +20,8 @@ package net.tnemc.item.paper.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.data.BannerData;
@@ -29,6 +31,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.block.banner.Pattern;
+import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 
@@ -65,9 +68,10 @@ public class PaperBannerModernData extends BannerData<ItemStack> {
     for(final PatternData pattern : patterns) {
       final NamespacedKey key = NamespacedKey.fromString(pattern.getPattern());
       final DyeColor color = DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor())));
-      if(key != null && color != null && Registry.BANNER_PATTERN.get(key) != null) {
+      final PatternType type = RegistryAccess.registryAccess().getRegistry(RegistryKey.BANNER_PATTERN).get(key);
+      if(key != null && color != null && type != null) {
 
-        meta.addPattern(new Pattern(color, Registry.BANNER_PATTERN.get(key)));
+        meta.addPattern(new Pattern(color, type));
       }
     }
     stack.setItemMeta(meta);
