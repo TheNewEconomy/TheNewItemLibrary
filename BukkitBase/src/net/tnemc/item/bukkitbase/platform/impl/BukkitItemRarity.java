@@ -30,7 +30,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemRarity<I extends AbstractItemStack<ItemStack>> extends ItemUnbreakable<I, ItemStack> {
+public class BukkitItemRarity<I extends AbstractItemStack<ItemStack>> extends net.tnemc.item.platform.impl.ItemRarity<I, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.

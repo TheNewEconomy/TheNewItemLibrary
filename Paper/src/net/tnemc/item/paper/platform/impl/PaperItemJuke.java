@@ -1,4 +1,4 @@
-package net.tnemc.item.paper.platform;
+package net.tnemc.item.paper.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,19 +18,19 @@ package net.tnemc.item.paper.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.bukkitbase.component.BukkitJukeBoxComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.component.PaperToolComponent;
-import net.tnemc.item.platform.impl.ItemTool;
+import net.tnemc.item.platform.impl.ItemJuke;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * PaperItemTool
+ * PaperItemJuke
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class PaperItemTool extends ItemTool<PaperItemStack, ItemStack> {
+public class PaperItemJuke extends ItemJuke<PaperItemStack, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -43,8 +43,8 @@ public class PaperItemTool extends ItemTool<PaperItemStack, ItemStack> {
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
 
-      if(serialized.components().containsKey("tool")) {
-        return serialized.components().get("tool").apply(item);
+      if(serialized.components().containsKey("jukebox")) {
+        return serialized.components().get("jukebox").apply(item);
       }
     }
     return item;
@@ -61,7 +61,7 @@ public class PaperItemTool extends ItemTool<PaperItemStack, ItemStack> {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasJukeboxPlayable()) {
-      serialized.components().put("tool", PaperToolComponent.create(item));
+      serialized.components().put("jukebox", BukkitJukeBoxComponent.create(item));
     }
     return serialized;
   }

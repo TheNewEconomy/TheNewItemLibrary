@@ -1,4 +1,4 @@
-package net.tnemc.item.paper.platform;
+package net.tnemc.item.paper.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,19 +18,21 @@ package net.tnemc.item.paper.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.platform.impl.ItemDisplay;
+import net.tnemc.item.platform.impl.ItemProfile;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 /**
- * PaperItemDisplay
+ * PaperItemProfile
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class PaperItemDisplay extends ItemDisplay<PaperItemStack, ItemStack> {
+public class PaperItemProfile extends ItemProfile<PaperItemStack, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -39,11 +41,18 @@ public class PaperItemDisplay extends ItemDisplay<PaperItemStack, ItemStack> {
    */
   @Override
   public ItemStack apply(PaperItemStack serialized, ItemStack item) {
-
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && serialized.display() != null) {
+    if(serialized.profile().isPresent() && meta instanceof SkullMeta skull) {
 
-      meta.displayName(serialized.display());
+      if(serialized.profile().get().getUuid() != null) {
+
+        skull.setOwningPlayer(Bukkit.getOfflinePlayer(serialized.profile().get().getUuid()));
+
+      } else if(serialized.profile().get().getUuid() == null && serialized.profile().get().getName() != null) {
+
+        skull.setOwner(serialized.profile().get().getName());
+      }
+      item.setItemMeta(meta);
     }
     return item;
   }
@@ -57,10 +66,11 @@ public class PaperItemDisplay extends ItemDisplay<PaperItemStack, ItemStack> {
   @Override
   public PaperItemStack deserialize(ItemStack item, PaperItemStack serialized) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasDisplayName()) {
+    if(item.getItemMeta() instanceof SkullMeta) {
+      final BukkitSkullData skullData = new BukkitSkullData();
+      skullData.of(item);
 
-      serialized.display(meta.displayName());
+      serialized.profile(skullData.getProfile());
     }
     return serialized;
   }

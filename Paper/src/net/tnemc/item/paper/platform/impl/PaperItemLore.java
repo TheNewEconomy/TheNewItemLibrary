@@ -1,4 +1,4 @@
-package net.tnemc.item.paper.platform;
+package net.tnemc.item.paper.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,20 +19,17 @@ package net.tnemc.item.paper.platform;
  */
 
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.platform.impl.ItemDisplay;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
-import org.bukkit.enchantments.Enchantment;
+import net.tnemc.item.platform.impl.ItemLore;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * PaperItemEnchant
+ * PaperItemLore
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class PaperItemEnchant extends ItemDisplay<PaperItemStack, ItemStack> {
+public class PaperItemLore extends ItemLore<PaperItemStack, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -44,24 +41,8 @@ public class PaperItemEnchant extends ItemDisplay<PaperItemStack, ItemStack> {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
-      serialized.enchantments().forEach((name, level)->{
-
-        final NamespacedKey space = NamespacedKey.fromString(name);
-        if(space != null) {
-
-          Enchantment enchant;
-
-          try {
-            enchant = Registry.ENCHANTMENT.get(space);
-          } catch(Exception ignore) {
-            enchant = Enchantment.getByKey(space);
-          }
-
-          if(enchant != null) {
-            meta.addEnchant(enchant, level, true);
-          }
-        }
-      });
+      meta.lore(serialized.lore());
+      item.setItemMeta(meta);
     }
     return item;
   }
@@ -74,11 +55,9 @@ public class PaperItemEnchant extends ItemDisplay<PaperItemStack, ItemStack> {
    */
   @Override
   public PaperItemStack deserialize(ItemStack item, PaperItemStack serialized) {
-
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasEnchants()) {
-
-      meta.getEnchants().forEach(((enchantment, level)->serialized.enchantments().put(enchantment.getKey().toString(), level)));
+    if(item.lore() != null) {
+      serialized.lore().clear();
+      serialized.lore().addAll(item.lore());
     }
     return serialized;
   }

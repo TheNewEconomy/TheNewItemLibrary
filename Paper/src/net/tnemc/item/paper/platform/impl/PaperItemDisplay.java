@@ -1,4 +1,4 @@
-package net.tnemc.item.paper.platform;
+package net.tnemc.item.paper.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,21 +18,18 @@ package net.tnemc.item.paper.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.platform.impl.ItemProfile;
-import org.bukkit.Bukkit;
+import net.tnemc.item.platform.impl.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 /**
- * PaperItemProfile
+ * PaperItemDisplay
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class PaperItemProfile extends ItemProfile<PaperItemStack, ItemStack> {
+public class PaperItemDisplay extends ItemDisplay<PaperItemStack, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -41,18 +38,11 @@ public class PaperItemProfile extends ItemProfile<PaperItemStack, ItemStack> {
    */
   @Override
   public ItemStack apply(PaperItemStack serialized, ItemStack item) {
+
     final ItemMeta meta = item.getItemMeta();
-    if(serialized.profile().isPresent() && meta instanceof SkullMeta skull) {
+    if(meta != null && serialized.display() != null) {
 
-      if(serialized.profile().get().getUuid() != null) {
-
-        skull.setOwningPlayer(Bukkit.getOfflinePlayer(serialized.profile().get().getUuid()));
-
-      } else if(serialized.profile().get().getUuid() == null && serialized.profile().get().getName() != null) {
-
-        skull.setOwner(serialized.profile().get().getName());
-      }
-      item.setItemMeta(meta);
+      meta.displayName(serialized.display());
     }
     return item;
   }
@@ -66,11 +56,10 @@ public class PaperItemProfile extends ItemProfile<PaperItemStack, ItemStack> {
   @Override
   public PaperItemStack deserialize(ItemStack item, PaperItemStack serialized) {
 
-    if(item.getItemMeta() instanceof SkullMeta) {
-      final BukkitSkullData skullData = new BukkitSkullData();
-      skullData.of(item);
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasDisplayName()) {
 
-      serialized.profile(skullData.getProfile());
+      serialized.display(meta.displayName());
     }
     return serialized;
   }

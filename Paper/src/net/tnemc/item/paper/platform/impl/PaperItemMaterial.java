@@ -1,4 +1,4 @@
-package net.tnemc.item.paper.platform;
+package net.tnemc.item.paper.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar

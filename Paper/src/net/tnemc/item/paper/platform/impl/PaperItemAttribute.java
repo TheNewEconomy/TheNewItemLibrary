@@ -1,4 +1,4 @@
-package net.tnemc.item.paper.platform;
+package net.tnemc.item.paper.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,22 +18,24 @@ package net.tnemc.item.paper.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.platform.impl.ItemLore;
+import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.platform.impl.ItemAttribute;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.LinkedList;
+import java.util.Map;
 
 /**
- * PaperItemLore
+ * PaperItemAttribute
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class PaperItemLore extends ItemLore<PaperItemStack, ItemStack> {
+public class PaperItemAttribute extends ItemAttribute<PaperItemStack, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -45,8 +47,19 @@ public class PaperItemLore extends ItemLore<PaperItemStack, ItemStack> {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
-      meta.lore(serialized.lore());
-      item.setItemMeta(meta);
+
+      for(Map.Entry<String, SerialAttribute> entry : serialized.attributes().entrySet()) {
+
+        final SerialAttribute attribute = entry.getValue();
+        final AttributeModifier attr = new AttributeModifier(attribute.getIdentifier(),
+                attribute.getName(),
+                attribute.getAmount(),
+                ParsingUtil.attributeOperation(attribute.getOperation()),
+                ParsingUtil.attributeSlot(attribute.getSlot()));
+
+
+        meta.addAttributeModifier(Attribute.valueOf(entry.getKey()), attr);
+      }
     }
     return item;
   }
@@ -59,9 +72,26 @@ public class PaperItemLore extends ItemLore<PaperItemStack, ItemStack> {
    */
   @Override
   public PaperItemStack deserialize(ItemStack item, PaperItemStack serialized) {
-    if(item.lore() != null) {
-      serialized.lore().clear();
-      serialized.lore().addAll(item.lore());
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasAttributeModifiers()) {
+
+      for(final Map.Entry<Attribute, AttributeModifier> entry : meta.getAttributeModifiers().entries()) {
+
+        final AttributeModifier attribute = entry.getValue();
+        if(attribute != null) {
+
+          final SerialAttribute attr = new SerialAttribute(attribute.getUniqueId(),
+                  attribute.getName(),
+                  attribute.getAmount(),
+                  ParsingUtil.attributeOperation(attribute.getOperation()));
+
+          if(attribute.getSlot() != null) {
+            attr.setSlot(ParsingUtil.attributeSlot(attribute.getSlot()));
+          }
+          serialized.attributes().put(entry.getKey().name(), attr);
+        }
+      }
     }
     return serialized;
   }

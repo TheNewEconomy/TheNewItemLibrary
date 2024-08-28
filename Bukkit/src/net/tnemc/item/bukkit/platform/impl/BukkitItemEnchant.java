@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.platform.impl.ItemDisplay;
+import net.tnemc.item.platform.impl.ItemEnchant;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
@@ -32,7 +33,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemEnchant extends ItemDisplay<BukkitItemStack, ItemStack> {
+public class BukkitItemEnchant extends ItemEnchant<BukkitItemStack, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.

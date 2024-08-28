@@ -19,6 +19,7 @@ package net.tnemc.item.bukkitbase.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.platform.impl.ItemTooltip;
 import net.tnemc.item.platform.impl.ItemUnbreakable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -29,7 +30,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemTooltip<I extends AbstractItemStack<ItemStack>> extends ItemUnbreakable<I, ItemStack> {
+public class BukkitItemTooltip<I extends AbstractItemStack<ItemStack>> extends ItemTooltip<I, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.

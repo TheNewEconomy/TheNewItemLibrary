@@ -1,4 +1,4 @@
-package net.tnemc.item.paper.platform;
+package net.tnemc.item.paper.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,19 +18,21 @@ package net.tnemc.item.paper.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.bukkitbase.component.BukkitBaseFoodComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.platform.impl.ItemFood;
+import net.tnemc.item.platform.impl.ItemEnchant;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * PaperItemFood
+ * PaperItemEnchant
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class PaperItemFood extends ItemFood<PaperItemStack, ItemStack> {
+public class PaperItemEnchant extends ItemEnchant<PaperItemStack, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -42,10 +44,24 @@ public class PaperItemFood extends ItemFood<PaperItemStack, ItemStack> {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
+      serialized.enchantments().forEach((name, level)->{
 
-      if(serialized.components().containsKey("food")) {
-        return serialized.components().get("food").apply(item);
-      }
+        final NamespacedKey space = NamespacedKey.fromString(name);
+        if(space != null) {
+
+          Enchantment enchant;
+
+          try {
+            enchant = Registry.ENCHANTMENT.get(space);
+          } catch(Exception ignore) {
+            enchant = Enchantment.getByKey(space);
+          }
+
+          if(enchant != null) {
+            meta.addEnchant(enchant, level, true);
+          }
+        }
+      });
     }
     return item;
   }
@@ -60,8 +76,9 @@ public class PaperItemFood extends ItemFood<PaperItemStack, ItemStack> {
   public PaperItemStack deserialize(ItemStack item, PaperItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasJukeboxPlayable()) {
-      serialized.components().put("food", BukkitBaseFoodComponent.create(item));
+    if(meta != null && meta.hasEnchants()) {
+
+      meta.getEnchants().forEach(((enchantment, level)->serialized.enchantments().put(enchantment.getKey().toString(), level)));
     }
     return serialized;
   }

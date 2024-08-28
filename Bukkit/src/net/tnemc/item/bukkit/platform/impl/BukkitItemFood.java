@@ -60,7 +60,7 @@ public class BukkitItemFood extends ItemFood<BukkitItemStack, ItemStack> {
   public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasJukeboxPlayable()) {
+    if(meta != null && meta.hasFood()) {
       serialized.components().put("food", BukkitBaseFoodComponent.create(item));
     }
     return serialized;

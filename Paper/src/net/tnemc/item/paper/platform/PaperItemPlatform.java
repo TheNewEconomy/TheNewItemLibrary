@@ -19,7 +19,24 @@ package net.tnemc.item.paper.platform;
  */
 
 import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemEnchantGlint;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemFireResistant;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemFlag;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemMaxStack;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemModelData;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemRarity;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemTooltip;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemUnbreakable;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.impl.PaperItemAttribute;
+import net.tnemc.item.paper.platform.impl.PaperItemDisplay;
+import net.tnemc.item.paper.platform.impl.PaperItemEnchant;
+import net.tnemc.item.paper.platform.impl.PaperItemFood;
+import net.tnemc.item.paper.platform.impl.PaperItemJuke;
+import net.tnemc.item.paper.platform.impl.PaperItemLore;
+import net.tnemc.item.paper.platform.impl.PaperItemMaterial;
+import net.tnemc.item.paper.platform.impl.PaperItemProfile;
+import net.tnemc.item.paper.platform.impl.PaperItemTool;
 import net.tnemc.item.platform.ItemPlatform;
 import org.bukkit.inventory.ItemStack;
 
@@ -48,5 +65,27 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
   @Override
   public void addDefaults() {
 
+    //bukkit base implementation.
+    addMulti(new BukkitItemEnchantGlint<>());
+    addMulti(new BukkitItemFireResistant<>());
+    addMulti(new BukkitItemFlag<>());
+    addMulti(new BukkitItemMaxStack<>());
+    addMulti(new BukkitItemModelData<>());
+    addMulti(new BukkitItemRarity<>());
+    addMulti(new BukkitItemTooltip<>());
+    addMulti(new BukkitItemUnbreakable<>());
+
+    //TODO: SerialData
+
+    //Bukkit-specific
+    addMulti(new PaperItemAttribute());
+    addMulti(new PaperItemDisplay());
+    addMulti(new PaperItemEnchant());
+    addMulti(new PaperItemFood());
+    addMulti(new PaperItemJuke());
+    addMulti(new PaperItemLore());
+    addMulti(new PaperItemMaterial());
+    addMulti(new PaperItemProfile());
+    addMulti(new PaperItemTool());
   }
 }

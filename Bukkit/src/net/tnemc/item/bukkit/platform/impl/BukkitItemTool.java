@@ -60,7 +60,7 @@ public class BukkitItemTool extends ItemTool<BukkitItemStack, ItemStack> {
   public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasJukeboxPlayable()) {
+    if(meta != null && meta.hasTool()) {
       serialized.components().put("tool", BukkitToolComponent.create(item));
     }
     return serialized;

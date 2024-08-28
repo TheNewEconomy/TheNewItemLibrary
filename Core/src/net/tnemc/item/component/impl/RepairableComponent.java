@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkitbase.platform.impl;
+package net.tnemc.item.component.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,29 +19,42 @@ package net.tnemc.item.bukkitbase.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.impl.ItemSerialData;
-import net.tnemc.item.platform.impl.ItemUnbreakable;
-import org.bukkit.inventory.ItemStack;
+import net.tnemc.item.component.SerialComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * BukkitItemSerialData
+ * RepairableComponent
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public abstract class BukkitItemSerialData<I extends AbstractItemStack<ItemStack>> extends ItemSerialData<I, ItemStack> {
+public abstract class RepairableComponent<T> implements SerialComponent<T> {
+
+  protected final List<AbstractItemStack<T>> repairableItems = new ArrayList<>();
+
   /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
+   * @return the type of component this is.
    */
   @Override
-  public ItemStack apply(I serialized, ItemStack item) {
+  public String getType() {
+    return "repairable";
+  }
 
-    if(serialized.data().isPresent()) {
-      return serialized.data().get().apply(item);
+  /**
+   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
+   * of this data. For instance, book copies will return false when compared to the original.
+   *
+   * @param component The component to compare.
+   *
+   * @return True if similar, otherwise false.
+   */
+  @Override
+  public boolean equals(SerialComponent<? extends T> component) {
+    if(component instanceof RepairableComponent<?> repair) {
+
     }
-    return item;
+    return false;
   }
 }
