@@ -135,6 +135,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public BukkitItemStack flags(List<String> flags) {
+    this.dirty = true;
     this.flags.clear();
     this.flags.addAll(flags);
     return this;
@@ -142,6 +143,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public BukkitItemStack lore(List<Component> lore) {
+    this.dirty = true;
     this.lore.clear();
     this.lore.addAll(lore);
     return this;
@@ -149,12 +151,14 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public BukkitItemStack attribute(String name, SerialAttribute attribute) {
+    this.dirty = true;
     attributes.put(name, attribute);
     return this;
   }
 
   @Override
   public BukkitItemStack attribute(Map<String, SerialAttribute> attributes) {
+    this.dirty = true;
 
     this.attributes.clear();
     this.attributes.putAll(attributes);
@@ -163,12 +167,14 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public BukkitItemStack enchant(String enchantment, int level) {
+    this.dirty = true;
     enchantments.put(enchantment, level);
     return this;
   }
 
   @Override
   public BukkitItemStack enchant(Map<String, Integer> enchantments) {
+    this.dirty = true;
     this.enchantments.clear();
     this.enchantments.putAll(enchantments);
     return this;
@@ -176,6 +182,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public BukkitItemStack enchant(List<String> enchantments) {
+    this.dirty = true;
     this.enchantments.clear();
     for(String str : enchantments) {
       this.enchantments.put(str, 1);
@@ -185,12 +192,14 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public BukkitItemStack material(String material) {
+    this.dirty = true;
     this.material = material;
     return this;
   }
 
   @Override
   public BukkitItemStack amount(int amount) {
+    this.dirty = true;
     this.amount = amount;
     return this;
   }
@@ -211,60 +220,70 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public BukkitItemStack display(Component display) {
+    this.dirty = true;
     this.display = display;
     return this;
   }
 
   @Override
   public BukkitItemStack damage(short damage) {
+    this.dirty = true;
     this.damage = damage;
     return this;
   }
 
   @Override
   public AbstractItemStack<ItemStack> profile(SkullProfile profile) {
+    this.dirty = true;
     this.profile = profile;
     return this;
   }
 
   @Override
   public BukkitItemStack modelData(int modelData) {
+    this.dirty = true;
     this.customModelData = modelData;
     return this;
   }
 
   @Override
   public BukkitItemStack unbreakable(boolean unbreakable) {
+    this.dirty = true;
     this.unbreakable = unbreakable;
     return this;
   }
 
   @Override
   public AbstractItemStack<ItemStack> maxStack(int maxStack) {
+    this.dirty = true;
     this.maxStack = maxStack;
     return this;
   }
 
   @Override
   public AbstractItemStack<ItemStack> hideTooltip(boolean hideTooltip) {
+    this.dirty = true;
     this.hideTooltip = hideTooltip;
     return this;
   }
 
   @Override
   public AbstractItemStack<ItemStack> fireResistant(boolean fireResistant) {
+    this.dirty = true;
     this.fireResistant = fireResistant;
     return this;
   }
 
   @Override
   public AbstractItemStack<ItemStack> enchantGlint(boolean enchantGlint) {
+    this.dirty = true;
     this.enchantGlint = enchantGlint;
     return this;
   }
 
   @Override
   public AbstractItemStack<ItemStack> rarity(String rarity) {
+    this.dirty = true;
     this.rarity = rarity;
     return this;
   }
@@ -276,6 +295,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public BukkitItemStack applyData(SerialItemData<ItemStack> data) {
+    this.dirty = true;
     this.data = data;
     return this;
   }

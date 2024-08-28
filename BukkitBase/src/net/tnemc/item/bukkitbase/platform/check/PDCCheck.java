@@ -42,14 +42,6 @@ public abstract class PDCCheck implements LocaleItemCheck<ItemStack> {
   }
 
   /**
-   * @return the identifier for this check.
-   */
-  @Override
-  public String identifier() {
-    return "";
-  }
-
-  /**
    * @param original the original stack
    * @param check    the stack to use for the check
    *
