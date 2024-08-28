@@ -25,6 +25,7 @@ import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.check.LocaleItemCheck;
 import net.tnemc.item.platform.deserialize.ItemDeserializer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -51,23 +52,63 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   public abstract void addDefaults();
 
   /**
+   * Used to add an object that is capable of being dual/tri purpose as a check, applicator and/or
+   * deserializer.
+   * @param object the object to add.
+   */
+  public void addMulti(@NotNull final Object object) {
+    if(object instanceof ItemCheck<?> check) {
+
+      try {
+
+        checks.put(check.identifier(), (ItemCheck<T>)check);
+      } catch(Exception ignore) {
+        //Just in case it passes the instance check, but the Generic is
+        //incorrect for w.e reason, we want to fail safely.
+      }
+    }
+
+    if(object instanceof ItemApplicator<?, ?> check) {
+
+      try {
+
+        applicators.put(check.identifier(), (ItemApplicator<I, T>)check);
+      } catch(Exception ignore) {
+        //Just in case it passes the instance check, but the Generic is
+        //incorrect for w.e reason, we want to fail safely.
+      }
+    }
+
+    if(object instanceof ItemDeserializer<?, ?> check) {
+
+      try {
+
+        deserializers.put(check.identifier(), (ItemDeserializer<I, T>)check);
+      } catch(Exception ignore) {
+        //Just in case it passes the instance check, but the Generic is
+        //incorrect for w.e reason, we want to fail safely.
+      }
+    }
+  }
+
+  /**
    * @param check the {@link ItemCheck check} to add.
    */
-  public void addCheck(final ItemCheck<T> check) {
+  public void addCheck(@NotNull final ItemCheck<T> check) {
     checks.put(check.identifier(), check);
   }
 
   /**
    * @param applicator the applicator to add
    */
-  public void addApplicator(final ItemApplicator<I, T> applicator) {
+  public void addApplicator(@NotNull final ItemApplicator<I, T> applicator) {
     applicators.put(applicator.identifier(), applicator);
   }
 
   /**
    * @param deserializer the deserializer to add
    */
-  public void addDeserializer(final ItemDeserializer<I, T> deserializer) {
+  public void addDeserializer(@NotNull final ItemDeserializer<I, T> deserializer) {
     deserializers.put(deserializer.identifier(), deserializer);
   }
 
@@ -79,7 +120,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    *
    * @return True if the check passes, otherwise false.
    */
-  public boolean check(final T original, final T check, final String... disabledChecks) {
+  public boolean check(@NotNull final T original, @NotNull final T check, @NotNull final String... disabledChecks) {
 
     final List<String> disabled = Arrays.asList(disabledChecks);
     for(final ItemCheck<T> checkItem : checks.values()) {
@@ -106,7 +147,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    *
    * @return True if the check passes, otherwise false.
    */
-  public boolean checkOrder(final T original, final T check, final String... order) {
+  public boolean checkOrder(@NotNull final T original, @NotNull final T check, @NotNull final String... order) {
 
     for(String id : order) {
       if(checks.containsKey(id)) {
@@ -131,7 +172,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    *
    * @return True if the check passes, otherwise false.
    */
-  public boolean checkOrder(final I original, final I check, final String... order) {
+  public boolean checkOrder(@NotNull final I original, @NotNull final I check, @NotNull final String... order) {
 
     for(String id : order) {
       if(checks.containsKey(id)) {
@@ -155,7 +196,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    *
    * @return True if the check passes, otherwise false.
    */
-  public boolean check(final I original, final I check, final String... disabledChecks) {
+  public boolean check(@NotNull final I original, @NotNull final I check, final String... disabledChecks) {
 
     final List<String> disabled = Arrays.asList(disabledChecks);
     for(final ItemCheck<T> checkItem : checks.values()) {
@@ -178,7 +219,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @param item the locale itemstack object to apply the applications to
    * @return the updated item stack after applying the applicators
    */
-  public T apply(final I serialized, T item) {
+  public T apply(@NotNull final I serialized, @NotNull T item) {
     for(final ItemApplicator<I, T> applicator : applicators.values()) {
       if(applicator.enabled(version())) {
         item = applicator.apply(serialized, item);
@@ -194,7 +235,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @param serialized the serialized item stack we should use to apply this deserializer to
    * @return the updated serialized item.
    */
-  public I deserialize(final T item, I serialized) {
+  public I deserialize(@NotNull final T item, @NotNull I serialized) {
     for(final ItemDeserializer<I, T> deserializer : deserializers.values()) {
       if(deserializer.enabled(version())) {
         serialized = deserializer.deserialize(item, serialized);
@@ -203,7 +244,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
     return serialized;
   }
 
-  public static String componentString(final Component component) {
+  public static String componentString(@NotNull final Component component) {
     return PlainTextComponentSerializer.plainText().serialize(component);
   }
 }

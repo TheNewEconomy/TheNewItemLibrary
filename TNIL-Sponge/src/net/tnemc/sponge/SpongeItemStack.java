@@ -11,15 +11,9 @@ import net.tnemc.sponge.platform.SpongeItemPlatform;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.spongepowered.api.ResourceKey;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.data.Keys;
-import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
-import org.spongepowered.api.item.enchantment.Enchantment;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.registry.RegistryTypes;
-import org.spongepowered.api.util.Color;
 
 import java.util.ArrayList;
 import java.util.HashMap;
