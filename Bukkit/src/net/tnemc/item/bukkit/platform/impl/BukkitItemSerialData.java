@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkitbase.platform.impl;
+package net.tnemc.item.bukkit.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,10 +18,13 @@ package net.tnemc.item.bukkitbase.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.impl.ItemSerialData;
-import net.tnemc.item.platform.impl.ItemUnbreakable;
+import net.tnemc.item.SerialItemData;
+import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.BukkitMetaBuild;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitBaseItemSerialData;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Optional;
 
 /**
  * BukkitItemSerialData
@@ -29,19 +32,20 @@ import org.bukkit.inventory.ItemStack;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public abstract class BukkitItemSerialData<I extends AbstractItemStack<ItemStack>> extends ItemSerialData<I, ItemStack> {
+public class BukkitItemSerialData extends BukkitBaseItemSerialData<BukkitItemStack> {
+
   /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
    *
-   * @return the updated item.
+   * @return the updated serialized item.
    */
   @Override
-  public ItemStack apply(I serialized, ItemStack item) {
+  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
 
-    if(serialized.data().isPresent()) {
-      return serialized.data().get().apply(item);
-    }
-    return item;
+    final Optional<SerialItemData<ItemStack>> data = BukkitMetaBuild.parseMeta(item);
+    data.ifPresent(serialized::applyData);
+
+    return serialized;
   }
 }

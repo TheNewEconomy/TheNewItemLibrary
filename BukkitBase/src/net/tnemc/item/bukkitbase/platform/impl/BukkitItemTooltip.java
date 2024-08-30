@@ -56,7 +56,7 @@ public class BukkitItemTooltip<I extends AbstractItemStack<ItemStack>> extends I
    * @return the updated serialized item.
    */
   @Override
-  public I deserialize(ItemStack item, I serialized) {
+  public I serialize(ItemStack item, I serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {

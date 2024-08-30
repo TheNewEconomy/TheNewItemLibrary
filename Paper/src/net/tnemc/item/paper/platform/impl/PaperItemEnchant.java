@@ -73,7 +73,7 @@ public class PaperItemEnchant extends ItemEnchant<PaperItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public PaperItemStack deserialize(ItemStack item, PaperItemStack serialized) {
+  public PaperItemStack serialize(ItemStack item, PaperItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasEnchants()) {

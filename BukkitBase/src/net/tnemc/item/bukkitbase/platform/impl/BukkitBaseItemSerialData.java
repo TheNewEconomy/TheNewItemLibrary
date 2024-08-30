@@ -19,18 +19,16 @@ package net.tnemc.item.bukkitbase.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.impl.ItemMaxStack;
-import net.tnemc.item.platform.impl.ItemUnbreakable;
+import net.tnemc.item.platform.impl.ItemSerialData;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * BukkitItemMaxStack
+ * BukkitItemSerialData
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemMaxStack<I extends AbstractItemStack<ItemStack>> extends ItemMaxStack<I, ItemStack> {
+public abstract class BukkitBaseItemSerialData<I extends AbstractItemStack<ItemStack>> extends ItemSerialData<I, ItemStack> {
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -40,28 +38,9 @@ public class BukkitItemMaxStack<I extends AbstractItemStack<ItemStack>> extends 
   @Override
   public ItemStack apply(I serialized, ItemStack item) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && serialized.maxStack() != -1) {
-
-      meta.setMaxStackSize(serialized.maxStack());
-      item.setItemMeta(meta);
+    if(serialized.data().isPresent()) {
+      return serialized.data().get().apply(item);
     }
     return item;
-  }
-
-  /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   */
-  @Override
-  public I serialize(ItemStack item, I serialized) {
-
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasMaxStackSize()) {
-      serialized.maxStack(meta.getMaxStackSize());
-    }
-    return serialized;
   }
 }

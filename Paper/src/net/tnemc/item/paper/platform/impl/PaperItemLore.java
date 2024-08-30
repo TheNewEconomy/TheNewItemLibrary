@@ -54,7 +54,7 @@ public class PaperItemLore extends ItemLore<PaperItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public PaperItemStack deserialize(ItemStack item, PaperItemStack serialized) {
+  public PaperItemStack serialize(ItemStack item, PaperItemStack serialized) {
     if(item.lore() != null) {
       serialized.lore().clear();
       serialized.lore().addAll(item.lore());

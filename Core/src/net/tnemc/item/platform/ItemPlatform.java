@@ -24,7 +24,7 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.check.LocaleItemCheck;
-import net.tnemc.item.platform.deserialize.ItemDeserializer;
+import net.tnemc.item.platform.serialize.ItemSerializer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -42,7 +42,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
   protected final Map<String, ItemCheck<T>> checks = new HashMap<>();
   protected final Map<String, ItemApplicator<I, T>> applicators = new HashMap<>();
-  protected final Map<String, ItemDeserializer<I, T>> deserializers = new HashMap<>();
+  protected final Map<String, ItemSerializer<I, T>> deserializers = new HashMap<>();
 
   /**
    * @return the version that is being used currently
@@ -79,11 +79,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
       }
     }
 
-    if(object instanceof ItemDeserializer<?, ?> check) {
+    if(object instanceof ItemSerializer<?, ?> check) {
 
       try {
 
-        deserializers.put(check.identifier(), (ItemDeserializer<I, T>)check);
+        deserializers.put(check.identifier(), (ItemSerializer<I, T>)check);
       } catch(Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
@@ -108,7 +108,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   /**
    * @param deserializer the deserializer to add
    */
-  public void addDeserializer(@NotNull final ItemDeserializer<I, T> deserializer) {
+  public void addDeserializer(@NotNull final ItemSerializer<I, T> deserializer) {
     deserializers.put(deserializer.identifier(), deserializer);
   }
 
@@ -236,9 +236,9 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @return the updated serialized item.
    */
   public I deserialize(@NotNull final T item, @NotNull I serialized) {
-    for(final ItemDeserializer<I, T> deserializer : deserializers.values()) {
+    for(final ItemSerializer<I, T> deserializer : deserializers.values()) {
       if(deserializer.enabled(version())) {
-        serialized = deserializer.deserialize(item, serialized);
+        serialized = deserializer.serialize(item, serialized);
       }
     }
     return serialized;

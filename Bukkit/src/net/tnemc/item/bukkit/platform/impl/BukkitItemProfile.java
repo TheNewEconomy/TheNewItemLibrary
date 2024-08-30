@@ -64,7 +64,7 @@ public class BukkitItemProfile extends ItemProfile<BukkitItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
+  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
 
     if(item.getItemMeta() instanceof SkullMeta) {
       final BukkitSkullData skullData = new BukkitSkullData();

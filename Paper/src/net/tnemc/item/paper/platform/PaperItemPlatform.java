@@ -36,6 +36,7 @@ import net.tnemc.item.paper.platform.impl.PaperItemJuke;
 import net.tnemc.item.paper.platform.impl.PaperItemLore;
 import net.tnemc.item.paper.platform.impl.PaperItemMaterial;
 import net.tnemc.item.paper.platform.impl.PaperItemProfile;
+import net.tnemc.item.paper.platform.impl.PaperItemSerialData;
 import net.tnemc.item.paper.platform.impl.PaperItemTool;
 import net.tnemc.item.platform.ItemPlatform;
 import org.bukkit.inventory.ItemStack;
@@ -75,9 +76,8 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     addMulti(new BukkitItemTooltip<>());
     addMulti(new BukkitItemUnbreakable<>());
 
-    //TODO: SerialData
-
-    //Bukkit-specific
+    //Paper-specific
+    addMulti(new PaperItemSerialData());
     addMulti(new PaperItemAttribute());
     addMulti(new PaperItemDisplay());
     addMulti(new PaperItemEnchant());

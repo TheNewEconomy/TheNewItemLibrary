@@ -27,6 +27,7 @@ import net.tnemc.item.bukkit.platform.impl.BukkitItemJuke;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemLore;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemMaterial;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemProfile;
+import net.tnemc.item.bukkit.platform.impl.BukkitItemSerialData;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemTool;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemEnchantGlint;
@@ -74,9 +75,8 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     addMulti(new BukkitItemTooltip<>());
     addMulti(new BukkitItemUnbreakable<>());
 
-    //TODO: SerialData
-
     //Bukkit-specific
+    addMulti(new BukkitItemSerialData());
     addMulti(new BukkitItemAttribute());
     addMulti(new BukkitItemDisplay());
     addMulti(new BukkitItemEnchant());

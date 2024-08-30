@@ -56,7 +56,7 @@ public class BukkitItemFireResistant<I extends AbstractItemStack<ItemStack>> ext
    * @return the updated serialized item.
    */
   @Override
-  public I deserialize(ItemStack item, I serialized) {
+  public I serialize(ItemStack item, I serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {

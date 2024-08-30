@@ -74,7 +74,7 @@ public class BukkitItemEnchant extends ItemEnchant<BukkitItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
+  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasEnchants()) {

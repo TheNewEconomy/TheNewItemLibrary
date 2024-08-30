@@ -56,7 +56,7 @@ public class BukkitItemEnchantGlint<I extends AbstractItemStack<ItemStack>> exte
    * @return the updated serialized item.
    */
   @Override
-  public I deserialize(ItemStack item, I serialized) {
+  public I serialize(ItemStack item, I serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasEnchantmentGlintOverride()) {

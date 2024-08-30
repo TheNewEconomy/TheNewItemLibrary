@@ -62,7 +62,7 @@ public class BukkitItemFlag<I extends AbstractItemStack<ItemStack>> extends net.
    * @return the updated serialized item.
    */
   @Override
-  public I deserialize(ItemStack item, I serialized) {
+  public I serialize(ItemStack item, I serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {

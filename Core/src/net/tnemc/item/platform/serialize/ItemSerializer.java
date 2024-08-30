@@ -1,4 +1,5 @@
-package net.tnemc.item.bukkitbase.platform.impl;
+package net.tnemc.item.platform.serialize;
+
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,48 +20,26 @@ package net.tnemc.item.bukkitbase.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.impl.ItemUnbreakable;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import net.tnemc.item.platform.Identifiable;
 
 /**
- * BukkitItemUnbreakable
+ * ItemApplier
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemUnbreakable<I extends AbstractItemStack<ItemStack>> extends ItemUnbreakable<I, ItemStack> {
+public interface ItemSerializer<I extends AbstractItemStack<T>, T> extends Identifiable {
+
   /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
+   * @param version the version being used when this deserializer is called.
+   * @return true if this deserializer is enabled for the version, otherwise false
    */
-  @Override
-  public ItemStack apply(I serialized, ItemStack item) {
-
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null) {
-
-      meta.setUnbreakable(serialized.unbreakable());
-      item.setItemMeta(meta);
-    }
-    return item;
-  }
+  boolean enabled(final String version);
 
   /**
-   * @param item       the item that we should use to deserialize.
+   * @param item the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
    * @return the updated serialized item.
    */
-  @Override
-  public I serialize(ItemStack item, I serialized) {
-
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null) {
-      serialized.unbreakable(meta.isUnbreakable());
-    }
-    return serialized;
-  }
+  I serialize(final T item, I serialized);
 }

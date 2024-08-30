@@ -1,5 +1,4 @@
-package net.tnemc.item.platform.deserialize;
-
+package net.tnemc.item.paper.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,27 +18,34 @@ package net.tnemc.item.platform.deserialize;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.Identifiable;
+import net.tnemc.item.SerialItemData;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitBaseItemSerialData;
+import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.PaperMetaBuild;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Optional;
 
 /**
- * ItemApplier
+ * PaperItemSerialData
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public interface ItemDeserializer<I extends AbstractItemStack<T>, T> extends Identifiable {
+public class PaperItemSerialData extends BukkitBaseItemSerialData<PaperItemStack> {
 
   /**
-   * @param version the version being used when this deserializer is called.
-   * @return true if this deserializer is enabled for the version, otherwise false
-   */
-  boolean enabled(final String version);
-
-  /**
-   * @param item the item that we should use to deserialize.
+   * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
    * @return the updated serialized item.
    */
-  I deserialize(final T item, I serialized);
+  @Override
+  public PaperItemStack serialize(ItemStack item, PaperItemStack serialized) {
+
+    final Optional<SerialItemData<ItemStack>> data = PaperMetaBuild.parseMeta(item);
+    data.ifPresent(serialized::applyData);
+
+    return serialized;
+  }
 }

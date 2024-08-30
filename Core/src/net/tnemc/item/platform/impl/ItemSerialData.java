@@ -21,7 +21,7 @@ package net.tnemc.item.platform.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
-import net.tnemc.item.platform.deserialize.ItemDeserializer;
+import net.tnemc.item.platform.serialize.ItemSerializer;
 
 /**
  * ItemSerialData
@@ -29,7 +29,7 @@ import net.tnemc.item.platform.deserialize.ItemDeserializer;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public abstract class ItemSerialData<I extends AbstractItemStack<T>, T> implements ItemCheck<T>, ItemApplicator<I, T>, ItemDeserializer<I, T> {
+public abstract class ItemSerialData<I extends AbstractItemStack<T>, T> implements ItemCheck<T>, ItemApplicator<I, T>, ItemSerializer<I, T> {
 
   /**
    * @return the identifier for this check.
@@ -63,6 +63,6 @@ public abstract class ItemSerialData<I extends AbstractItemStack<T>, T> implemen
 
       return original.data().get().equals(check.data().get());
     }
-    return check.data().isPresent();
+    return check.data().isEmpty();
   }
 }

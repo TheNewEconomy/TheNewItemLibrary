@@ -57,7 +57,7 @@ public class BukkitItemFood extends ItemFood<BukkitItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
+  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasFood()) {

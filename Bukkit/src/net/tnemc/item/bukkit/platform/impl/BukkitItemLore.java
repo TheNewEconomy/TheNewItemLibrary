@@ -63,7 +63,7 @@ public class BukkitItemLore extends ItemLore<BukkitItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
+  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
     if(item.getItemMeta() != null && item.getItemMeta().getLore() != null) {
       serialized.lore().clear();
 

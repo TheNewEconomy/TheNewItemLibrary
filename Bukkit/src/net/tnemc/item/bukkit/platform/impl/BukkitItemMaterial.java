@@ -65,7 +65,7 @@ public class BukkitItemMaterial extends ItemMaterial<BukkitItemStack, ItemStack>
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack deserialize(ItemStack item, BukkitItemStack serialized) {
+  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
     serialized.material(item.getType().getKey().toString());
     return serialized;
   }

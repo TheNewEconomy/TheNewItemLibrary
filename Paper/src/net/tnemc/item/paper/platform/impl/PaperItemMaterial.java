@@ -59,7 +59,7 @@ public class PaperItemMaterial extends ItemMaterial<PaperItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public PaperItemStack deserialize(ItemStack item, PaperItemStack serialized) {
+  public PaperItemStack serialize(ItemStack item, PaperItemStack serialized) {
     serialized.material(item.getType().key().toString());
     return serialized;
   }
