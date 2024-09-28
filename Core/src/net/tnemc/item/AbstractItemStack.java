@@ -26,6 +26,7 @@ import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.util.HashSet;
@@ -166,6 +167,18 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @return An instance of the implementation's locale version of AbstractItemStack.
    */
   T locale();
+
+  default void unserialize(final String serialized) throws ParseException {
+
+    parse(new JSONHelper((JSONObject)new JSONParser().parse(serialized)));
+  }
+
+  default void unserialize(final JSONObject json) throws ParseException {
+
+    parse(new JSONHelper(json));
+  }
+
+  void parse(final JSONHelper json) throws ParseException;
 
   default boolean textComponentsEqual(final List<Component> list1, final List<Component> list2) {
 

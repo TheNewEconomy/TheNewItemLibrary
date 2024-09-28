@@ -18,10 +18,13 @@ package net.tnemc.sponge.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.SerialItemData;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.item.inventory.ItemStack;
+
+import java.util.Optional;
 
 /**
  * SpongeItemPlatform
@@ -49,5 +52,11 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack>
   @Override
   public void addDefaults() {
 
+  }
+
+  @Override
+  public Optional<SerialItemData<ItemStack>> parseMeta(final ItemStack stack) {
+
+    return Optional.empty();
   }
 }

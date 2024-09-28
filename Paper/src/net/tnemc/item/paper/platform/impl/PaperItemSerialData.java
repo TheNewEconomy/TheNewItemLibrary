@@ -22,6 +22,7 @@ import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitBaseItemSerialData;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.PaperMetaBuild;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
@@ -43,7 +44,7 @@ public class PaperItemSerialData extends BukkitBaseItemSerialData<PaperItemStack
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    final Optional<SerialItemData<ItemStack>> data = PaperMetaBuild.parseMeta(item);
+    final Optional<SerialItemData<ItemStack>> data = PaperItemPlatform.PLATFORM.parseMeta(item);
     data.ifPresent(serialized::applyData);
 
     return serialized;

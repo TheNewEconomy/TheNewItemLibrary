@@ -22,12 +22,18 @@ package net.tnemc.item;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public class SerialItem<T> {
 
@@ -36,10 +42,6 @@ public class SerialItem<T> {
   public SerialItem(final AbstractItemStack<T> stack) {
 
     this.stack = stack;
-  }
-
-  public SerialItem() {
-
   }
 
   public JSONObject toJSON() {
@@ -113,20 +115,5 @@ public class SerialItem<T> {
   public static <T extends AbstractItemStack<T>> SerialItem<T> of(final T stack) {
 
     return new SerialItem<>(stack);
-  }
-
-  public static <T> Optional<SerialItem<T>> unserialize(final String serialized) throws ParseException {
-
-    return new SerialItem().parse((JSONObject)new JSONParser().parse(serialized));
-  }
-
-  public static <T> Optional<SerialItem<T>> unserialize(final JSONObject json) throws ParseException {
-
-    return new SerialItem().parse(json);
-  }
-
-  public Optional<SerialItem<T>> parse(final JSONObject json) {
-
-    return Optional.empty();
   }
 }

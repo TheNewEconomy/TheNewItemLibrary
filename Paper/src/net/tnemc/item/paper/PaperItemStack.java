@@ -20,13 +20,18 @@ package net.tnemc.item.paper;
  */
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
+import net.tnemc.item.attribute.SerialAttributeOperation;
+import net.tnemc.item.attribute.SerialAttributeSlot;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
+import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.SkullProfile;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -36,10 +41,13 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * PaperItemStack
@@ -122,17 +130,14 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
     this.stack = locale;
 
-    return PaperItemPlatform.PLATFORM.deserialize(this.stack, this);
+    return PaperItemPlatform.PLATFORM.serializer(this.stack, this);
   }
 
   @Override
   public PaperItemStack of(final JSONObject json) throws ParseException {
 
-    final Optional<SerialItem<ItemStack>> serialStack = SerialItem.unserialize(json);
+    unserialize(json);
 
-    if(serialStack.isPresent()) {
-      return of(serialStack.get());
-    }
     return this;
   }
 
@@ -522,5 +527,95 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
       }
     }
     return stack;
+  }
+
+  @Override
+  public void parse(final JSONHelper json) throws ParseException {
+
+    this.dirty = true;
+
+    // Basic properties
+    slot(json.getInteger("slot"));
+    of(json.getString("material"), json.getInteger("amount"));
+    unbreakable(json.getBoolean("unbreakable"));
+
+    // Optional display component
+    if(json.has("display") && !json.isNull("display")) {
+      display(JSONComponentSerializer.json().deserialize(json.getString("display")));
+    }
+
+    // Optional damage
+    if(json.has("damage") && !json.isNull("damage")) {
+      damage(json.getShort("damage"));
+    }
+
+    // Optional model data
+    if(json.has("modelData") && !json.isNull("modelData")) {
+      modelData(json.getInteger("modelData"));
+    }
+
+    // Optional lore
+    if(json.has("lore") && !json.isNull("lore")) {
+
+      final String[] loreArray = json.getString("lore").split(",");
+      final List<Component> loreList = new LinkedList<>();
+      for (final String lore : loreArray) {
+        loreList.add(JSONComponentSerializer.json().deserialize(lore));
+      }
+      lore(loreList);
+    }
+
+    // Optional flags
+    if(json.has("flags") && !json.isNull("flags")) {
+
+      final String[] flagsArray = json.getString("flags").split(",");
+      final List<String> flagsList = Arrays.asList(flagsArray);
+      flags(flagsList);
+    }
+
+    // Enchantments
+    if(json.has("enchantments") && !json.isNull("enchantments")) {
+
+
+      final Map<String, Integer> enchantments = new HashMap<>();
+      final JSONObject enchants = json.getJSON("enchantments");
+      enchants.forEach((key, value)->{
+        enchantments.put(key.toString(), Integer.valueOf(value.toString()));
+      });
+
+      enchant(enchantments);
+    }
+
+    // Attributes
+    if(json.has("attributes") && !json.isNull("attributes")) {
+
+      final JSONHelper attributesHelper = json.getHelper("attributes");
+      final Map<String, SerialAttribute> attributes = new HashMap<>();
+
+      attributesHelper.getObject().forEach((key, value)->{
+
+        final JSONHelper modHelper = attributesHelper.getHelper(key.toString());
+        final UUID id = modHelper.getUUID("id");
+        final String name = modHelper.getString("name");
+        final double amount = modHelper.getDouble("amount");
+        final SerialAttributeOperation operation = SerialAttributeOperation.valueOf(modHelper.getString("operation"));
+
+        final SerialAttribute modifier = new SerialAttribute(id, name, amount, operation);
+
+        if(modHelper.has("slot") && !modHelper.isNull("slot")) {
+          modifier.setSlot(SerialAttributeSlot.valueOf(modHelper.getString("slot")));
+        }
+
+        attributes.put(key.toString(), modifier);
+      });
+
+      attribute(attributes);
+    }
+
+    // Optional custom data
+    if(json.has("data") && !json.isNull("data")) {
+
+      //ItemPlatform.applyData(CustomData.fromJSON(helper.getJSON("data")));
+    }
   }
 }

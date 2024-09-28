@@ -21,6 +21,7 @@ package net.tnemc.item.platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.SerialItemData;
 import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.check.LocaleItemCheck;
@@ -31,6 +32,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * ItemPlatform
@@ -42,7 +44,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
   protected final Map<String, ItemCheck<T>> checks = new HashMap<>();
   protected final Map<String, ItemApplicator<I, T>> applicators = new HashMap<>();
-  protected final Map<String, ItemSerializer<I, T>> deserializers = new HashMap<>();
+  protected final Map<String, ItemSerializer<I, T>> serializers = new HashMap<>();
 
   /**
    * @return the version that is being used currently
@@ -85,7 +87,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
       try {
 
-        deserializers.put(check.identifier(), (ItemSerializer<I, T>)check);
+        serializers.put(check.identifier(), (ItemSerializer<I, T>)check);
       } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
@@ -110,11 +112,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   }
 
   /**
-   * @param deserializer the deserializer to add
+   * @param serializer the deserializer to add
    */
-  public void addDeserializer(@NotNull final ItemSerializer<I, T> deserializer) {
+  public void addSerializer(@NotNull final ItemSerializer<I, T> serializer) {
 
-    deserializers.put(deserializer.identifier(), deserializer);
+    serializers.put(serializer.identifier(), serializer);
   }
 
   /**
@@ -242,22 +244,24 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   }
 
   /**
-   * Applies all enabled deserializers to the given item.
+   * Applies all enabled serializers to the given item.
    *
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
+   * @param item       the item that we should use to serialize.
+   * @param serialized the serialized item stack we should use to apply this serializer to
    *
    * @return the updated serialized item.
    */
-  public I deserialize(@NotNull final T item, @NotNull I serialized) {
+  public I serializer(@NotNull final T item, @NotNull I serialized) {
 
-    for(final ItemSerializer<I, T> deserializer : deserializers.values()) {
-      if(deserializer.enabled(version())) {
-        serialized = deserializer.serialize(item, serialized);
+    for(final ItemSerializer<I, T> serializer : serializers.values()) {
+      if(serializer.enabled(version())) {
+        serialized = serializer.serialize(item, serialized);
       }
     }
     return serialized;
   }
+
+  public abstract Optional<SerialItemData<T>> parseMeta(final T stack);
 
   public static String componentString(@NotNull final Component component) {
 

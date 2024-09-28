@@ -21,6 +21,7 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.BukkitMetaBuild;
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitBaseItemSerialData;
 import org.bukkit.inventory.ItemStack;
 
@@ -43,7 +44,7 @@ public class BukkitItemSerialData extends BukkitBaseItemSerialData<BukkitItemSta
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    final Optional<SerialItemData<ItemStack>> data = BukkitMetaBuild.parseMeta(item);
+    final Optional<SerialItemData<ItemStack>> data = BukkitItemPlatform.PLATFORM.parseMeta(item);
     data.ifPresent(serialized::applyData);
 
     return serialized;

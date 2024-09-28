@@ -2,6 +2,7 @@ package net.tnemc.sponge;
 
 import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
@@ -96,17 +97,14 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
     this.stack = locale;
 
-    return SpongeItemPlatform.PLATFORM.deserialize(this.stack, this);
+    return SpongeItemPlatform.PLATFORM.serializer(this.stack, this);
   }
 
   @Override
   public SpongeItemStack of(final JSONObject json) throws ParseException {
 
-    final Optional<SerialItem<ItemStack>> serialStack = SerialItem.unserialize(json);
+    unserialize(json);
 
-    if(serialStack.isPresent()) {
-      return of(serialStack.get());
-    }
     return this;
   }
 
@@ -460,6 +458,11 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
       stack = SpongeItemPlatform.PLATFORM.apply(this, stack);
     }
     return stack;
+  }
+
+  @Override
+  public void parse(final JSONHelper json) throws ParseException {
+
   }
 
   private ResourceKey fromString() {
