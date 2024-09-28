@@ -35,6 +35,7 @@ public abstract class RepairableData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("repairCost", cost);
     return json;
@@ -46,22 +47,23 @@ public abstract class RepairableData<T> implements SerialItemData<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(JSONHelper json) {
+  public void readJSON(final JSONHelper json) {
+
     if(json.has("repairCost")) cost = json.getInteger("repairCost");
   }
 
   /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
-   * of this data. For instance, book copies will return false when compared to the original.
+   * Used to determine if some data is equal to this data. This means that it has to be an exact
+   * copy of this data. For instance, book copies will return false when compared to the original.
    *
    * @param data The data to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialItemData<? extends T> data) {
+  public boolean equals(final SerialItemData<? extends T> data) {
 
-    if(data instanceof RepairableData<?> repair ) {
+    if(data instanceof RepairableData<?> repair) {
 
       return repair.cost == cost;
     }
@@ -77,11 +79,13 @@ public abstract class RepairableData<T> implements SerialItemData<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean similar(SerialItemData<? extends T> data) {
+  public boolean similar(final SerialItemData<? extends T> data) {
+
     return equals(data);
   }
 
   public boolean hasCost() {
+
     return cost > -1;
   }
 }

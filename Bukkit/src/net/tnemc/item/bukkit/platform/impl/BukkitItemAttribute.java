@@ -36,6 +36,7 @@ import java.util.Map;
  * @since 0.1.7.7
  */
 public class BukkitItemAttribute extends ItemAttribute<BukkitItemStack, ItemStack> {
+
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -43,19 +44,19 @@ public class BukkitItemAttribute extends ItemAttribute<BukkitItemStack, ItemStac
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
+  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
 
-      for(Map.Entry<String, SerialAttribute> entry : serialized.attributes().entrySet()) {
+      for(final Map.Entry<String, SerialAttribute> entry : serialized.attributes().entrySet()) {
 
         final SerialAttribute attribute = entry.getValue();
         final AttributeModifier attr = new AttributeModifier(attribute.getIdentifier(),
-                attribute.getName(),
-                attribute.getAmount(),
-                ParsingUtil.attributeOperation(attribute.getOperation()),
-                ParsingUtil.attributeSlot(attribute.getSlot()));
+                                                             attribute.getName(),
+                                                             attribute.getAmount(),
+                                                             ParsingUtil.attributeOperation(attribute.getOperation()),
+                                                             ParsingUtil.attributeSlot(attribute.getSlot()));
 
 
         meta.addAttributeModifier(Attribute.valueOf(entry.getKey()), attr);
@@ -71,7 +72,7 @@ public class BukkitItemAttribute extends ItemAttribute<BukkitItemStack, ItemStac
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
+  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasAttributeModifiers()) {
@@ -82,9 +83,9 @@ public class BukkitItemAttribute extends ItemAttribute<BukkitItemStack, ItemStac
         if(attribute != null) {
 
           final SerialAttribute attr = new SerialAttribute(attribute.getUniqueId(),
-                  attribute.getName(),
-                  attribute.getAmount(),
-                  ParsingUtil.attributeOperation(attribute.getOperation()));
+                                                           attribute.getName(),
+                                                           attribute.getAmount(),
+                                                           ParsingUtil.attributeOperation(attribute.getOperation()));
 
           if(attribute.getSlot() != null) {
             attr.setSlot(ParsingUtil.attributeSlot(attribute.getSlot()));

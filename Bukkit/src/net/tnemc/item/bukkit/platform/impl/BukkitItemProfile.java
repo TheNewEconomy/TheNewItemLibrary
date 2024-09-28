@@ -33,6 +33,7 @@ import org.bukkit.inventory.meta.SkullMeta;
  * @since 0.1.7.7
  */
 public class BukkitItemProfile extends ItemProfile<BukkitItemStack, ItemStack> {
+
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -40,7 +41,8 @@ public class BukkitItemProfile extends ItemProfile<BukkitItemStack, ItemStack> {
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
+  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
+
     final ItemMeta meta = item.getItemMeta();
     if(serialized.profile().isPresent() && meta instanceof SkullMeta skull) {
 
@@ -64,7 +66,7 @@ public class BukkitItemProfile extends ItemProfile<BukkitItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
+  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     if(item.getItemMeta() instanceof SkullMeta) {
       final BukkitSkullData skullData = new BukkitSkullData();

@@ -37,7 +37,7 @@ public class BukkitLeatherData extends LeatherData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
 
     final LeatherArmorMeta meta = (LeatherArmorMeta)stack.getItemMeta();
     if(meta != null) {
@@ -51,7 +51,7 @@ public class BukkitLeatherData extends LeatherData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
 
     final LeatherArmorMeta meta = (LeatherArmorMeta)ParsingUtil.buildFor(stack, PotionMeta.class);

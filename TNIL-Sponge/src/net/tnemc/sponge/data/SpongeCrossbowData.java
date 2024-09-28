@@ -35,7 +35,8 @@ public class SpongeCrossbowData extends CrossBowData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
   }
 
   /**
@@ -44,13 +45,14 @@ public class SpongeCrossbowData extends CrossBowData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     return stack;
   }
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

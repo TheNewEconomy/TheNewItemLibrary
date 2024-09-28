@@ -38,6 +38,7 @@ public abstract class EnchantableComponent<T> implements SerialComponent<T> {
    */
   @Override
   public String getType() {
+
     return "enchantable";
   }
 
@@ -48,6 +49,7 @@ public abstract class EnchantableComponent<T> implements SerialComponent<T> {
    */
   @Override
   public JSONObject toJSON() {
+
     final JSONObject enchantable = new JSONObject();
     enchantable.put("name", "enchantable-component");
     enchantable.put("value", value);
@@ -61,20 +63,22 @@ public abstract class EnchantableComponent<T> implements SerialComponent<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(JSONHelper json) {
+  public void readJSON(final JSONHelper json) {
+
     value = json.getInteger("value");
   }
 
   /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
-   * of this data. For instance, book copies will return false when compared to the original.
+   * Used to determine if some data is equal to this data. This means that it has to be an exact
+   * copy of this data. For instance, book copies will return false when compared to the original.
    *
    * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialComponent<? extends T> component) {
+  public boolean equals(final SerialComponent<? extends T> component) {
+
     if(component instanceof EnchantableComponent<?> enchant) {
 
       return value == enchant.value;

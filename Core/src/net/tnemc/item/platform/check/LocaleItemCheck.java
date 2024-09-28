@@ -30,7 +30,8 @@ public interface LocaleItemCheck<T> extends ItemCheck<T> {
 
   /**
    * @param original the original stack
-   * @param check the stack to use for the check
+   * @param check    the stack to use for the check
+   *
    * @return True if the check passes, otherwise false.
    */
   boolean check(final T original, final T check);
@@ -43,6 +44,7 @@ public interface LocaleItemCheck<T> extends ItemCheck<T> {
    */
   @Override
   default boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+
     return true;//always return true because this shouldn't be used for locale checks.
   }
 }

@@ -43,6 +43,7 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("name", "potion");
     json.put("type", type);
@@ -52,7 +53,7 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
 
     if(customEffects.size() > 0) {
       final JSONObject effects = new JSONObject();
-      for(PotionEffectData effect : customEffects) {
+      for(final PotionEffectData effect : customEffects) {
 
         effects.put(effect.getName(), effect.toJSON());
       }
@@ -67,7 +68,8 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(JSONHelper json) {
+  public void readJSON(final JSONHelper json) {
+
     type = json.getString("type");
 
     if(json.has("colour")) colorRGB = json.getInteger("colour");
@@ -84,19 +86,20 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
   }
 
   /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
-   * of this data. For instance, book copies will return false when compared to the original.
+   * Used to determine if some data is equal to this data. This means that it has to be an exact
+   * copy of this data. For instance, book copies will return false when compared to the original.
    *
    * @param data The data to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof SerialPotionData<?> compare) {
-      return customEffects.equals(compare.customEffects) &&  type.equalsIgnoreCase(compare.type)
-          && colorRGB == compare.colorRGB && extended == compare.extended
-          && upgraded == compare.upgraded;
+  public boolean equals(final SerialItemData<? extends T> data) {
+
+    if(data instanceof final SerialPotionData<?> compare) {
+      return customEffects.equals(compare.customEffects) && type.equalsIgnoreCase(compare.type)
+             && colorRGB == compare.colorRGB && extended == compare.extended
+             && upgraded == compare.upgraded;
     }
     return false;
   }
@@ -110,7 +113,8 @@ public abstract class SerialPotionData<T> implements SerialItemData<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean similar(SerialItemData<? extends T> data) {
+  public boolean similar(final SerialItemData<? extends T> data) {
+
     return equals(data);
   }
 }

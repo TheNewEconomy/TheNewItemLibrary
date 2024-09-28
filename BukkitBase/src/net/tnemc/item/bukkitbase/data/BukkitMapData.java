@@ -36,7 +36,8 @@ public class BukkitMapData extends MapData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final MapMeta meta = (MapMeta)stack.getItemMeta();
 
     if(meta != null) {
@@ -54,7 +55,7 @@ public class BukkitMapData extends MapData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final MapMeta meta = (MapMeta)ParsingUtil.buildFor(stack, MapMeta.class);
 

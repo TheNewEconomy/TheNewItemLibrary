@@ -40,10 +40,11 @@ public class PaperShulkerData extends ShulkerData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
 
-    if(meta != null && meta.getBlockState() instanceof ShulkerBox box) {
+    if(meta != null && meta.getBlockState() instanceof final ShulkerBox box) {
 
       if(box.getColor() != null) {
         colorRGB = box.getColor().getColor().asRGB();
@@ -64,11 +65,11 @@ public class PaperShulkerData extends ShulkerData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final BlockStateMeta meta = (BlockStateMeta)ParsingUtil.buildFor(stack, BlockStateMeta.class);
 
-    if(meta.getBlockState() instanceof ShulkerBox box) {
+    if(meta.getBlockState() instanceof final ShulkerBox box) {
 
       items.forEach((slot, item)->box.getInventory().setItem(slot, item.getStack().locale()));
       box.update(true);

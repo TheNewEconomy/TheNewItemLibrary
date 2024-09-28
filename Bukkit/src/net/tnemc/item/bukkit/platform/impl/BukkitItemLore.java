@@ -34,6 +34,7 @@ import java.util.LinkedList;
  * @since 0.1.7.7
  */
 public class BukkitItemLore extends ItemLore<BukkitItemStack, ItemStack> {
+
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -41,13 +42,13 @@ public class BukkitItemLore extends ItemLore<BukkitItemStack, ItemStack> {
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
+  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
 
       final LinkedList<String> newLore = new LinkedList<>();
-      for(Component comp : serialized.lore()) {
+      for(final Component comp : serialized.lore()) {
         newLore.add(LegacyComponentSerializer.legacySection().serialize(comp));
       }
       meta.setLore(newLore);
@@ -63,11 +64,12 @@ public class BukkitItemLore extends ItemLore<BukkitItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
+  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
+
     if(item.getItemMeta() != null && item.getItemMeta().getLore() != null) {
       serialized.lore().clear();
 
-      for(String str : item.getItemMeta().getLore()) {
+      for(final String str : item.getItemMeta().getLore()) {
         serialized.lore().add(LegacyComponentSerializer.legacySection().deserialize(str));
       }
     }

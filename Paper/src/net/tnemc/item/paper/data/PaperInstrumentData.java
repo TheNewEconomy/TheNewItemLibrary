@@ -34,6 +34,7 @@ import org.bukkit.inventory.meta.MusicInstrumentMeta;
  * @since 0.1.7.7
  */
 public class PaperInstrumentData extends InstrumentData<ItemStack> {
+
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -41,14 +42,15 @@ public class PaperInstrumentData extends InstrumentData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final MusicInstrumentMeta meta = (MusicInstrumentMeta)stack.getItemMeta();
 
     if(meta != null && meta.getInstrument() != null) {
 
       try {
         this.instrument = meta.getInstrument().getKey().getKey();
-      } catch(Exception ignore) {
+      } catch(final Exception ignore) {
         this.instrument = meta.getInstrument().key().asString();
       }
     }
@@ -60,7 +62,7 @@ public class PaperInstrumentData extends InstrumentData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final MusicInstrumentMeta meta = (MusicInstrumentMeta)ParsingUtil.buildFor(stack, MusicInstrumentMeta.class);
 
@@ -68,7 +70,7 @@ public class PaperInstrumentData extends InstrumentData<ItemStack> {
 
       try {
         meta.setInstrument(Registry.INSTRUMENT.get(NamespacedKey.fromString(this.instrument)));
-      } catch(Exception ignore) {
+      } catch(final Exception ignore) {
         meta.setInstrument(Registry.INSTRUMENT.get(Key.key(this.instrument)));
       }
     }

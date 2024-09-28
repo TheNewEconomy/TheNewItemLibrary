@@ -32,13 +32,15 @@ public interface ItemApplicator<I extends AbstractItemStack<T>, T> extends Ident
 
   /**
    * @param version the version being used when this applicator is called.
+   *
    * @return true if this applicator is enabled for the version, otherwise false
    */
   boolean enabled(final String version);
 
   /**
    * @param serialized the serialized item stack to use
-   * @param item the item that we should use to apply this applicator to.
+   * @param item       the item that we should use to apply this applicator to.
+   *
    * @return the updated item.
    */
   T apply(final I serialized, T item);

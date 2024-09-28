@@ -35,6 +35,7 @@ public abstract class FireworkEffectData<T> implements SerialItemData<T> {
    * @return The JSONObject representing this {@link SerialItemData}.
    */
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("name", "fireworkeffect");
 
@@ -48,7 +49,8 @@ public abstract class FireworkEffectData<T> implements SerialItemData<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(JSONHelper json) {
+  public void readJSON(final JSONHelper json) {
+
     this.effect = SerialFireworkEffect.readJSON(new JSONHelper(json.getJSON("effect_info")));
   }
 }

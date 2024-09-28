@@ -46,13 +46,13 @@ public class SpongeEnchantData extends EnchantStorageData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
 
     final Optional<List<Enchantment>> enchants = stack.get(Keys.STORED_ENCHANTMENTS);
 
     if(enchants.isPresent()) {
       applies = true;
-      for(Enchantment enchant : enchants.get()) {
+      for(final Enchantment enchant : enchants.get()) {
         enchantments.put(enchant.type().key(RegistryTypes.ENCHANTMENT_TYPE).formatted(), enchant.level());
       }
     }
@@ -64,7 +64,7 @@ public class SpongeEnchantData extends EnchantStorageData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final List<Enchantment> enchants = new ArrayList<>();
     for(final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
@@ -77,6 +77,7 @@ public class SpongeEnchantData extends EnchantStorageData<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

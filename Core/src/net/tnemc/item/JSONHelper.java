@@ -29,68 +29,82 @@ import java.util.UUID;
  * <p>
  * Created by Daniel on 12/1/2018.
  * <p>
- * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
- * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/ or send a letter to
- * Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
- * Created by creatorfromhell on 06/30/2017.
+ * This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
+ * International License. To view a copy of this license, visit
+ * http://creativecommons.org/licenses/by-nc-nd/4.0/ or send a letter to Creative Commons, PO Box
+ * 1866, Mountain View, CA 94042, USA. Created by creatorfromhell on 06/30/2017.
  */
 public class JSONHelper {
 
   private JSONObject object;
 
-  public JSONHelper(JSONObject object) {
+  public JSONHelper(final JSONObject object) {
+
     this.object = object;
   }
 
-  public boolean has(String identifier) {
+  public boolean has(final String identifier) {
+
     return object.containsKey(identifier);
   }
 
-  public boolean isNull(String identifier) {
+  public boolean isNull(final String identifier) {
+
     return object.get(identifier) == null;
   }
 
-  public JSONHelper getHelper(String identifier) {
+  public JSONHelper getHelper(final String identifier) {
+
     return new JSONHelper(getJSON(identifier));
   }
 
-  public JSONObject getJSON(String identifier) {
+  public JSONObject getJSON(final String identifier) {
+
     return (JSONObject)object.get(identifier);
   }
 
-  public Short getShort(String identifier) {
+  public Short getShort(final String identifier) {
+
     return Short.valueOf(getString(identifier));
   }
 
-  public Float getFloat(String identifier) {
+  public Float getFloat(final String identifier) {
+
     return Float.valueOf(getString(identifier));
   }
 
-  public Double getDouble(String identifier) {
+  public Double getDouble(final String identifier) {
+
     return Double.valueOf(getString(identifier));
   }
 
-  public Integer getInteger(String identifier) {
+  public Integer getInteger(final String identifier) {
+
     return Integer.valueOf(getString(identifier));
   }
 
-  public Boolean getBoolean(String identifier) {
+  public Boolean getBoolean(final String identifier) {
+
     return Boolean.valueOf(getString(identifier));
   }
 
-  public String getString(String identifier) {
+  public String getString(final String identifier) {
+
     return object.get(identifier).toString();
   }
 
-  public UUID getUUID(String identifier) {
+  public UUID getUUID(final String identifier) {
+
     return UUID.fromString(object.get(identifier).toString());
   }
 
   public JSONObject getObject() {
+
     return object;
   }
 
-  public void setObject(JSONObject object) {
+  public void setObject(final JSONObject object) {
+
     this.object = object;
   }
 }

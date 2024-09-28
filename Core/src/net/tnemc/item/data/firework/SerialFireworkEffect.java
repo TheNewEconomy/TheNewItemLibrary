@@ -37,18 +37,19 @@ public class SerialFireworkEffect {
 
   public SerialFireworkEffect() { }
 
-  public SerialFireworkEffect(String type, boolean trail, boolean flicker) {
+  public SerialFireworkEffect(final String type, final boolean trail, final boolean flicker) {
+
     this.type = type;
     this.trail = trail;
     this.flicker = flicker;
   }
 
   public JSONObject toJSON() {
-    
+
     final JSONObject json = new JSONObject();
     if(!colors.isEmpty()) {
-      JSONObject colours = new JSONObject();
-      for (int i = 0; i < colors.size(); i++) {
+      final JSONObject colours = new JSONObject();
+      for(int i = 0; i < colors.size(); i++) {
         colours.put(i, colors.get(i));
       }
       json.put("colours", colours);
@@ -56,7 +57,7 @@ public class SerialFireworkEffect {
 
     if(!fadeColors.isEmpty()) {
       final JSONObject fades = new JSONObject();
-      for (int i = 0; i < fadeColors.size(); i++) {
+      for(int i = 0; i < fadeColors.size(); i++) {
         fades.put(i, fadeColors.get(i));
       }
       json.put("fades", fades);
@@ -70,8 +71,9 @@ public class SerialFireworkEffect {
 
     return json;
   }
-  
-  public static SerialFireworkEffect readJSON(JSONHelper json) {
+
+  public static SerialFireworkEffect readJSON(final JSONHelper json) {
+
     final SerialFireworkEffect effect = new SerialFireworkEffect();
 
     if(json.has("effect")) {
@@ -98,44 +100,54 @@ public class SerialFireworkEffect {
   }
 
   public List<Integer> getColors() {
+
     return colors;
   }
 
-  public void setColors(List<Integer> colors) {
+  public void setColors(final List<Integer> colors) {
+
     this.colors.clear();
     this.colors.addAll(colors);
   }
 
   public List<Integer> getFadeColors() {
+
     return fadeColors;
   }
 
-  public void setFadeColors(List<Integer> fadeColors) {
+  public void setFadeColors(final List<Integer> fadeColors) {
+
     this.fadeColors.clear();
     this.fadeColors.addAll(fadeColors);
   }
 
   public String getType() {
+
     return type;
   }
 
-  public void setType(String type) {
+  public void setType(final String type) {
+
     this.type = type;
   }
 
   public boolean hasTrail() {
+
     return trail;
   }
 
-  public void setTrail(boolean trail) {
+  public void setTrail(final boolean trail) {
+
     this.trail = trail;
   }
 
   public boolean hasFlicker() {
+
     return flicker;
   }
 
-  public void setFlicker(boolean flicker) {
+  public void setFlicker(final boolean flicker) {
+
     this.flicker = flicker;
   }
 }

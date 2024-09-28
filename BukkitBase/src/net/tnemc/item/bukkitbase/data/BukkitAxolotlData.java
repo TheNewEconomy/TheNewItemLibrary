@@ -36,7 +36,8 @@ public class BukkitAxolotlData extends AxolotlData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final AxolotlBucketMeta meta = (AxolotlBucketMeta)stack.getItemMeta();
 
     if(meta != null && meta.hasVariant()) {
@@ -50,7 +51,7 @@ public class BukkitAxolotlData extends AxolotlData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final AxolotlBucketMeta meta = (AxolotlBucketMeta)ParsingUtil.buildFor(stack, AxolotlBucketMeta.class);
 

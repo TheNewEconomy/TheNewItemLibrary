@@ -32,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
  * @since 0.1.7.7
  */
 public class BukkitItemMaterial extends ItemMaterial<BukkitItemStack, ItemStack> {
+
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -39,7 +40,7 @@ public class BukkitItemMaterial extends ItemMaterial<BukkitItemStack, ItemStack>
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
+  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     Material material = null;
     try {
@@ -65,7 +66,8 @@ public class BukkitItemMaterial extends ItemMaterial<BukkitItemStack, ItemStack>
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
+  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
+
     serialized.material(item.getType().getKey().toString());
     return serialized;
   }

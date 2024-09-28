@@ -41,7 +41,7 @@ public class PaperItemSerialData extends BukkitBaseItemSerialData<PaperItemStack
    * @return the updated serialized item.
    */
   @Override
-  public PaperItemStack serialize(ItemStack item, PaperItemStack serialized) {
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
     final Optional<SerialItemData<ItemStack>> data = PaperMetaBuild.parseMeta(item);
     data.ifPresent(serialized::applyData);

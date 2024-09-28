@@ -31,6 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @since 0.1.7.7
  */
 public class BukkitItemFlag<I extends AbstractItemStack<ItemStack>> extends net.tnemc.item.platform.impl.ItemFlag<I, ItemStack> {
+
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -38,7 +39,7 @@ public class BukkitItemFlag<I extends AbstractItemStack<ItemStack>> extends net.
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(I serialized, ItemStack item) {
+  public ItemStack apply(final I serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
@@ -62,11 +63,11 @@ public class BukkitItemFlag<I extends AbstractItemStack<ItemStack>> extends net.
    * @return the updated serialized item.
    */
   @Override
-  public I serialize(ItemStack item, I serialized) {
+  public I serialize(final ItemStack item, final I serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
-      for(ItemFlag flag : item.getItemMeta().getItemFlags()) {
+      for(final ItemFlag flag : item.getItemMeta().getItemFlags()) {
         serialized.flags().add(flag.name());
       }
     }

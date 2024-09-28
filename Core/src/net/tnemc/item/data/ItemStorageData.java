@@ -36,6 +36,7 @@ public abstract class ItemStorageData<T> implements SerialItemData<T> {
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject itemsObj = new JSONObject();
     items.forEach((slot, item)->{
       itemsObj.put(slot, item.toJSON());
@@ -44,32 +45,34 @@ public abstract class ItemStorageData<T> implements SerialItemData<T> {
   }
 
   @Override
-  public void readJSON(JSONHelper json) {
+  public void readJSON(final JSONHelper json) {
+
     json.getJSON("items").forEach((key, value)->{
       final int slot = Integer.valueOf(String.valueOf(key));
       try {
         items.put(slot, (SerialItem<T>)SerialItem.unserialize((JSONObject)value).get());
-      } catch(ParseException ignore) {
+      } catch(final ParseException ignore) {
 
       }
     });
   }
 
   /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
-   * of this data. For instance, book copies will return false when compared to the original.
+   * Used to determine if some data is equal to this data. This means that it has to be an exact
+   * copy of this data. For instance, book copies will return false when compared to the original.
    *
    * @param data The data to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof ItemStorageData<?> compare) {
+  public boolean equals(final SerialItemData<? extends T> data) {
+
+    if(data instanceof final ItemStorageData<?> compare) {
 
       if(items.size() != compare.items.size()) return false;
 
-      for(Map.Entry<Integer, SerialItem<T>> entry : items.entrySet()) {
+      for(final Map.Entry<Integer, SerialItem<T>> entry : items.entrySet()) {
 
         if(!compare.items.containsKey(entry.getKey())) return false;
 
@@ -94,11 +97,13 @@ public abstract class ItemStorageData<T> implements SerialItemData<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean similar(SerialItemData<? extends T> data) {
+  public boolean similar(final SerialItemData<? extends T> data) {
+
     return equals(data);
   }
 
   public Map<Integer, SerialItem<T>> getItems() {
+
     return items;
   }
 }

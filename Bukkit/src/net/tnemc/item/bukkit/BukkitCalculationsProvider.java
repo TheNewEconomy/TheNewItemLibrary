@@ -50,17 +50,18 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
   /**
    * Used to drop items near a player.
    *
-   * @param left A Collection containing the items to drop.
+   * @param left   A Collection containing the items to drop.
    * @param player The UUID of the player to drop the items near.
    *
    * @return True if the items were successfully dropped, otherwise false.
    */
   @Override
-  public boolean drop(Collection<BukkitItemStack> left, UUID player) {
+  public boolean drop(final Collection<BukkitItemStack> left, final UUID player) {
+
     final Player playerObj = Bukkit.getPlayer(player);
 
     if(playerObj != null) {
-      for(BukkitItemStack stack : left) {
+      for(final BukkitItemStack stack : left) {
         Objects.requireNonNull(playerObj.getWorld()).dropItemNaturally(playerObj.getLocation(), stack.locale());
       }
     }
@@ -74,7 +75,8 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
    * @param inventory The inventory to remove the items from.
    */
   @Override
-  public int removeAll(BukkitItemStack stack, Inventory inventory) {
+  public int removeAll(final BukkitItemStack stack, final Inventory inventory) {
+
     final ItemStack compare = stack.locale().clone();
     compare.setAmount(1);
 
@@ -82,7 +84,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     final BukkitItemStack comp = BukkitItemStack.locale(compare);
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
-      ItemStack item = inventory.getItem(i);
+      final ItemStack item = inventory.getItem(i);
       if(item != null) {
         final BukkitItemStack locale = BukkitItemStack.locale(item);
         final boolean equal = itemsEqual(comp, locale);
@@ -118,21 +120,22 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
    * @return The total count of items in the inventory.
    */
   @Override
-  public int count(BukkitItemStack stack, Inventory inventory) {
+  public int count(final BukkitItemStack stack, final Inventory inventory) {
+
     final ItemStack compare = stack.locale().clone();
     compare.setAmount(1);
 
     final BukkitItemStack comp = BukkitItemStack.locale(compare);
     int amount = 0;
 
-    for(ItemStack itemStack : inventory.getStorageContents()) {
+    for(final ItemStack itemStack : inventory.getStorageContents()) {
       if(itemStack != null) {
         final BukkitItemStack locale = BukkitItemStack.locale(itemStack);
         final boolean equal = itemsEqual(comp, locale);
 
         if(locale.data().isPresent()) {
           if(locale.data().get() instanceof ItemStorageData) {
-            for(Object obj : ((ItemStorageData)locale.data().get()).getItems().entrySet()) {
+            for(final Object obj : ((ItemStorageData)locale.data().get()).getItems().entrySet()) {
               final Map.Entry<Integer, SerialItem> entry = ((Map.Entry<Integer, SerialItem>)obj);
               if(itemsEqual(comp, new BukkitItemStack().of(entry.getValue()))) {
                 amount += entry.getValue().getStack().amount();
@@ -151,26 +154,31 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
   /**
    * Takes a collection of items from an inventory.
-   * @param items The collection of items to remove.
+   *
+   * @param items     The collection of items to remove.
    * @param inventory The inventory to remove the items from.
    */
-  public void takeItems(Collection<BukkitItemStack> items, Inventory inventory) {
-    items.forEach(itemStack -> removeItem(itemStack, inventory));
+  public void takeItems(final Collection<BukkitItemStack> items, final Inventory inventory) {
+
+    items.forEach(itemStack->removeItem(itemStack, inventory));
   }
 
   /**
-   * Adds a collection of net.tnemc.item stacks to an inventory, dropping them on the ground if it's a player inventory and overflow exists.
-   * @param items The collection of items to add to the inventory.
+   * Adds a collection of net.tnemc.item stacks to an inventory, dropping them on the ground if it's
+   * a player inventory and overflow exists.
+   *
+   * @param items     The collection of items to add to the inventory.
    * @param inventory The inventory to add the collection of items to.
    */
-  public Collection<BukkitItemStack> giveItems(Collection<BukkitItemStack> items, Inventory inventory) {
+  public Collection<BukkitItemStack> giveItems(final Collection<BukkitItemStack> items, final Inventory inventory) {
+
     final Collection<BukkitItemStack> leftOver = new ArrayList<>();
 
-    for(BukkitItemStack item : items) {
+    for(final BukkitItemStack item : items) {
       final Map<Integer, ItemStack> left = inventory.addItem(item.locale());
 
       if(left.size() > 0) {
-        for(Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
+        for(final Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
           final ItemStack i = entry.getValue();
           if(i == null || i.getType() == Material.AIR) {
             continue;
@@ -184,12 +192,15 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
   /**
    * Removes an ItemStack with a specific amount from an inventory.
-   * @param stack The stack, with the correct amount, to remove.
+   *
+   * @param stack     The stack, with the correct amount, to remove.
    * @param inventory The inventory to return the net.tnemc.item stack from.
+   *
    * @return The remaining amount of items to remove.
    */
   @Override
-  public int removeItem(BukkitItemStack stack, Inventory inventory) {
+  public int removeItem(final BukkitItemStack stack, final Inventory inventory) {
+
     int left = stack.locale().clone().getAmount();
 
     final ItemStack compare = stack.locale().clone();
@@ -248,7 +259,8 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
    * @return An optional containing the inventory if it works, otherwise false.
    */
   @Override
-  public Optional<Inventory> getInventory(UUID identifier, InventoryType type) {
+  public Optional<Inventory> getInventory(final UUID identifier, final InventoryType type) {
+
     final OfflinePlayer player = Bukkit.getOfflinePlayer(identifier);
     if(player.isOnline() && player.getPlayer() != null) {
 

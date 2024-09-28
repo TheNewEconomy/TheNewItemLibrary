@@ -37,6 +37,7 @@ import org.bukkit.inventory.meta.trim.TrimPattern;
  * @since 0.1.7.7
  */
 public class BukkitColourArmourData extends ColourableArmourData<ItemStack> {
+
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -44,7 +45,8 @@ public class BukkitColourArmourData extends ColourableArmourData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final ColorableArmorMeta meta = (ColorableArmorMeta)stack.getItemMeta();
 
     if(meta != null && meta.getTrim() != null) {
@@ -61,7 +63,7 @@ public class BukkitColourArmourData extends ColourableArmourData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final ColorableArmorMeta meta = (ColorableArmorMeta)ParsingUtil.buildFor(stack, ColorableArmorMeta.class);
 

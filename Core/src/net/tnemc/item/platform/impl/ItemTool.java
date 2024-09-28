@@ -38,6 +38,7 @@ public abstract class ItemTool<I extends AbstractItemStack<T>, T> implements Ite
    */
   @Override
   public String identifier() {
+
     return "tool";
   }
 
@@ -47,7 +48,8 @@ public abstract class ItemTool<I extends AbstractItemStack<T>, T> implements Ite
    * @return true if this check is enabled for the version, otherwise false
    */
   @Override
-  public boolean enabled(String version) {
+  public boolean enabled(final String version) {
+
     return VersionUtil.isOneTwentyOne(version);
   }
 
@@ -58,7 +60,8 @@ public abstract class ItemTool<I extends AbstractItemStack<T>, T> implements Ite
    * @return True if the check passes, otherwise false.
    */
   @Override
-  public boolean check(AbstractItemStack<T> original, AbstractItemStack<T> check) {
+  public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+
     if(original.components().containsKey("tool") && check.components().containsKey("tool")) {
       final ToolComponent<T> originalTool = (ToolComponent<T>)original.components().get("tool");
       final ToolComponent<T> checkTool = (ToolComponent<T>)check.components().get("tool");

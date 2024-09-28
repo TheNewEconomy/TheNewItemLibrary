@@ -75,14 +75,15 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   private ItemStack stack;
 
   @Override
-  public BukkitItemStack of(String material, int amount) {
+  public BukkitItemStack of(final String material, final int amount) {
+
     this.material = material;
     this.amount = amount;
     return this;
   }
 
   @Override
-  public BukkitItemStack of(SerialItem<ItemStack> serialItem) {
+  public BukkitItemStack of(final SerialItem<ItemStack> serialItem) {
 
     final BukkitItemStack stack = (BukkitItemStack)serialItem.getStack();
 
@@ -117,14 +118,16 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack of(ItemStack locale) {
+  public BukkitItemStack of(final ItemStack locale) {
+
     this.stack = locale;
 
     return BukkitItemPlatform.PLATFORM.deserialize(this.stack, this);
   }
 
   @Override
-  public BukkitItemStack of(JSONObject json) throws ParseException {
+  public BukkitItemStack of(final JSONObject json) throws ParseException {
+
     final Optional<SerialItem<ItemStack>> serialStack = SerialItem.unserialize(json);
 
     if(serialStack.isPresent()) {
@@ -134,7 +137,8 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack flags(List<String> flags) {
+  public BukkitItemStack flags(final List<String> flags) {
+
     this.dirty = true;
     this.flags.clear();
     this.flags.addAll(flags);
@@ -142,7 +146,8 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack lore(List<Component> lore) {
+  public BukkitItemStack lore(final List<Component> lore) {
+
     this.dirty = true;
     this.lore.clear();
     this.lore.addAll(lore);
@@ -150,14 +155,16 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack attribute(String name, SerialAttribute attribute) {
+  public BukkitItemStack attribute(final String name, final SerialAttribute attribute) {
+
     this.dirty = true;
     attributes.put(name, attribute);
     return this;
   }
 
   @Override
-  public BukkitItemStack attribute(Map<String, SerialAttribute> attributes) {
+  public BukkitItemStack attribute(final Map<String, SerialAttribute> attributes) {
+
     this.dirty = true;
 
     this.attributes.clear();
@@ -166,14 +173,16 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack enchant(String enchantment, int level) {
+  public BukkitItemStack enchant(final String enchantment, final int level) {
+
     this.dirty = true;
     enchantments.put(enchantment, level);
     return this;
   }
 
   @Override
-  public BukkitItemStack enchant(Map<String, Integer> enchantments) {
+  public BukkitItemStack enchant(final Map<String, Integer> enchantments) {
+
     this.dirty = true;
     this.enchantments.clear();
     this.enchantments.putAll(enchantments);
@@ -181,30 +190,34 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack enchant(List<String> enchantments) {
+  public BukkitItemStack enchant(final List<String> enchantments) {
+
     this.dirty = true;
     this.enchantments.clear();
-    for(String str : enchantments) {
+    for(final String str : enchantments) {
       this.enchantments.put(str, 1);
     }
     return this;
   }
 
   @Override
-  public BukkitItemStack material(String material) {
+  public BukkitItemStack material(final String material) {
+
     this.dirty = true;
     this.material = material;
     return this;
   }
 
   @Override
-  public BukkitItemStack amount(int amount) {
+  public BukkitItemStack amount(final int amount) {
+
     this.dirty = true;
     this.amount = amount;
     return this;
   }
 
-  public void setAmount(int amount) {
+  public void setAmount(final int amount) {
+
     this.amount = amount;
 
     if(stack != null) {
@@ -213,88 +226,101 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
-  public BukkitItemStack slot(int slot) {
+  public BukkitItemStack slot(final int slot) {
+
     this.slot = slot;
     return this;
   }
 
   @Override
-  public BukkitItemStack display(Component display) {
+  public BukkitItemStack display(final Component display) {
+
     this.dirty = true;
     this.display = display;
     return this;
   }
 
   @Override
-  public BukkitItemStack damage(short damage) {
+  public BukkitItemStack damage(final short damage) {
+
     this.dirty = true;
     this.damage = damage;
     return this;
   }
 
   @Override
-  public AbstractItemStack<ItemStack> profile(SkullProfile profile) {
+  public AbstractItemStack<ItemStack> profile(final SkullProfile profile) {
+
     this.dirty = true;
     this.profile = profile;
     return this;
   }
 
   @Override
-  public BukkitItemStack modelData(int modelData) {
+  public BukkitItemStack modelData(final int modelData) {
+
     this.dirty = true;
     this.customModelData = modelData;
     return this;
   }
 
   @Override
-  public BukkitItemStack unbreakable(boolean unbreakable) {
+  public BukkitItemStack unbreakable(final boolean unbreakable) {
+
     this.dirty = true;
     this.unbreakable = unbreakable;
     return this;
   }
 
   @Override
-  public AbstractItemStack<ItemStack> maxStack(int maxStack) {
+  public AbstractItemStack<ItemStack> maxStack(final int maxStack) {
+
     this.dirty = true;
     this.maxStack = maxStack;
     return this;
   }
 
   @Override
-  public AbstractItemStack<ItemStack> hideTooltip(boolean hideTooltip) {
+  public AbstractItemStack<ItemStack> hideTooltip(final boolean hideTooltip) {
+
     this.dirty = true;
     this.hideTooltip = hideTooltip;
     return this;
   }
 
   @Override
-  public AbstractItemStack<ItemStack> fireResistant(boolean fireResistant) {
+  public AbstractItemStack<ItemStack> fireResistant(final boolean fireResistant) {
+
     this.dirty = true;
     this.fireResistant = fireResistant;
     return this;
   }
 
   @Override
-  public AbstractItemStack<ItemStack> enchantGlint(boolean enchantGlint) {
+  public AbstractItemStack<ItemStack> enchantGlint(final boolean enchantGlint) {
+
     this.dirty = true;
     this.enchantGlint = enchantGlint;
     return this;
   }
 
   @Override
-  public AbstractItemStack<ItemStack> rarity(String rarity) {
+  public AbstractItemStack<ItemStack> rarity(final String rarity) {
+
     this.dirty = true;
     this.rarity = rarity;
     return this;
   }
 
-  public BukkitItemStack debug(boolean debug) {
+  public BukkitItemStack debug(final boolean debug) {
+
     this.debug = debug;
     return this;
   }
 
   @Override
-  public BukkitItemStack applyData(SerialItemData<ItemStack> data) {
+  public BukkitItemStack applyData(final SerialItemData<ItemStack> data) {
+
     this.dirty = true;
     this.data = data;
     return this;
@@ -302,138 +328,153 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public List<String> flags() {
+
     return flags;
   }
 
   @Override
   public List<Component> lore() {
+
     return lore;
   }
 
   @Override
   public Map<String, SerialAttribute> attributes() {
+
     return attributes;
   }
 
   @Override
   public Map<String, Integer> enchantments() {
+
     return enchantments;
   }
 
   @Override
   public Map<String, SerialComponent<ItemStack>> components() {
+
     return components;
   }
 
   @Override
   public String material() {
+
     return material;
   }
 
   @Override
   public int amount() {
+
     return amount;
   }
 
   @Override
   public int slot() {
+
     return slot;
   }
 
   public String displayPlain() {
+
     return PlainTextComponentSerializer.plainText().serialize(display);
   }
 
   @Override
   public Component display() {
+
     return display;
   }
 
   @Override
   public short damage() {
+
     return damage;
   }
 
   @Override
   public Optional<SkullProfile> profile() {
+
     return Optional.ofNullable(profile);
   }
 
   @Override
   public int modelData() {
+
     return customModelData;
   }
 
   @Override
   public boolean unbreakable() {
+
     return unbreakable;
   }
 
   @Override
   public int maxStack() {
+
     return maxStack;
   }
 
   @Override
   public boolean hideTooltip() {
+
     return hideTooltip;
   }
 
   @Override
   public boolean fireResistant() {
+
     return fireResistant;
   }
 
   @Override
   public boolean enchantGlint() {
+
     return enchantGlint;
   }
 
   @Override
   public String rarity() {
+
     return rarity;
   }
 
   @Override
   public void markDirty() {
+
     this.dirty = true;
   }
 
   @Override
   public Optional<SerialItemData<ItemStack>> data() {
+
     return Optional.ofNullable(data);
   }
 
   /**
-   * Returns true if the provided item is similar to this.
-   * An item is similar if the basic information is the same, except for the amount.
-   * What this includes:
-   * - material
-   * - display
-   * - modelData
-   * - flags
-   * - lore
-   * - attributes
-   * - enchantments
+   * Returns true if the provided item is similar to this. An item is similar if the basic
+   * information is the same, except for the amount. What this includes: - material - display -
+   * modelData - flags - lore - attributes - enchantments
    * <p>
-   * What this does not include:
-   * - Item Data.
+   * What this does not include: - Item Data.
    *
    * @param compare The stack to compare.
    *
    * @return True if the two are similar, otherwise false.
    */
   @Override
-  public boolean similar(AbstractItemStack<? extends ItemStack> compare) {
+  public boolean similar(final AbstractItemStack<? extends ItemStack> compare) {
+
     if(stack == null) return false;
     return similarStack((BukkitItemStack)compare);
   }
 
-  public static BukkitItemStack locale(ItemStack stack) {
+  public static BukkitItemStack locale(final ItemStack stack) {
+
     return new BukkitItemStack().of(stack);
   }
 
-  public boolean similarStack(BukkitItemStack stack) {
+  public boolean similarStack(final BukkitItemStack stack) {
 
     return BukkitItemPlatform.PLATFORM.check(this, stack);
   }
@@ -443,6 +484,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public ItemStack locale() {
+
     if(stack == null || dirty) {
 
       Material material = null;

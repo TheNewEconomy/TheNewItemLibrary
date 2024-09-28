@@ -41,24 +41,24 @@ public class SpongeWritableBookData extends BookData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
 
     final Optional<List<Component>> pages = stack.get(Keys.PAGES);
     if(pages.isPresent()) {
       applies = true;
-      for(Component comp : pages.get()) {
+      for(final Component comp : pages.get()) {
         this.pages.add(comp.toString());
       }
     }
 
     final Optional<Component> author = stack.get(Keys.AUTHOR);
-    author.ifPresent(component ->{
+    author.ifPresent(component->{
       this.author = component.toString();
       applies = true;
     });
 
     final Optional<Integer> generation = stack.get(Keys.GENERATION);
-    generation.ifPresent(integer ->{
+    generation.ifPresent(integer->{
       this.generation = String.valueOf(integer);
       applies = true;
     });
@@ -70,7 +70,7 @@ public class SpongeWritableBookData extends BookData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     if(!author.equalsIgnoreCase("")) {
       stack.offer(Keys.AUTHOR, Component.text(author));
@@ -81,7 +81,7 @@ public class SpongeWritableBookData extends BookData<ItemStack> {
     }
 
     final List<Component> pages = new LinkedList<>();
-    for(String page : this.pages) {
+    for(final String page : this.pages) {
       pages.add(Component.text(page));
     }
     stack.offer(Keys.PAGES, pages);
@@ -91,6 +91,7 @@ public class SpongeWritableBookData extends BookData<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

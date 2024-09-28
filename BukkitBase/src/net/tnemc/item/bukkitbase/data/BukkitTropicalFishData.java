@@ -38,7 +38,8 @@ public class BukkitTropicalFishData extends TropicalFishData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final TropicalFishBucketMeta meta = (TropicalFishBucketMeta)stack.getItemMeta();
 
     if(meta != null && meta.hasVariant()) {
@@ -56,7 +57,7 @@ public class BukkitTropicalFishData extends TropicalFishData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final TropicalFishBucketMeta meta = (TropicalFishBucketMeta)ParsingUtil.buildFor(stack, TropicalFishBucketMeta.class);
 

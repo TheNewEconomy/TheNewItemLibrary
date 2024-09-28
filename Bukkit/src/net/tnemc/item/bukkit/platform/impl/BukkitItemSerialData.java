@@ -41,7 +41,7 @@ public class BukkitItemSerialData extends BukkitBaseItemSerialData<BukkitItemSta
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
+  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     final Optional<SerialItemData<ItemStack>> data = BukkitMetaBuild.parseMeta(item);
     data.ifPresent(serialized::applyData);

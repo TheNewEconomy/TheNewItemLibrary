@@ -36,33 +36,36 @@ import java.util.List;
 
 public class ParsingUtil {
 
-  public static ItemMeta buildFor(ItemStack stack, Class<? extends ItemMeta> type) {
+  public static ItemMeta buildFor(final ItemStack stack, final Class<? extends ItemMeta> type) {
+
     return stack.getItemMeta();
   }
 
   public static FireworkEffect fromSerial(final SerialFireworkEffect effect) {
+
     final List<Color> colors = new ArrayList<>();
-    for(Integer i : effect.getColors()) {
+    for(final Integer i : effect.getColors()) {
       colors.add(Color.fromRGB(i));
     }
 
     final List<Color> faded = new ArrayList<>();
-    for(Integer i : effect.getFadeColors()) {
+    for(final Integer i : effect.getFadeColors()) {
       faded.add(Color.fromRGB(i));
     }
 
     return FireworkEffect.builder().flicker(effect.hasFlicker()).trail(effect.hasTrail())
-        .withColor(colors).withFade(faded).build();
+            .withColor(colors).withFade(faded).build();
   }
 
   public static SerialFireworkEffect fromEffect(final FireworkEffect eff) {
+
     final SerialFireworkEffect effect = new SerialFireworkEffect();
 
-    for(Color color : eff.getColors()) {
+    for(final Color color : eff.getColors()) {
       effect.getColors().add(color.asRGB());
     }
 
-    for(Color color : eff.getFadeColors()) {
+    for(final Color color : eff.getFadeColors()) {
       effect.getFadeColors().add(color.asRGB());
     }
 
@@ -74,6 +77,7 @@ public class ParsingUtil {
   }
 
   public static SerialAttributeSlot attributeSlot(final EquipmentSlot slot) {
+
     if(slot == null) return null;
 
     switch(slot) {
@@ -100,6 +104,7 @@ public class ParsingUtil {
   }
 
   public static EquipmentSlot attributeSlot(final SerialAttributeSlot slot) {
+
     if(slot == null) return null;
 
     switch(slot) {
@@ -126,6 +131,7 @@ public class ParsingUtil {
   }
 
   public static SerialAttributeOperation attributeOperation(final AttributeModifier.Operation operation) {
+
     switch(operation) {
 
       case ADD_SCALAR:
@@ -141,6 +147,7 @@ public class ParsingUtil {
   }
 
   public static AttributeModifier.Operation attributeOperation(final SerialAttributeOperation operation) {
+
     switch(operation) {
 
       case MULTIPLY_BASE:
@@ -156,6 +163,7 @@ public class ParsingUtil {
   }
 
   public static String version() {
+
     return Bukkit.getServer().getBukkitVersion().split("-")[0];
   }
 }

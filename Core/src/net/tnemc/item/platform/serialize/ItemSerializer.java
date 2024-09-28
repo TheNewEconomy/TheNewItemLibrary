@@ -32,13 +32,15 @@ public interface ItemSerializer<I extends AbstractItemStack<T>, T> extends Ident
 
   /**
    * @param version the version being used when this deserializer is called.
+   *
    * @return true if this deserializer is enabled for the version, otherwise false
    */
   boolean enabled(final String version);
 
   /**
-   * @param item the item that we should use to deserialize.
+   * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
    * @return the updated serialized item.
    */
   I serialize(final T item, I serialized);

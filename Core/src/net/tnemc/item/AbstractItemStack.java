@@ -95,7 +95,8 @@ public interface AbstractItemStack<T> extends Cloneable {
   AbstractItemStack<T> applyData(SerialItemData<T> data);
 
   //since 0.1.7.7
-  default AbstractItemStack<T> applyComponent(SerialComponent<T> component) {
+  default AbstractItemStack<T> applyComponent(final SerialComponent<T> component) {
+
     components().put(component.getType(), component);
     return this;
   }
@@ -149,21 +150,14 @@ public interface AbstractItemStack<T> extends Cloneable {
   Optional<SerialItemData<T>> data();
 
   /**
-   * Returns true if the provided item is similar to this.
-   * An item is similar if the basic information is the same, except for the amount.
-   * What this includes:
-   * - material
-   * - display
-   * - modelData
-   * - flags
-   * - lore
-   * - attributes
-   * - enchantments
+   * Returns true if the provided item is similar to this. An item is similar if the basic
+   * information is the same, except for the amount. What this includes: - material - display -
+   * modelData - flags - lore - attributes - enchantments
    *
-   * What this does not include:
-   * - Item Data.
+   * What this does not include: - Item Data.
    *
    * @param compare The stack to compare.
+   *
    * @return True if the two are similar, otherwise false.
    */
   boolean similar(AbstractItemStack<? extends T> compare);
@@ -174,33 +168,35 @@ public interface AbstractItemStack<T> extends Cloneable {
   T locale();
 
   default boolean textComponentsEqual(final List<Component> list1, final List<Component> list2) {
+
     final LinkedList<String> list1Copy = new LinkedList<>();
-    for(Component component : list1) {
+    for(final Component component : list1) {
       list1Copy.add(PlainTextComponentSerializer.plainText().serialize(component));
     }
 
     final LinkedList<String> list2Copy = new LinkedList<>();
-    for(Component component : list2) {
+    for(final Component component : list2) {
       list2Copy.add(PlainTextComponentSerializer.plainText().serialize(component));
     }
     return listsEquals(list1Copy, list2Copy);
   }
 
   default <V> boolean listsEquals(final List<V> list1, final List<V> list2) {
+
     return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
   }
 
-  default <V> boolean listsEquals(final List<V> list1, final List<V> list2, boolean debug) {
+  default <V> boolean listsEquals(final List<V> list1, final List<V> list2, final boolean debug) {
 
     if(debug) {
 
       System.out.println("List 1");
-      for(V item : list1) {
+      for(final V item : list1) {
         System.out.println("Item: " + item);
       }
 
       System.out.println("List 2");
-      for(V item : list2) {
+      for(final V item : list2) {
         System.out.println("Item: " + item);
       }
     }
@@ -209,6 +205,7 @@ public interface AbstractItemStack<T> extends Cloneable {
   }
 
   default <V> boolean setsEquals(final Set<V> list1, final Set<V> list2) {
+
     return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
   }
 }

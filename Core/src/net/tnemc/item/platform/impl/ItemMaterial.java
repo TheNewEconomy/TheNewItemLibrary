@@ -36,6 +36,7 @@ public abstract class ItemMaterial<I extends AbstractItemStack<T>, T> implements
    */
   @Override
   public String identifier() {
+
     return "material";
   }
 
@@ -45,7 +46,8 @@ public abstract class ItemMaterial<I extends AbstractItemStack<T>, T> implements
    * @return true if this check is enabled for the version, otherwise false
    */
   @Override
-  public boolean enabled(String version) {
+  public boolean enabled(final String version) {
+
     return true;
   }
 
@@ -56,7 +58,8 @@ public abstract class ItemMaterial<I extends AbstractItemStack<T>, T> implements
    * @return True if the check passes, otherwise false.
    */
   @Override
-  public boolean check(AbstractItemStack<T> original, AbstractItemStack<T> check) {
+  public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+
     return original.material().equalsIgnoreCase(check.material());
   }
 }

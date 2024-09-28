@@ -44,6 +44,7 @@ public abstract class BookData<T> extends WritableBookData<T> {
    */
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = super.toJSON();
     json.put("name", "book");
     if(title != null) json.put("title", title);
@@ -58,7 +59,8 @@ public abstract class BookData<T> extends WritableBookData<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(JSONHelper json) {
+  public void readJSON(final JSONHelper json) {
+
     if(json.has("title")) title = json.getString("title");
     if(json.has("author")) author = json.getString("author");
     if(json.has("generation")) generation = json.getString("generation");
@@ -66,19 +68,19 @@ public abstract class BookData<T> extends WritableBookData<T> {
   }
 
   /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
-   * of this data. For instance, book copies will return false when compared to the original.
+   * Used to determine if some data is equal to this data. This means that it has to be an exact
+   * copy of this data. For instance, book copies will return false when compared to the original.
    *
    * @param data The data to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialItemData<? extends T> data) {
+  public boolean equals(final SerialItemData<? extends T> data) {
 
     if(data instanceof BookData<?> bookData) {
       return Objects.equals(author, bookData.author) && Objects.equals(title, bookData.title)
-              && Objects.equals(generation, bookData.generation) && pages.equals(bookData.pages);
+             && Objects.equals(generation, bookData.generation) && pages.equals(bookData.pages);
     }
     return false;
   }
@@ -92,11 +94,11 @@ public abstract class BookData<T> extends WritableBookData<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean similar(SerialItemData<? extends T> data) {
+  public boolean similar(final SerialItemData<? extends T> data) {
 
     if(data instanceof BookData<?> bookData) {
       return Objects.equals(author, bookData.author) && Objects.equals(title, bookData.title)
-              && pages.equals(bookData.pages);
+             && pages.equals(bookData.pages);
     }
     return false;
   }

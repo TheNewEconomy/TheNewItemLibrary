@@ -32,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
  * @since 0.1.7.7
  */
 public class PaperItemMaterial extends ItemMaterial<PaperItemStack, ItemStack> {
+
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -39,7 +40,8 @@ public class PaperItemMaterial extends ItemMaterial<PaperItemStack, ItemStack> {
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(PaperItemStack serialized, ItemStack item) {
+  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+
     final NamespacedKey key = NamespacedKey.fromString(serialized.material());
 
     if(key != null) {
@@ -59,7 +61,8 @@ public class PaperItemMaterial extends ItemMaterial<PaperItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public PaperItemStack serialize(ItemStack item, PaperItemStack serialized) {
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+
     serialized.material(item.getType().key().toString());
     return serialized;
   }

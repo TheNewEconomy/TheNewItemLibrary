@@ -42,11 +42,11 @@ public class SpongeSkullData extends SkullData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
 
     final Optional<GameProfile> gameProfileOpt = stack.get(Keys.GAME_PROFILE);
     this.profile = new SkullProfile();
-    gameProfileOpt.ifPresent(gameProfile ->{
+    gameProfileOpt.ifPresent(gameProfile->{
       profile.setUuid(gameProfile.uuid());
       applies = true;
     });
@@ -58,11 +58,11 @@ public class SpongeSkullData extends SkullData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     if(profile != null && profile.getUuid() != null) {
       final Optional<ServerPlayer> player = Sponge.server().player(profile.getUuid());
-      player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
+      player.ifPresent(serverPlayer->stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
     }
 
     return stack;
@@ -70,6 +70,7 @@ public class SpongeSkullData extends SkullData<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

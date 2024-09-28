@@ -45,7 +45,7 @@ public class SpongeSkullData extends SkullData<ItemStack> {
   public void of(ItemStack stack) {
 
     final Optional<GameProfile> profile = stack.get(Keys.GAME_PROFILE);
-    profile.ifPresent(gameProfile ->{
+    profile.ifPresent(gameProfile->{
       owner = gameProfile.uuid().toString();
       applies = true;
     });
@@ -61,7 +61,7 @@ public class SpongeSkullData extends SkullData<ItemStack> {
 
     if(!owner.equalsIgnoreCase("")) {
       final Optional<ServerPlayer> player = Sponge.server().player(UUID.fromString(owner));
-      player.ifPresent(serverPlayer -> stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
+      player.ifPresent(serverPlayer->stack.offer(Keys.GAME_PROFILE, serverPlayer.profile()));
     }
 
     return stack;
@@ -69,6 +69,7 @@ public class SpongeSkullData extends SkullData<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

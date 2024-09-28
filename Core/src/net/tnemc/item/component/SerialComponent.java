@@ -38,21 +38,24 @@ public interface SerialComponent<T> {
 
   /**
    * Converts the {@link SerialComponent} to a JSON object.
+   *
    * @return The JSONObject representing this {@link SerialComponent}.
    */
   JSONObject toJSON();
 
   /**
    * Reads JSON data and converts it back to a {@link SerialComponent} object.
+   *
    * @param json The JSONHelper instance of the json data.
    */
   void readJSON(JSONHelper json);
 
   /**
-   * Used to determine if some data is equal to this component. This means that it has to be an exact copy
-   * of this component.
+   * Used to determine if some data is equal to this component. This means that it has to be an
+   * exact copy of this component.
    *
    * @param component The component to compare.
+   *
    * @return True if similar, otherwise false.
    */
   boolean equals(SerialComponent<? extends T> component);
@@ -60,12 +63,14 @@ public interface SerialComponent<T> {
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialComponent} object.
+   *
    * @param stack The locale itemstack object of the implementation.
    */
   void of(T stack);
 
   /**
    * This method is used to apply the component to the implementation's locale itemstack format.
+   *
    * @param stack The locale itemstack object of the implementation.
    */
   T apply(T stack);

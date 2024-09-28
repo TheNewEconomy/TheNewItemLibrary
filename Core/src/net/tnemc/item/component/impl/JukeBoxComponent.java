@@ -41,6 +41,7 @@ public abstract class JukeBoxComponent<T> implements SerialComponent<T> {
    */
   @Override
   public String getType() {
+
     return "jukebox";
   }
 
@@ -51,6 +52,7 @@ public abstract class JukeBoxComponent<T> implements SerialComponent<T> {
    */
   @Override
   public JSONObject toJSON() {
+
     final JSONObject jukebox = new JSONObject();
     jukebox.put("name", "jukebox-component");
     jukebox.put("song", song);
@@ -65,21 +67,23 @@ public abstract class JukeBoxComponent<T> implements SerialComponent<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(JSONHelper json) {
+  public void readJSON(final JSONHelper json) {
+
     song = json.getString("song");
     toolTip = json.getBoolean("toolTip");
   }
 
   /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
-   * of this data. For instance, book copies will return false when compared to the original.
+   * Used to determine if some data is equal to this data. This means that it has to be an exact
+   * copy of this data. For instance, book copies will return false when compared to the original.
    *
    * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialComponent<? extends T> component) {
+  public boolean equals(final SerialComponent<? extends T> component) {
+
     if(component instanceof JukeBoxComponent<?> jukeBox) {
 
       return jukeBox.toolTip == toolTip && Objects.equals(jukeBox.song, song);

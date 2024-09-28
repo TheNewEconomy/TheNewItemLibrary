@@ -33,43 +33,50 @@ public class SerialItem<T> {
 
   private AbstractItemStack<T> stack;
 
-  public SerialItem(AbstractItemStack<T> stack) {
+  public SerialItem(final AbstractItemStack<T> stack) {
+
     this.stack = stack;
   }
 
   public SerialItem() {
+
   }
 
   public JSONObject toJSON() {
-    JSONObject json = new JSONObject();
+
+    final JSONObject json = new JSONObject();
     json.put("slot", stack.slot());
     json.put("material", stack.material());
     json.put("amount", stack.amount());
     json.put("unbreakable", stack.unbreakable());
-    if(stack.display() != null && !Component.EQUALS.test(stack.display(), Component.empty())) json.put("display", JSONComponentSerializer.json().serialize(stack.display()));
+    if(stack.display() != null && !Component.EQUALS.test(stack.display(), Component.empty())) {
+      json.put("display", JSONComponentSerializer.json().serialize(stack.display()));
+    }
     json.put("damage", stack.damage());
     if(stack.modelData() != -1) json.put("modelData", stack.modelData());
     if(stack.lore() != null && !stack.lore().isEmpty()) {
 
       final LinkedList<String> str = new LinkedList<>();
-      for(Component comp : stack.lore()) {
+      for(final Component comp : stack.lore()) {
         str.add(JSONComponentSerializer.json().serialize(comp));
       }
 
       json.put("lore", String.join(",", str));
     }
 
-    if(stack.flags() != null && !stack.flags().isEmpty()) json.put("flags", String.join(",", stack.flags()));
+    if(stack.flags() != null && !stack.flags().isEmpty()) {
+      json.put("flags", String.join(",", stack.flags()));
+    }
 
-    JSONObject object = new JSONObject();
+    final JSONObject object = new JSONObject();
     stack.enchantments().forEach(object::put);
     json.put("enchantments", object);
 
     if(!stack.attributes().isEmpty()) {
-      JSONObject attr = new JSONObject();
+      final JSONObject attr = new JSONObject();
 
       stack.attributes().forEach((name, modifier)->{
-        JSONObject mod = new JSONObject();
+        final JSONObject mod = new JSONObject();
 
         mod.put("id", modifier.getIdentifier().toString());
         mod.put("name", modifier.getName());
@@ -89,30 +96,37 @@ public class SerialItem<T> {
   }
 
   public boolean jsonEquals(final SerialItem<T> serial) {
+
     return serialize().equals(serial.serialize());
   }
 
   public AbstractItemStack<T> getStack() {
+
     return stack;
   }
 
   public String serialize() {
+
     return toJSON().toJSONString();
   }
 
-  public static <T extends AbstractItemStack<T>> SerialItem<T> of(T stack) {
+  public static <T extends AbstractItemStack<T>> SerialItem<T> of(final T stack) {
+
     return new SerialItem<>(stack);
   }
 
-  public static <T> Optional<SerialItem<T>> unserialize(String serialized) throws ParseException {
+  public static <T> Optional<SerialItem<T>> unserialize(final String serialized) throws ParseException {
+
     return new SerialItem().parse((JSONObject)new JSONParser().parse(serialized));
   }
 
-  public static <T> Optional<SerialItem<T>> unserialize(JSONObject json) throws ParseException {
+  public static <T> Optional<SerialItem<T>> unserialize(final JSONObject json) throws ParseException {
+
     return new SerialItem().parse(json);
   }
 
-  public Optional<SerialItem<T>> parse(JSONObject json) {
+  public Optional<SerialItem<T>> parse(final JSONObject json) {
+
     return Optional.empty();
   }
 }

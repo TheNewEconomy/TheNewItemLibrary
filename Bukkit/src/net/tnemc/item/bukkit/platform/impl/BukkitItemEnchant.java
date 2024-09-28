@@ -34,6 +34,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @since 0.1.7.7
  */
 public class BukkitItemEnchant extends ItemEnchant<BukkitItemStack, ItemStack> {
+
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -41,7 +42,7 @@ public class BukkitItemEnchant extends ItemEnchant<BukkitItemStack, ItemStack> {
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(BukkitItemStack serialized, ItemStack item) {
+  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
@@ -74,7 +75,7 @@ public class BukkitItemEnchant extends ItemEnchant<BukkitItemStack, ItemStack> {
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack serialize(ItemStack item, BukkitItemStack serialized) {
+  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasEnchants()) {

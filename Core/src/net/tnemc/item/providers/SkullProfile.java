@@ -34,42 +34,50 @@ public class SkullProfile {
   protected String texture = null;
 
   public SkullProfile() {
+
   }
 
-  public SkullProfile(String name, UUID uuid, String texture) {
+  public SkullProfile(final String name, final UUID uuid, final String texture) {
+
     this.name = name;
     this.uuid = uuid;
     this.texture = texture;
   }
 
   public String getName() {
+
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(final String name) {
+
     this.name = name;
   }
 
   public UUID getUuid() {
+
     return uuid;
   }
 
-  public void setUuid(UUID uuid) {
+  public void setUuid(final UUID uuid) {
+
     this.uuid = uuid;
   }
 
   public String getTexture() {
+
     return texture;
   }
 
-  public void setTexture(String texture) {
+  public void setTexture(final String texture) {
+
     this.texture = texture;
   }
 
-  public boolean equals(SkullProfile profile) {
+  public boolean equals(final SkullProfile profile) {
 
     return Objects.equals(profile.getName(), name)
-            && profile.getUuid() == uuid
-            && Objects.equals(profile.getTexture(), texture);
+           && profile.getUuid() == uuid
+           && Objects.equals(profile.getTexture(), texture);
   }
 }

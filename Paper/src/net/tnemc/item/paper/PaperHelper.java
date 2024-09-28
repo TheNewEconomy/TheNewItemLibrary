@@ -33,6 +33,7 @@ import java.util.LinkedList;
  * @since 0.1.7.5-Pre-5
  */
 public class PaperHelper implements HelperMethods {
+
   final LinkedList<String> materialKeys = new LinkedList<>();
   final LinkedList<String> enchantmentKeys = new LinkedList<>();
   final LinkedList<String> itemFlagKeys = new LinkedList<>();
@@ -50,23 +51,26 @@ public class PaperHelper implements HelperMethods {
       enchantmentKeys.add(enchant.getKey().getKey());
     });
 
-    for(ItemFlag itemFlag : ItemFlag.values()) {
+    for(final ItemFlag itemFlag : ItemFlag.values()) {
       itemFlagKeys.add(itemFlag.name());
     }
   }
 
   @Override
   public LinkedList<String> materials() {
+
     return materialKeys;
   }
 
   @Override
   public LinkedList<String> enchantments() {
+
     return enchantmentKeys;
   }
 
   @Override
   public LinkedList<String> flags() {
+
     return itemFlagKeys;
   }
 }

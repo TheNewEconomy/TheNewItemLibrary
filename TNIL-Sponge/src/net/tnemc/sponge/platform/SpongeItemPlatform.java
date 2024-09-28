@@ -42,6 +42,7 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack>
    */
   @Override
   public String version() {
+
     return Sponge.game().platform().minecraftVersion().name();
   }
 

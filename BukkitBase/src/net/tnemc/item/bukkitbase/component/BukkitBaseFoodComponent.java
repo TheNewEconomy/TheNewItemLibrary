@@ -36,7 +36,7 @@ import org.bukkit.potion.PotionEffectType;
  */
 public class BukkitBaseFoodComponent extends FoodComponent<ItemStack> {
 
-  public static BukkitBaseFoodComponent create(ItemStack stack) {
+  public static BukkitBaseFoodComponent create(final ItemStack stack) {
 
     final BukkitBaseFoodComponent component = new BukkitBaseFoodComponent();
     component.of(stack);
@@ -50,7 +50,8 @@ public class BukkitBaseFoodComponent extends FoodComponent<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     if(stack.hasItemMeta()) {
 
       final ItemMeta meta = stack.getItemMeta();
@@ -62,16 +63,16 @@ public class BukkitBaseFoodComponent extends FoodComponent<ItemStack> {
         this.saturation = foodComponent.getSaturation();
         this.nutrition = foodComponent.getNutrition();
 
-        for(org.bukkit.inventory.meta.components.FoodComponent.FoodEffect foodEffect : foodComponent.getEffects()) {
+        for(final org.bukkit.inventory.meta.components.FoodComponent.FoodEffect foodEffect : foodComponent.getEffects()) {
 
           final PotionEffect effect = foodEffect.getEffect();
 
           this.rules.add(new FoodRule(new PotionEffectData(effect.getType().getName(),
-                  effect.getAmplifier(),
-                  effect.getDuration(),
-                  effect.hasParticles(),
-                  effect.isAmbient(),
-                  effect.hasIcon()), foodEffect.getProbability()));
+                                                           effect.getAmplifier(),
+                                                           effect.getDuration(),
+                                                           effect.hasParticles(),
+                                                           effect.isAmbient(),
+                                                           effect.hasIcon()), foodEffect.getProbability()));
 
         }
       }
@@ -84,7 +85,8 @@ public class BukkitBaseFoodComponent extends FoodComponent<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
+
     ItemMeta meta = stack.getItemMeta();
     if(meta == null) {
       meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
@@ -96,16 +98,16 @@ public class BukkitBaseFoodComponent extends FoodComponent<ItemStack> {
     foodComponent.setSaturation(saturation);
     foodComponent.setNutrition(nutrition);
 
-    for(FoodRule rule : rules) {
+    for(final FoodRule rule : rules) {
 
       final PotionEffectData effect = rule.getPotionEffect();
 
       foodComponent.addEffect(new PotionEffect(PotionEffectType.getByName(effect.getName()),
-              effect.getDuration(),
-              effect.getAmplifier(),
-              effect.isAmbient(),
-              effect.hasParticles(),
-              effect.hasIcon()), rule.getChance());
+                                               effect.getDuration(),
+                                               effect.getAmplifier(),
+                                               effect.isAmbient(),
+                                               effect.hasParticles(),
+                                               effect.hasIcon()), rule.getChance());
     }
     meta.setFood(foodComponent);
     stack.setItemMeta(meta);

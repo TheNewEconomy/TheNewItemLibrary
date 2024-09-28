@@ -47,7 +47,7 @@ public class SpongeFireworkData extends FireworkData<ItemStack> {
   public void of(ItemStack stack) {
 
     final Optional<Ticks> power = stack.get(Keys.FIREWORK_FLIGHT_MODIFIER);
-    power.ifPresent(ticks ->{
+    power.ifPresent(ticks->{
       this.power = ticks.ticks();
       applies = true;
     });
@@ -85,6 +85,7 @@ public class SpongeFireworkData extends FireworkData<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

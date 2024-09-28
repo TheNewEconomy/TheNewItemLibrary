@@ -34,14 +34,17 @@ public class FoodRule {
   protected float chance;
 
   public FoodRule() {
+
   }
 
-  public FoodRule(PotionEffectData potionEffect, float chance) {
+  public FoodRule(final PotionEffectData potionEffect, final float chance) {
+
     this.potionEffect = potionEffect;
     this.chance = chance;
   }
 
   public JSONObject toJSON() {
+
     final JSONObject rule = new JSONObject();
     rule.put("effect", potionEffect.toJSON());
     rule.put("chance", chance);
@@ -49,7 +52,8 @@ public class FoodRule {
     return rule;
   }
 
-  public static FoodRule readJSON(JSONHelper json) {
+  public static FoodRule readJSON(final JSONHelper json) {
+
     final FoodRule rule = new FoodRule();
 
     if(json.has("effect")) {
@@ -64,18 +68,22 @@ public class FoodRule {
   }
 
   public PotionEffectData getPotionEffect() {
+
     return potionEffect;
   }
 
-  public void setPotionEffect(PotionEffectData potionEffect) {
+  public void setPotionEffect(final PotionEffectData potionEffect) {
+
     this.potionEffect = potionEffect;
   }
 
   public float getChance() {
+
     return chance;
   }
 
-  public void setChance(float chance) {
+  public void setChance(final float chance) {
+
     this.chance = chance;
   }
 }

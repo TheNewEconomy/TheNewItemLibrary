@@ -37,6 +37,7 @@ public abstract class ItemAttribute<I extends AbstractItemStack<T>, T> implement
    */
   @Override
   public String identifier() {
+
     return "attribute";
   }
 
@@ -46,7 +47,8 @@ public abstract class ItemAttribute<I extends AbstractItemStack<T>, T> implement
    * @return true if this check is enabled for the version, otherwise false
    */
   @Override
-  public boolean enabled(String version) {
+  public boolean enabled(final String version) {
+
     return VersionUtil.isOneThirteen(version);
   }
 
@@ -57,7 +59,8 @@ public abstract class ItemAttribute<I extends AbstractItemStack<T>, T> implement
    * @return True if the check passes, otherwise false.
    */
   @Override
-  public boolean check(AbstractItemStack<T> original, AbstractItemStack<T> check) {
+  public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+
     return original.attributes().equals(check.attributes());
   }
 }

@@ -34,6 +34,7 @@ public abstract class ColourableArmourData<T> extends ArmourData<T> {
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = super.toJSON();
     json.put("name", "colourable_armor");
     json.put("colour", colorRGB);
@@ -41,21 +42,23 @@ public abstract class ColourableArmourData<T> extends ArmourData<T> {
   }
 
   @Override
-  public void readJSON(JSONHelper json) {
+  public void readJSON(final JSONHelper json) {
+
     if(json.has("color")) colorRGB = json.getInteger("colour");
     super.readJSON(json);
   }
 
   /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
-   * of this data. For instance, book copies will return false when compared to the original.
+   * Used to determine if some data is equal to this data. This means that it has to be an exact
+   * copy of this data. For instance, book copies will return false when compared to the original.
    *
    * @param data The data to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialItemData<? extends T> data) {
+  public boolean equals(final SerialItemData<? extends T> data) {
+
     if(data instanceof ColourableArmourData<?> compare) {
       return colorRGB == compare.colorRGB && super.equals(compare);
     }
@@ -71,7 +74,8 @@ public abstract class ColourableArmourData<T> extends ArmourData<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean similar(SerialItemData<? extends T> data) {
+  public boolean similar(final SerialItemData<? extends T> data) {
+
     return equals(data);
   }
 }

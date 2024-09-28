@@ -39,7 +39,7 @@ public class BukkitSuspiciousStewData extends SuspiciousStewData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
 
     final SuspiciousStewMeta meta = (SuspiciousStewMeta)stack.getItemMeta();
     if(meta != null) {
@@ -62,7 +62,7 @@ public class BukkitSuspiciousStewData extends SuspiciousStewData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
 
     final SuspiciousStewMeta meta = (SuspiciousStewMeta)ParsingUtil.buildFor(stack, PotionMeta.class);

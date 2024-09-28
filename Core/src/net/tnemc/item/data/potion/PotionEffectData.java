@@ -33,8 +33,9 @@ public class PotionEffectData {
   private boolean ambient;
   private boolean icon;
 
-  public PotionEffectData(String name, int amplifier, int duration, boolean particles, boolean ambient,
-                          boolean icon) {
+  public PotionEffectData(final String name, final int amplifier, final int duration, final boolean particles, final boolean ambient,
+                          final boolean icon) {
+
     this.name = name;
     this.amplifier = amplifier;
     this.duration = duration;
@@ -44,6 +45,7 @@ public class PotionEffectData {
   }
 
   public JSONObject toJSON() {
+
     final JSONObject effObject = new JSONObject();
     effObject.put("name", name);
     effObject.put("amplifier", amplifier);
@@ -55,60 +57,73 @@ public class PotionEffectData {
     return effObject;
   }
 
-  public static PotionEffectData readJSON(JSONHelper json) {
+  public static PotionEffectData readJSON(final JSONHelper json) {
+
     return new PotionEffectData(json.getString("name"),
-            json.getInteger("amplifier"),
-            json.getInteger("duration"),
-            json.getBoolean("ambient"),
-            json.getBoolean("particles"),
-            json.getBoolean("icon"));
+                                json.getInteger("amplifier"),
+                                json.getInteger("duration"),
+                                json.getBoolean("ambient"),
+                                json.getBoolean("particles"),
+                                json.getBoolean("icon"));
   }
 
   public String getName() {
+
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(final String name) {
+
     this.name = name;
   }
 
   public int getAmplifier() {
+
     return amplifier;
   }
 
-  public void setAmplifier(int amplifier) {
+  public void setAmplifier(final int amplifier) {
+
     this.amplifier = amplifier;
   }
 
   public int getDuration() {
+
     return duration;
   }
 
-  public void setDuration(int duration) {
+  public void setDuration(final int duration) {
+
     this.duration = duration;
   }
 
   public boolean hasParticles() {
+
     return particles;
   }
 
-  public void setParticles(boolean particles) {
+  public void setParticles(final boolean particles) {
+
     this.particles = particles;
   }
 
   public boolean isAmbient() {
+
     return ambient;
   }
 
-  public void setAmbient(boolean ambient) {
+  public void setAmbient(final boolean ambient) {
+
     this.ambient = ambient;
   }
 
   public boolean hasIcon() {
+
     return icon;
   }
 
-  public void setIcon(boolean icon) {
+  public void setIcon(final boolean icon) {
+
     this.icon = icon;
   }
 }

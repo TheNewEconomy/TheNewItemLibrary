@@ -41,7 +41,8 @@ public class BukkitSpawnerData extends CreatureData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
 
     if(meta != null && meta.getBlockState() instanceof CreatureSpawner spawner) {
@@ -58,7 +59,7 @@ public class BukkitSpawnerData extends CreatureData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final BlockStateMeta meta = (BlockStateMeta)ParsingUtil.buildFor(stack, BlockStateMeta.class);
 

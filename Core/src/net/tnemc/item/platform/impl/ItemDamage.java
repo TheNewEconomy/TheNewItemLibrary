@@ -36,6 +36,7 @@ public abstract class ItemDamage<I extends AbstractItemStack<T>, T> implements I
    */
   @Override
   public String identifier() {
+
     return "damage";
   }
 
@@ -45,7 +46,8 @@ public abstract class ItemDamage<I extends AbstractItemStack<T>, T> implements I
    * @return true if this check is enabled for the version, otherwise false
    */
   @Override
-  public boolean enabled(String version) {
+  public boolean enabled(final String version) {
+
     return true;
   }
 
@@ -56,7 +58,8 @@ public abstract class ItemDamage<I extends AbstractItemStack<T>, T> implements I
    * @return True if the check passes, otherwise false.
    */
   @Override
-  public boolean check(AbstractItemStack<T> original, AbstractItemStack<T> check) {
+  public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+
     return original.damage() == check.damage();
   }
 }

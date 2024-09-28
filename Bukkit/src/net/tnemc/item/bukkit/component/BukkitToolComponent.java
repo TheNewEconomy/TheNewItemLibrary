@@ -37,7 +37,7 @@ import java.util.Collection;
  */
 public class BukkitToolComponent extends ToolComponent<ItemStack> {
 
-  public static BukkitToolComponent create(ItemStack stack) {
+  public static BukkitToolComponent create(final ItemStack stack) {
 
     final BukkitToolComponent component = new BukkitToolComponent();
     component.of(stack);
@@ -51,7 +51,8 @@ public class BukkitToolComponent extends ToolComponent<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     if(stack.hasItemMeta()) {
 
       final ItemMeta meta = stack.getItemMeta();
@@ -61,12 +62,12 @@ public class BukkitToolComponent extends ToolComponent<ItemStack> {
         this.blockDamage = tool.getDamagePerBlock();
         this.defaultSpeed = tool.getDefaultMiningSpeed();
 
-        for(org.bukkit.inventory.meta.components.ToolComponent.ToolRule rule : tool.getRules()) {
+        for(final org.bukkit.inventory.meta.components.ToolComponent.ToolRule rule : tool.getRules()) {
 
           final ToolRule newRule = new ToolRule(rule.getSpeed(), rule.isCorrectForDrops());
 
 
-          for(Material material : rule.getBlocks()) {
+          for(final Material material : rule.getBlocks()) {
             newRule.getMaterials().add(material.getKey().getKey());
           }
 
@@ -85,7 +86,8 @@ public class BukkitToolComponent extends ToolComponent<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
+
     ItemMeta meta = stack.getItemMeta();
     if(meta == null) {
       meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
@@ -95,7 +97,7 @@ public class BukkitToolComponent extends ToolComponent<ItemStack> {
     toolComponent.setDamagePerBlock(blockDamage);
     toolComponent.setDefaultMiningSpeed(defaultSpeed);
 
-    for(ToolRule rule : rules) {
+    for(final ToolRule rule : rules) {
 
       final Collection<Material> mats = new ArrayList<>();
 

@@ -41,6 +41,7 @@ public abstract class FireworkData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
+
     final JSONObject firework = new JSONObject();
     firework.put("name", "firework");
     firework.put("power", power);
@@ -61,10 +62,11 @@ public abstract class FireworkData<T> implements SerialItemData<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(JSONHelper json) {
+  public void readJSON(final JSONHelper json) {
+
     power = json.getInteger("power");
     if(json.has("effects")) {
-      JSONHelper effectsObj = json.getHelper("effects");
+      final JSONHelper effectsObj = json.getHelper("effects");
 
       effects.clear();
       effectsObj.getObject().forEach((key, value)->effects.add(SerialFireworkEffect.readJSON(new JSONHelper((JSONObject)value))));
@@ -72,16 +74,17 @@ public abstract class FireworkData<T> implements SerialItemData<T> {
   }
 
   /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
-   * of this data. For instance, book copies will return false when compared to the original.
+   * Used to determine if some data is equal to this data. This means that it has to be an exact
+   * copy of this data. For instance, book copies will return false when compared to the original.
    *
    * @param data The data to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof FireworkData<?> compare) {
+  public boolean equals(final SerialItemData<? extends T> data) {
+
+    if(data instanceof final FireworkData<?> compare) {
       return effects.equals(compare.effects) && power == compare.power;
     }
     return false;
@@ -96,7 +99,8 @@ public abstract class FireworkData<T> implements SerialItemData<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean similar(SerialItemData<? extends T> data) {
+  public boolean similar(final SerialItemData<? extends T> data) {
+
     return equals(data);
   }
 }

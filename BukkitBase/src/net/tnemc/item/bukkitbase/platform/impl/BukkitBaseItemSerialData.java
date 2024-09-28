@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
  * @since 0.1.7.7
  */
 public abstract class BukkitBaseItemSerialData<I extends AbstractItemStack<ItemStack>> extends ItemSerialData<I, ItemStack> {
+
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -36,7 +37,7 @@ public abstract class BukkitBaseItemSerialData<I extends AbstractItemStack<ItemS
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(I serialized, ItemStack item) {
+  public ItemStack apply(final I serialized, final ItemStack item) {
 
     if(serialized.data().isPresent()) {
       return serialized.data().get().apply(item);

@@ -37,7 +37,8 @@ public class BukkitSkullData extends SkullData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final SkullMeta meta = (SkullMeta)stack.getItemMeta();
 
     profile = new SkullProfile();
@@ -60,7 +61,7 @@ public class BukkitSkullData extends SkullData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final SkullMeta meta = (SkullMeta)ParsingUtil.buildFor(stack, SkullMeta.class);
 

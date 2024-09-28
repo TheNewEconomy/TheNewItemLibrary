@@ -54,11 +54,13 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
   private BukkitItemPlatform() {
 
   }
+
   /**
    * @return the version that is being used currently
    */
   @Override
   public String version() {
+
     return ParsingUtil.version();
   }
 

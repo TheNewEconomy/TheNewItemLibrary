@@ -25,24 +25,29 @@ public class PatternData {
   private String color;
   private String pattern;
 
-  public PatternData(String color, String pattern) {
+  public PatternData(final String color, final String pattern) {
+
     this.color = color;
     this.pattern = pattern;
   }
 
   public String getColor() {
+
     return color;
   }
 
-  public void setColor(String color) {
+  public void setColor(final String color) {
+
     this.color = color;
   }
 
   public String getPattern() {
+
     return pattern;
   }
 
-  public void setPattern(String pattern) {
+  public void setPattern(final String pattern) {
+
     this.pattern = pattern;
   }
 }

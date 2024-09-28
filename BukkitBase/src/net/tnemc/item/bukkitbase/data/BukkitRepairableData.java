@@ -31,6 +31,7 @@ import org.bukkit.inventory.meta.Repairable;
  * @since 0.1.7.7
  */
 public class BukkitRepairableData extends RepairableData<ItemStack> {
+
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -38,7 +39,8 @@ public class BukkitRepairableData extends RepairableData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final Repairable meta = (Repairable)stack.getItemMeta();
     if(meta != null) {
 
@@ -52,7 +54,7 @@ public class BukkitRepairableData extends RepairableData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final Repairable meta = (Repairable)ParsingUtil.buildFor(stack, Repairable.class);
 

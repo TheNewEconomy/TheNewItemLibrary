@@ -27,6 +27,7 @@ public abstract class BundleData<T> extends ItemStorageData<T> {
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = super.toJSON();
     json.put("name", "bundle");
 
@@ -34,7 +35,8 @@ public abstract class BundleData<T> extends ItemStorageData<T> {
   }
 
   @Override
-  public void readJSON(JSONHelper json) {
+  public void readJSON(final JSONHelper json) {
+
     super.readJSON(json);
   }
 }

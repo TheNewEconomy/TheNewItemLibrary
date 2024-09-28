@@ -19,8 +19,8 @@ package net.tnemc.item.paper.platform.impl;
  */
 
 import net.tnemc.item.attribute.SerialAttribute;
-import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.platform.impl.ItemAttribute;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -36,6 +36,7 @@ import java.util.Map;
  * @since 0.1.7.7
  */
 public class PaperItemAttribute extends ItemAttribute<PaperItemStack, ItemStack> {
+
   /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
@@ -43,19 +44,19 @@ public class PaperItemAttribute extends ItemAttribute<PaperItemStack, ItemStack>
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(PaperItemStack serialized, ItemStack item) {
+  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
 
-      for(Map.Entry<String, SerialAttribute> entry : serialized.attributes().entrySet()) {
+      for(final Map.Entry<String, SerialAttribute> entry : serialized.attributes().entrySet()) {
 
         final SerialAttribute attribute = entry.getValue();
         final AttributeModifier attr = new AttributeModifier(attribute.getIdentifier(),
-                attribute.getName(),
-                attribute.getAmount(),
-                ParsingUtil.attributeOperation(attribute.getOperation()),
-                ParsingUtil.attributeSlot(attribute.getSlot()));
+                                                             attribute.getName(),
+                                                             attribute.getAmount(),
+                                                             ParsingUtil.attributeOperation(attribute.getOperation()),
+                                                             ParsingUtil.attributeSlot(attribute.getSlot()));
 
 
         meta.addAttributeModifier(Attribute.valueOf(entry.getKey()), attr);
@@ -71,7 +72,7 @@ public class PaperItemAttribute extends ItemAttribute<PaperItemStack, ItemStack>
    * @return the updated serialized item.
    */
   @Override
-  public PaperItemStack serialize(ItemStack item, PaperItemStack serialized) {
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasAttributeModifiers()) {
@@ -82,9 +83,9 @@ public class PaperItemAttribute extends ItemAttribute<PaperItemStack, ItemStack>
         if(attribute != null) {
 
           final SerialAttribute attr = new SerialAttribute(attribute.getUniqueId(),
-                  attribute.getName(),
-                  attribute.getAmount(),
-                  ParsingUtil.attributeOperation(attribute.getOperation()));
+                                                           attribute.getName(),
+                                                           attribute.getAmount(),
+                                                           ParsingUtil.attributeOperation(attribute.getOperation()));
 
           if(attribute.getSlot() != null) {
             attr.setSlot(ParsingUtil.attributeSlot(attribute.getSlot()));

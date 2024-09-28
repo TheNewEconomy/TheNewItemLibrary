@@ -37,6 +37,7 @@ public abstract class PDCCheck implements LocaleItemCheck<ItemStack> {
   protected final PersistentDataType<?, ?> type;
 
   public PDCCheck(final NamespacedKey key, final PersistentDataType<?, ?> type) {
+
     this.key = key;
     this.type = type;
   }
@@ -48,7 +49,7 @@ public abstract class PDCCheck implements LocaleItemCheck<ItemStack> {
    * @return True if the check passes, otherwise false.
    */
   @Override
-  public boolean check(ItemStack original, ItemStack check) {
+  public boolean check(final ItemStack original, final ItemStack check) {
 
     if(original.getItemMeta() != null && original.getItemMeta().getPersistentDataContainer().has(key, type)) {
       if(check.getItemMeta() == null || !check.getItemMeta().getPersistentDataContainer().has(key, type)) {

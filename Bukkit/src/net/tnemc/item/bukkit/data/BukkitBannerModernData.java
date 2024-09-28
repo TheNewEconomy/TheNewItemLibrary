@@ -29,7 +29,6 @@ import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 
@@ -42,13 +41,14 @@ public class BukkitBannerModernData extends BannerData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final BannerMeta meta = (BannerMeta)stack.getItemMeta();
 
     if(meta != null) {
       for(final Pattern pattern : meta.getPatterns()) {
         patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                pattern.getPattern().getKey().toString()));
+                                     pattern.getPattern().getKey().toString()));
       }
     }
   }
@@ -59,7 +59,7 @@ public class BukkitBannerModernData extends BannerData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
 

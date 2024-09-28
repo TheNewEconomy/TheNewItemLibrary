@@ -42,7 +42,7 @@ public class SpongeCompassData extends CompassData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
 
     final Optional<ServerLocation> location = stack.get(Keys.LODESTONE);
     if(location.isPresent()) {
@@ -62,10 +62,11 @@ public class SpongeCompassData extends CompassData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
+
     if(tracked) {
       final Optional<ResourceKey> key = Sponge.server().worldManager().worldKey(world);
-      key.ifPresent(resourceKey -> stack.offer(Keys.LODESTONE, ServerLocation.of(resourceKey, new Vector3d(x, y, z))));
+      key.ifPresent(resourceKey->stack.offer(Keys.LODESTONE, ServerLocation.of(resourceKey, new Vector3d(x, y, z))));
     }
 
     return stack;
@@ -73,6 +74,7 @@ public class SpongeCompassData extends CompassData<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

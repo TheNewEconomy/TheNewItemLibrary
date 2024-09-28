@@ -34,18 +34,21 @@ public interface ItemCheck<T> extends Identifiable {
    * @return true if the checks after this one should be skipped.
    */
   default boolean skipRest() {
+
     return false;
   }
 
   /**
    * @param version the version being used when this check is called.
+   *
    * @return true if this check is enabled for the version, otherwise false
    */
   boolean enabled(final String version);
 
   /**
    * @param original the original stack
-   * @param check the stack to use for the check
+   * @param check    the stack to use for the check
+   *
    * @return True if the check passes, otherwise false.
    */
   boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check);

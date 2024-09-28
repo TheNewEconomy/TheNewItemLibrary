@@ -52,13 +52,13 @@ public class SpongeBookData extends BookData<ItemStack> {
     }
 
     final Optional<Component> author = stack.get(Keys.AUTHOR);
-    author.ifPresent(component ->{
+    author.ifPresent(component->{
       this.author = component.toString();
       applies = true;
     });
 
     final Optional<Integer> generation = stack.get(Keys.GENERATION);
-    generation.ifPresent(integer ->{
+    generation.ifPresent(integer->{
       this.generation = String.valueOf(integer);
       applies = true;
     });
@@ -91,6 +91,7 @@ public class SpongeBookData extends BookData<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

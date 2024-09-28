@@ -60,6 +60,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
    */
   @Override
   public String version() {
+
     return ParsingUtil.version();
   }
 

@@ -41,6 +41,7 @@ import org.bukkit.inventory.meta.trim.TrimPattern;
  * @since 0.1.7.7
  */
 public class PaperColourArmourData extends ColourableArmourData<ItemStack> {
+
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialItemData} object.
@@ -48,7 +49,8 @@ public class PaperColourArmourData extends ColourableArmourData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final ColorableArmorMeta meta = (ColorableArmorMeta)stack.getItemMeta();
 
     if(meta != null && meta.getTrim() != null) {
@@ -59,7 +61,7 @@ public class PaperColourArmourData extends ColourableArmourData<ItemStack> {
         //This is deprecated as of 1.20.4
         this.material = meta.getTrim().getMaterial().getKey().asString();
         this.pattern = meta.getTrim().getPattern().getKey().asString();
-      } catch(Exception ignore) {
+      } catch(final Exception ignore) {
 
         this.material = meta.getTrim().getMaterial().key().asString();
         this.pattern = meta.getTrim().getPattern().key().asString();
@@ -73,7 +75,7 @@ public class PaperColourArmourData extends ColourableArmourData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final ColorableArmorMeta meta = (ColorableArmorMeta)ParsingUtil.buildFor(stack, ColorableArmorMeta.class);
 
@@ -91,7 +93,7 @@ public class PaperColourArmourData extends ColourableArmourData<ItemStack> {
           meta.setTrim(new ArmorTrim(materialObj, patternObj));
         }
 
-      } catch(Exception ignore) {
+      } catch(final Exception ignore) {
 
         final TrimMaterial materialObj = RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).get(Key.key(material));
         final TrimPattern patternObj = RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_PATTERN).get(Key.key(pattern));

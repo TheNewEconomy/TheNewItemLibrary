@@ -41,7 +41,7 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
 
     final PotionMeta meta = (PotionMeta)stack.getItemMeta();
     if(meta != null) {
@@ -69,7 +69,7 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
 
     final PotionMeta meta = (PotionMeta)ParsingUtil.buildFor(stack, PotionMeta.class);
@@ -77,11 +77,11 @@ public class BukkitPotionData extends SerialPotionData<ItemStack> {
     if(colorRGB != -1) meta.setColor(Color.fromRGB(colorRGB));
 
     customEffects.forEach((effect)->meta.addCustomEffect(new PotionEffect(PotionEffectType.getByName(effect.getName()),
-                                                                        effect.getDuration(),
-                                                                        effect.getAmplifier(),
-                                                                        effect.isAmbient(),
-                                                                        effect.hasParticles(),
-                                                                        effect.hasIcon()), true));
+                                                                          effect.getDuration(),
+                                                                          effect.getAmplifier(),
+                                                                          effect.isAmbient(),
+                                                                          effect.hasParticles(),
+                                                                          effect.hasIcon()), true));
     final PotionData data = new PotionData(PotionType.valueOf(type), extended, upgraded);
     meta.setBasePotionData(data);
     stack.setItemMeta(meta);

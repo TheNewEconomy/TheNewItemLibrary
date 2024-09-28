@@ -38,6 +38,7 @@ public abstract class ItemFood<I extends AbstractItemStack<T>, T> implements Ite
    */
   @Override
   public String identifier() {
+
     return "food";
   }
 
@@ -47,7 +48,8 @@ public abstract class ItemFood<I extends AbstractItemStack<T>, T> implements Ite
    * @return true if this check is enabled for the version, otherwise false
    */
   @Override
-  public boolean enabled(String version) {
+  public boolean enabled(final String version) {
+
     return VersionUtil.isOneTwentyOne(version);
   }
 
@@ -58,7 +60,8 @@ public abstract class ItemFood<I extends AbstractItemStack<T>, T> implements Ite
    * @return True if the check passes, otherwise false.
    */
   @Override
-  public boolean check(AbstractItemStack<T> original, AbstractItemStack<T> check) {
+  public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+
     if(original.components().containsKey("food") && check.components().containsKey("food")) {
       final FoodComponent<T> originalFood = (FoodComponent<T>)original.components().get("food");
       final FoodComponent<T> checkFood = (FoodComponent<T>)check.components().get("food");

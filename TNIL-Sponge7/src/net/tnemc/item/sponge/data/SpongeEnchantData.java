@@ -77,6 +77,7 @@ public class SpongeEnchantData extends EnchantStorageData<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

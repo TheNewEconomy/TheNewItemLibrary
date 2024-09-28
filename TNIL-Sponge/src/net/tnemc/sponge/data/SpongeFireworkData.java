@@ -44,10 +44,10 @@ public class SpongeFireworkData extends FireworkData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
 
     final Optional<Ticks> power = stack.get(Keys.FIREWORK_FLIGHT_MODIFIER);
-    power.ifPresent(ticks ->{
+    power.ifPresent(ticks->{
       this.power = ticks.ticks();
       applies = true;
     });
@@ -55,7 +55,7 @@ public class SpongeFireworkData extends FireworkData<ItemStack> {
     final Optional<List<FireworkEffect>> effs = stack.get(Keys.FIREWORK_EFFECTS);
     if(effs.isPresent()) {
       applies = true;
-      for(FireworkEffect effect : effs.get()) {
+      for(final FireworkEffect effect : effs.get()) {
         effects.add(ParsingUtil.fromEffect(effect));
       }
     }
@@ -67,12 +67,12 @@ public class SpongeFireworkData extends FireworkData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     stack.offer(Keys.FIREWORK_FLIGHT_MODIFIER, Ticks.of(power));
 
     final List<FireworkEffect> effs = new ArrayList<>();
-    for(SerialFireworkEffect effect : effects) {
+    for(final SerialFireworkEffect effect : effects) {
       effs.add(ParsingUtil.fromSerial(effect));
     }
 
@@ -85,6 +85,7 @@ public class SpongeFireworkData extends FireworkData<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

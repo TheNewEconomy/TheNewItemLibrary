@@ -18,37 +18,39 @@ import java.util.Optional;
 
 public class SpongePatternData extends BannerData<ItemStack> {
 
-    protected boolean applies = false;
+  protected boolean applies = false;
 
-    @Override
-    public void of(ItemStack stack) {
-        final Optional<List<BannerPatternLayer>> patterns = stack.get(Keys.BANNER_PATTERN_LAYERS);
-        if(patterns.isPresent()) {
-            applies = true;
+  @Override
+  public void of(ItemStack stack) {
 
-            for(BannerPatternLayer pattern : patterns.get()) {
-                this.patterns.add(new PatternData(pattern.color().key(RegistryTypes.DYE_COLOR).formatted(), pattern.shape().key(RegistryTypes.BANNER_PATTERN_SHAPE).formatted()));
-            }
-        }
+    final Optional<List<BannerPatternLayer>> patterns = stack.get(Keys.BANNER_PATTERN_LAYERS);
+    if(patterns.isPresent()) {
+      applies = true;
+
+      for(BannerPatternLayer pattern : patterns.get()) {
+        this.patterns.add(new PatternData(pattern.color().key(RegistryTypes.DYE_COLOR).formatted(), pattern.shape().key(RegistryTypes.BANNER_PATTERN_SHAPE).formatted()));
+      }
     }
+  }
 
-    @Override
-    public ItemStack apply(ItemStack stack) {
+  @Override
+  public ItemStack apply(ItemStack stack) {
 
-        if(patterns.size() > 0) {
-            final List<BannerPatternLayer> layers = new LinkedList<>();
+    if(patterns.size() > 0) {
+      final List<BannerPatternLayer> layers = new LinkedList<>();
 
-            for(PatternData data : patterns) {
-                layers.add(BannerPatternLayer.of((BannerPatternShape)BannerPatternShapes.registry().value(ResourceKey.resolve(data.getPattern())),
-                           (DyeColor)DyeColors.registry().value(ResourceKey.resolve(data.getColor()))));
-            }
-            stack.offer(Keys.BANNER_PATTERN_LAYERS, layers);
-        }
-        return stack;
+      for(PatternData data : patterns) {
+        layers.add(BannerPatternLayer.of((BannerPatternShape)BannerPatternShapes.registry().value(ResourceKey.resolve(data.getPattern())),
+                                         (DyeColor)DyeColors.registry().value(ResourceKey.resolve(data.getColor()))));
+      }
+      stack.offer(Keys.BANNER_PATTERN_LAYERS, layers);
     }
+    return stack;
+  }
 
-    @Override
-    public boolean applies() {
-        return applies;
-    }
+  @Override
+  public boolean applies() {
+
+    return applies;
+  }
 }

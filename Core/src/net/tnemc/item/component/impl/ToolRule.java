@@ -39,21 +39,24 @@ public class ToolRule {
   protected boolean drops;
 
   public ToolRule() {
+
   }
 
-  public ToolRule(float speed, boolean drops) {
+  public ToolRule(final float speed, final boolean drops) {
+
     this.speed = speed;
     this.drops = drops;
   }
 
   public JSONObject toJSON() {
+
     final JSONObject rule = new JSONObject();
     rule.put("speed", speed);
     rule.put("drops", drops);
 
     if(!materials.isEmpty()) {
       final JSONObject materialsObj = new JSONObject();
-      for (int i = 0; i < materials.size(); i++) {
+      for(int i = 0; i < materials.size(); i++) {
         materialsObj.put(i, materials.get(i));
       }
       rule.put("materials", materialsObj);
@@ -61,7 +64,8 @@ public class ToolRule {
     return rule;
   }
 
-  public static ToolRule readJSON(JSONHelper json) {
+  public static ToolRule readJSON(final JSONHelper json) {
+
     final ToolRule rule = new ToolRule();
 
     if(json.has("speed")) {
@@ -83,31 +87,38 @@ public class ToolRule {
   }
 
   public List<String> getMaterials() {
+
     return materials;
   }
 
-  public void addMaterials(List<String> materials) {
+  public void addMaterials(final List<String> materials) {
+
     this.materials.addAll(materials);
   }
 
-  public void setMaterials(List<String> materials) {
+  public void setMaterials(final List<String> materials) {
+
     this.materials.clear();
     this.materials.addAll(materials);
   }
 
   public float getSpeed() {
+
     return speed;
   }
 
-  public void setSpeed(float speed) {
+  public void setSpeed(final float speed) {
+
     this.speed = speed;
   }
 
   public boolean isDrops() {
+
     return drops;
   }
 
-  public void setDrops(boolean drops) {
+  public void setDrops(final boolean drops) {
+
     this.drops = drops;
   }
 }

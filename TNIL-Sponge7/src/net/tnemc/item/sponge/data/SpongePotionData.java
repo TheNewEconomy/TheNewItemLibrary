@@ -46,15 +46,15 @@ public class SpongePotionData extends SerialPotionData<ItemStack> {
   @Override
   public void of(ItemStack stack) {
 
-      final Optional<WeightedTable<PotionEffect>> effects = stack.get(Keys.APPLICABLE_POTION_EFFECTS);
-      if(effects.isPresent()) {
-        applies = true;
+    final Optional<WeightedTable<PotionEffect>> effects = stack.get(Keys.APPLICABLE_POTION_EFFECTS);
+    if(effects.isPresent()) {
+      applies = true;
 
-        while(effects.get().iterator().hasNext()) {
-          final TableEntry<PotionEffect> entry = effects.get().iterator().next();
+      while(effects.get().iterator().hasNext()) {
+        final TableEntry<PotionEffect> entry = effects.get().iterator().next();
 
-        }
       }
+    }
   }
 
   /**
@@ -64,11 +64,13 @@ public class SpongePotionData extends SerialPotionData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
+
     return stack;
   }
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

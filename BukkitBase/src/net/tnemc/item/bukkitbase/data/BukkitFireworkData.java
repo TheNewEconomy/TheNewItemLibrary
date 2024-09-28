@@ -37,7 +37,8 @@ public class BukkitFireworkData extends FireworkData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     final FireworkMeta meta = (FireworkMeta)stack.getItemMeta();
 
     if(meta != null) {
@@ -45,7 +46,7 @@ public class BukkitFireworkData extends FireworkData<ItemStack> {
       this.power = meta.getPower();
 
       if(meta.hasEffects()) {
-        for(FireworkEffect eff : meta.getEffects()) {
+        for(final FireworkEffect eff : meta.getEffects()) {
           effects.add(ParsingUtil.fromEffect(eff));
         }
       }
@@ -58,7 +59,7 @@ public class BukkitFireworkData extends FireworkData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final FireworkMeta meta = (FireworkMeta)ParsingUtil.buildFor(stack, FireworkMeta.class);
 

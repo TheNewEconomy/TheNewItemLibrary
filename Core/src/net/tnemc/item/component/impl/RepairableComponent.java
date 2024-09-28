@@ -39,19 +39,21 @@ public abstract class RepairableComponent<T> implements SerialComponent<T> {
    */
   @Override
   public String getType() {
+
     return "repairable";
   }
 
   /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
-   * of this data. For instance, book copies will return false when compared to the original.
+   * Used to determine if some data is equal to this data. This means that it has to be an exact
+   * copy of this data. For instance, book copies will return false when compared to the original.
    *
    * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialComponent<? extends T> component) {
+  public boolean equals(final SerialComponent<? extends T> component) {
+
     if(component instanceof RepairableComponent<?> repair) {
 
     }

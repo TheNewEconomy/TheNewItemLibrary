@@ -34,12 +34,13 @@ import org.bukkit.inventory.meta.components.JukeboxPlayableComponent;
  */
 public class BukkitJukeBoxComponent extends JukeBoxComponent<ItemStack> {
 
-  public static BukkitJukeBoxComponent create(ItemStack stack) {
+  public static BukkitJukeBoxComponent create(final ItemStack stack) {
 
     final BukkitJukeBoxComponent component = new BukkitJukeBoxComponent();
     component.of(stack);
     return component;
   }
+
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
    * {@link SerialComponent} object.
@@ -47,7 +48,8 @@ public class BukkitJukeBoxComponent extends JukeBoxComponent<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
+
     if(stack.hasItemMeta()) {
       if(stack.getItemMeta().hasJukeboxPlayable()) {
 
@@ -63,7 +65,8 @@ public class BukkitJukeBoxComponent extends JukeBoxComponent<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
+
     ItemMeta meta = stack.getItemMeta();
     if(meta == null) {
       meta = Bukkit.getItemFactory().getItemMeta(stack.getType());

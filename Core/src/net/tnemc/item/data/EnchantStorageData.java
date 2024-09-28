@@ -38,6 +38,7 @@ public abstract class EnchantStorageData<T> implements SerialItemData<T> {
    */
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("name", "enchantstorage");
 
@@ -54,7 +55,8 @@ public abstract class EnchantStorageData<T> implements SerialItemData<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(JSONHelper json) {
+  public void readJSON(final JSONHelper json) {
+
     final JSONObject enchants = json.getJSON("enchantments");
     enchants.forEach((key, value)->{
       enchantments.put(key.toString(), Integer.valueOf(value.toString()));
@@ -62,16 +64,17 @@ public abstract class EnchantStorageData<T> implements SerialItemData<T> {
   }
 
   /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact copy
-   * of this data. For instance, book copies will return false when compared to the original.
+   * Used to determine if some data is equal to this data. This means that it has to be an exact
+   * copy of this data. For instance, book copies will return false when compared to the original.
    *
    * @param data The data to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(SerialItemData<? extends T> data) {
-    if(data instanceof EnchantStorageData<?> compare) {
+  public boolean equals(final SerialItemData<? extends T> data) {
+
+    if(data instanceof final EnchantStorageData<?> compare) {
       return enchantments.equals(compare.enchantments);
     }
     return false;
@@ -86,7 +89,8 @@ public abstract class EnchantStorageData<T> implements SerialItemData<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean similar(SerialItemData<? extends T> data) {
+  public boolean similar(final SerialItemData<? extends T> data) {
+
     return equals(data);
   }
 }

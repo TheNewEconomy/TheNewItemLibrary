@@ -54,37 +54,39 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   /**
    * Used to add an object that is capable of being dual/tri purpose as a check, applicator and/or
    * deserializer.
+   *
    * @param object the object to add.
    */
   public void addMulti(@NotNull final Object object) {
-    if(object instanceof ItemCheck<?> check) {
+
+    if(object instanceof final ItemCheck<?> check) {
 
       try {
 
         checks.put(check.identifier(), (ItemCheck<T>)check);
-      } catch(Exception ignore) {
+      } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
       }
     }
 
-    if(object instanceof ItemApplicator<?, ?> check) {
+    if(object instanceof final ItemApplicator<?, ?> check) {
 
       try {
 
         applicators.put(check.identifier(), (ItemApplicator<I, T>)check);
-      } catch(Exception ignore) {
+      } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
       }
     }
 
-    if(object instanceof ItemSerializer<?, ?> check) {
+    if(object instanceof final ItemSerializer<?, ?> check) {
 
       try {
 
         deserializers.put(check.identifier(), (ItemSerializer<I, T>)check);
-      } catch(Exception ignore) {
+      } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
       }
@@ -95,6 +97,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @param check the {@link ItemCheck check} to add.
    */
   public void addCheck(@NotNull final ItemCheck<T> check) {
+
     checks.put(check.identifier(), check);
   }
 
@@ -102,6 +105,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @param applicator the applicator to add
    */
   public void addApplicator(@NotNull final ItemApplicator<I, T> applicator) {
+
     applicators.put(applicator.identifier(), applicator);
   }
 
@@ -109,14 +113,17 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @param deserializer the deserializer to add
    */
   public void addDeserializer(@NotNull final ItemSerializer<I, T> deserializer) {
+
     deserializers.put(deserializer.identifier(), deserializer);
   }
 
   /**
    * Used to check if two locale stacks are comparable.
-   * @param original the original stack
-   * @param check the stack to use for the check
-   * @param disabledChecks the {@link ItemCheck#identifier()} check identifiers that should be disabled for the check.
+   *
+   * @param original       the original stack
+   * @param check          the stack to use for the check
+   * @param disabledChecks the {@link ItemCheck#identifier()} check identifiers that should be
+   *                       disabled for the check.
    *
    * @return True if the check passes, otherwise false.
    */
@@ -129,7 +136,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
         continue;
       }
 
-      if(checkItem instanceof LocaleItemCheck<T> locale) {
+      if(checkItem instanceof final LocaleItemCheck<T> locale) {
 
         if(locale.enabled(version()) && !locale.check(original, check)) {
           return false;
@@ -141,19 +148,20 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
   /**
    * Used to check if two locale stacks are comparable based on a specific order of checks.
+   *
    * @param original the original stack
-   * @param check the stack to use for the check
-   * @param order the order of the checks to run for the comparison
+   * @param check    the stack to use for the check
+   * @param order    the order of the checks to run for the comparison
    *
    * @return True if the check passes, otherwise false.
    */
   public boolean checkOrder(@NotNull final T original, @NotNull final T check, @NotNull final String... order) {
 
-    for(String id : order) {
+    for(final String id : order) {
       if(checks.containsKey(id)) {
 
         final ItemCheck<T> checkItem = checks.get(id);
-        if(checkItem instanceof LocaleItemCheck<T> locale) {
+        if(checkItem instanceof final LocaleItemCheck<T> locale) {
 
           if(checkItem.enabled(version())) {
             return locale.check(original, check);
@@ -166,15 +174,16 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
   /**
    * Used to check if two serialized stacks are comparable based on a specific order of checks.
+   *
    * @param original the original stack
-   * @param check the stack to use for the check
-   * @param order the order of the checks to run for the comparison
+   * @param check    the stack to use for the check
+   * @param order    the order of the checks to run for the comparison
    *
    * @return True if the check passes, otherwise false.
    */
   public boolean checkOrder(@NotNull final I original, @NotNull final I check, @NotNull final String... order) {
 
-    for(String id : order) {
+    for(final String id : order) {
       if(checks.containsKey(id)) {
 
         final ItemCheck<T> checkItem = checks.get(id);
@@ -190,9 +199,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
   /**
    * Used to check if two serialized stacks are comparable.
-   * @param original the original stack
-   * @param check the stack to use for the check
-   * @param disabledChecks the {@link ItemCheck#identifier()} check identifiers that should be disabled for the check.
+   *
+   * @param original       the original stack
+   * @param check          the stack to use for the check
+   * @param disabledChecks the {@link ItemCheck#identifier()} check identifiers that should be
+   *                       disabled for the check.
    *
    * @return True if the check passes, otherwise false.
    */
@@ -216,10 +227,12 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * Applies all enabled applicators to the given item.
    *
    * @param serialized the serialized item stack to use
-   * @param item the locale itemstack object to apply the applications to
+   * @param item       the locale itemstack object to apply the applications to
+   *
    * @return the updated item stack after applying the applicators
    */
   public T apply(@NotNull final I serialized, @NotNull T item) {
+
     for(final ItemApplicator<I, T> applicator : applicators.values()) {
       if(applicator.enabled(version())) {
         item = applicator.apply(serialized, item);
@@ -231,11 +244,13 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   /**
    * Applies all enabled deserializers to the given item.
    *
-   * @param item the item that we should use to deserialize.
+   * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
    * @return the updated serialized item.
    */
   public I deserialize(@NotNull final T item, @NotNull I serialized) {
+
     for(final ItemSerializer<I, T> deserializer : deserializers.values()) {
       if(deserializer.enabled(version())) {
         serialized = deserializer.serialize(item, serialized);
@@ -245,6 +260,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   }
 
   public static String componentString(@NotNull final Component component) {
+
     return PlainTextComponentSerializer.plainText().serialize(component);
   }
 }

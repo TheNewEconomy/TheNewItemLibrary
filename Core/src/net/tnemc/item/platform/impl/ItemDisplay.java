@@ -37,6 +37,7 @@ public abstract class ItemDisplay<I extends AbstractItemStack<T>, T> implements 
    */
   @Override
   public String identifier() {
+
     return "display";
   }
 
@@ -46,7 +47,8 @@ public abstract class ItemDisplay<I extends AbstractItemStack<T>, T> implements 
    * @return true if this check is enabled for the version, otherwise false
    */
   @Override
-  public boolean enabled(String version) {
+  public boolean enabled(final String version) {
+
     return true;
   }
 
@@ -57,7 +59,8 @@ public abstract class ItemDisplay<I extends AbstractItemStack<T>, T> implements 
    * @return True if the check passes, otherwise false.
    */
   @Override
-  public boolean check(AbstractItemStack<T> original, AbstractItemStack<T> check) {
+  public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+
     return ItemPlatform.componentString(original.display()).equals(ItemPlatform.componentString(check.display()));
   }
 }
