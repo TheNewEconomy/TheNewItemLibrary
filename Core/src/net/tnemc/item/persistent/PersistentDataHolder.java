@@ -44,9 +44,9 @@ public class PersistentDataHolder {
    *
    * @param json The {@link JSONHelper JSON object} to be decoded
    */
-  public void readJSON(final JSONHelper json, final ItemPlatform<?, ?> platform) {
+  public void readJSON(final JSONObject json, final ItemPlatform<?, ?> platform) {
 
-    json.getJSON("persistent-data").forEach((key, value)->{
+    json.forEach((key, value)->{
       final String identifier = String.valueOf(key);
 
       final Optional<PersistentDataType<?>> data = decode(new JSONHelper((JSONObject)value), platform);
@@ -61,16 +61,12 @@ public class PersistentDataHolder {
    */
   public JSONObject toJSON() {
 
-    final JSONObject json = new JSONObject();
-
     final JSONObject persistentData = new JSONObject();
     for(final Map.Entry<String, PersistentDataType<?>> entry : dataMap.entrySet()) {
       persistentData.put(entry.getKey(), entry.getValue().toJSON());
     }
 
-    json.put("persistent-data", persistentData);
-
-    return json;
+    return persistentData;
   }
 
   /**

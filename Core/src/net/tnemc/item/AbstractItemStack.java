@@ -25,6 +25,8 @@ import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.persistent.PersistentDataHolder;
+import net.tnemc.item.persistent.PersistentDataType;
 import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -101,6 +103,16 @@ public interface AbstractItemStack<T> extends Cloneable {
     return this;
   }
 
+  //since 0.1.7.7
+  default AbstractItemStack<T> applyPersistent(final PersistentDataType<?> data) {
+
+    persistentData().put(data.identifier(), data);
+    return this;
+  }
+
+  //since 0.1.7.7
+  AbstractItemStack<T> applyPersistentHolder(final PersistentDataHolder holder);
+
   List<String> flags();
 
   List<Component> lore();
@@ -111,6 +123,12 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   //since 0.1.7.7
   Map<String, SerialComponent<T>> components();
+
+  //since 0.1.7.7
+  Map<String, PersistentDataType<?>> persistentData();
+
+  //since 0.1.7.7
+  PersistentDataHolder persistentHolder();
 
   String material();
 
@@ -213,6 +231,10 @@ public interface AbstractItemStack<T> extends Cloneable {
         attr.put(name, mod);
       });
       json.put("attributes", attr);
+    }
+
+    if(!persistentHolder().getData().isEmpty()) {
+      json.put("persistent-data", persistentHolder().toJSON());
     }
 
     if(data().isPresent()) {
