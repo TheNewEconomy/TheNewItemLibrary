@@ -19,7 +19,6 @@ package net.tnemc.item.bukkitbase.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.impl.ItemUnbreakable;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -46,7 +45,7 @@ public class BukkitItemRarity<I extends AbstractItemStack<ItemStack>> extends ne
 
       try {
         meta.setRarity(ItemRarity.valueOf(serialized.rarity()));
-      } catch(IllegalArgumentException ignore) {
+      } catch(final IllegalArgumentException ignore) {
         //do nothing, invalid value
       }
     }

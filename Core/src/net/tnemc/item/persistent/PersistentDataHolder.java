@@ -74,12 +74,16 @@ public class PersistentDataHolder {
   }
 
   /**
-   * Decodes the provided JSON object and returns an Optional containing the decoded PersistentDataType.
+   * Decodes the provided JSON object and returns an Optional containing the decoded
+   * PersistentDataType.
    *
    * @param json The JSONHelper object to be decoded
-   * @return An Optional containing the decoded PersistentDataType if it exists, otherwise an empty Optional
+   *
+   * @return An Optional containing the decoded PersistentDataType if it exists, otherwise an empty
+   * Optional
    */
   public Optional<PersistentDataType<?>> decode(final JSONHelper json, final ItemPlatform<?, ?> platform) {
+
     final String type = json.getString("type");
     final String namespace = json.getString("namespace");
     final String key = json.getString("key");

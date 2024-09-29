@@ -67,7 +67,7 @@ public class PersistentIntArray extends PersistentDataType<int[]> {
 
     final String[] split = encoded.substring(1, encoded.length() - 1).split(", ");
     final int[] decodedArray = new int[split.length];
-    for (int i = 0; i < split.length; i++) {
+    for(int i = 0; i < split.length; i++) {
       decodedArray[i] = Integer.parseInt(split[i]);
     }
 

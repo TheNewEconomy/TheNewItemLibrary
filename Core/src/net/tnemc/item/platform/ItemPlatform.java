@@ -63,6 +63,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   protected final Map<String, ItemSerializer<I, T>> serializers = new HashMap<>();
 
   public ItemPlatform() {
+
     addPersistentDataType("bool", PersistentBool.class);
     addPersistentDataType("byte", PersistentByte.class);
     addPersistentDataType("byte-array", PersistentByteArray.class);
@@ -87,9 +88,10 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * Adds a persistent data type to the item platform.
    *
    * @param identifier The identifier for the persistent data type.
-   * @param type The class representing the persistent data type.
+   * @param type       The class representing the persistent data type.
    */
   public void addPersistentDataType(final String identifier, @NotNull final Class<? extends PersistentDataType<?>> type) {
+
     classes.put(identifier, type);
   }
 
@@ -310,6 +312,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * Initializes and returns an AbstractItemStack object by deserializing the provided JSON object.
    *
    * @param object the JSON object to deserialize
+   *
    * @return an initialized AbstractItemStack object
    */
   public abstract Optional<I> initSerialized(final JSONObject object);

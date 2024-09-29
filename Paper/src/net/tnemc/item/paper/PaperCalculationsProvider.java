@@ -20,7 +20,6 @@ package net.tnemc.item.paper;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.InventoryType;
 import net.tnemc.item.data.ItemStorageData;
 import net.tnemc.item.providers.CalculationsProvider;

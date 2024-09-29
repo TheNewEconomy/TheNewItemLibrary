@@ -20,8 +20,6 @@ package net.tnemc.item.persistent.impl;
 
 import net.tnemc.item.persistent.PersistentDataType;
 
-import java.util.Base64;
-
 /**
  * PersistentString
  *

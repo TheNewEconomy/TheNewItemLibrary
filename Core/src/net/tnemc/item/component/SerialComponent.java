@@ -48,7 +48,7 @@ public interface SerialComponent<T> {
   /**
    * Reads JSON data and converts it back to a {@link SerialComponent} object.
    *
-   * @param json The JSONHelper instance of the json data.
+   * @param json     The JSONHelper instance of the json data.
    * @param platform The {@link ItemPlatform platform} instance.
    */
   <I extends AbstractItemStack<T>> void readJSON(JSONHelper json, ItemPlatform<I, T> platform);

@@ -20,7 +20,6 @@ package net.tnemc.item.bukkitbase.platform.impl;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.platform.impl.ItemModelData;
-import net.tnemc.item.platform.impl.ItemUnbreakable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 

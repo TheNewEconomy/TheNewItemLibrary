@@ -19,7 +19,6 @@ package net.tnemc.item.bukkitbase.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.impl.ItemUnbreakable;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -47,7 +46,7 @@ public class BukkitItemFlag<I extends AbstractItemStack<ItemStack>> extends net.
       for(final String str : serialized.flags()) {
         try {
           meta.addItemFlags(ItemFlag.valueOf(str));
-        } catch(IllegalArgumentException ignore) {
+        } catch(final IllegalArgumentException ignore) {
           //do nothing, invalid value
         }
       }

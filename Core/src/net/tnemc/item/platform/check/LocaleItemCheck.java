@@ -32,7 +32,7 @@ public interface LocaleItemCheck<T> extends ItemCheck<T> {
    * Checks if the given LocaleItemCheck applies based on the original item and the item to check.
    *
    * @param original the original item
-   * @param check the item to check
+   * @param check    the item to check
    *
    * @return true if the LocaleItemCheck applies, false otherwise
    */

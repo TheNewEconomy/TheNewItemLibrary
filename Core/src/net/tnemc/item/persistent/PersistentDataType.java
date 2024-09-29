@@ -41,6 +41,7 @@ public abstract class PersistentDataType<T> {
   }
 
   public String identifier() {
+
     return namespace + ":" + key;
   }
 
@@ -62,7 +63,9 @@ public abstract class PersistentDataType<T> {
    * Decodes the given encoded string and sets the decoded value.
    *
    * @param encoded The string to be decoded
+   *
    * @return The decoded value of type T
+   *
    * @throws IllegalArgumentException if the encoded string is invalid
    */
   public abstract T decode(final String encoded) throws IllegalArgumentException;

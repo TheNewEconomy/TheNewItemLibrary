@@ -19,7 +19,6 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.platform.impl.ItemDisplay;
 import net.tnemc.item.platform.impl.ItemEnchant;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -55,7 +54,7 @@ public class BukkitItemEnchant extends ItemEnchant<BukkitItemStack, ItemStack> {
 
           try {
             enchant = Registry.ENCHANTMENT.get(space);
-          } catch(Exception ignore) {
+          } catch(final Exception ignore) {
             enchant = Enchantment.getByKey(space);
           }
 

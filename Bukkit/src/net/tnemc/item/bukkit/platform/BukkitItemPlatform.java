@@ -112,6 +112,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
   public static final BukkitItemPlatform PLATFORM = new BukkitItemPlatform();
 
   private BukkitItemPlatform() {
+
     super();
   }
 

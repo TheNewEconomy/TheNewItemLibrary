@@ -537,7 +537,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
       final String[] loreArray = json.getString("lore").split(",");
       final List<Component> loreList = new LinkedList<>();
-      for (final String lore : loreArray) {
+      for(final String lore : loreArray) {
         loreList.add(JSONComponentSerializer.json().deserialize(lore));
       }
       lore(loreList);
