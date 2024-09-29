@@ -1,4 +1,5 @@
-package net.tnemc.item.platform.check;
+package net.tnemc.item.platform.impl;
+
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,42 +20,34 @@ package net.tnemc.item.platform.check;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.platform.applier.ItemApplicator;
+import net.tnemc.item.platform.serialize.ItemSerializer;
 
 /**
- * LocaleItemCheck
+ * ItemPersistentData
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public interface LocaleItemCheck<T> extends ItemCheck<T> {
+public abstract class ItemPersistentData<I extends AbstractItemStack<T>, T> implements ItemApplicator<I, T>, ItemSerializer<I, T> {
 
   /**
-   * Checks if the given LocaleItemCheck applies based on the original item and the item to check.
+   * @param version the version being used when this check is called.
    *
-   * @param original the original item
-   * @param check the item to check
-   *
-   * @return true if the LocaleItemCheck applies, false otherwise
-   */
-  boolean applies(final T original, final T check);
-
-  /**
-   * @param original the original stack
-   * @param check    the stack to use for the check
-   *
-   * @return True if the check passes, otherwise false.
-   */
-  boolean check(final T original, final T check);
-
-  /**
-   * @param original the original stack
-   * @param check    the stack to use for the check
-   *
-   * @return True if the check passes, otherwise false.
+   * @return true if this check is enabled for the version, otherwise false
    */
   @Override
-  default boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+  public boolean enabled(final String version) {
 
-    return true;//always return true because this shouldn't be used for locale checks.
+    return true;
+  }
+
+  /**
+   * @return the identifier for this check.
+   */
+  @Override
+  public String identifier() {
+
+    return "persistent-data";
   }
 }

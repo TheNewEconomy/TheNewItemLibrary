@@ -141,8 +141,8 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
       if(checkItem instanceof final LocaleItemCheck<T> locale) {
 
-        if(locale.enabled(version()) && !locale.check(original, check)) {
-          return false;
+        if(locale.enabled(version()) && locale.applies(original, check)) {
+          return locale.check(original, check);
         }
       }
     }

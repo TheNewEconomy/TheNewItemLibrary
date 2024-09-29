@@ -1,4 +1,4 @@
-package net.tnemc.item.platform.check;
+package net.tnemc.item.bukkitbase.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,42 +19,38 @@ package net.tnemc.item.platform.check;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.platform.impl.ItemPersistentData;
+import org.bukkit.inventory.ItemStack;
 
 /**
- * LocaleItemCheck
+ * BukkitItemPersistentData
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public interface LocaleItemCheck<T> extends ItemCheck<T> {
+public class BukkitItemPersistentData<I extends AbstractItemStack<ItemStack>> extends ItemPersistentData<I, ItemStack> {
 
   /**
-   * Checks if the given LocaleItemCheck applies based on the original item and the item to check.
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
    *
-   * @param original the original item
-   * @param check the item to check
-   *
-   * @return true if the LocaleItemCheck applies, false otherwise
-   */
-  boolean applies(final T original, final T check);
-
-  /**
-   * @param original the original stack
-   * @param check    the stack to use for the check
-   *
-   * @return True if the check passes, otherwise false.
-   */
-  boolean check(final T original, final T check);
-
-  /**
-   * @param original the original stack
-   * @param check    the stack to use for the check
-   *
-   * @return True if the check passes, otherwise false.
+   * @return the updated item.
    */
   @Override
-  default boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+  public ItemStack apply(final I serialized, final ItemStack item) {
 
-    return true;//always return true because this shouldn't be used for locale checks.
+    return null;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   */
+  @Override
+  public I serialize(final ItemStack item, final I serialized) {
+
+    return null;
   }
 }
