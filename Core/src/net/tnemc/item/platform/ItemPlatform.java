@@ -22,6 +22,18 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.persistent.PersistentDataType;
+import net.tnemc.item.persistent.impl.PersistentBool;
+import net.tnemc.item.persistent.impl.PersistentByte;
+import net.tnemc.item.persistent.impl.PersistentByteArray;
+import net.tnemc.item.persistent.impl.PersistentDouble;
+import net.tnemc.item.persistent.impl.PersistentFloat;
+import net.tnemc.item.persistent.impl.PersistentInt;
+import net.tnemc.item.persistent.impl.PersistentIntArray;
+import net.tnemc.item.persistent.impl.PersistentLong;
+import net.tnemc.item.persistent.impl.PersistentLongArray;
+import net.tnemc.item.persistent.impl.PersistentShort;
+import net.tnemc.item.persistent.impl.PersistentString;
 import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.check.LocaleItemCheck;
@@ -34,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * ItemPlatform
@@ -43,9 +56,25 @@ import java.util.Optional;
  */
 public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
+  private final Map<String, Class<? extends PersistentDataType<?>>> classes = new ConcurrentHashMap<>();
+
   protected final Map<String, ItemCheck<T>> checks = new HashMap<>();
   protected final Map<String, ItemApplicator<I, T>> applicators = new HashMap<>();
   protected final Map<String, ItemSerializer<I, T>> serializers = new HashMap<>();
+
+  public ItemPlatform() {
+    addPersistentDataType("bool", PersistentBool.class);
+    addPersistentDataType("byte", PersistentByte.class);
+    addPersistentDataType("byte-array", PersistentByteArray.class);
+    addPersistentDataType("double", PersistentDouble.class);
+    addPersistentDataType("float", PersistentFloat.class);
+    addPersistentDataType("int", PersistentInt.class);
+    addPersistentDataType("int-array", PersistentIntArray.class);
+    addPersistentDataType("long", PersistentLong.class);
+    addPersistentDataType("long-array", PersistentLongArray.class);
+    addPersistentDataType("short", PersistentShort.class);
+    addPersistentDataType("string", PersistentString.class);
+  }
 
   /**
    * @return the version that is being used currently
@@ -53,6 +82,21 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   public abstract String version();
 
   public abstract void addDefaults();
+
+  /**
+   * Adds a persistent data type to the item platform.
+   *
+   * @param identifier The identifier for the persistent data type.
+   * @param type The class representing the persistent data type.
+   */
+  public void addPersistentDataType(final String identifier, @NotNull final Class<? extends PersistentDataType<?>> type) {
+    classes.put(identifier, type);
+  }
+
+  public Map<String, Class<? extends PersistentDataType<?>>> getClasses() {
+
+    return classes;
+  }
 
   /**
    * Used to add an object that is capable of being dual/tri purpose as a check, applicator and/or

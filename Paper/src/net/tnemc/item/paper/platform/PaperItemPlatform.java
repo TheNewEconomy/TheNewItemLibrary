@@ -111,6 +111,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
 
   private PaperItemPlatform() {
 
+    super();
   }
 
   /**

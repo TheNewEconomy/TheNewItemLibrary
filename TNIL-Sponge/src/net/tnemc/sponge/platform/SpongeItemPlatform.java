@@ -40,6 +40,7 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack>
 
   private SpongeItemPlatform() {
 
+    super();
   }
 
   /**
