@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class ToolRule {
 
-  protected final List<String> materials = new ArrayList<String>();
+  protected final List<String> materials = new ArrayList<>();
 
   protected float speed;
 

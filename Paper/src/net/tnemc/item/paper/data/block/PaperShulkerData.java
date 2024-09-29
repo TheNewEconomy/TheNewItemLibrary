@@ -20,7 +20,6 @@ package net.tnemc.item.paper.data.block;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.data.ShulkerData;
@@ -53,7 +52,7 @@ public class PaperShulkerData extends ShulkerData<ItemStack> {
       final Inventory inventory = box.getInventory();
       for(int i = 0; i < inventory.getSize(); i++) {
         if(inventory.getItem(i) != null && !inventory.getItem(i).getType().equals(Material.AIR)) {
-          items.put(i, new SerialItem<>(PaperItemStack.locale(inventory.getItem(i))));
+          items.put(i, PaperItemStack.locale(inventory.getItem(i)));
         }
       }
     }
@@ -71,7 +70,7 @@ public class PaperShulkerData extends ShulkerData<ItemStack> {
 
     if(meta.getBlockState() instanceof final ShulkerBox box) {
 
-      items.forEach((slot, item)->box.getInventory().setItem(slot, item.getStack().locale()));
+      items.forEach((slot, item)->box.getInventory().setItem(slot, item.locale()));
       box.update(true);
       meta.setBlockState(box);
       stack.setItemMeta(meta);

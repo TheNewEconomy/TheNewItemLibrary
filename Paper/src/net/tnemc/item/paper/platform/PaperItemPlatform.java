@@ -94,6 +94,8 @@ import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.inventory.meta.SuspiciousStewMeta;
 import org.bukkit.inventory.meta.TropicalFishBucketMeta;
 import org.bukkit.inventory.meta.WritableBookMeta;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import java.util.Optional;
 
@@ -144,6 +146,23 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     addMulti(new PaperItemMaterial());
     addMulti(new PaperItemProfile());
     addMulti(new PaperItemTool());
+  }
+
+  /**
+   * Initializes and returns an AbstractItemStack object by deserializing the provided JSON object.
+   *
+   * @param object the JSON object to deserialize
+   *
+   * @return an initialized AbstractItemStack object
+   */
+  @Override
+  public Optional<PaperItemStack> initSerialized(final JSONObject object) {
+
+    try {
+      return Optional.ofNullable(new PaperItemStack().of(object));
+    } catch(final ParseException e) {
+      return Optional.empty();
+    }
   }
 
   @Override

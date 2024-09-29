@@ -24,14 +24,12 @@ import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.attribute.SerialAttributeOperation;
 import net.tnemc.item.attribute.SerialAttributeSlot;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
-import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.SkullProfile;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -92,10 +90,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
-  @Override
-  public PaperItemStack of(final SerialItem<ItemStack> serialItem) {
-
-    final PaperItemStack stack = (PaperItemStack)serialItem.getStack();
+  public PaperItemStack of(final PaperItemStack stack) {
 
     flags.addAll(stack.flags);
     attributes.putAll(stack.attributes);

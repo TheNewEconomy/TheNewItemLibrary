@@ -18,9 +18,11 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 /**
@@ -63,7 +65,7 @@ public abstract class EnchantableComponent<T> implements SerialComponent<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(final JSONHelper json) {
+  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     value = json.getInteger("value");
   }
@@ -79,7 +81,7 @@ public abstract class EnchantableComponent<T> implements SerialComponent<T> {
   @Override
   public boolean equals(final SerialComponent<? extends T> component) {
 
-    if(component instanceof EnchantableComponent<?> enchant) {
+    if(component instanceof final EnchantableComponent<?> enchant) {
 
       return value == enchant.value;
     }

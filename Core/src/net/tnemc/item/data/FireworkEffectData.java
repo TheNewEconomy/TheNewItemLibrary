@@ -20,9 +20,11 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.data.firework.SerialFireworkEffect;
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 public abstract class FireworkEffectData<T> implements SerialItemData<T> {
@@ -49,7 +51,7 @@ public abstract class FireworkEffectData<T> implements SerialItemData<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(final JSONHelper json) {
+  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     this.effect = SerialFireworkEffect.readJSON(new JSONHelper(json.getJSON("effect_info")));
   }

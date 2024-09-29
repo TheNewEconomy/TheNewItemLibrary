@@ -20,8 +20,10 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
@@ -50,7 +52,7 @@ public abstract class MapData<T> implements SerialItemData<T> {
   }
 
   @Override
-  public void readJSON(final JSONHelper json) {
+  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     if(json.has("location")) location = json.getString("location");
     if(json.has("colour")) colorRGB = json.getInteger("colour");

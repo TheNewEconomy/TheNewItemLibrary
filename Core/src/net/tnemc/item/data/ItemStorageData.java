@@ -22,17 +22,17 @@ package net.tnemc.item.data;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public abstract class ItemStorageData<T> implements SerialItemData<T> {
 
-  protected final Map<Integer, SerialItem<T>> items = new HashMap<>();
+  protected final Map<Integer, AbstractItemStack<T>> items = new HashMap<>();
 
   @Override
   public JSONObject toJSON() {
@@ -44,16 +44,19 @@ public abstract class ItemStorageData<T> implements SerialItemData<T> {
     return itemsObj;
   }
 
+  /**
+   * Reads JSON data and converts it back to a {@link SerialItemData} object.
+   *
+   * @param json The JSONHelper instance of the json data.
+   */
   @Override
-  public void readJSON(final JSONHelper json) {
+  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     json.getJSON("items").forEach((key, value)->{
-      final int slot = Integer.valueOf(String.valueOf(key));
-      try {
-        items.put(slot, (SerialItem<T>)SerialItem.unserialize((JSONObject)value).get());
-      } catch(final ParseException ignore) {
+      final int slot = Integer.parseInt(String.valueOf(key));
 
-      }
+      final Optional<I> serialized = platform.initSerialized((JSONObject)value);
+      serialized.ifPresent(i->items.put(slot, i));
     });
   }
 
@@ -72,16 +75,15 @@ public abstract class ItemStorageData<T> implements SerialItemData<T> {
 
       if(items.size() != compare.items.size()) return false;
 
-      for(final Map.Entry<Integer, SerialItem<T>> entry : items.entrySet()) {
+      for(final Map.Entry<Integer, AbstractItemStack<T>> entry : items.entrySet()) {
 
         if(!compare.items.containsKey(entry.getKey())) return false;
 
-        final SerialItem<? extends T> item = (SerialItem<? extends T>)compare.items.get(entry.getKey());
-        final AbstractItemStack<? extends T> stack = item.getStack();
+        final AbstractItemStack<? extends T> item = (AbstractItemStack<? extends T>)compare.items.get(entry.getKey());
 
-        if(entry.getValue().getStack().amount() != stack.amount()) return false;
+        if(entry.getValue().amount() != item.amount()) return false;
 
-        if(!entry.getValue().getStack().similar(stack)) return false;
+        if(!entry.getValue().similar(item)) return false;
       }
       return true;
     }
@@ -102,7 +104,7 @@ public abstract class ItemStorageData<T> implements SerialItemData<T> {
     return equals(data);
   }
 
-  public Map<Integer, SerialItem<T>> getItems() {
+  public Map<Integer, AbstractItemStack<T>> getItems() {
 
     return items;
   }

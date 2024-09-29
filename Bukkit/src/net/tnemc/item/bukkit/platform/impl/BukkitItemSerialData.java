@@ -20,7 +20,6 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.BukkitMetaBuild;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitBaseItemSerialData;
 import org.bukkit.inventory.ItemStack;

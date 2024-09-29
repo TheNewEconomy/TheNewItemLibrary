@@ -18,9 +18,11 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
@@ -67,7 +69,7 @@ public abstract class JukeBoxComponent<T> implements SerialComponent<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(final JSONHelper json) {
+  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     song = json.getString("song");
     toolTip = json.getBoolean("toolTip");
@@ -84,7 +86,7 @@ public abstract class JukeBoxComponent<T> implements SerialComponent<T> {
   @Override
   public boolean equals(final SerialComponent<? extends T> component) {
 
-    if(component instanceof JukeBoxComponent<?> jukeBox) {
+    if(component instanceof final JukeBoxComponent<?> jukeBox) {
 
       return jukeBox.toolTip == toolTip && Objects.equals(jukeBox.song, song);
     }

@@ -20,8 +20,8 @@ package net.tnemc.item.paper;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.InventoryType;
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.data.ItemStorageData;
 import net.tnemc.item.providers.CalculationsProvider;
 import org.bukkit.Bukkit;
@@ -94,11 +94,11 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
           inventory.setItem(i, null);
         } else {
           if(locale.data().isPresent() && locale.data().get() instanceof ItemStorageData) {
-            final Iterator<Map.Entry<Integer, SerialItem>> it = ((ItemStorageData)locale.data().get()).getItems().entrySet().iterator();
+            final Iterator<Map.Entry<Integer, PaperItemStack>> it = ((ItemStorageData)locale.data().get()).getItems().entrySet().iterator();
             while(it.hasNext()) {
-              final Map.Entry<Integer, SerialItem> entry = it.next();
+              final Map.Entry<Integer, PaperItemStack> entry = it.next();
               if(itemsEqual(comp, new PaperItemStack().of(entry.getValue()))) {
-                amount += entry.getValue().getStack().amount();
+                amount += entry.getValue().amount();
                 it.remove();
                 locale.markDirty();
               }
@@ -139,9 +139,10 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
         if(locale.data().isPresent()) {
           if(locale.data().get() instanceof ItemStorageData) {
             for(final Object obj : ((ItemStorageData)locale.data().get()).getItems().entrySet()) {
-              final Map.Entry<Integer, SerialItem> entry = ((Map.Entry<Integer, SerialItem>)obj);
+
+              final Map.Entry<Integer, PaperItemStack> entry = ((Map.Entry<Integer, PaperItemStack>)obj);
               if(itemsEqual(comp, new PaperItemStack().of(entry.getValue()))) {
-                amount += entry.getValue().getStack().amount();
+                amount += entry.getValue().amount();
               }
             }
           }
@@ -231,16 +232,21 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
       } else {
         if(itemLocale.data().isPresent() && itemLocale.data().get() instanceof ItemStorageData) {
 
-          final Iterator<Map.Entry<Integer, SerialItem>> it = ((ItemStorageData)itemLocale.data().get()).getItems().entrySet().iterator();
+          final Iterator<Map.Entry<Integer, PaperItemStack>> it = ((ItemStorageData)itemLocale.data().get()).getItems().entrySet().iterator();
           while(it.hasNext()) {
+
             if(left <= 0) break;
-            final Map.Entry<Integer, SerialItem> entry = it.next();
+            final Map.Entry<Integer, PaperItemStack> entry = it.next();
+
             if(itemsEqual(comp, new PaperItemStack().of(entry.getValue()))) {
-              if(entry.getValue().getStack().amount() <= left) {
-                left -= entry.getValue().getStack().amount();
+
+              if(entry.getValue().amount() <= left) {
+
+                left -= entry.getValue().amount();
                 it.remove();
               } else {
-                entry.getValue().getStack().setAmount(entry.getValue().getStack().amount() - left);
+
+                entry.getValue().setAmount(entry.getValue().amount() - left);
                 left = 0;
               }
               itemLocale.markDirty();

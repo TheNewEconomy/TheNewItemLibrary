@@ -20,6 +20,7 @@ package net.tnemc.item;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 public interface SerialItemData<T> {
@@ -35,8 +36,9 @@ public interface SerialItemData<T> {
    * Reads JSON data and converts it back to a {@link SerialItemData} object.
    *
    * @param json The JSONHelper instance of the json data.
+   * @param platform The {@link ItemPlatform platform} instance.
    */
-  void readJSON(JSONHelper json);
+  <I extends AbstractItemStack<T>> void readJSON(JSONHelper json, ItemPlatform<I, T> platform);
 
   /**
    * Used to determine if some data is equal to this data. This means that it has to be an exact

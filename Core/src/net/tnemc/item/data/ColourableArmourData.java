@@ -18,8 +18,10 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 /**
@@ -42,10 +44,10 @@ public abstract class ColourableArmourData<T> extends ArmourData<T> {
   }
 
   @Override
-  public void readJSON(final JSONHelper json) {
+  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     if(json.has("color")) colorRGB = json.getInteger("colour");
-    super.readJSON(json);
+    super.readJSON(json, platform);
   }
 
   /**
@@ -59,7 +61,7 @@ public abstract class ColourableArmourData<T> extends ArmourData<T> {
   @Override
   public boolean equals(final SerialItemData<? extends T> data) {
 
-    if(data instanceof ColourableArmourData<?> compare) {
+    if(data instanceof final ColourableArmourData<?> compare) {
       return colorRGB == compare.colorRGB && super.equals(compare);
     }
     return false;

@@ -21,6 +21,7 @@ package net.tnemc.item;
  */
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.component.SerialComponent;
@@ -39,8 +40,6 @@ import java.util.Set;
 public interface AbstractItemStack<T> extends Cloneable {
 
   AbstractItemStack<T> of(final String material, final int amount);
-
-  AbstractItemStack<T> of(SerialItem<T> serialItem);
 
   AbstractItemStack<T> of(T locale);
 
@@ -168,17 +167,85 @@ public interface AbstractItemStack<T> extends Cloneable {
    */
   T locale();
 
+  //Since 0.1.7.7
+  default JSONObject toJSON() {
+
+    final JSONObject json = new JSONObject();
+    json.put("slot", slot());
+    json.put("material", material());
+    json.put("amount", amount());
+    json.put("unbreakable", unbreakable());
+    if(display() != null && !Component.EQUALS.test(display(), Component.empty())) {
+      json.put("display", JSONComponentSerializer.json().serialize(display()));
+    }
+    json.put("damage", damage());
+    if(modelData() != -1) json.put("modelData", modelData());
+    if(lore() != null && !lore().isEmpty()) {
+
+      final LinkedList<String> str = new LinkedList<>();
+      for(final Component comp : lore()) {
+        str.add(JSONComponentSerializer.json().serialize(comp));
+      }
+
+      json.put("lore", String.join(",", str));
+    }
+
+    if(flags() != null && !flags().isEmpty()) {
+      json.put("flags", String.join(",", flags()));
+    }
+
+    final JSONObject object = new JSONObject();
+    enchantments().forEach(object::put);
+    json.put("enchantments", object);
+
+    if(!attributes().isEmpty()) {
+      final JSONObject attr = new JSONObject();
+
+      attributes().forEach((name, modifier)->{
+        final JSONObject mod = new JSONObject();
+
+        mod.put("id", modifier.getIdentifier().toString());
+        mod.put("name", modifier.getName());
+        mod.put("amount", modifier.getAmount());
+        mod.put("operation", modifier.getOperation().name());
+        if(modifier.getSlot() != null) mod.put("slot", modifier.getSlot().name());
+
+        attr.put(name, mod);
+      });
+      json.put("attributes", attr);
+    }
+
+    if(data().isPresent()) {
+      json.put("data", data().get().toJSON());
+    }
+    return json;
+  }
+
+  //Since 0.1.7.7
+  default String serialize() {
+
+    return toJSON().toJSONString();
+  }
+
+  //Since 0.1.7.7
   default void unserialize(final String serialized) throws ParseException {
 
     parse(new JSONHelper((JSONObject)new JSONParser().parse(serialized)));
   }
 
+  //Since 0.1.7.7
   default void unserialize(final JSONObject json) throws ParseException {
 
     parse(new JSONHelper(json));
   }
 
+  //Since 0.1.7.7
   void parse(final JSONHelper json) throws ParseException;
+
+  default boolean jsonEquals(final AbstractItemStack<T> serial) {
+
+    return serialize().equals(serial.serialize());
+  }
 
   default boolean textComponentsEqual(final List<Component> list1, final List<Component> list2) {
 

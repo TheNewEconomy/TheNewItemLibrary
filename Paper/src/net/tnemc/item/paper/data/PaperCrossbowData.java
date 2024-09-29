@@ -20,7 +20,6 @@ package net.tnemc.item.paper.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.data.CrossBowData;
@@ -44,7 +43,7 @@ public class PaperCrossbowData extends CrossBowData<ItemStack> {
     if(meta != null) {
       int i = 0;
       for(final ItemStack item : meta.getChargedProjectiles()) {
-        items.put(i, new SerialItem<>(PaperItemStack.locale(item)));
+        items.put(i, PaperItemStack.locale(item));
         i++;
       }
     }
@@ -61,7 +60,7 @@ public class PaperCrossbowData extends CrossBowData<ItemStack> {
     final CrossbowMeta meta = (CrossbowMeta)ParsingUtil.buildFor(stack, CrossbowMeta.class);
 
 
-    items.forEach((slot, item)->meta.addChargedProjectile(item.getStack().locale()));
+    items.forEach((slot, item)->meta.addChargedProjectile(item.locale()));
 
     return stack;
   }

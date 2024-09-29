@@ -20,7 +20,6 @@ package net.tnemc.item.paper.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.data.BundleData;
@@ -44,7 +43,7 @@ public class PaperBundleData extends BundleData<ItemStack> {
     if(meta != null) {
       int i = 0;
       for(final ItemStack item : meta.getItems()) {
-        items.put(i, new SerialItem<>(PaperItemStack.locale(item)));
+        items.put(i, PaperItemStack.locale(item));
         i++;
       }
     }
@@ -61,7 +60,7 @@ public class PaperBundleData extends BundleData<ItemStack> {
     final BundleMeta meta = (BundleMeta)ParsingUtil.buildFor(stack, BundleMeta.class);
 
 
-    items.forEach((slot, item)->meta.addItem(item.getStack().locale()));
+    items.forEach((slot, item)->meta.addItem(item.locale()));
     stack.setItemMeta(meta);
 
     return stack;

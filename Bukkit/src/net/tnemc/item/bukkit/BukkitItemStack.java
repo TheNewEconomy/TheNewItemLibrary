@@ -25,7 +25,6 @@ import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.attribute.SerialAttributeOperation;
@@ -89,10 +88,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
-  @Override
-  public BukkitItemStack of(final SerialItem<ItemStack> serialItem) {
-
-    final BukkitItemStack stack = (BukkitItemStack)serialItem.getStack();
+  public BukkitItemStack of(final BukkitItemStack stack) {
 
     flags.addAll(stack.flags);
     attributes.putAll(stack.attributes);

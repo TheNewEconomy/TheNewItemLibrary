@@ -21,6 +21,8 @@ package net.tnemc.sponge.platform;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.sponge.SpongeItemStack;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.item.inventory.ItemStack;
 
@@ -52,6 +54,23 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack>
   @Override
   public void addDefaults() {
 
+  }
+
+  /**
+   * Initializes and returns an AbstractItemStack object by deserializing the provided JSON object.
+   *
+   * @param object the JSON object to deserialize
+   *
+   * @return an initialized AbstractItemStack object
+   */
+  @Override
+  public Optional<SpongeItemStack> initSerialized(final JSONObject object) {
+
+    try {
+      return Optional.ofNullable(new SpongeItemStack().of(object));
+    } catch(final ParseException e) {
+      return Optional.empty();
+    }
   }
 
   @Override

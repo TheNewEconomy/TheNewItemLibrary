@@ -20,8 +20,10 @@ package net.tnemc.sponge.data.abs;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 public abstract class DyeData<T> implements SerialItemData<T> {
@@ -38,7 +40,7 @@ public abstract class DyeData<T> implements SerialItemData<T> {
   }
 
   @Override
-  public void readJSON(final JSONHelper json) {
+  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     if(json.has("dye")) dye = json.getString("dye");
   }
@@ -54,7 +56,7 @@ public abstract class DyeData<T> implements SerialItemData<T> {
   @Override
   public boolean equals(final SerialItemData<? extends T> data) {
 
-    if(data instanceof DyeData<?> compare) {
+    if(data instanceof final DyeData<?> compare) {
       return dye.equals(compare.dye);
     }
     return false;

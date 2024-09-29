@@ -27,6 +27,7 @@ import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.check.LocaleItemCheck;
 import net.tnemc.item.platform.serialize.ItemSerializer;
 import org.jetbrains.annotations.NotNull;
+import org.json.simple.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -260,6 +261,14 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
     }
     return serialized;
   }
+
+  /**
+   * Initializes and returns an AbstractItemStack object by deserializing the provided JSON object.
+   *
+   * @param object the JSON object to deserialize
+   * @return an initialized AbstractItemStack object
+   */
+  public abstract Optional<I> initSerialized(final JSONObject object);
 
   public abstract Optional<SerialItemData<T>> parseMeta(final T stack);
 

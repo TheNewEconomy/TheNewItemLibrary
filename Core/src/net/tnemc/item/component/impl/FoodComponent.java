@@ -18,12 +18,12 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +39,7 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
 
   protected final List<FoodRule> rules = new LinkedList<>();
 
-  protected SerialItem<T> convertsTo;
+  protected AbstractItemStack<T> convertsTo;
 
   protected boolean noHunger;
   protected float eatTime;
@@ -87,7 +87,7 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(final JSONHelper json) {
+  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     noHunger = json.getBoolean("noHunger");
     eatTime = json.getFloat("eatTime");
@@ -95,13 +95,10 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
     nutrition = json.getInteger("nutrition");
 
     if(json.has("convertsTo")) {
-      try {
-        final Optional<SerialItem<T>> convertOptional = SerialItem.unserialize(json.getJSON("convertsTo"));
 
-        convertOptional.ifPresent(tSerialItem->this.convertsTo = tSerialItem);
+      final Optional<I> convertOptional = platform.initSerialized(json.getJSON("convertsTo"));
+      convertOptional.ifPresent(tSerialItem->this.convertsTo = tSerialItem);
 
-      } catch(ParseException ignore) {
-      }
     }
 
     if(json.has("rules")) {
@@ -123,7 +120,7 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   @Override
   public boolean equals(final SerialComponent<? extends T> component) {
 
-    if(component instanceof FoodComponent<?> food) {
+    if(component instanceof final FoodComponent<?> food) {
 
       //TODO: This.
     }

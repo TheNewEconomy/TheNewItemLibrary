@@ -21,7 +21,6 @@ package net.tnemc.item.paper.platform.impl;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitBaseItemSerialData;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.PaperMetaBuild;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
 import org.bukkit.inventory.ItemStack;
 

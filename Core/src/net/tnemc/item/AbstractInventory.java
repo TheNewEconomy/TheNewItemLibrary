@@ -32,7 +32,7 @@ public interface AbstractInventory<T, I> {
    */
   T inventory();
 
-  boolean canFit(SerialItem<I> item);
+  boolean canFit(AbstractItemStack<I> item);
 
   /**
    * Used to add an item to the inventory.
@@ -43,7 +43,7 @@ public interface AbstractInventory<T, I> {
    * @return If drop is set to true this is an empty optional, or if drop is false then this is an
    * optional containing the leftover items that wouldn't fit into the inventory.
    */
-  Optional<SerialItem<I>> addItem(SerialItem<I> item, boolean drop);
+  Optional<AbstractItemStack<I>> addItem(AbstractItemStack<I> item, boolean drop);
 
   /**
    * Used to set a specific slot as a specific item.
@@ -55,5 +55,5 @@ public interface AbstractInventory<T, I> {
    * @return If drop is set to true this is an empty optional, or if drop is false then this is an
    * optional containing the item that was in the slot before if applicable.
    */
-  Optional<SerialItem<I>> setSlot(int slot, SerialItem<I> item, boolean drop);
+  Optional<AbstractItemStack<I>> setSlot(int slot, AbstractItemStack<I> item, boolean drop);
 }

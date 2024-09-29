@@ -3,7 +3,6 @@ package net.tnemc.sponge;
 import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.component.SerialComponent;
@@ -61,10 +60,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
-  @Override
-  public SpongeItemStack of(final SerialItem<ItemStack> serialItem) {
-
-    final SpongeItemStack stack = (SpongeItemStack)serialItem.getStack();
+  public SpongeItemStack of(final SpongeItemStack stack) {
 
     flags.addAll(stack.flags);
     attributes.putAll(stack.attributes);

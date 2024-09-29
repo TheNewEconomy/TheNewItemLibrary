@@ -19,9 +19,11 @@ package net.tnemc.item.component.impl;
  */
 
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 import java.util.LinkedList;
@@ -78,7 +80,7 @@ public abstract class ToolComponent<T> implements SerialComponent<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(final JSONHelper json) {
+  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     defaultSpeed = json.getFloat("defaultSpeed");
     blockDamage = json.getInteger("blockDamage");
@@ -102,7 +104,7 @@ public abstract class ToolComponent<T> implements SerialComponent<T> {
   @Override
   public boolean equals(final SerialComponent<? extends T> component) {
 
-    if(component instanceof ToolComponent<?> tool) {
+    if(component instanceof final ToolComponent<?> tool) {
 
       //TODO: This.
     }

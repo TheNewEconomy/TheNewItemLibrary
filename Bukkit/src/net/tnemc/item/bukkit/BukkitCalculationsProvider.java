@@ -21,7 +21,6 @@ package net.tnemc.item.bukkit;
  */
 
 import net.tnemc.item.InventoryType;
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.data.ItemStorageData;
 import net.tnemc.item.providers.CalculationsProvider;
 import org.bukkit.Bukkit;
@@ -86,19 +85,24 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
       final ItemStack item = inventory.getItem(i);
       if(item != null) {
+
         final BukkitItemStack locale = BukkitItemStack.locale(item);
         final boolean equal = itemsEqual(comp, locale);
 
         if(equal) {
+
           amount += item.getAmount();
           inventory.setItem(i, null);
         } else {
           if(locale.data().isPresent() && locale.data().get() instanceof ItemStorageData) {
-            final Iterator<Map.Entry<Integer, SerialItem>> it = ((ItemStorageData)locale.data().get()).getItems().entrySet().iterator();
+
+            final Iterator<Map.Entry<Integer, BukkitItemStack>> it = ((ItemStorageData)locale.data().get()).getItems().entrySet().iterator();
             while(it.hasNext()) {
-              final Map.Entry<Integer, SerialItem> entry = it.next();
+
+              final Map.Entry<Integer, BukkitItemStack> entry = it.next();
               if(itemsEqual(comp, new BukkitItemStack().of(entry.getValue()))) {
-                amount += entry.getValue().getStack().amount();
+
+                amount += entry.getValue().amount();
                 it.remove();
                 locale.markDirty();
               }
@@ -135,10 +139,13 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
         if(locale.data().isPresent()) {
           if(locale.data().get() instanceof ItemStorageData) {
+
             for(final Object obj : ((ItemStorageData)locale.data().get()).getItems().entrySet()) {
-              final Map.Entry<Integer, SerialItem> entry = ((Map.Entry<Integer, SerialItem>)obj);
+
+              final Map.Entry<Integer, BukkitItemStack> entry = ((Map.Entry<Integer, BukkitItemStack>)obj);
               if(itemsEqual(comp, new BukkitItemStack().of(entry.getValue()))) {
-                amount += entry.getValue().getStack().amount();
+
+                amount += entry.getValue().amount();
               }
             }
           }
@@ -228,16 +235,21 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
       } else {
         if(itemLocale.data().isPresent() && itemLocale.data().get() instanceof ItemStorageData) {
 
-          final Iterator<Map.Entry<Integer, SerialItem>> it = ((ItemStorageData)itemLocale.data().get()).getItems().entrySet().iterator();
+          final Iterator<Map.Entry<Integer, BukkitItemStack>> it = ((ItemStorageData)itemLocale.data().get()).getItems().entrySet().iterator();
           while(it.hasNext()) {
+
             if(left <= 0) break;
-            final Map.Entry<Integer, SerialItem> entry = it.next();
+
+            final Map.Entry<Integer, BukkitItemStack> entry = it.next();
             if(itemsEqual(comp, new BukkitItemStack().of(entry.getValue()))) {
-              if(entry.getValue().getStack().amount() <= left) {
-                left -= entry.getValue().getStack().amount();
+
+              if(entry.getValue().amount() <= left) {
+
+                left -= entry.getValue().amount();
                 it.remove();
               } else {
-                entry.getValue().getStack().setAmount(entry.getValue().getStack().amount() - left);
+
+                entry.getValue().setAmount(entry.getValue().amount() - left);
                 left = 0;
               }
               itemLocale.markDirty();

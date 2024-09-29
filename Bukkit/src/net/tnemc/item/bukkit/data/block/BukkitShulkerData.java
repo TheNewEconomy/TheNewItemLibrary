@@ -20,7 +20,6 @@ package net.tnemc.item.bukkit.data.block;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItem;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkitbase.ParsingUtil;
@@ -44,7 +43,7 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
 
     final BlockStateMeta meta = (BlockStateMeta)stack.getItemMeta();
 
-    if(meta != null && meta.getBlockState() instanceof ShulkerBox box) {
+    if(meta != null && meta.getBlockState() instanceof final ShulkerBox box) {
 
       if(box.getColor() != null) {
         colorRGB = box.getColor().getColor().asRGB();
@@ -53,7 +52,7 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
       final Inventory inventory = box.getInventory();
       for(int i = 0; i < inventory.getSize(); i++) {
         if(inventory.getItem(i) != null && !inventory.getItem(i).getType().equals(Material.AIR)) {
-          items.put(i, new SerialItem<>(BukkitItemStack.locale(inventory.getItem(i))));
+          items.put(i, BukkitItemStack.locale(inventory.getItem(i)));
         }
       }
     }
@@ -69,9 +68,9 @@ public class BukkitShulkerData extends ShulkerData<ItemStack> {
 
     final BlockStateMeta meta = (BlockStateMeta)ParsingUtil.buildFor(stack, BlockStateMeta.class);
 
-    if(meta.getBlockState() instanceof ShulkerBox box) {
+    if(meta.getBlockState() instanceof final ShulkerBox box) {
 
-      items.forEach((slot, item)->box.getInventory().setItem(slot, item.getStack().locale()));
+      items.forEach((slot, item)->box.getInventory().setItem(slot, item.locale()));
       box.update(true);
       meta.setBlockState(box);
       stack.setItemMeta(meta);

@@ -18,8 +18,10 @@ package net.tnemc.item.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
@@ -59,12 +61,12 @@ public abstract class BookData<T> extends WritableBookData<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public void readJSON(final JSONHelper json) {
+  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     if(json.has("title")) title = json.getString("title");
     if(json.has("author")) author = json.getString("author");
     if(json.has("generation")) generation = json.getString("generation");
-    super.readJSON(json);
+    super.readJSON(json, platform);
   }
 
   /**
@@ -78,7 +80,7 @@ public abstract class BookData<T> extends WritableBookData<T> {
   @Override
   public boolean equals(final SerialItemData<? extends T> data) {
 
-    if(data instanceof BookData<?> bookData) {
+    if(data instanceof final BookData<?> bookData) {
       return Objects.equals(author, bookData.author) && Objects.equals(title, bookData.title)
              && Objects.equals(generation, bookData.generation) && pages.equals(bookData.pages);
     }
@@ -96,7 +98,7 @@ public abstract class BookData<T> extends WritableBookData<T> {
   @Override
   public boolean similar(final SerialItemData<? extends T> data) {
 
-    if(data instanceof BookData<?> bookData) {
+    if(data instanceof final BookData<?> bookData) {
       return Objects.equals(author, bookData.author) && Objects.equals(title, bookData.title)
              && pages.equals(bookData.pages);
     }
