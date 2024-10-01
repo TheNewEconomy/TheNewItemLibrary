@@ -6,6 +6,8 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.persistent.PersistentDataHolder;
+import net.tnemc.item.persistent.PersistentDataType;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.sponge.platform.SpongeItemPlatform;
 import org.json.simple.JSONObject;
@@ -23,6 +25,7 @@ import java.util.Optional;
 
 public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
+  private final PersistentDataHolder holder = new PersistentDataHolder();
   private final Map<String, SerialItemData<ItemStack>> data = new HashMap<>();
   private final Map<String, SerialComponent<ItemStack>> components = new HashMap<>();
 
@@ -287,6 +290,17 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
+  public AbstractItemStack<ItemStack> applyPersistentHolder(final PersistentDataHolder newHolder, final boolean replaceOld) {
+
+    if(replaceOld) {
+      this.holder.getData().clear();
+    }
+
+    this.holder.getData().putAll(newHolder.getData());
+    return this;
+  }
+
+  @Override
   public List<String> flags() {
 
     return flags;
@@ -314,6 +328,12 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public Map<String, SerialComponent<ItemStack>> components() {
 
     return components;
+  }
+
+  @Override
+  public PersistentDataHolder persistentHolder() {
+
+    return holder;
   }
 
   @Override
@@ -459,6 +479,10 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public void parse(final JSONHelper json) throws ParseException {
 
+
+    if(json.has("persistent-data")) {
+      holder.readJSON(json.getJSON("persistent-data"), SpongeItemPlatform.PLATFORM);
+    }
   }
 
   private ResourceKey fromString() {

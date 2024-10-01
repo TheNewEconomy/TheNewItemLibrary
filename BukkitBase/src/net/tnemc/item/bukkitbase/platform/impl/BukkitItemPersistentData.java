@@ -21,6 +21,7 @@ package net.tnemc.item.bukkitbase.platform.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.platform.impl.ItemPersistentData;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * BukkitItemPersistentData
@@ -50,6 +51,15 @@ public class BukkitItemPersistentData<I extends AbstractItemStack<ItemStack>> ex
    */
   @Override
   public I serialize(final ItemStack item, final I serialized) {
+
+    //pdc.set(test, PersistentDataType.INTEGER, progress);
+    //pdc.get(test, PersistentDataType.INTEGER);
+    if(item.hasItemMeta()) {
+      final ItemMeta meta = item.getItemMeta();
+
+      //meta.getPersistentDataContainer().
+
+    }
 
     return null;
   }

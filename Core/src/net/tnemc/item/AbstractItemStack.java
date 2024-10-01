@@ -106,12 +106,12 @@ public interface AbstractItemStack<T> extends Cloneable {
   //since 0.1.7.7
   default AbstractItemStack<T> applyPersistent(final PersistentDataType<?> data) {
 
-    persistentData().put(data.identifier(), data);
+    persistentHolder().getData().put(data.identifier(), data);
     return this;
   }
 
   //since 0.1.7.7
-  AbstractItemStack<T> applyPersistentHolder(final PersistentDataHolder holder);
+  AbstractItemStack<T> applyPersistentHolder(final PersistentDataHolder newHolder, boolean replaceOld);
 
   List<String> flags();
 
@@ -123,9 +123,6 @@ public interface AbstractItemStack<T> extends Cloneable {
 
   //since 0.1.7.7
   Map<String, SerialComponent<T>> components();
-
-  //since 0.1.7.7
-  Map<String, PersistentDataType<?>> persistentData();
 
   //since 0.1.7.7
   PersistentDataHolder persistentHolder();

@@ -30,6 +30,7 @@ import net.tnemc.item.attribute.SerialAttributeOperation;
 import net.tnemc.item.attribute.SerialAttributeSlot;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
+import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.SkullProfile;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -55,6 +56,7 @@ import java.util.UUID;
  */
 public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
+  private final PersistentDataHolder holder = new PersistentDataHolder();
   private final List<String> flags = new ArrayList<>();
   private final Map<String, SerialAttribute> attributes = new HashMap<>();
   private final Map<String, Integer> enchantments = new HashMap<>();
@@ -337,6 +339,17 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   }
 
   @Override
+  public AbstractItemStack<ItemStack> applyPersistentHolder(final PersistentDataHolder newHolder, final boolean replaceOld) {
+
+    if(replaceOld) {
+      this.holder.getData().clear();
+    }
+
+    this.holder.getData().putAll(newHolder.getData());
+    return this;
+  }
+
+  @Override
   public List<String> flags() {
 
     return flags;
@@ -364,6 +377,12 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   public Map<String, SerialComponent<ItemStack>> components() {
 
     return components;
+  }
+
+  @Override
+  public PersistentDataHolder persistentHolder() {
+
+    return holder;
   }
 
   @Override
@@ -605,6 +624,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
       });
 
       attribute(attributes);
+    }
+
+
+    if(json.has("persistent-data")) {
+      holder.readJSON(json.getJSON("persistent-data"), PaperItemPlatform.PLATFORM);
     }
 
     // Optional custom data

@@ -317,6 +317,13 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    */
   public abstract Optional<I> initSerialized(final JSONObject object);
 
+  /**
+   * Parses the meta of the given stack and returns an Optional containing the SerialItemData.
+   *
+   * @param stack The stack to parse the meta from.
+   * @param <T>   The type of the stack.
+   * @return Optional containing the SerialItemData, empty if the meta parsing failed.
+   */
   public abstract Optional<SerialItemData<T>> parseMeta(final T stack);
 
   public static String componentString(@NotNull final Component component) {

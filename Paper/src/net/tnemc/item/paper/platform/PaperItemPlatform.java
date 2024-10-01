@@ -43,6 +43,7 @@ import net.tnemc.item.bukkitbase.platform.impl.BukkitItemFireResistant;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemFlag;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemMaxStack;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemModelData;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemPersistentData;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemRarity;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemTooltip;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemUnbreakable;
