@@ -22,30 +22,23 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.helper.FoodRule;
+import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
- * FoodComponent
+ * UseComponent
  *
  * @author creatorfromhell
- * @since 0.0.1.0
+ * @since 0.1.7.7
  */
-public abstract class FoodComponent<T> implements SerialComponent<T> {
+public abstract class UseComponent<T> implements SerialComponent<T> {
 
-  protected final List<FoodRule> rules = new LinkedList<>();
-
-  protected AbstractItemStack<T> convertsTo;
-
-  protected boolean noHunger;
-  protected float eatTime;
-  protected float saturation;
-  protected int nutrition;
+  protected String group;
+  protected float seconds;
 
   /**
    * @return the type of component this is.
@@ -53,7 +46,7 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   @Override
   public String getType() {
 
-    return "food";
+    return "use";
   }
 
   /**
@@ -64,22 +57,11 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   @Override
   public JSONObject toJSON() {
 
-    final JSONObject food = new JSONObject();
-    food.put("name", "food-component");
-    food.put("noHunger", noHunger);
-    food.put("eatTime", eatTime);
-    food.put("saturation", saturation);
-    food.put("nutrition", nutrition);
-    food.put("convertsTo", convertsTo.toJSON());
-
-    if(!rules.isEmpty()) {
-      final JSONObject rulesObj = new JSONObject();
-      for(int it = 0; it < rules.size(); it++) {
-        rulesObj.put(it, rules.get(it).toJSON());
-      }
-      food.put("rules", rulesObj);
-    }
-    return food;
+    final JSONObject use = new JSONObject();
+    use.put("name", "use-component");
+    use.put("group", group);
+    use.put("seconds", seconds);
+    return use;
   }
 
   /**
@@ -90,24 +72,8 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   @Override
   public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
-    noHunger = json.getBoolean("noHunger");
-    eatTime = json.getFloat("eatTime");
-    saturation = json.getFloat("saturation");
-    nutrition = json.getInteger("nutrition");
-
-    if(json.has("convertsTo")) {
-
-      final Optional<I> convertOptional = platform.initSerialized(json.getJSON("convertsTo"));
-      convertOptional.ifPresent(tSerialItem->this.convertsTo = tSerialItem);
-
-    }
-
-    if(json.has("rules")) {
-      final JSONHelper rulesObj = json.getHelper("rules");
-      rules.clear();
-
-      rulesObj.getObject().forEach((key, value)->rules.add(FoodRule.readJSON(new JSONHelper((JSONObject)value))));
-    }
+    group = json.getString("group");
+    seconds = json.getFloat("seconds");
   }
 
   /**
@@ -121,9 +87,9 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   @Override
   public boolean equals(final SerialComponent<? extends T> component) {
 
-    if(component instanceof final FoodComponent<?> food) {
+    if(component instanceof final UseComponent<?> equipComponent) {
 
-      //TODO: This.
+      return equipComponent.seconds == seconds && equipComponent.group.equals(group);
     }
     return false;
   }

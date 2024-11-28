@@ -23,6 +23,7 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.component.helper.ToolRule;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 

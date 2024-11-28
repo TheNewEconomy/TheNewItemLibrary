@@ -19,18 +19,20 @@ package net.tnemc.item.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.component.impl.EnchantableComponent;
+import net.tnemc.item.component.impl.JukeBoxComponent;
 import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.serialize.ItemSerializer;
 import net.tnemc.item.providers.VersionUtil;
 
 /**
- * ItemFireResistant
+ * ItemEnchantable
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public abstract class ItemFireResistant<I extends AbstractItemStack<T>, T> implements ItemCheck<T>, ItemApplicator<I, T>, ItemSerializer<I, T> {
+public abstract class ItemEnchantable<I extends AbstractItemStack<T>, T> implements ItemCheck<T>, ItemApplicator<I, T>, ItemSerializer<I, T> {
 
   /**
    * @return the identifier for this check.
@@ -38,7 +40,7 @@ public abstract class ItemFireResistant<I extends AbstractItemStack<T>, T> imple
   @Override
   public String identifier() {
 
-    return "fire-resistant";
+    return "enchantable";
   }
 
   /**
@@ -49,7 +51,7 @@ public abstract class ItemFireResistant<I extends AbstractItemStack<T>, T> imple
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOne(version);
+    return VersionUtil.isOneTwentyOneThree(version);
   }
 
   /**
@@ -61,6 +63,12 @@ public abstract class ItemFireResistant<I extends AbstractItemStack<T>, T> imple
   @Override
   public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
 
-    return original.fireResistant() == check.fireResistant();
+    if(original.components().containsKey("enchant") && check.components().containsKey("enchant")) {
+      final EnchantableComponent<T> originalEnchant = (EnchantableComponent<T>)original.components().get("enchant");
+      final EnchantableComponent<T> checkEnchant = (EnchantableComponent<T>)check.components().get("enchant");
+
+      return originalEnchant.equals(checkEnchant);
+    }
+    return false;
   }
 }

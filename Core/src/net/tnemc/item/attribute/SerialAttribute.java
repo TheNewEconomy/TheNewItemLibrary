@@ -19,6 +19,8 @@ package net.tnemc.item.attribute;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.helper.EquipSlot;
+
 import java.util.UUID;
 
 public class SerialAttribute {
@@ -26,7 +28,7 @@ public class SerialAttribute {
   private UUID identifier;
   private String name;
   private double amount;
-  private SerialAttributeSlot slot = null;
+  private EquipSlot slot = null;
   private SerialAttributeOperation operation;
 
   public SerialAttribute(final String name, final double amount, final SerialAttributeOperation operation) {
@@ -39,7 +41,7 @@ public class SerialAttribute {
     this(identifier, name, amount, operation, null);
   }
 
-  public SerialAttribute(final UUID identifier, final String name, final double amount, final SerialAttributeOperation operation, final SerialAttributeSlot slot) {
+  public SerialAttribute(final UUID identifier, final String name, final double amount, final SerialAttributeOperation operation, final EquipSlot slot) {
 
     this.identifier = identifier;
     this.name = name;
@@ -80,12 +82,12 @@ public class SerialAttribute {
     this.amount = amount;
   }
 
-  public SerialAttributeSlot getSlot() {
+  public EquipSlot getSlot() {
 
     return slot;
   }
 
-  public void setSlot(final SerialAttributeSlot slot) {
+  public void setSlot(final EquipSlot slot) {
 
     this.slot = slot;
   }

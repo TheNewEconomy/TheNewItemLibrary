@@ -19,17 +19,19 @@ package net.tnemc.item.bukkitbase.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.impl.ItemFireResistant;
+import net.tnemc.item.platform.impl.ItemGlider;
+import net.tnemc.item.platform.impl.ItemModel;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * BukkitItemFireResistant
+ * BukkitItemModel
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemFireResistant<I extends AbstractItemStack<ItemStack>> extends ItemFireResistant<I, ItemStack> {
+public class BukkitItemModel<I extends AbstractItemStack<ItemStack>> extends ItemModel<I, ItemStack> {
 
   /**
    * @param serialized the serialized item stack to use
@@ -43,7 +45,7 @@ public class BukkitItemFireResistant<I extends AbstractItemStack<ItemStack>> ext
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
 
-      meta.setFireResistant(serialized.fireResistant());
+      meta.setItemModel(NamespacedKey.fromString(serialized.model()));
       item.setItemMeta(meta);
     }
     return item;
@@ -59,8 +61,8 @@ public class BukkitItemFireResistant<I extends AbstractItemStack<ItemStack>> ext
   public I serialize(final ItemStack item, final I serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null) {
-      serialized.fireResistant(meta.isFireResistant());
+    if(meta != null && meta.hasItemModel()) {
+      serialized.model(meta.getItemModel().toString());
     }
     return serialized;
   }

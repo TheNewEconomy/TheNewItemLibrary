@@ -1,8 +1,6 @@
-package net.tnemc.item.attribute;
-
+package net.tnemc.item.component.helper;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -20,12 +18,19 @@ package net.tnemc.item.attribute;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-public enum SerialAttributeSlot {
+/**
+ * EquipSlot
+ *
+ * @author creatorfromhell
+ * @since 0.1.7.7
+ */
+public enum EquipSlot {
 
-  MAIN_HAND,
-  OFF_HAND,
+  BODY,
   HEAD,
   CHEST,
   LEGS,
-  FEET
+  FEET,
+  HAND,
+  OFF_HAND
 }

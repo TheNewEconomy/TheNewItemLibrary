@@ -1,4 +1,4 @@
-package net.tnemc.item.component.impl;
+package net.tnemc.item.component.helper;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar

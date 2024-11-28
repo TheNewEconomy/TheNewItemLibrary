@@ -10,6 +10,8 @@ import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.persistent.PersistentDataType;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.sponge.platform.SpongeItemPlatform;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.spongepowered.api.ResourceKey;
@@ -19,6 +21,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -105,6 +108,21 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     unserialize(json);
 
     return this;
+  }
+
+  /**
+   * Sets the resistance properties of the item stack.
+   *
+   * @param resistence A set of resistance types.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> resistence(final HashSet<String> resistence) {
+
+    return null;
   }
 
   @Override
@@ -233,6 +251,21 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  /**
+   * Sets the model identifier for the item stack.
+   *
+   * @param model The model identifier.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> model(final String model) {
+
+    return null;
+  }
+
   @Override
   public SpongeItemStack unbreakable(final boolean unbreakable) {
 
@@ -257,12 +290,19 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  /**
+   * Sets the tooltip style for the item stack.
+   *
+   * @param tooltipStyle The tooltip style identifier.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
   @Override
-  public AbstractItemStack<ItemStack> fireResistant(final boolean fireResistant) {
+  public AbstractItemStack<ItemStack> tooltipStyle(final @NotNull String tooltipStyle) {
 
-    this.dirty = true;
-    this.fireResistant = fireResistant;
-    return this;
+    return null;
   }
 
   @Override
@@ -273,12 +313,57 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  /**
+   * Sets the enchantability level of the item stack.
+   *
+   * @param enchantable The enchantability level.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> enchantable(final int enchantable) {
+
+    return null;
+  }
+
   @Override
   public AbstractItemStack<ItemStack> rarity(final String rarity) {
 
     this.dirty = true;
     this.rarity = rarity;
     return this;
+  }
+
+  /**
+   * Sets whether the item stack can function as a glider.
+   *
+   * @param glider True if the item should act as a glider, false otherwise.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> glider(final boolean glider) {
+
+    return null;
+  }
+
+  /**
+   * Sets the item that remains after the current item stack is used.
+   *
+   * @param remainder The remaining item stack.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> remainder(final @Nullable AbstractItemStack<ItemStack> remainder) {
+
+    return null;
   }
 
   @Override
@@ -298,6 +383,19 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
     this.holder.getData().putAll(newHolder.getData());
     return this;
+  }
+
+  /**
+   * Retrieves the resistance types applied to the item stack.
+   *
+   * @return A set of resistance types.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public HashSet<String> resistence() {
+
+    return null;
   }
 
   @Override
@@ -387,6 +485,19 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     return customModelData;
   }
 
+  /**
+   * Retrieves the model identifier of the item stack.
+   *
+   * @return The model identifier.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public String model() {
+
+    return "";
+  }
+
   @Override
   public boolean unbreakable() {
 
@@ -405,10 +516,17 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     return hideTooltip;
   }
 
+  /**
+   * Retrieves the tooltip style of the item stack.
+   *
+   * @return The tooltip style identifier.
+   *
+   * @since 0.1.7.7
+   */
   @Override
-  public boolean fireResistant() {
+  public String tooltipStyle() {
 
-    return fireResistant;
+    return "";
   }
 
   @Override
@@ -417,10 +535,49 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     return enchantGlint;
   }
 
+  /**
+   * Retrieves the enchantability level of the item stack.
+   *
+   * @return The enchantability level.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public int enchantable() {
+
+    return 0;
+  }
+
   @Override
   public String rarity() {
 
     return rarity;
+  }
+
+  /**
+   * Checks if the item stack functions as a glider.
+   *
+   * @return True if the item acts as a glider, otherwise false.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public boolean glider() {
+
+    return false;
+  }
+
+  /**
+   * Retrieves the remaining item stack after the current stack is used.
+   *
+   * @return The remainder item stack.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> remainder() {
+
+    return null;
   }
 
   @Override

@@ -20,7 +20,7 @@ package net.tnemc.item.bukkit.component;
 
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.impl.ToolComponent;
-import net.tnemc.item.component.impl.ToolRule;
+import net.tnemc.item.component.helper.ToolRule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

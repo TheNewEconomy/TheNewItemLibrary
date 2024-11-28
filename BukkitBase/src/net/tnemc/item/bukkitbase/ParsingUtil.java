@@ -21,7 +21,7 @@ package net.tnemc.item.bukkitbase;
  */
 
 import net.tnemc.item.attribute.SerialAttributeOperation;
-import net.tnemc.item.attribute.SerialAttributeSlot;
+import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.data.firework.SerialFireworkEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -33,6 +33,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.tnemc.item.component.helper.EquipSlot.HAND;
 
 public class ParsingUtil {
 
@@ -76,58 +78,34 @@ public class ParsingUtil {
     return effect;
   }
 
-  public static SerialAttributeSlot attributeSlot(final EquipmentSlot slot) {
+  public static EquipSlot attributeSlot(final EquipmentSlot slot) {
 
     if(slot == null) return null;
 
-    switch(slot) {
-
-      case OFF_HAND:
-        return SerialAttributeSlot.OFF_HAND;
-
-      case HEAD:
-        return SerialAttributeSlot.HEAD;
-
-      case CHEST:
-        return SerialAttributeSlot.CHEST;
-
-      case LEGS:
-        return SerialAttributeSlot.LEGS;
-
-      case FEET:
-        return SerialAttributeSlot.FEET;
-
-      case HAND:
-      default:
-        return SerialAttributeSlot.MAIN_HAND;
-    }
+    return switch(slot) {
+      case BODY -> EquipSlot.BODY;
+      case HEAD -> EquipSlot.HEAD;
+      case CHEST -> EquipSlot.CHEST;
+      case LEGS -> EquipSlot.LEGS;
+      case FEET -> EquipSlot.FEET;
+      case OFF_HAND -> EquipSlot.OFF_HAND;
+      default -> HAND;
+    };
   }
 
-  public static EquipmentSlot attributeSlot(final SerialAttributeSlot slot) {
+  public static EquipmentSlot attributeSlot(final EquipSlot slot) {
 
     if(slot == null) return null;
 
-    switch(slot) {
-
-      case OFF_HAND:
-        return EquipmentSlot.OFF_HAND;
-
-      case HEAD:
-        return EquipmentSlot.HEAD;
-
-      case CHEST:
-        return EquipmentSlot.CHEST;
-
-      case LEGS:
-        return EquipmentSlot.LEGS;
-
-      case FEET:
-        return EquipmentSlot.FEET;
-
-      case MAIN_HAND:
-      default:
-        return EquipmentSlot.HAND;
-    }
+    return switch(slot) {
+      case BODY -> EquipmentSlot.BODY;
+      case HEAD -> EquipmentSlot.HEAD;
+      case CHEST -> EquipmentSlot.CHEST;
+      case LEGS -> EquipmentSlot.LEGS;
+      case FEET -> EquipmentSlot.FEET;
+      case OFF_HAND -> EquipmentSlot.OFF_HAND;
+      default -> EquipmentSlot.HAND;
+    };
   }
 
   public static SerialAttributeOperation attributeOperation(final AttributeModifier.Operation operation) {

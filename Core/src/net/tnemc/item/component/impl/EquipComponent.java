@@ -22,30 +22,30 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.helper.FoodRule;
+import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
- * FoodComponent
+ * EquippableComponent
  *
  * @author creatorfromhell
- * @since 0.0.1.0
+ * @since 0.1.7.7
  */
-public abstract class FoodComponent<T> implements SerialComponent<T> {
+public abstract class EquipComponent<T> implements SerialComponent<T> {
 
-  protected final List<FoodRule> rules = new LinkedList<>();
+  protected final List<String> entities = new ArrayList<>();
 
-  protected AbstractItemStack<T> convertsTo;
-
-  protected boolean noHunger;
-  protected float eatTime;
-  protected float saturation;
-  protected int nutrition;
+  protected String cameraKey;
+  protected String equipSound;
+  protected String modelKey;
+  protected EquipSlot slot;
+  protected boolean damageWithEntity;
+  protected boolean dispensable;
+  protected boolean swappable;
 
   /**
    * @return the type of component this is.
@@ -53,7 +53,7 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   @Override
   public String getType() {
 
-    return "food";
+    return "equip";
   }
 
   /**
@@ -64,22 +64,25 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   @Override
   public JSONObject toJSON() {
 
-    final JSONObject food = new JSONObject();
-    food.put("name", "food-component");
-    food.put("noHunger", noHunger);
-    food.put("eatTime", eatTime);
-    food.put("saturation", saturation);
-    food.put("nutrition", nutrition);
-    food.put("convertsTo", convertsTo.toJSON());
+    final JSONObject equip = new JSONObject();
+    equip.put("name", "equip-component");
+    equip.put("cameraKey", cameraKey);
+    equip.put("equipSound", equipSound);
+    equip.put("modelKey", modelKey);
+    equip.put("slot", slot.name());
+    equip.put("damageWithEntity", damageWithEntity);
+    equip.put("dispensable", dispensable);
+    equip.put("swappable", swappable);
 
-    if(!rules.isEmpty()) {
-      final JSONObject rulesObj = new JSONObject();
-      for(int it = 0; it < rules.size(); it++) {
-        rulesObj.put(it, rules.get(it).toJSON());
+    if(!entities.isEmpty()) {
+
+      final JSONObject entitiesOBJ = new JSONObject();
+      for(int i = 0; i < entities.size(); i++) {
+        entitiesOBJ.put(i, entities.get(i));
       }
-      food.put("rules", rulesObj);
+      equip.put("entities", entitiesOBJ);
     }
-    return food;
+    return equip;
   }
 
   /**
@@ -90,23 +93,19 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   @Override
   public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
-    noHunger = json.getBoolean("noHunger");
-    eatTime = json.getFloat("eatTime");
-    saturation = json.getFloat("saturation");
-    nutrition = json.getInteger("nutrition");
+    cameraKey = json.getString("cameraKey");
+    equipSound = json.getString("equipSound");
+    modelKey = json.getString("modelKey");
+    slot = EquipSlot.valueOf(json.getString("slot"));
+    damageWithEntity = json.getBoolean("damageWithEntity");
+    dispensable = json.getBoolean("dispensable");
+    swappable = json.getBoolean("swappable");
 
-    if(json.has("convertsTo")) {
+    if(json.has("entities")) {
 
-      final Optional<I> convertOptional = platform.initSerialized(json.getJSON("convertsTo"));
-      convertOptional.ifPresent(tSerialItem->this.convertsTo = tSerialItem);
-
-    }
-
-    if(json.has("rules")) {
-      final JSONHelper rulesObj = json.getHelper("rules");
-      rules.clear();
-
-      rulesObj.getObject().forEach((key, value)->rules.add(FoodRule.readJSON(new JSONHelper((JSONObject)value))));
+      final JSONObject entitiesOBJ = json.getJSON("entities");
+      entities.clear();
+      entitiesOBJ.forEach((key, entity)->entities.add(String.valueOf(entity)));
     }
   }
 
@@ -121,7 +120,7 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   @Override
   public boolean equals(final SerialComponent<? extends T> component) {
 
-    if(component instanceof final FoodComponent<?> food) {
+    if(component instanceof final EquipComponent<?> equipComponent) {
 
       //TODO: This.
     }

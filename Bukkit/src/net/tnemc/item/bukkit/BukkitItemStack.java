@@ -31,6 +31,7 @@ import net.tnemc.item.attribute.SerialAttributeOperation;
 import net.tnemc.item.attribute.SerialAttributeSlot;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.persistent.PersistentDataType;
 import net.tnemc.item.providers.SkullProfile;
@@ -38,12 +39,15 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +77,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   private int customModelData = -1;
   private boolean unbreakable = false;
   private boolean hideTooltip = false;
-  private boolean fireResistant = false;
   private boolean enchantGlint = false;
   private String rarity = "COMMON";
   private SerialItemData<ItemStack> data;
@@ -108,7 +111,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     customModelData = stack.customModelData;
     unbreakable = stack.unbreakable;
     hideTooltip = stack.hideTooltip;
-    fireResistant = stack.fireResistant;
     enchantGlint = stack.enchantGlint;
     rarity = stack.rarity;
 
@@ -137,6 +139,21 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     unserialize(json);
 
     return this;
+  }
+
+  /**
+   * Sets the resistance properties of the item stack.
+   *
+   * @param resistence A set of resistance types.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> resistence(final HashSet<String> resistence) {
+
+    return null;
   }
 
   @Override
@@ -267,6 +284,21 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  /**
+   * Sets the model identifier for the item stack.
+   *
+   * @param model The model identifier.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> model(final String model) {
+
+    return null;
+  }
+
   @Override
   public BukkitItemStack unbreakable(final boolean unbreakable) {
 
@@ -291,12 +323,19 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  /**
+   * Sets the tooltip style for the item stack.
+   *
+   * @param tooltipStyle The tooltip style identifier.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
   @Override
-  public AbstractItemStack<ItemStack> fireResistant(final boolean fireResistant) {
+  public AbstractItemStack<ItemStack> tooltipStyle(final @NotNull String tooltipStyle) {
 
-    this.dirty = true;
-    this.fireResistant = fireResistant;
-    return this;
+    return null;
   }
 
   @Override
@@ -307,12 +346,57 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  /**
+   * Sets the enchantability level of the item stack.
+   *
+   * @param enchantable The enchantability level.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> enchantable(final int enchantable) {
+
+    return null;
+  }
+
   @Override
   public AbstractItemStack<ItemStack> rarity(final String rarity) {
 
     this.dirty = true;
     this.rarity = rarity;
     return this;
+  }
+
+  /**
+   * Sets whether the item stack can function as a glider.
+   *
+   * @param glider True if the item should act as a glider, false otherwise.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> glider(final boolean glider) {
+
+    return null;
+  }
+
+  /**
+   * Sets the item that remains after the current item stack is used.
+   *
+   * @param remainder The remaining item stack.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> remainder(final @Nullable AbstractItemStack<ItemStack> remainder) {
+
+    return null;
   }
 
   public BukkitItemStack debug(final boolean debug) {
@@ -338,6 +422,19 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
     this.holder.getData().putAll(newHolder.getData());
     return this;
+  }
+
+  /**
+   * Retrieves the resistance types applied to the item stack.
+   *
+   * @return A set of resistance types.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public HashSet<String> resistence() {
+
+    return null;
   }
 
   @Override
@@ -423,6 +520,19 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return customModelData;
   }
 
+  /**
+   * Retrieves the model identifier of the item stack.
+   *
+   * @return The model identifier.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public String model() {
+
+    return "";
+  }
+
   @Override
   public boolean unbreakable() {
 
@@ -441,10 +551,17 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return hideTooltip;
   }
 
+  /**
+   * Retrieves the tooltip style of the item stack.
+   *
+   * @return The tooltip style identifier.
+   *
+   * @since 0.1.7.7
+   */
   @Override
-  public boolean fireResistant() {
+  public String tooltipStyle() {
 
-    return fireResistant;
+    return "";
   }
 
   @Override
@@ -453,10 +570,49 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return enchantGlint;
   }
 
+  /**
+   * Retrieves the enchantability level of the item stack.
+   *
+   * @return The enchantability level.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public int enchantable() {
+
+    return 0;
+  }
+
   @Override
   public String rarity() {
 
     return rarity;
+  }
+
+  /**
+   * Checks if the item stack functions as a glider.
+   *
+   * @return True if the item acts as a glider, otherwise false.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public boolean glider() {
+
+    return false;
+  }
+
+  /**
+   * Retrieves the remaining item stack after the current stack is used.
+   *
+   * @return The remainder item stack.
+   *
+   * @since 0.1.7.7
+   */
+  @Override
+  public AbstractItemStack<ItemStack> remainder() {
+
+    return null;
   }
 
   @Override
@@ -601,7 +757,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
         final SerialAttribute modifier = new SerialAttribute(id, name, amount, operation);
 
         if(modHelper.has("slot") && !modHelper.isNull("slot")) {
-          modifier.setSlot(SerialAttributeSlot.valueOf(modHelper.getString("slot")));
+          modifier.setSlot(EquipSlot.valueOf(modHelper.getString("slot")));
         }
 
         attributes.put(key.toString(), modifier);
