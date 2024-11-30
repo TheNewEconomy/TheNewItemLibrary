@@ -38,12 +38,7 @@ import java.util.Optional;
  */
 public abstract class FoodComponent<T> implements SerialComponent<T> {
 
-  protected final List<FoodRule> rules = new LinkedList<>();
-
-  protected AbstractItemStack<T> convertsTo;
-
   protected boolean noHunger;
-  protected float eatTime;
   protected float saturation;
   protected int nutrition;
 
@@ -67,18 +62,8 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
     final JSONObject food = new JSONObject();
     food.put("name", "food-component");
     food.put("noHunger", noHunger);
-    food.put("eatTime", eatTime);
     food.put("saturation", saturation);
     food.put("nutrition", nutrition);
-    food.put("convertsTo", convertsTo.toJSON());
-
-    if(!rules.isEmpty()) {
-      final JSONObject rulesObj = new JSONObject();
-      for(int it = 0; it < rules.size(); it++) {
-        rulesObj.put(it, rules.get(it).toJSON());
-      }
-      food.put("rules", rulesObj);
-    }
     return food;
   }
 
@@ -91,23 +76,8 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     noHunger = json.getBoolean("noHunger");
-    eatTime = json.getFloat("eatTime");
     saturation = json.getFloat("saturation");
     nutrition = json.getInteger("nutrition");
-
-    if(json.has("convertsTo")) {
-
-      final Optional<I> convertOptional = platform.initSerialized(json.getJSON("convertsTo"));
-      convertOptional.ifPresent(tSerialItem->this.convertsTo = tSerialItem);
-
-    }
-
-    if(json.has("rules")) {
-      final JSONHelper rulesObj = json.getHelper("rules");
-      rules.clear();
-
-      rulesObj.getObject().forEach((key, value)->rules.add(FoodRule.readJSON(new JSONHelper((JSONObject)value))));
-    }
   }
 
   /**

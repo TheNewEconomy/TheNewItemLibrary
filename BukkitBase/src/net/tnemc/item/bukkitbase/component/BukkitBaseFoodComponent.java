@@ -59,22 +59,8 @@ public class BukkitBaseFoodComponent extends FoodComponent<ItemStack> {
 
         final org.bukkit.inventory.meta.components.FoodComponent foodComponent = meta.getFood();
         this.noHunger = foodComponent.canAlwaysEat();
-        this.eatTime = foodComponent.getEatSeconds();
         this.saturation = foodComponent.getSaturation();
         this.nutrition = foodComponent.getNutrition();
-
-        for(final org.bukkit.inventory.meta.components.FoodComponent.FoodEffect foodEffect : foodComponent.getEffects()) {
-
-          final PotionEffect effect = foodEffect.getEffect();
-
-          this.rules.add(new FoodRule(new PotionEffectData(effect.getType().getName(),
-                                                           effect.getAmplifier(),
-                                                           effect.getDuration(),
-                                                           effect.hasParticles(),
-                                                           effect.isAmbient(),
-                                                           effect.hasIcon()), foodEffect.getProbability()));
-
-        }
       }
     }
   }
@@ -94,21 +80,9 @@ public class BukkitBaseFoodComponent extends FoodComponent<ItemStack> {
 
     final org.bukkit.inventory.meta.components.FoodComponent foodComponent = meta.getFood();
     foodComponent.setCanAlwaysEat(noHunger);
-    foodComponent.setEatSeconds(eatTime);
     foodComponent.setSaturation(saturation);
     foodComponent.setNutrition(nutrition);
 
-    for(final FoodRule rule : rules) {
-
-      final PotionEffectData effect = rule.getPotionEffect();
-
-      foodComponent.addEffect(new PotionEffect(PotionEffectType.getByName(effect.getName()),
-                                               effect.getDuration(),
-                                               effect.getAmplifier(),
-                                               effect.isAmbient(),
-                                               effect.hasParticles(),
-                                               effect.hasIcon()), rule.getChance());
-    }
     meta.setFood(foodComponent);
     stack.setItemMeta(meta);
     return stack;
