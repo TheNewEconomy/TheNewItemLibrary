@@ -7,7 +7,6 @@ import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
-import net.tnemc.item.persistent.PersistentDataType;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.sponge.platform.SpongeItemPlatform;
 import org.jetbrains.annotations.NotNull;

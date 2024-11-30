@@ -20,7 +20,6 @@ package net.tnemc.item.platform.impl;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.component.impl.EnchantableComponent;
-import net.tnemc.item.component.impl.JukeBoxComponent;
 import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.serialize.ItemSerializer;

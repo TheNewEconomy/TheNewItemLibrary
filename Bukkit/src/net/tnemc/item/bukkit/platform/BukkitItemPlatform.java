@@ -50,6 +50,7 @@ import net.tnemc.item.bukkitbase.data.BukkitFireworkEffectData;
 import net.tnemc.item.bukkitbase.data.BukkitKnowledgeBookData;
 import net.tnemc.item.bukkitbase.data.BukkitLeatherData;
 import net.tnemc.item.bukkitbase.data.BukkitMapData;
+import net.tnemc.item.bukkitbase.data.BukkitOminousBottleData;
 import net.tnemc.item.bukkitbase.data.BukkitPotionData;
 import net.tnemc.item.bukkitbase.data.BukkitRepairableData;
 import net.tnemc.item.bukkitbase.data.BukkitSkullData;
@@ -88,6 +89,7 @@ import org.bukkit.inventory.meta.KnowledgeBookMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.MusicInstrumentMeta;
+import org.bukkit.inventory.meta.OminousBottleMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.Repairable;
 import org.bukkit.inventory.meta.ShieldMeta;
@@ -183,6 +185,10 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
           return Optional.of(new BukkitWritableBookData());
         } else if(meta instanceof BannerMeta) {
           return Optional.of(new BukkitBannerModernData());
+        } else if(meta instanceof OminousBottleMeta) {
+
+          return Optional.of(new BukkitOminousBottleData());
+
         }
       }
 

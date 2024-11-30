@@ -20,7 +20,6 @@ package net.tnemc.item.bukkitbase.platform.impl;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.platform.impl.ItemGlider;
-import net.tnemc.item.platform.impl.ItemMaxStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 

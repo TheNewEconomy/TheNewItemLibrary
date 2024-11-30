@@ -18,7 +18,6 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.component.SerialComponent;
 
 import java.util.ArrayList;

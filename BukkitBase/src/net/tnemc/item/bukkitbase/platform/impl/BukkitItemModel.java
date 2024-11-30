@@ -19,7 +19,6 @@ package net.tnemc.item.bukkitbase.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.impl.ItemGlider;
 import net.tnemc.item.platform.impl.ItemModel;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;

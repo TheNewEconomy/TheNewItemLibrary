@@ -27,7 +27,6 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.attribute.SerialAttributeOperation;
-import net.tnemc.item.attribute.SerialAttributeSlot;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.paper.platform.PaperItemPlatform;

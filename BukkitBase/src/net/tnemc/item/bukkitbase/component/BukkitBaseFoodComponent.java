@@ -20,13 +20,9 @@ package net.tnemc.item.bukkitbase.component;
 
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.impl.FoodComponent;
-import net.tnemc.item.component.helper.FoodRule;
-import net.tnemc.item.data.potion.PotionEffectData;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 /**
  * BukkitFoodComponent

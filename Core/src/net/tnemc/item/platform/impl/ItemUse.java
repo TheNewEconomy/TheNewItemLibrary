@@ -19,7 +19,6 @@ package net.tnemc.item.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.component.impl.EnchantableComponent;
 import net.tnemc.item.component.impl.UseComponent;
 import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;

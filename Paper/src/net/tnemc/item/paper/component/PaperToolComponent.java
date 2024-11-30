@@ -19,8 +19,8 @@ package net.tnemc.item.paper.component;
  */
 
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.impl.ToolComponent;
 import net.tnemc.item.component.helper.ToolRule;
+import net.tnemc.item.component.impl.ToolComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

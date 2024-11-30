@@ -24,8 +24,6 @@ import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.serialize.ItemSerializer;
 import net.tnemc.item.providers.VersionUtil;
 
-import java.util.HashSet;
-
 /**
  * ItemResistence
  *

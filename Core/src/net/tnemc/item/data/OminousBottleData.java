@@ -1,4 +1,4 @@
-package net.tnemc.item.component.impl;
+package net.tnemc.item.data;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -21,30 +21,18 @@ package net.tnemc.item.component.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 /**
- * FoodComponent
+ * OminousBottleData
  *
  * @author creatorfromhell
- * @since 0.0.1.0
+ * @since 0.1.7.7
  */
-public abstract class FoodComponent<T> implements SerialComponent<T> {
+public abstract class OminousBottleData<T> implements SerialItemData<T> {
 
-  protected boolean noHunger;
-  protected float saturation;
-  protected int nutrition;
-
-  /**
-   * @return the type of component this is.
-   */
-  @Override
-  public String getType() {
-
-    return "food";
-  }
+  protected int amplifier;
 
   /**
    * Converts the {@link SerialItemData} to a JSON object.
@@ -54,12 +42,10 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   @Override
   public JSONObject toJSON() {
 
-    final JSONObject food = new JSONObject();
-    food.put("name", "food-component");
-    food.put("noHunger", noHunger);
-    food.put("saturation", saturation);
-    food.put("nutrition", nutrition);
-    return food;
+    final JSONObject json = new JSONObject();
+    json.put("name", "ominous");
+    json.put("amplifier", amplifier);
+    return json;
   }
 
   /**
@@ -70,28 +56,37 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
   @Override
   public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
-    noHunger = json.getBoolean("noHunger");
-    saturation = json.getFloat("saturation");
-    nutrition = json.getInteger("nutrition");
+    amplifier = json.getInteger("amplifier");
   }
 
   /**
    * Used to determine if some data is equal to this data. This means that it has to be an exact
    * copy of this data. For instance, book copies will return false when compared to the original.
    *
-   * @param component The component to compare.
+   * @param data The data to compare.
    *
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
+  public boolean equals(final SerialItemData<? extends T> data) {
 
-    if(component instanceof final FoodComponent<?> food) {
-
-      return this.noHunger == food.noHunger &&
-             Float.compare(this.saturation, food.saturation) == 0 &&
-             this.nutrition == food.nutrition;
+    if(data instanceof final OminousBottleData<?> compare) {
+      return this.amplifier == compare.amplifier;
     }
     return false;
+  }
+
+  /**
+   * Used to determine if some data is similar to this data. This means that it doesn't have to be a
+   * strict equals. For instance, book copies would return true when compared to the original, etc.
+   *
+   * @param data The data to compare.
+   *
+   * @return True if similar, otherwise false.
+   */
+  @Override
+  public boolean similar(final SerialItemData<? extends T> data) {
+
+    return equals(data);
   }
 }
