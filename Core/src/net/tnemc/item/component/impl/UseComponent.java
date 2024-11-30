@@ -28,6 +28,7 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * UseComponent
@@ -89,7 +90,7 @@ public abstract class UseComponent<T> implements SerialComponent<T> {
 
     if(component instanceof final UseComponent<?> equipComponent) {
 
-      return equipComponent.seconds == seconds && equipComponent.group.equals(group);
+      return equipComponent.seconds == this.seconds && Objects.equals(this.group, equipComponent.group);
     }
     return false;
   }

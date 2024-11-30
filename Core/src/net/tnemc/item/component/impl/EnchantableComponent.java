@@ -83,7 +83,7 @@ public abstract class EnchantableComponent<T> implements SerialComponent<T> {
 
     if(component instanceof final EnchantableComponent<?> enchant) {
 
-      return value == enchant.value;
+      return this.value == enchant.value;
     }
     return false;
   }

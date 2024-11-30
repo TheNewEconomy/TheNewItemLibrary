@@ -19,18 +19,20 @@ package net.tnemc.item.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.component.impl.EnchantableComponent;
+import net.tnemc.item.component.impl.EquipComponent;
 import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.serialize.ItemSerializer;
 import net.tnemc.item.providers.VersionUtil;
 
 /**
- * ItemMaxStack
+ * ItemEquip
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public abstract class ItemMaxStack<I extends AbstractItemStack<T>, T> implements ItemCheck<T>, ItemApplicator<I, T>, ItemSerializer<I, T> {
+public abstract class ItemEquip<I extends AbstractItemStack<T>, T> implements ItemCheck<T>, ItemApplicator<I, T>, ItemSerializer<I, T> {
 
   /**
    * @return the identifier for this check.
@@ -38,7 +40,7 @@ public abstract class ItemMaxStack<I extends AbstractItemStack<T>, T> implements
   @Override
   public String identifier() {
 
-    return "maxstack";
+    return "equip";
   }
 
   /**
@@ -61,6 +63,12 @@ public abstract class ItemMaxStack<I extends AbstractItemStack<T>, T> implements
   @Override
   public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
 
-    return original.maxStack() == check.maxStack();
+    if(original.components().containsKey("equip") && check.components().containsKey("equip")) {
+      final EquipComponent<T> originalComponent = (EquipComponent<T>)original.components().get("equip");
+      final EquipComponent<T> checkComponent = (EquipComponent<T>)check.components().get("equip");
+
+      return originalComponent.equals(checkComponent);
+    }
+    return false;
   }
 }

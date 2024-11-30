@@ -19,17 +19,18 @@ package net.tnemc.item.bukkitbase.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.impl.ItemMaxStack;
+import net.tnemc.item.platform.impl.ItemTooltipStyle;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * BukkitItemMaxStack
+ * BukkitItemTooltipStyle
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemMaxStack<I extends AbstractItemStack<ItemStack>> extends ItemMaxStack<I, ItemStack> {
+public class BukkitItemTooltipStyle<I extends AbstractItemStack<ItemStack>> extends ItemTooltipStyle<I, ItemStack> {
 
   /**
    * @param serialized the serialized item stack to use
@@ -41,9 +42,9 @@ public class BukkitItemMaxStack<I extends AbstractItemStack<ItemStack>> extends 
   public ItemStack apply(final I serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && serialized.maxStack() != -1) {
+    if(meta != null && !serialized.tooltipStyle().isEmpty()) {
 
-      meta.setMaxStackSize(serialized.maxStack());
+      meta.setTooltipStyle(NamespacedKey.fromString(serialized.tooltipStyle()));
       item.setItemMeta(meta);
     }
     return item;
@@ -59,8 +60,8 @@ public class BukkitItemMaxStack<I extends AbstractItemStack<ItemStack>> extends 
   public I serialize(final ItemStack item, final I serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasMaxStackSize()) {
-      serialized.maxStack(meta.getMaxStackSize());
+    if(meta != null && meta.hasTooltipStyle()) {
+      serialized.tooltipStyle(meta.getTooltipStyle().toString());
     }
     return serialized;
   }

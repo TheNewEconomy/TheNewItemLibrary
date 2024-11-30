@@ -88,7 +88,7 @@ public abstract class JukeBoxComponent<T> implements SerialComponent<T> {
 
     if(component instanceof final JukeBoxComponent<?> jukeBox) {
 
-      return jukeBox.toolTip == toolTip && Objects.equals(jukeBox.song, song);
+      return jukeBox.toolTip == this.toolTip && Objects.equals(jukeBox.song, this.song);
     }
     return false;
   }

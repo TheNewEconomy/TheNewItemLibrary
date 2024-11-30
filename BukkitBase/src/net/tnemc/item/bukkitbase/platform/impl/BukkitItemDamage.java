@@ -1,4 +1,4 @@
-package net.tnemc.item.component.impl;
+package net.tnemc.item.bukkitbase.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,45 +19,40 @@ package net.tnemc.item.component.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.component.SerialComponent;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.tnemc.item.platform.impl.ItemDamage;
+import org.bukkit.inventory.ItemStack;
 
 /**
- * RepairableComponent
+ * BukkitItemDamage
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public abstract class RepairableComponent<T> implements SerialComponent<T> {
-
-  protected final List<String> repairableTypes = new ArrayList<>();
+public class BukkitItemDamage<I extends AbstractItemStack<ItemStack>> extends ItemDamage<I, ItemStack> {
 
   /**
-   * @return the type of component this is.
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
    */
   @Override
-  public String getType() {
+  public ItemStack apply(final I serialized, final ItemStack item) {
 
-    return "repairable";
+    item.setDurability(serialized.damage());
+    return item;
   }
 
   /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact
-   * copy of this data. For instance, book copies will return false when compared to the original.
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
    *
-   * @param component The component to compare.
-   *
-   * @return True if similar, otherwise false.
+   * @return the updated serialized item.
    */
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
+  public I serialize(final ItemStack item, final I serialized) {
 
-    if(component instanceof final RepairableComponent<?> repair) {
-
-      return this.repairableTypes.equals(repair.repairableTypes);
-    }
-    return false;
+    serialized.damage(item.getDurability());
+    return serialized;
   }
 }

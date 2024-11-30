@@ -28,6 +28,7 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * EquippableComponent
@@ -122,7 +123,15 @@ public abstract class EquipComponent<T> implements SerialComponent<T> {
 
     if(component instanceof final EquipComponent<?> equipComponent) {
 
-      //TODO: This.
+      return Objects.equals(this.cameraKey, equipComponent.cameraKey) &&
+             Objects.equals(this.equipSound, equipComponent.equipSound) &&
+             Objects.equals(this.modelKey, equipComponent.modelKey) &&
+             Objects.equals(this.slot.name(), equipComponent.slot.name()) &&
+             this.damageWithEntity == equipComponent.damageWithEntity &&
+             this.dispensable == equipComponent.dispensable &&
+             this.swappable == equipComponent.swappable &&
+             this.entities.equals(equipComponent.entities);
+
     }
     return false;
   }

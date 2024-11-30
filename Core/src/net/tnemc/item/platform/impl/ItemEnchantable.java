@@ -63,9 +63,9 @@ public abstract class ItemEnchantable<I extends AbstractItemStack<T>, T> impleme
   @Override
   public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
 
-    if(original.components().containsKey("enchant") && check.components().containsKey("enchant")) {
-      final EnchantableComponent<T> originalEnchant = (EnchantableComponent<T>)original.components().get("enchant");
-      final EnchantableComponent<T> checkEnchant = (EnchantableComponent<T>)check.components().get("enchant");
+    if(original.components().containsKey("enchantable") && check.components().containsKey("enchantable")) {
+      final EnchantableComponent<T> originalEnchant = (EnchantableComponent<T>)original.components().get("enchantable");
+      final EnchantableComponent<T> checkEnchant = (EnchantableComponent<T>)check.components().get("enchantable");
 
       return originalEnchant.equals(checkEnchant);
     }

@@ -93,7 +93,9 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
 
     if(component instanceof final FoodComponent<?> food) {
 
-      //TODO: This.
+      return this.noHunger == food.noHunger &&
+             Float.compare(this.saturation, food.saturation) == 0 &&
+             this.nutrition == food.nutrition;
     }
     return false;
   }
