@@ -39,13 +39,16 @@ import net.tnemc.item.bukkitbase.data.BukkitSpawnEggData;
 import net.tnemc.item.bukkitbase.data.BukkitSuspiciousStewData;
 import net.tnemc.item.bukkitbase.data.BukkitTropicalFishData;
 import net.tnemc.item.bukkitbase.data.BukkitWritableBookData;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemDamage;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemEnchantGlint;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemFireResistant;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemFlag;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemGlider;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemMaxStack;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemModel;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemModelData;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemRarity;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemTooltip;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemTooltipStyle;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemUnbreakable;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.data.PaperArmourData;
@@ -58,6 +61,7 @@ import net.tnemc.item.paper.data.block.PaperShulkerData;
 import net.tnemc.item.paper.platform.impl.PaperItemAttribute;
 import net.tnemc.item.paper.platform.impl.PaperItemDisplay;
 import net.tnemc.item.paper.platform.impl.PaperItemEnchant;
+import net.tnemc.item.paper.platform.impl.PaperItemEquip;
 import net.tnemc.item.paper.platform.impl.PaperItemFood;
 import net.tnemc.item.paper.platform.impl.PaperItemJuke;
 import net.tnemc.item.paper.platform.impl.PaperItemLore;
@@ -65,6 +69,7 @@ import net.tnemc.item.paper.platform.impl.PaperItemMaterial;
 import net.tnemc.item.paper.platform.impl.PaperItemProfile;
 import net.tnemc.item.paper.platform.impl.PaperItemSerialData;
 import net.tnemc.item.paper.platform.impl.PaperItemTool;
+import net.tnemc.item.paper.platform.impl.PaperItemUse;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -129,13 +134,16 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
   public void addDefaults() {
 
     //bukkit base implementation.
+    addMulti(new BukkitItemDamage<>());
     addMulti(new BukkitItemEnchantGlint<>());
-    addMulti(new BukkitItemFireResistant<>());
     addMulti(new BukkitItemFlag<>());
+    addMulti(new BukkitItemGlider<>());
     addMulti(new BukkitItemMaxStack<>());
+    addMulti(new BukkitItemModel<>());
     addMulti(new BukkitItemModelData<>());
     addMulti(new BukkitItemRarity<>());
     addMulti(new BukkitItemTooltip<>());
+    addMulti(new BukkitItemTooltipStyle<>());
     addMulti(new BukkitItemUnbreakable<>());
 
     //Paper-specific
@@ -143,12 +151,14 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     addMulti(new PaperItemAttribute());
     addMulti(new PaperItemDisplay());
     addMulti(new PaperItemEnchant());
+    addMulti(new PaperItemEquip());
     addMulti(new PaperItemFood());
     addMulti(new PaperItemJuke());
     addMulti(new PaperItemLore());
     addMulti(new PaperItemMaterial());
     addMulti(new PaperItemProfile());
     addMulti(new PaperItemTool());
+    addMulti(new PaperItemUse());
   }
 
   /**

@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkitbase.component;
+package net.tnemc.item.bukkit.component;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,23 +18,26 @@ package net.tnemc.item.bukkitbase.component;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.bukkitbase.component.BukkitBaseFoodComponent;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.impl.EnchantableComponent;
+import net.tnemc.item.component.impl.FoodComponent;
+import net.tnemc.item.component.impl.UseComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * BukkitEnchantableComponent
+ * BukkitItemUseComponent
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitEnchantableComponent extends EnchantableComponent<ItemStack> {
+public class BukkitItemUseComponent extends UseComponent<ItemStack> {
 
-  public static BukkitEnchantableComponent create(final ItemStack stack) {
+  public static BukkitItemUseComponent create(final ItemStack stack) {
 
-    final BukkitEnchantableComponent component = new BukkitEnchantableComponent();
+    final BukkitItemUseComponent component = new BukkitItemUseComponent();
     component.of(stack);
     return component;
   }
@@ -51,9 +54,11 @@ public class BukkitEnchantableComponent extends EnchantableComponent<ItemStack> 
     if(stack.hasItemMeta()) {
 
       final ItemMeta meta = stack.getItemMeta();
-      if(meta.hasEnchantable()) {
+      if(meta.hasUseCooldown()) {
 
-        this.value = meta.getEnchantable();
+        final org.bukkit.inventory.meta.components.UseCooldownComponent component = meta.getUseCooldown();
+        this.group = component.getCooldownGroup().toString();
+        this.seconds = component.getCooldownSeconds();
       }
     }
   }
@@ -71,8 +76,11 @@ public class BukkitEnchantableComponent extends EnchantableComponent<ItemStack> 
       meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
     }
 
-    meta.setEnchantable(value);
+    final org.bukkit.inventory.meta.components.UseCooldownComponent component = meta.getUseCooldown();
+    component.setCooldownGroup(NamespacedKey.fromString(this.group));
+    component.setCooldownSeconds(this.seconds);
 
+    meta.setUseCooldown(component);
     stack.setItemMeta(meta);
     return stack;
   }

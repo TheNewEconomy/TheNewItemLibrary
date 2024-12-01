@@ -31,6 +31,7 @@ import net.tnemc.item.bukkit.data.block.BukkitShulkerData;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemAttribute;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemDisplay;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemEnchant;
+import net.tnemc.item.bukkit.platform.impl.BukkitItemEquip;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemFood;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemJuke;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemLore;
@@ -38,6 +39,7 @@ import net.tnemc.item.bukkit.platform.impl.BukkitItemMaterial;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemProfile;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemSerialData;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemTool;
+import net.tnemc.item.bukkit.platform.impl.BukkitItemUse;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.bukkitbase.data.BukkitAxolotlData;
 import net.tnemc.item.bukkitbase.data.BukkitBannerData;
@@ -58,13 +60,16 @@ import net.tnemc.item.bukkitbase.data.BukkitSpawnEggData;
 import net.tnemc.item.bukkitbase.data.BukkitSuspiciousStewData;
 import net.tnemc.item.bukkitbase.data.BukkitTropicalFishData;
 import net.tnemc.item.bukkitbase.data.BukkitWritableBookData;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemDamage;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemEnchantGlint;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemFireResistant;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemFlag;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemGlider;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemMaxStack;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemModel;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemModelData;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemRarity;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemTooltip;
+import net.tnemc.item.bukkitbase.platform.impl.BukkitItemTooltipStyle;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemUnbreakable;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
@@ -131,13 +136,16 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
   public void addDefaults() {
 
     //bukkit base implementation.
+    addMulti(new BukkitItemDamage<>());
     addMulti(new BukkitItemEnchantGlint<>());
-    addMulti(new BukkitItemFireResistant<>());
     addMulti(new BukkitItemFlag<>());
+    addMulti(new BukkitItemGlider<>());
     addMulti(new BukkitItemMaxStack<>());
+    addMulti(new BukkitItemModel<>());
     addMulti(new BukkitItemModelData<>());
     addMulti(new BukkitItemRarity<>());
     addMulti(new BukkitItemTooltip<>());
+    addMulti(new BukkitItemTooltipStyle<>());
     addMulti(new BukkitItemUnbreakable<>());
 
     //Bukkit-specific
@@ -145,12 +153,14 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     addMulti(new BukkitItemAttribute());
     addMulti(new BukkitItemDisplay());
     addMulti(new BukkitItemEnchant());
+    addMulti(new BukkitItemEquip());
     addMulti(new BukkitItemFood());
     addMulti(new BukkitItemJuke());
     addMulti(new BukkitItemLore());
     addMulti(new BukkitItemMaterial());
     addMulti(new BukkitItemProfile());
     addMulti(new BukkitItemTool());
+    addMulti(new BukkitItemUse());
   }
 
   /**
