@@ -34,10 +34,12 @@ import java.util.Objects;
 /**
  * AttributeModifiesComponent
  *
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#attribute_modifiers">Reference</a>
+ *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class AttributesComponent<T> implements SerialComponent<T> {
+public abstract class AttributeModifiersComponent<T> implements SerialComponent<T> {
 
   protected final List<AttributeModifier> modifiers = new ArrayList<>();
   protected boolean showInTooltip = true;
@@ -47,7 +49,7 @@ public abstract class AttributesComponent<T> implements SerialComponent<T> {
    */
   @Override
   public String getType() {
-    return "attributes";
+    return "attribute_modifiers";
   }
 
   /**
@@ -123,7 +125,7 @@ public abstract class AttributesComponent<T> implements SerialComponent<T> {
    */
   @Override
   public boolean equals(final SerialComponent<? extends T> component) {
-    if(!(component instanceof final AttributesComponent<?> other)) return false;
+    if(!(component instanceof final AttributeModifiersComponent<?> other)) return false;
     return this.showInTooltip == other.showInTooltip &&
            Objects.equals(this.modifiers, other.modifiers);
   }
