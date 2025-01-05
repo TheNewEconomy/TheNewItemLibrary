@@ -21,6 +21,7 @@ package net.tnemc.item.component.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.component.TooltippableSerialComponent;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -35,10 +36,9 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class EnchantmentsComponent<T> implements SerialComponent<T> {
+public abstract class EnchantmentsComponent<T> extends TooltippableSerialComponent<T> {
 
   protected final Map<String, Integer> levels = new HashMap<>();
-  protected boolean showInTooltip = true;
 
   @Override
   public String getType() {
@@ -66,7 +66,7 @@ public abstract class EnchantmentsComponent<T> implements SerialComponent<T> {
   @Override
   public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     levels.clear();
-    showInTooltip = json.getBoolean("showInTooltip");
+    super.readJSON(json, platform);
 
     final JSONArray enchantmentsArray = (JSONArray) json.getObject().get("enchantments");
     if(enchantmentsArray != null) {

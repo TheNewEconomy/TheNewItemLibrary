@@ -21,6 +21,7 @@ package net.tnemc.item.component.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.component.TooltippableSerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.platform.ItemPlatform;
@@ -39,10 +40,9 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class AttributeModifiersComponent<T> implements SerialComponent<T> {
+public abstract class AttributeModifiersComponent<T> extends TooltippableSerialComponent<T> {
 
   protected final List<AttributeModifier> modifiers = new ArrayList<>();
-  protected boolean showInTooltip = true;
 
   /**
    * @return the type of component this is.
@@ -86,7 +86,7 @@ public abstract class AttributeModifiersComponent<T> implements SerialComponent<
    */
   @Override
   public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    showInTooltip = json.getBoolean("showInTooltip");
+    super.readJSON(json, platform);
 
     modifiers.clear();
 
