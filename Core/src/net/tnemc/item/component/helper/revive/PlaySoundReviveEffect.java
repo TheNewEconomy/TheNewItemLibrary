@@ -18,6 +18,7 @@ package net.tnemc.item.component.helper.revive;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.JSONHelper;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
@@ -48,9 +49,9 @@ public class PlaySoundReviveEffect extends ReviveEffect {
   }
 
   @Override
-  public void readJSON(final JSONObject json) {
-    probability = Float.parseFloat(json.get("probability").toString());
-    sound = json.get("sound").toString();
+  public void readJSON(final JSONHelper json) {
+    probability = json.getFloat("probability");
+    sound = json.getString("sound");
   }
 
   public String getSound() {

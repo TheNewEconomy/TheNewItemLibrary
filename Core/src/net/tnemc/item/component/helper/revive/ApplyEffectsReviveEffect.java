@@ -18,6 +18,7 @@ package net.tnemc.item.component.helper.revive;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.JSONHelper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -56,15 +57,15 @@ public class ApplyEffectsReviveEffect extends ReviveEffect {
   }
 
   @Override
-  public void readJSON(final JSONObject json) {
-    probability = Float.parseFloat(json.get("probability").toString());
+  public void readJSON(final JSONHelper json) {
+    probability = json.getFloat("probability");
 
     effects.clear();
-    final JSONArray effectsArray = (JSONArray) json.get("effects");
-    if (effectsArray != null) {
+    if (json.has("effects")) {
+      final JSONArray effectsArray = (JSONArray) json.getObject().get("effects");
       for (final Object obj : effectsArray) {
         final EffectInstance effect = new EffectInstance();
-        effect.readJSON((JSONObject) obj);
+        effect.readJSON(new JSONHelper((JSONObject) obj));
         effects.add(effect);
       }
     }

@@ -22,6 +22,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.SerialItemData;
+import net.tnemc.item.component.helper.revive.ApplyEffectsReviveEffect;
+import net.tnemc.item.component.helper.revive.PlaySoundReviveEffect;
+import net.tnemc.item.component.helper.revive.RemoveEffectsReviveEffect;
+import net.tnemc.item.component.helper.revive.ReviveEffect;
+import net.tnemc.item.component.helper.revive.TeleportRandomlyReviveEffect;
 import net.tnemc.item.persistent.PersistentDataType;
 import net.tnemc.item.persistent.impl.PersistentBool;
 import net.tnemc.item.persistent.impl.PersistentByte;
@@ -62,6 +67,8 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   protected final Map<String, ItemApplicator<I, T>> applicators = new HashMap<>();
   protected final Map<String, ItemSerializer<I, T>> serializers = new HashMap<>();
 
+  protected final Map<String, Class<? extends ReviveEffect>> reviveEffects = new HashMap<>();
+
   public ItemPlatform() {
 
     addPersistentDataType("bool", PersistentBool.class);
@@ -75,6 +82,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
     addPersistentDataType("long-array", PersistentLongArray.class);
     addPersistentDataType("short", PersistentShort.class);
     addPersistentDataType("string", PersistentString.class);
+
+    addReviveEffect(new ApplyEffectsReviveEffect());
+    addReviveEffect(new PlaySoundReviveEffect());
+    addReviveEffect(new RemoveEffectsReviveEffect());
+    addReviveEffect(new TeleportRandomlyReviveEffect());
   }
 
   /**
@@ -164,6 +176,17 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   public void addSerializer(@NotNull final ItemSerializer<I, T> serializer) {
 
     serializers.put(serializer.identifier(), serializer);
+  }
+
+  /**
+   * Adds a ReviveEffect to the reviveEffects map.
+   *
+   * @param effect The ReviveEffect instance to add. Must not be null.
+   */
+  public void addReviveEffect(@NotNull final ReviveEffect effect) {
+
+    // Add the effect's class to the map using its type as the key
+    reviveEffects.put(effect.getType(), effect.getClass());
   }
 
   /**
@@ -321,7 +344,6 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * Parses the meta of the given stack and returns an Optional containing the SerialItemData.
    *
    * @param stack The stack to parse the meta from.
-   * @param <T>   The type of the stack.
    * @return Optional containing the SerialItemData, empty if the meta parsing failed.
    */
   public abstract Optional<SerialItemData<T>> parseMeta(final T stack);
@@ -329,5 +351,10 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   public static String componentString(@NotNull final Component component) {
 
     return PlainTextComponentSerializer.plainText().serialize(component);
+  }
+
+  public Map<String, Class<? extends ReviveEffect>> reviveEffects() {
+
+    return reviveEffects;
   }
 }

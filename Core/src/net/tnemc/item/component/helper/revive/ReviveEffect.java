@@ -18,6 +18,7 @@ package net.tnemc.item.component.helper.revive;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.JSONHelper;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
@@ -36,7 +37,7 @@ public abstract class ReviveEffect {
 
   public abstract JSONObject toJSON();
 
-  public abstract void readJSON(JSONObject json);
+  public abstract void readJSON(JSONHelper json);
 
   @Override
   public boolean equals(final Object obj) {

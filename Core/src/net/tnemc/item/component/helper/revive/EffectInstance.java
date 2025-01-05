@@ -18,6 +18,7 @@ package net.tnemc.item.component.helper.revive;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.JSONHelper;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
@@ -48,7 +49,7 @@ public class EffectInstance {
     return json;
   }
 
-  public void readJSON(final JSONObject json) {
+  public void readJSON(final JSONHelper json) {
     id = json.getString("id");
     amplifier = json.getInteger("amplifier");
     duration = json.getInteger("duration");
