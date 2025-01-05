@@ -1,7 +1,7 @@
 package net.tnemc.item.component.impl;
 /*
  * The New Item Library
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,8 +33,10 @@ import java.util.Objects;
 /**
  * EquippableComponent
  *
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#equippable">Reference</a>
+ *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 public abstract class EquipComponent<T> implements SerialComponent<T> {
 
@@ -44,7 +46,7 @@ public abstract class EquipComponent<T> implements SerialComponent<T> {
   protected String equipSound;
   protected String modelKey;
   protected EquipSlot slot;
-  protected boolean damageWithEntity;
+  protected boolean damageOnHurt;
   protected boolean dispensable;
   protected boolean swappable;
 
@@ -71,7 +73,7 @@ public abstract class EquipComponent<T> implements SerialComponent<T> {
     equip.put("equipSound", equipSound);
     equip.put("modelKey", modelKey);
     equip.put("slot", slot.name());
-    equip.put("damageWithEntity", damageWithEntity);
+    equip.put("damageWithEntity", damageOnHurt);
     equip.put("dispensable", dispensable);
     equip.put("swappable", swappable);
 
@@ -98,16 +100,12 @@ public abstract class EquipComponent<T> implements SerialComponent<T> {
     equipSound = json.getString("equipSound");
     modelKey = json.getString("modelKey");
     slot = EquipSlot.valueOf(json.getString("slot"));
-    damageWithEntity = json.getBoolean("damageWithEntity");
+    damageOnHurt = json.getBoolean("damageWithEntity");
     dispensable = json.getBoolean("dispensable");
     swappable = json.getBoolean("swappable");
 
-    if(json.has("entities")) {
-
-      final JSONObject entitiesOBJ = json.getJSON("entities");
-      entities.clear();
-      entitiesOBJ.forEach((key, entity)->entities.add(String.valueOf(entity)));
-    }
+    entities.clear();
+    entities.addAll(json.getStringList("entities"));
   }
 
   /**
@@ -127,7 +125,7 @@ public abstract class EquipComponent<T> implements SerialComponent<T> {
              Objects.equals(this.equipSound, equipComponent.equipSound) &&
              Objects.equals(this.modelKey, equipComponent.modelKey) &&
              Objects.equals(this.slot.name(), equipComponent.slot.name()) &&
-             this.damageWithEntity == equipComponent.damageWithEntity &&
+             this.damageOnHurt == equipComponent.damageOnHurt &&
              this.dispensable == equipComponent.dispensable &&
              this.swappable == equipComponent.swappable &&
              this.entities.equals(equipComponent.entities);

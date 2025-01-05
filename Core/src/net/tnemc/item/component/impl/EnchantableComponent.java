@@ -1,7 +1,7 @@
 package net.tnemc.item.component.impl;
 /*
  * The New Item Library
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,8 +28,10 @@ import org.json.simple.JSONObject;
 /**
  * EnchantableComponent - outline from Snapshot 24w33a
  *
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#enchantable">Reference</a>
+ *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 public abstract class EnchantableComponent<T> implements SerialComponent<T> {
 

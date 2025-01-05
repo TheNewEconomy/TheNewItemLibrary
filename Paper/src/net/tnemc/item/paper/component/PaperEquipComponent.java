@@ -71,7 +71,7 @@ public class PaperEquipComponent extends EquipComponent<ItemStack> {
         this.equipSound = component.getEquipSound().key().toString();
         this.modelKey = component.getModel().key().toString();
         this.slot = ParsingUtil.attributeSlot(component.getSlot());
-        this.damageWithEntity = component.isDamageOnHurt();
+        this.damageOnHurt = component.isDamageOnHurt();
         this.dispensable = component.isDispensable();
         this.swappable = component.isSwappable();
 
@@ -102,7 +102,7 @@ public class PaperEquipComponent extends EquipComponent<ItemStack> {
             .cameraOverlay(Key.key(this.cameraKey))
             .equipSound(Key.key(this.equipSound))
             .model(Key.key(this.modelKey))
-            .damageOnHurt(this.damageWithEntity)
+            .damageOnHurt(this.damageOnHurt)
             .dispensable(this.dispensable)
             .swappable(this.swappable)
             .allowedEntities(entities);

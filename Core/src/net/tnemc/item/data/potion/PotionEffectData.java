@@ -33,8 +33,8 @@ public class PotionEffectData {
   private boolean ambient;
   private boolean icon;
 
-  public PotionEffectData(final String name, final int amplifier, final int duration, final boolean particles, final boolean ambient,
-                          final boolean icon) {
+  public PotionEffectData(final String name, final int amplifier, final int duration,
+                          final boolean particles, final boolean ambient, final boolean icon) {
 
     this.name = name;
     this.amplifier = amplifier;

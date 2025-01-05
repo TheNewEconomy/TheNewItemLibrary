@@ -20,8 +20,11 @@ package net.tnemc.item;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class JSONHelper {
@@ -86,6 +89,63 @@ public class JSONHelper {
   public UUID getUUID(final String identifier) {
 
     return UUID.fromString(object.get(identifier).toString());
+  }
+
+  /**
+   * Parses a JSON array into a List<String>.
+   *
+   * @param identifier The key of the JSON array.
+   * @return A List<String> containing the elements of the JSON array.
+   */
+  public List<String> getStringList(final String identifier) {
+    final List<String> result = new ArrayList<>();
+    if(has(identifier)) {
+
+      final JSONArray array = (JSONArray) object.get(identifier);
+      for(final Object obj : array) {
+
+        result.add(obj.toString());
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Parses a JSON array into a List<Float>.
+   *
+   * @param identifier The key of the JSON array.
+   * @return A List<Float> containing the elements of the JSON array.
+   */
+  public List<Float> getFloatList(final String identifier) {
+    final List<Float> result = new ArrayList<>();
+    if(has(identifier)) {
+
+      final JSONArray array = (JSONArray) object.get(identifier);
+      for(final Object obj : array) {
+
+        result.add(Float.parseFloat(obj.toString()));
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Parses a JSON array into a List<Boolean>.
+   *
+   * @param identifier The key of the JSON array.
+   * @return A List<Boolean> containing the elements of the JSON array.
+   */
+  public List<Boolean> getBooleanList(final String identifier) {
+    final List<Boolean> result = new ArrayList<>();
+    if(has(identifier)) {
+
+      final JSONArray array = (JSONArray) object.get(identifier);
+      for(final Object obj : array) {
+
+        result.add(Boolean.parseBoolean(obj.toString()));
+      }
+    }
+    return result;
   }
 
   public JSONObject getObject() {
