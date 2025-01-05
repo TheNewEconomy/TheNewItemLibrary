@@ -34,6 +34,8 @@ import java.util.Objects;
 /**
  * CanBreakComponent
  *
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#can_break">Reference</a>
+ *
  * @author creatorfromhell
  * @since 0.2.0.0
  */

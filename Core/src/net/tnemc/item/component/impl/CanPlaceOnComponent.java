@@ -34,6 +34,8 @@ import java.util.Objects;
 /**
  * CanPlaceOnComponent
  *
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#can_place_on">Reference</a>
+ *
  * @author creatorfromhell
  * @since 0.2.0.0
  */

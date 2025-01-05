@@ -30,6 +30,8 @@ import java.util.Objects;
 /**
  * BaseColorComponent
  *
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#base_color">Reference</a>
+ *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
