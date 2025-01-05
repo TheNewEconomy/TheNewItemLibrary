@@ -1,41 +1,41 @@
-- [ ] attribute_modifiers
-- [ ] banner_patterns
-- [ ] base_color
+- [X] attribute_modifiers
+- [X] banner_patterns
+- [X] base_color
 - [ ] bees
 - [ ] block_entity_data
 - [ ] block_state
 - [ ] bucket_entity_data
 - [ ] bundle_contents
-- [ ] can_break
-- [ ] can_place_on
+- [X] can_break
+- [X] can_place_on
 - [ ] charged_projectiles
 - [ ] consumable
 - [ ] container
 - [ ] container_loot
 - [ ] custom_data
-- [ ] custom_model_data
-- [ ] custom_name
-- [ ] damage
-- [ ] damage_resistant
+- [X] custom_model_data
+- [X] custom_name
+- [X] damage
+- [X] damage_resistant
 - [ ] debug_stick_state
 - [ ] death_protection
 - [ ] dyed_color
-- [ ] enchantable
+- [X] enchantable
 - [ ] enchantment_glint_override
-- [ ] enchantments
+- [X] enchantments
 - [ ] entity_data
-- [ ] equippable
-- [ ] firework_explosion
-- [ ] fireworks
-- [ ] food
+- [X] equippable
+- [X] firework_explosion
+- [X] fireworks
+- [X] food
 - [ ] glider
 - [ ] hide_additional_tooltip
-- [ ] hide_tooltip
-- [ ] instrument
-- [ ] intangible_projectile
-- [ ] item_model
-- [ ] item_name
-- [ ] jukebox_playable
+- [X] hide_tooltip
+- [X] instrument
+- [X] intangible_projectile
+- [X] item_model
+- [X] item_name
+- [X] jukebox_playable
 - [ ] lock
 - [ ] lodestone_tracker
 - [ ] lore
