@@ -1,7 +1,7 @@
 package net.tnemc.item.component.impl;
 /*
  * The New Item Library
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,74 +22,47 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.TooltippableSerialComponent;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
 
 /**
- * JukeBoxComponent
+ * ItemNameComponent
  *
  * @author creatorfromhell
- * @since 0.0.1.0
+ * @since 0.2.0.0
  */
-public abstract class JukeBoxComponent<T> extends TooltippableSerialComponent<T> {
+public abstract class ItemNameComponent<T> implements SerialComponent<T> {
 
-  protected String song;
+  protected String itemName;
 
-  /**
-   * @return the type of component this is.
-   */
   @Override
   public String getType() {
-
-    return "jukebox";
+    return "item_name";
   }
 
-  /**
-   * Converts the {@link SerialItemData} to a JSON object.
-   *
-   * @return The JSONObject representing this {@link SerialItemData}.
-   */
   @Override
   public JSONObject toJSON() {
-
-    final JSONObject jukebox = new JSONObject();
-    jukebox.put("name", "jukebox-component");
-    jukebox.put("song", song);
-    jukebox.put("showInTooltip", showInTooltip);
-
-    return jukebox;
+    final JSONObject json = new JSONObject();
+    json.put("item_name", itemName);
+    return json;
   }
 
-  /**
-   * Reads JSON data and converts it back to a {@link SerialItemData} object.
-   *
-   * @param json The JSONHelper instance of the json data.
-   */
   @Override
   public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-
-    super.readJSON(json, platform);
-    song = json.getString("song");
+    itemName = json.getString("item_name");
   }
 
-  /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact
-   * copy of this data. For instance, book copies will return false when compared to the original.
-   *
-   * @param component The component to compare.
-   *
-   * @return True if similar, otherwise false.
-   */
   @Override
   public boolean equals(final SerialComponent<? extends T> component) {
+    if (!(component instanceof final ItemNameComponent<?> other)) return false;
 
-    if(component instanceof final JukeBoxComponent<?> jukeBox) {
+    return Objects.equals(this.itemName, other.itemName);
+  }
 
-      return jukeBox.showInTooltip == this.showInTooltip && Objects.equals(jukeBox.song, this.song);
-    }
-    return false;
+  @Override
+  public int hashCode() {
+    return Objects.hash(itemName);
   }
 }
