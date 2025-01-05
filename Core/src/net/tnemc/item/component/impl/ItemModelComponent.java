@@ -28,43 +28,43 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * ItemNameComponent
+ * ItemModelComponent
  *
- * @see <a href="https://minecraft.wiki/w/Data_component_format#item_name">Reference</a>
- * <p>
  * @author creatorfromhell
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#item_model">Reference</a>
+ * <p>
  * @since 0.2.0.0
  */
-public abstract class ItemNameComponent<T> implements SerialComponent<T> {
+public abstract class ItemModelComponent<T> implements SerialComponent<T> {
 
-  protected String itemName;
+  protected String model;
 
   @Override
   public String getType() {
-    return "item_name";
+    return "item_model";
   }
 
   @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
-    json.put("item_name", itemName);
+    json.put("model", model);
     return json;
   }
 
   @Override
   public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    itemName = json.getString("item_name");
+    model = json.getString("model");
   }
 
   @Override
   public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final ItemNameComponent<?> other)) return false;
+    if (!(component instanceof final ItemModelComponent<?> other)) return false;
 
-    return Objects.equals(this.itemName, other.itemName);
+    return Objects.equals(this.model, other.model);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(itemName);
+    return Objects.hash(model);
   }
 }
