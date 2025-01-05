@@ -18,45 +18,57 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.platform.ItemPlatform;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * RepairableComponent
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#repairable">Reference</a>
+ * <p>
+ * @since 0.2.0.0
  */
 public abstract class RepairableComponent<T> implements SerialComponent<T> {
 
-  protected final List<String> repairableTypes = new ArrayList<>();
+  protected final List<String> repairItems = new ArrayList<>();
 
-  /**
-   * @return the type of component this is.
-   */
   @Override
   public String getType() {
-
     return "repairable";
   }
 
-  /**
-   * Used to determine if some data is equal to this data. This means that it has to be an exact
-   * copy of this data. For instance, book copies will return false when compared to the original.
-   *
-   * @param component The component to compare.
-   *
-   * @return True if similar, otherwise false.
-   */
+  @Override
+  public JSONObject toJSON() {
+    final JSONObject json = new JSONObject();
+    final JSONArray itemsArray = new JSONArray();
+    itemsArray.addAll(repairItems);
+    json.put("items", itemsArray);
+    return json;
+  }
+
+  @Override
+  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+    repairItems.clear();
+    repairItems.addAll(json.getStringList("items"));
+  }
+
   @Override
   public boolean equals(final SerialComponent<? extends T> component) {
+    if (!(component instanceof final RepairableComponent<?> other)) return false;
+    return Objects.equals(this.repairItems, other.repairItems);
+  }
 
-    if(component instanceof final RepairableComponent<?> repair) {
-
-      return this.repairableTypes.equals(repair.repairableTypes);
-    }
-    return false;
+  @Override
+  public int hashCode() {
+    return Objects.hash(repairItems);
   }
 }

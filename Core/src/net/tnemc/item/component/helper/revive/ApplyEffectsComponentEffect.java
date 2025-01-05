@@ -27,18 +27,18 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * RemoveEffectsReviveEffect
+ * ApplyEffectsReviveEffect
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class RemoveEffectsReviveEffect extends ReviveEffect {
+public class ApplyEffectsComponentEffect extends ComponentEffect {
 
-  private final List<String> effectIds = new ArrayList<>();
+  private final List<EffectInstance> effects = new ArrayList<>();
 
   @Override
   public String getType() {
-    return "remove_effects";
+    return "apply_effects";
   }
 
   @Override
@@ -48,7 +48,9 @@ public class RemoveEffectsReviveEffect extends ReviveEffect {
     json.put("probability", probability);
 
     final JSONArray effectsArray = new JSONArray();
-    effectsArray.addAll(effectIds);
+    for (final EffectInstance effect : effects) {
+      effectsArray.add(effect.toJSON());
+    }
     json.put("effects", effectsArray);
 
     return json;
@@ -58,25 +60,30 @@ public class RemoveEffectsReviveEffect extends ReviveEffect {
   public void readJSON(final JSONHelper json) {
     probability = json.getFloat("probability");
 
-    effectIds.clear();
+    effects.clear();
     if (json.has("effects")) {
-      effectIds.addAll(json.getStringList("effects"));
+      final JSONArray effectsArray = (JSONArray) json.getObject().get("effects");
+      for (final Object obj : effectsArray) {
+        final EffectInstance effect = new EffectInstance();
+        effect.readJSON(new JSONHelper((JSONObject) obj));
+        effects.add(effect);
+      }
     }
   }
 
-  public List<String> getEffectIds() {
-    return effectIds;
+  public List<EffectInstance> getEffects() {
+    return effects;
   }
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final RemoveEffectsReviveEffect other)) return false;
+    if (!(obj instanceof final ApplyEffectsComponentEffect other)) return false;
 
-    return super.equals(obj) && Objects.equals(this.effectIds, other.effectIds);
+    return super.equals(obj) && Objects.equals(this.effects, other.effects);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode(), effectIds);
+    return Objects.hash(super.hashCode(), effects);
   }
 }

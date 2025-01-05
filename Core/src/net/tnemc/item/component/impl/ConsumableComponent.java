@@ -28,45 +28,57 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
- * DeathProtectionComponent
- * @see <a href="https://minecraft.wiki/w/Data_component_format#death_protection">Reference</a>
- * <p>
+ * ConsumableComponent
+ *
  * @author creatorfromhell
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#">Reference</a>
+ * <p>
  * @since 0.2.0.0
  */
-public abstract class DeathProtectionComponent<T> implements SerialComponent<T> {
+public abstract class ConsumableComponent<T> implements SerialComponent<T> {
 
-  protected final List<ComponentEffect> deathEffects = new ArrayList<>();
+  protected float consumeSeconds = 1.6f; // Default to 1.6 seconds
+  protected String animation = "eat"; // Default animation
+  protected String sound = "entity.generic.eat"; // Default sound
+  protected boolean hasConsumeParticles = true; // Default true
+  protected final List<ComponentEffect> onConsumeEffects = new ArrayList<>();
 
   @Override
   public String getType() {
-    return "death_protection";
+    return "consumable";
   }
 
   @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
+    json.put("consume_seconds", consumeSeconds);
+    json.put("animation", animation);
+    json.put("sound", sound);
+    json.put("has_consume_particles", hasConsumeParticles);
 
     final JSONArray effectsArray = new JSONArray();
-    for (final ComponentEffect effect : deathEffects) {
+    for (final ComponentEffect effect : onConsumeEffects) {
       effectsArray.add(effect.toJSON());
     }
-    json.put("death_effects", effectsArray);
+    json.put("on_consume_effects", effectsArray);
 
     return json;
   }
 
   @Override
   public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    deathEffects.clear();
+    consumeSeconds = json.getFloat("consume_seconds");
+    animation = json.getString("animation");
+    sound = json.getString("sound");
+    hasConsumeParticles = json.getBoolean("has_consume_particles");
 
-    if (json.has("death_effects")) {
-      final JSONArray effectsArray = (JSONArray) json.getObject().get("death_effects");
+    onConsumeEffects.clear();
+    if (json.has("on_consume_effects")) {
 
+      final JSONArray effectsArray = (JSONArray) json.getObject().get("on_consume_effects");
       for (final Object obj : effectsArray) {
         final JSONObject effectJson = (JSONObject) obj;
         final String type = effectJson.get("type").toString();
@@ -79,7 +91,7 @@ public abstract class DeathProtectionComponent<T> implements SerialComponent<T> 
             // Instantiate the effect dynamically
             final ComponentEffect effect = effectClass.getDeclaredConstructor().newInstance();
             effect.readJSON(new JSONHelper(effectJson));
-            deathEffects.add(effect);
+            onConsumeEffects.add(effect);
           } catch (final ReflectiveOperationException e) {
             throw new RuntimeException("Failed to instantiate ComponentEffect for type: " + type, e);
           }
@@ -90,31 +102,16 @@ public abstract class DeathProtectionComponent<T> implements SerialComponent<T> 
 
   @Override
   public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final DeathProtectionComponent<?> other)) return false;
-
-    return Objects.equals(this.deathEffects, other.deathEffects);
+    if (!(component instanceof final ConsumableComponent<?> other)) return false;
+    return Float.compare(this.consumeSeconds, other.consumeSeconds) == 0 &&
+           Objects.equals(this.animation, other.animation) &&
+           Objects.equals(this.sound, other.sound) &&
+           this.hasConsumeParticles == other.hasConsumeParticles &&
+           Objects.equals(this.onConsumeEffects, other.onConsumeEffects);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(deathEffects);
-  }
-
-  /**
-   * Gets the list of death effects.
-   *
-   * @return A list of `ReviveEffect` objects.
-   */
-  public List<ComponentEffect> getDeathEffects() {
-    return deathEffects;
-  }
-
-  /**
-   * Adds a `ReviveEffect` to the list of death effects.
-   *
-   * @param effect The `ReviveEffect` to add.
-   */
-  public void addDeathEffect(final ComponentEffect effect) {
-    deathEffects.add(effect);
+    return Objects.hash(consumeSeconds, animation, sound, hasConsumeParticles, onConsumeEffects);
   }
 }

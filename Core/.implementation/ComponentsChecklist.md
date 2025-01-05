@@ -9,7 +9,7 @@
 - [X] can_break
 - [X] can_place_on
 - [ ] charged_projectiles
-- [ ] consumable
+- [X] consumable
 - [ ] container
 - [ ] container_loot
 - [ ] custom_data
@@ -28,8 +28,8 @@
 - [X] firework_explosion
 - [X] fireworks
 - [X] food
-- [ ] glider
-- [ ] hide_additional_tooltip
+- [X] glider
+- [X] hide_additional_tooltip
 - [X] hide_tooltip
 - [X] instrument
 - [X] intangible_projectile
@@ -37,29 +37,29 @@
 - [X] item_name
 - [X] jukebox_playable
 - [ ] lock
-- [ ] lodestone_tracker
-- [ ] lore
-- [ ] map_color
+- [X] lodestone_tracker
+- [X] lore
+- [X] map_color
 - [ ] map_decorations
-- [ ] map_id
-- [ ] max_damage
-- [ ] max_stack_size
-- [ ] note_block_sound
-- [ ] ominous_bottle_amplifier
-- [ ] pot_decorations
-- [ ] potion_contents
+- [X] map_id
+- [X] max_damage
+- [X] max_stack_size
+- [X] note_block_sound
+- [X] ominous_bottle_amplifier
+- [X] pot_decorations
+- [X] potion_contents
 - [ ] profile
-- [ ] rarity
-- [ ] recipes
-- [ ] repairable
-- [ ] repair_cost
-- [ ] stored_enchantments
-- [ ] suspicious_stew_effects
-- [ ] tool
-- [ ] tooltip_style
-- [ ] trim
-- [ ] unbreakable
-- [ ] use_cooldown
+- [X] rarity
+- [X] recipes
+- [X] repairable
+- [X] repair_cost
+- [X] stored_enchantments
+- [X] suspicious_stew_effects
+- [X] tool
+- [X] tooltip_style
+- [X] trim
+- [X] unbreakable
+- [X] use_cooldown
 - [ ] use_remainder
-- [ ] writable_book_content
-- [ ] written_book_content
+- [X] writable_book_content
+- [X] written_book_content

@@ -24,18 +24,18 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * TeleportRandomlyReviveEffect
+ * PlaySoundReviveEffect
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class TeleportRandomlyReviveEffect extends ReviveEffect {
+public class PlaySoundComponentEffect extends ComponentEffect {
 
-  private float diameter = 16.0f; // Default to 16.0
+  private String sound;
 
   @Override
   public String getType() {
-    return "teleport_randomly";
+    return "play_sound";
   }
 
   @Override
@@ -43,7 +43,7 @@ public class TeleportRandomlyReviveEffect extends ReviveEffect {
     final JSONObject json = new JSONObject();
     json.put("type", getType());
     json.put("probability", probability);
-    json.put("diameter", diameter);
+    json.put("sound", sound);
 
     return json;
   }
@@ -51,26 +51,26 @@ public class TeleportRandomlyReviveEffect extends ReviveEffect {
   @Override
   public void readJSON(final JSONHelper json) {
     probability = json.getFloat("probability");
-    diameter = json.getFloat("diameter");
+    sound = json.getString("sound");
   }
 
-  public float getDiameter() {
-    return diameter;
+  public String getSound() {
+    return sound;
   }
 
-  public void setDiameter(final float diameter) {
-    this.diameter = diameter;
+  public void setSound(final String sound) {
+    this.sound = sound;
   }
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final TeleportRandomlyReviveEffect other)) return false;
+    if (!(obj instanceof final PlaySoundComponentEffect other)) return false;
 
-    return super.equals(obj) && Float.compare(this.diameter, other.diameter) == 0;
+    return super.equals(obj) && Objects.equals(this.sound, other.sound);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode(), diameter);
+    return Objects.hash(super.hashCode(), sound);
   }
 }

@@ -29,7 +29,7 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class ReviveEffect {
+public abstract class ComponentEffect {
 
   protected float probability = 1.0f; // Default to 100% chance
 
@@ -41,7 +41,7 @@ public abstract class ReviveEffect {
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final ReviveEffect other)) return false;
+    if (!(obj instanceof final ComponentEffect other)) return false;
 
     return Float.compare(this.probability, other.probability) == 0;
   }
