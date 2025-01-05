@@ -18,10 +18,10 @@
 - [X] damage
 - [X] damage_resistant
 - [ ] debug_stick_state
-- [ ] death_protection
-- [ ] dyed_color
+- [X] death_protection
+- [X] dyed_color
 - [X] enchantable
-- [ ] enchantment_glint_override
+- [X] enchantment_glint_override
 - [X] enchantments
 - [ ] entity_data
 - [X] equippable
