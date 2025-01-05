@@ -111,6 +111,25 @@ public class JSONHelper {
   }
 
   /**
+   * Parses a JSON array into a List<Integer>.
+   *
+   * @param identifier The key of the JSON array.
+   * @return A List<Integer> containing the elements of the JSON array.
+   */
+  public List<Integer> getIntegerList(final String identifier) {
+    final List<Integer> result = new ArrayList<>();
+    if(has(identifier)) {
+
+      final JSONArray array = (JSONArray) object.get(identifier);
+      for(final Object obj : array) {
+
+        result.add(Integer.parseInt(obj.toString()));
+      }
+    }
+    return result;
+  }
+
+  /**
    * Parses a JSON array into a List<Float>.
    *
    * @param identifier The key of the JSON array.
