@@ -18,9 +18,7 @@ package net.tnemc.item.bukkit.component;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.bukkitbase.component.BukkitBaseFoodComponent;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.impl.FoodComponent;
 import net.tnemc.item.component.impl.UseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;

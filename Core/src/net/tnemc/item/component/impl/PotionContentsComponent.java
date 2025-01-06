@@ -20,7 +20,6 @@ package net.tnemc.item.component.impl;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.revive.EffectInstance;
 import net.tnemc.item.platform.ItemPlatform;

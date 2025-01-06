@@ -19,7 +19,7 @@ package net.tnemc.item.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.component.impl.UseComponent;
+import net.tnemc.item.component.impl.UseCooldownComponent;
 import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.serialize.ItemSerializer;
@@ -63,8 +63,8 @@ public abstract class ItemUse<I extends AbstractItemStack<T>, T> implements Item
   public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
 
     if(original.components().containsKey("use") && check.components().containsKey("use")) {
-      final UseComponent<T> originalUse = (UseComponent<T>)original.components().get("use");
-      final UseComponent<T> checkUse = (UseComponent<T>)check.components().get("use");
+      final UseCooldownComponent<T> originalUse = (UseCooldownComponent<T>)original.components().get("use");
+      final UseCooldownComponent<T> checkUse = (UseCooldownComponent<T>)check.components().get("use");
 
       return originalUse.equals(checkUse);
     }

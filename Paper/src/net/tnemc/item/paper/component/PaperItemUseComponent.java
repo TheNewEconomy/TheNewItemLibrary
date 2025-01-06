@@ -20,9 +20,6 @@ package net.tnemc.item.paper.component;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
-import io.papermc.paper.datacomponent.item.Equippable;
-import net.kyori.adventure.key.Key;
-import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.impl.UseComponent;
 import org.bukkit.Bukkit;

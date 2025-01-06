@@ -81,6 +81,11 @@ public class JSONHelper {
     return Boolean.valueOf(getString(identifier));
   }
 
+  public Long getLong(final String identifier) {
+
+    return Long.valueOf(getString(identifier));
+  }
+
   public String getString(final String identifier) {
 
     return object.get(identifier).toString();
@@ -165,6 +170,26 @@ public class JSONHelper {
       }
     }
     return result;
+  }
+
+  /**
+   * Parses a JSON array into an int array.
+   *
+   * @param identifier The key of the JSON array.
+   * @return An int[] containing the elements of the JSON array.
+   */
+  public int[] getIntArray(final String identifier) {
+    if(has(identifier)) {
+
+      final JSONArray array = (JSONArray) object.get(identifier);
+
+      final int[] result = new int[array.size()];
+      for(int i = 0; i < array.size(); i++) {
+        result[i] = Integer.parseInt(array.get(i).toString());
+      }
+      return result;
+    }
+    return new int[0]; // Return an empty array if the key is not present
   }
 
   public JSONObject getObject() {

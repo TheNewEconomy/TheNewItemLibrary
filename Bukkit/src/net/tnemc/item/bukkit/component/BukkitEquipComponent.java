@@ -18,18 +18,12 @@ package net.tnemc.item.bukkit.component;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.kyori.adventure.key.Key;
-import net.tnemc.item.bukkit.BukkitHelper;
-import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.component.impl.EquipComponent;
-import net.tnemc.item.component.impl.UseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
-import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

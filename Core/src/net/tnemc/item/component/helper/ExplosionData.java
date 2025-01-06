@@ -19,7 +19,6 @@ package net.tnemc.item.component.helper;
  */
 
 import net.tnemc.item.JSONHelper;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;

@@ -19,9 +19,7 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.component.BukkitEquipComponent;
 import net.tnemc.item.bukkit.component.BukkitItemUseComponent;
-import net.tnemc.item.platform.impl.ItemEquip;
 import net.tnemc.item.platform.impl.ItemUse;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
