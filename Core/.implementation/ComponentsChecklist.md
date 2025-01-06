@@ -4,7 +4,7 @@
 - [ ] bees
 - [ ] block_entity_data
 - [ ] block_state
-- [ ] bucket_entity_data
+- [X] bucket_entity_data
 - [ ] bundle_contents
 - [X] can_break
 - [X] can_place_on
