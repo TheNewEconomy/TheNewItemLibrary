@@ -21,7 +21,7 @@ package net.tnemc.item.paper.component;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.impl.UseComponent;
+import net.tnemc.item.component.impl.UseCooldownComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -33,7 +33,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class PaperItemUseComponent extends UseComponent<ItemStack> {
+public class PaperItemUseComponent extends UseCooldownComponent<ItemStack> {
 
   public static PaperItemUseComponent create(final ItemStack stack) {
 
@@ -57,7 +57,7 @@ public class PaperItemUseComponent extends UseComponent<ItemStack> {
       if(meta.hasUseCooldown()) {
 
         final org.bukkit.inventory.meta.components.UseCooldownComponent component = meta.getUseCooldown();
-        this.group = component.getCooldownGroup().toString();
+        this.cooldownGroup = component.getCooldownGroup().toString();
         this.seconds = component.getCooldownSeconds();
       }
     }
@@ -77,7 +77,7 @@ public class PaperItemUseComponent extends UseComponent<ItemStack> {
     }
 
     final org.bukkit.inventory.meta.components.UseCooldownComponent component = meta.getUseCooldown();
-    component.setCooldownGroup(NamespacedKey.fromString(this.group));
+    component.setCooldownGroup(NamespacedKey.fromString(this.cooldownGroup));
     component.setCooldownSeconds(this.seconds);
 
     meta.setUseCooldown(component);

@@ -65,7 +65,7 @@ public class BukkitEquipComponent extends EquipComponent<ItemStack> {
         this.equipSound = component.getEquipSound().getKey().toString();
         this.modelKey = component.getModel().toString();
         this.slot = ParsingUtil.attributeSlot(component.getSlot());
-        this.damageWithEntity = component.isDamageOnHurt();
+        this.damageOnHurt = component.isDamageOnHurt();
         this.dispensable = component.isDispensable();
         this.swappable = component.isSwappable();
 
@@ -99,7 +99,7 @@ public class BukkitEquipComponent extends EquipComponent<ItemStack> {
     component.setEquipSound(Registry.SOUNDS.get(NamespacedKey.fromString(this.equipSound)));
     component.setModel(NamespacedKey.fromString(this.modelKey));
     component.setSlot(ParsingUtil.attributeSlot(this.slot));
-    component.setDamageOnHurt(this.damageWithEntity);
+    component.setDamageOnHurt(this.damageOnHurt);
     component.setDispensable(this.dispensable);
     component.setSwappable(this.swappable);
 

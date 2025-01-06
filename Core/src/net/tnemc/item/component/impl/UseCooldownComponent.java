@@ -36,7 +36,7 @@ import java.util.Objects;
  */
 public abstract class UseCooldownComponent<T> implements SerialComponent<T> {
 
-  protected int seconds;
+  protected float seconds;
   protected String cooldownGroup;
 
   @Override
@@ -54,7 +54,7 @@ public abstract class UseCooldownComponent<T> implements SerialComponent<T> {
 
   @Override
   public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    seconds = json.getInteger("seconds");
+    seconds = json.getFloat("seconds");
     cooldownGroup = json.getString("cooldown_group");
   }
 
