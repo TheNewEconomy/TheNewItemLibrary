@@ -30,7 +30,7 @@ import java.util.Map;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class BaseHelper implements HelperMethods {
+public abstract class BaseHelper {
 
   protected final Map<String, RegistryHandler> registryHandlers = new HashMap<>();
 
@@ -59,7 +59,6 @@ public abstract class BaseHelper implements HelperMethods {
    *
    * @return a collection of materials
    */
-  @Override
   public LinkedList<String> materials() {
 
     return getKeys("materials");
@@ -70,7 +69,6 @@ public abstract class BaseHelper implements HelperMethods {
    *
    * @return a collection of enchantments
    */
-  @Override
   public LinkedList<String> enchantments() {
 
     return getKeys("enchantments");
@@ -81,7 +79,6 @@ public abstract class BaseHelper implements HelperMethods {
    *
    * @return a collection of flags
    */
-  @Override
   public LinkedList<String> flags() {
 
     return getKeys("flags");
