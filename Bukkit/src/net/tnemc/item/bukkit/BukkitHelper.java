@@ -20,8 +20,11 @@ package net.tnemc.item.bukkit;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.providers.HelperMethods;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Material;
+import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 
@@ -48,8 +51,20 @@ public class BukkitHelper implements HelperMethods {
       materialKeys.add(material.getKey().toString());
     }
 
-    for(final Enchantment enchantment : Enchantment.values()) {
-      enchantmentKeys.add(enchantment.getKey().toString());
+    if(VersionUtil.isVersion(BukkitItemPlatform.PLATFORM.version(), "1.20.3")) {
+
+      Registry.ENCHANTMENT.forEach((enchantment) -> {
+        if(enchantment != null) {
+
+          enchantmentKeys.add(enchantment.getKey().toString());
+        }
+      });
+
+    } else {
+
+      for(final Enchantment enchantment : Enchantment.values()) {
+        enchantmentKeys.add(enchantment.getKey().toString());
+      }
     }
 
     for(final ItemFlag itemFlag : ItemFlag.values()) {

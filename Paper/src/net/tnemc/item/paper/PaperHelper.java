@@ -20,7 +20,11 @@ package net.tnemc.item.paper;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.HelperMethods;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Registry;
 import org.bukkit.inventory.ItemFlag;
 
@@ -47,9 +51,25 @@ public class PaperHelper implements HelperMethods {
       }
     });
 
-    Registry.ENCHANTMENT.forEach((enchant)->{
-      enchantmentKeys.add(enchant.getKey().getKey());
-    });
+    if(VersionUtil.isVersion(PaperItemPlatform.PLATFORM.version(), "1.21")) {
+
+      RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).forEach((enchantment)->{
+        if(enchantment != null) {
+
+          enchantmentKeys.add(enchantment.getKey().toString());
+        }
+      });
+
+
+    } else {
+
+      Registry.ENCHANTMENT.forEach((enchantment) -> {
+        if(enchantment != null) {
+
+          enchantmentKeys.add(enchantment.getKey().toString());
+        }
+      });
+    }
 
     for(final ItemFlag itemFlag : ItemFlag.values()) {
       itemFlagKeys.add(itemFlag.name());
