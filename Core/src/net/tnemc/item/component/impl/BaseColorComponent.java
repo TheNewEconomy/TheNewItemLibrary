@@ -35,7 +35,7 @@ import java.util.Objects;
  * @since 0.2.0.0
  */
 
-public abstract class BaseColorComponent<T> implements SerialComponent<T> {
+public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected String color;
 
@@ -43,7 +43,7 @@ public abstract class BaseColorComponent<T> implements SerialComponent<T> {
    * @return the type of component this is.
    */
   @Override
-  public String getType() {
+  public String identifier() {
     return "base_color";
   }
 
@@ -66,7 +66,7 @@ public abstract class BaseColorComponent<T> implements SerialComponent<T> {
    * @param platform The ItemPlatform instance.
    */
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     if(json.has("color")) {
       color = json.getString("color");
     }
@@ -80,8 +80,8 @@ public abstract class BaseColorComponent<T> implements SerialComponent<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if(!(component instanceof final BaseColorComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if(!(component instanceof final BaseColorComponent<?, ?> other)) return false;
 
     return Objects.equals(this.color, other.color);
   }

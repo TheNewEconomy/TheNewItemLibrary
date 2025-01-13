@@ -36,12 +36,12 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class DamageResistantComponent<T> implements SerialComponent<T> {
+public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<String> types = new ArrayList<>();
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "damage_resistant";
   }
 
@@ -53,7 +53,7 @@ public abstract class DamageResistantComponent<T> implements SerialComponent<T> 
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     types.clear();
     if(json.has("types")) {
       types.addAll(json.getStringList("types"));
@@ -61,8 +61,8 @@ public abstract class DamageResistantComponent<T> implements SerialComponent<T> 
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if(!(component instanceof final DamageResistantComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if(!(component instanceof final DamageResistantComponent<?, ?> other)) return false;
 
     return Objects.equals(this.types, other.types);
   }

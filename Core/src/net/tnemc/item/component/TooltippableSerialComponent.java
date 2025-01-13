@@ -28,7 +28,7 @@ import net.tnemc.item.platform.ItemPlatform;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class TooltippableSerialComponent<T> implements SerialComponent<T> {
+public abstract class TooltippableSerialComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected boolean showInTooltip = true;
 
@@ -39,7 +39,7 @@ public abstract class TooltippableSerialComponent<T> implements SerialComponent<
    * @param platform The {@link ItemPlatform platform} instance.
    */
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     showInTooltip = json.getBoolean("showInTooltip");
   }

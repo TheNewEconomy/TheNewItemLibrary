@@ -38,7 +38,7 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class EquipComponent<T> implements SerialComponent<T> {
+public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<String> entities = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public abstract class EquipComponent<T> implements SerialComponent<T> {
    * @return the type of component this is.
    */
   @Override
-  public String getType() {
+  public String identifier() {
 
     return "equip";
   }
@@ -94,7 +94,7 @@ public abstract class EquipComponent<T> implements SerialComponent<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     cameraKey = json.getString("cameraKey");
     equipSound = json.getString("equipSound");
@@ -117,9 +117,9 @@ public abstract class EquipComponent<T> implements SerialComponent<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
+  public boolean equals(final SerialComponent<I, T> component) {
 
-    if(component instanceof final EquipComponent<?> equipComponent) {
+    if(component instanceof final EquipComponent<?, ?> equipComponent) {
 
       return Objects.equals(this.cameraKey, equipComponent.cameraKey) &&
              Objects.equals(this.equipSound, equipComponent.equipSound) &&

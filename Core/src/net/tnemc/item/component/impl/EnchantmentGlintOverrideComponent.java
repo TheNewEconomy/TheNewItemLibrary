@@ -34,12 +34,12 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class EnchantmentGlintOverrideComponent<T> implements SerialComponent<T> {
+public abstract class EnchantmentGlintOverrideComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected boolean glintOverride;
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "enchantment_glint_override";
   }
 
@@ -51,13 +51,13 @@ public abstract class EnchantmentGlintOverrideComponent<T> implements SerialComp
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     glintOverride = json.getBoolean("enchantment_glint_override");
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final EnchantmentGlintOverrideComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final EnchantmentGlintOverrideComponent<?, ?> other)) return false;
     return this.glintOverride == other.glintOverride;
   }
 

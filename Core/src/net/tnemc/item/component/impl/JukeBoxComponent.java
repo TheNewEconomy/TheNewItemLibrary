@@ -34,7 +34,7 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.0.1.0
  */
-public abstract class JukeBoxComponent<T> extends TooltippableSerialComponent<T> {
+public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
 
   protected String song;
 
@@ -42,7 +42,7 @@ public abstract class JukeBoxComponent<T> extends TooltippableSerialComponent<T>
    * @return the type of component this is.
    */
   @Override
-  public String getType() {
+  public String identifier() {
 
     return "jukebox";
   }
@@ -69,7 +69,7 @@ public abstract class JukeBoxComponent<T> extends TooltippableSerialComponent<T>
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     super.readJSON(json, platform);
     song = json.getString("song");
@@ -84,9 +84,9 @@ public abstract class JukeBoxComponent<T> extends TooltippableSerialComponent<T>
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
+  public boolean equals(final SerialComponent<I, T> component) {
 
-    if(component instanceof final JukeBoxComponent<?> jukeBox) {
+    if(component instanceof final JukeBoxComponent<?, ?> jukeBox) {
 
       return jukeBox.showInTooltip == this.showInTooltip && Objects.equals(jukeBox.song, this.song);
     }

@@ -37,12 +37,12 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class StoredEnchantmentsComponent<T> extends TooltippableSerialComponent<T> {
+public abstract class StoredEnchantmentsComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
 
   protected final Map<String, Integer> enchantments = new HashMap<>();
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "stored_enchantments";
   }
 
@@ -59,7 +59,7 @@ public abstract class StoredEnchantmentsComponent<T> extends TooltippableSerialC
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     super.readJSON(json, platform);
     enchantments.clear();
 
@@ -72,8 +72,8 @@ public abstract class StoredEnchantmentsComponent<T> extends TooltippableSerialC
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final StoredEnchantmentsComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final StoredEnchantmentsComponent<?, ?> other)) return false;
     return showInTooltip == other.showInTooltip && Objects.equals(this.enchantments, other.enchantments);
   }
 

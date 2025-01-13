@@ -34,7 +34,7 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class BucketEntityDataComponent<T> implements SerialComponent<T> {
+public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected boolean noAI;
   protected boolean silent;
@@ -49,7 +49,7 @@ public abstract class BucketEntityDataComponent<T> implements SerialComponent<T>
   protected int type = 0; // Default to 0
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "bucket_entity_data";
   }
 
@@ -71,7 +71,7 @@ public abstract class BucketEntityDataComponent<T> implements SerialComponent<T>
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     noAI = json.getBoolean("NoAI");
     silent = json.getBoolean("Silent");
     noGravity = json.getBoolean("NoGravity");
@@ -86,8 +86,8 @@ public abstract class BucketEntityDataComponent<T> implements SerialComponent<T>
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final BucketEntityDataComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final BucketEntityDataComponent<?, ?> other)) return false;
     return this.noAI == other.noAI &&
            this.silent == other.silent &&
            this.noGravity == other.noGravity &&

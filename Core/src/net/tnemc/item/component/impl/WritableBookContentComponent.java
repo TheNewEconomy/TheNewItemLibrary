@@ -37,12 +37,12 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class WritableBookContentComponent<T> implements SerialComponent<T> {
+public abstract class WritableBookContentComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<String> pages = new ArrayList<>();
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "writable_book_content";
   }
 
@@ -56,14 +56,14 @@ public abstract class WritableBookContentComponent<T> implements SerialComponent
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     pages.clear();
     pages.addAll(json.getStringList("pages"));
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final WritableBookContentComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final WritableBookContentComponent<?, ?> other)) return false;
     return Objects.equals(this.pages, other.pages);
   }
 

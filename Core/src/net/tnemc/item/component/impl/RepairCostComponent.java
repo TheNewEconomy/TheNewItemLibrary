@@ -34,12 +34,12 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class RepairCostComponent<T> implements SerialComponent<T> {
+public abstract class RepairCostComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected int repairCost;
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "repair_cost";
   }
 
@@ -51,13 +51,13 @@ public abstract class RepairCostComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     repairCost = json.getInteger("repair_cost");
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final RepairCostComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final RepairCostComponent<?, ?> other)) return false;
     return this.repairCost == other.repairCost;
   }
 

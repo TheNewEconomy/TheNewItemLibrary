@@ -37,12 +37,12 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class DeathProtectionComponent<T> implements SerialComponent<T> {
+public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<ComponentEffect> deathEffects = new ArrayList<>();
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "death_protection";
   }
 
@@ -60,7 +60,7 @@ public abstract class DeathProtectionComponent<T> implements SerialComponent<T> 
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     deathEffects.clear();
 
     if (json.has("death_effects")) {
@@ -88,8 +88,8 @@ public abstract class DeathProtectionComponent<T> implements SerialComponent<T> 
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final DeathProtectionComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final DeathProtectionComponent<?, ?> other)) return false;
 
     return Objects.equals(this.deathEffects, other.deathEffects);
   }

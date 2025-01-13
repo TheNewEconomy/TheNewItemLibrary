@@ -34,12 +34,12 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class NoteBlockSoundComponent<T> implements SerialComponent<T> {
+public abstract class NoteBlockSoundComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected String soundId;
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "note_block_sound";
   }
 
@@ -51,13 +51,13 @@ public abstract class NoteBlockSoundComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     soundId = json.getString("note_block_sound");
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final NoteBlockSoundComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final NoteBlockSoundComponent<?, ?> other)) return false;
     return Objects.equals(this.soundId, other.soundId);
   }
 

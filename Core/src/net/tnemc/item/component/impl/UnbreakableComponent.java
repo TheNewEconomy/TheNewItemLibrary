@@ -33,10 +33,10 @@ import org.json.simple.JSONObject;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class UnbreakableComponent<T> extends TooltippableSerialComponent<T> {
+public abstract class UnbreakableComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "unbreakable";
   }
 
@@ -48,13 +48,13 @@ public abstract class UnbreakableComponent<T> extends TooltippableSerialComponen
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     super.readJSON(json, platform); // Read tooltip visibility
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final UnbreakableComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final UnbreakableComponent<?, ?> other)) return false;
     return showInTooltip == other.showInTooltip;
   }
 

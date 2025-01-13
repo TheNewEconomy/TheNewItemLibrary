@@ -37,12 +37,12 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class RepairableComponent<T> implements SerialComponent<T> {
+public abstract class RepairableComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<String> repairItems = new ArrayList<>();
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "repairable";
   }
 
@@ -56,14 +56,14 @@ public abstract class RepairableComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     repairItems.clear();
     repairItems.addAll(json.getStringList("items"));
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final RepairableComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final RepairableComponent<?, ?> other)) return false;
     return Objects.equals(this.repairItems, other.repairItems);
   }
 

@@ -38,7 +38,7 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class PotionContentsComponent<T> implements SerialComponent<T> {
+public abstract class PotionContentsComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected String potionId;
   protected int customColor;
@@ -46,7 +46,7 @@ public abstract class PotionContentsComponent<T> implements SerialComponent<T> {
   protected final List<EffectInstance> customEffects = new ArrayList<>();
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "potion_contents";
   }
 
@@ -66,7 +66,7 @@ public abstract class PotionContentsComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     potionId = json.getString("potion");
     customColor = json.getInteger("custom_color");
     customName = json.getString("custom_name");
@@ -81,8 +81,8 @@ public abstract class PotionContentsComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final PotionContentsComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final PotionContentsComponent<?, ?> other)) return false;
     return Objects.equals(this.potionId, other.potionId) &&
            this.customColor == other.customColor &&
            Objects.equals(this.customName, other.customName) &&

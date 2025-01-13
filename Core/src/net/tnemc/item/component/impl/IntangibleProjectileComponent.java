@@ -34,10 +34,10 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class IntangibleProjectileComponent<T> implements SerialComponent<T> {
+public abstract class IntangibleProjectileComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "intangible_projectile";
   }
 
@@ -47,17 +47,17 @@ public abstract class IntangibleProjectileComponent<T> implements SerialComponen
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     // Nothing to read since the component does not contain additional data
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
+  public boolean equals(final SerialComponent<I, T> component) {
     return component instanceof IntangibleProjectileComponent;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getType());
+    return Objects.hash(identifier());
   }
 }

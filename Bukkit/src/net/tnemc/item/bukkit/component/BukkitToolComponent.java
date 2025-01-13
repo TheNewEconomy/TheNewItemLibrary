@@ -18,6 +18,7 @@ package net.tnemc.item.bukkit.component;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.ToolRule;
 import net.tnemc.item.component.impl.ToolComponent;
@@ -35,7 +36,7 @@ import java.util.Collection;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitToolComponent extends ToolComponent<ItemStack> {
+public class BukkitToolComponent extends ToolComponent<BukkitItemStack, ItemStack> {
 
   public static BukkitToolComponent create(final ItemStack stack) {
 

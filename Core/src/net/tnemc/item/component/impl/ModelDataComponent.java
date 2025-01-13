@@ -37,7 +37,7 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class ModelDataComponent<T> implements SerialComponent<T> {
+public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<String> colours = new ArrayList<>();
   protected final List<Float> floats = new ArrayList<>();
@@ -48,7 +48,7 @@ public abstract class ModelDataComponent<T> implements SerialComponent<T> {
    * @return the type of component this is.
    */
   @Override
-  public String getType() {
+  public String identifier() {
     return "model-data";
   }
 
@@ -74,7 +74,7 @@ public abstract class ModelDataComponent<T> implements SerialComponent<T> {
    * @param platform  The ItemPlatform instance.
    */
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     colours.clear();
     colours.addAll(json.getStringList("colours"));
 
@@ -96,8 +96,8 @@ public abstract class ModelDataComponent<T> implements SerialComponent<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final ModelDataComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final ModelDataComponent<?, ?> other)) return false;
     return Objects.equals(this.colours, other.colours) &&
            Objects.equals(this.floats, other.floats) &&
            Objects.equals(this.flags, other.flags) &&

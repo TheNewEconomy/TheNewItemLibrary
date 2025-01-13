@@ -22,6 +22,9 @@ package net.tnemc.item.component;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.platform.ItemPlatform;
+import net.tnemc.item.platform.applier.ItemApplicator;
+import net.tnemc.item.platform.check.ItemCheck;
+import net.tnemc.item.platform.serialize.ItemSerializer;
 import org.json.simple.JSONObject;
 
 /**
@@ -31,12 +34,7 @@ import org.json.simple.JSONObject;
  * @since 0.1.7.7
  */
 
-public interface SerialComponent<T> {
-
-  /**
-   * @return the type of component this is.
-   */
-  String getType();
+public interface SerialComponent<I extends AbstractItemStack<T>, T> extends ItemCheck<T>, ItemApplicator<I, T>, ItemSerializer<I, T> {
 
   /**
    * Converts the {@link SerialComponent} to a JSON object.
@@ -51,7 +49,7 @@ public interface SerialComponent<T> {
    * @param json     The JSONHelper instance of the json data.
    * @param platform The {@link ItemPlatform platform} instance.
    */
-  <I extends AbstractItemStack<T>> void readJSON(JSONHelper json, ItemPlatform<I, T> platform);
+  void readJSON(JSONHelper json, ItemPlatform<I, T> platform);
 
   /**
    * Used to determine if some data is equal to this component. This means that it has to be an
@@ -61,20 +59,21 @@ public interface SerialComponent<T> {
    *
    * @return True if similar, otherwise false.
    */
-  boolean equals(SerialComponent<? extends T> component);
+  boolean equals(SerialComponent<I, T> component);
 
   /**
-   * This method is used to convert from the implementation's ItemStack object to a valid
-   * {@link SerialComponent} object.
+   * @param original the original stack
+   * @param check    the stack to use for the check
    *
-   * @param stack The locale itemstack object of the implementation.
+   * @return True if the check passes, otherwise false.
    */
-  void of(T stack);
+  @Override
+  default boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+    if(original.components().containsKey(identifier()) && check.components().containsKey(identifier())) {
 
-  /**
-   * This method is used to apply the component to the implementation's locale itemstack format.
-   *
-   * @param stack The locale itemstack object of the implementation.
-   */
-  T apply(T stack);
+      return original.components().get(identifier()).equals(check.components().get(identifier()));
+    }
+
+    return !original.components().containsKey(identifier()) && !check.components().containsKey(identifier());
+  }
 }

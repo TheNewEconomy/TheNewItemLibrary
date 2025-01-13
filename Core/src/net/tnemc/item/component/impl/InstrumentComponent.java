@@ -34,14 +34,14 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class InstrumentComponent<T> implements SerialComponent<T> {
+public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected String soundEvent;
   protected int useDuration;
   protected int range;
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "instrument";
   }
 
@@ -55,15 +55,15 @@ public abstract class InstrumentComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     soundEvent = json.getString("sound_event");
     useDuration = json.getInteger("use_duration");
     range = json.getInteger("range");
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final InstrumentComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final InstrumentComponent<?, ?> other)) return false;
 
     return Objects.equals(this.soundEvent, other.soundEvent) &&
            this.useDuration == other.useDuration &&

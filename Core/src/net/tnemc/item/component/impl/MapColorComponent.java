@@ -34,12 +34,12 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class MapColorComponent<T> implements SerialComponent<T> {
+public abstract class MapColorComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected int mapColor;
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "map_color";
   }
 
@@ -51,13 +51,13 @@ public abstract class MapColorComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     mapColor = json.getInteger("map_color");
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final MapColorComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final MapColorComponent<?, ?> other)) return false;
     return this.mapColor == other.mapColor;
   }
 

@@ -36,12 +36,12 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class EnchantmentsComponent<T> extends TooltippableSerialComponent<T> {
+public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
 
   protected final Map<String, Integer> levels = new HashMap<>();
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "enchantments";
   }
 
@@ -64,7 +64,7 @@ public abstract class EnchantmentsComponent<T> extends TooltippableSerialCompone
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     levels.clear();
     super.readJSON(json, platform);
 
@@ -81,8 +81,8 @@ public abstract class EnchantmentsComponent<T> extends TooltippableSerialCompone
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if(!(component instanceof final EnchantmentsComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if(!(component instanceof final EnchantmentsComponent<?, ?> other)) return false;
 
     return this.showInTooltip == other.showInTooltip &&
            Objects.equals(this.levels, other.levels);

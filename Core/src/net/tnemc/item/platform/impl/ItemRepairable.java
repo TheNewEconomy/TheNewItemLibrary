@@ -63,8 +63,8 @@ public abstract class ItemRepairable<I extends AbstractItemStack<T>, T> implemen
   public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
 
     if(original.components().containsKey("repairable") && check.components().containsKey("repairable")) {
-      final RepairableComponent<T> originalComponent = (RepairableComponent<T>)original.components().get("repairable");
-      final RepairableComponent<T> checkComponent = (RepairableComponent<T>)check.components().get("repairable");
+      final RepairableComponent<I, T> originalComponent = (RepairableComponent<I, T>)original.components().get("repairable");
+      final RepairableComponent<I, T> checkComponent = (RepairableComponent<I, T>)check.components().get("repairable");
 
       return originalComponent.equals(checkComponent);
     }

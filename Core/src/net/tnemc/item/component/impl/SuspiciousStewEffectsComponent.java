@@ -34,13 +34,13 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class SuspiciousStewEffectsComponent<T> implements SerialComponent<T> {
+public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected String effectId;
   protected int duration;
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "suspicious_stew_effects";
   }
 
@@ -53,14 +53,14 @@ public abstract class SuspiciousStewEffectsComponent<T> implements SerialCompone
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     effectId = json.getString("id");
     duration = json.getInteger("duration");
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final SuspiciousStewEffectsComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final SuspiciousStewEffectsComponent<?, ?> other)) return false;
     return Objects.equals(this.effectId, other.effectId) &&
            this.duration == other.duration;
   }

@@ -63,8 +63,8 @@ public abstract class ItemJuke<I extends AbstractItemStack<T>, T> implements Ite
   public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
 
     if(original.components().containsKey("jukebox") && check.components().containsKey("jukebox")) {
-      final JukeBoxComponent<T> originalJuke = (JukeBoxComponent<T>)original.components().get("jukebox");
-      final JukeBoxComponent<T> checkJuke = (JukeBoxComponent<T>)check.components().get("jukebox");
+      final JukeBoxComponent<I, T> originalJuke = (JukeBoxComponent<I, T>)original.components().get("jukebox");
+      final JukeBoxComponent<I, T> checkJuke = (JukeBoxComponent<I, T>)check.components().get("jukebox");
 
       return originalJuke.equals(checkJuke);
     }

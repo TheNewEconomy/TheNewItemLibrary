@@ -40,7 +40,7 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class AttributeModifiersComponent<T> extends TooltippableSerialComponent<T> {
+public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
 
   protected final List<AttributeModifier> modifiers = new ArrayList<>();
 
@@ -48,7 +48,7 @@ public abstract class AttributeModifiersComponent<T> extends TooltippableSerialC
    * @return the type of component this is.
    */
   @Override
-  public String getType() {
+  public String identifier() {
     return "attribute_modifiers";
   }
 
@@ -85,7 +85,7 @@ public abstract class AttributeModifiersComponent<T> extends TooltippableSerialC
    * @param platform The ItemPlatform instance.
    */
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     super.readJSON(json, platform);
 
     modifiers.clear();
@@ -124,8 +124,8 @@ public abstract class AttributeModifiersComponent<T> extends TooltippableSerialC
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if(!(component instanceof final AttributeModifiersComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if(!(component instanceof final AttributeModifiersComponent<?, ?> other)) return false;
     return this.showInTooltip == other.showInTooltip &&
            Objects.equals(this.modifiers, other.modifiers);
   }

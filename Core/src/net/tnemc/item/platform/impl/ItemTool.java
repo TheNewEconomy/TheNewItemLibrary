@@ -63,8 +63,8 @@ public abstract class ItemTool<I extends AbstractItemStack<T>, T> implements Ite
   public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
 
     if(original.components().containsKey("tool") && check.components().containsKey("tool")) {
-      final ToolComponent<T> originalTool = (ToolComponent<T>)original.components().get("tool");
-      final ToolComponent<T> checkTool = (ToolComponent<T>)check.components().get("tool");
+      final ToolComponent<I, T> originalTool = (ToolComponent<I, T>)original.components().get("tool");
+      final ToolComponent<I, T> checkTool = (ToolComponent<I, T>)check.components().get("tool");
 
       return originalTool.equals(checkTool);
     }

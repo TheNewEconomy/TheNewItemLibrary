@@ -34,12 +34,12 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class CustomNameComponent<T> implements SerialComponent<T> {
+public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected String customName; // Stores the item's custom name as a string
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "custom_name";
   }
 
@@ -51,15 +51,15 @@ public abstract class CustomNameComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     if (json.has("custom_name")) {
       customName = json.getString("custom_name");
     }
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final CustomNameComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final CustomNameComponent<?, ?> other)) return false;
 
     return Objects.equals(this.customName, other.customName);
   }

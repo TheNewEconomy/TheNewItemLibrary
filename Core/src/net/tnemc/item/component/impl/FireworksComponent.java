@@ -36,13 +36,13 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class FireworksComponent<T> implements SerialComponent<T> {
+public abstract class FireworksComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<ExplosionData> explosions = new ArrayList<>();
   protected byte flightDuration;
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "fireworks";
   }
 
@@ -62,7 +62,7 @@ public abstract class FireworksComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     explosions.clear();
 
     final JSONArray explosionsArray = (JSONArray) json.getObject().get("explosions");
@@ -81,8 +81,8 @@ public abstract class FireworksComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if(!(component instanceof final FireworksComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if(!(component instanceof final FireworksComponent<?, ?> other)) return false;
 
     return this.flightDuration == other.flightDuration &&
            Objects.equals(this.explosions, other.explosions);

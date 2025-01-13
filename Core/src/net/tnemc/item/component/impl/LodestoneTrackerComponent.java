@@ -34,7 +34,7 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class LodestoneTrackerComponent<T> implements SerialComponent<T> {
+public abstract class LodestoneTrackerComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected String target;
   protected int[] pos = new int[3]; // x, y, z coordinates
@@ -42,7 +42,7 @@ public abstract class LodestoneTrackerComponent<T> implements SerialComponent<T>
   protected boolean tracked = true;
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "lodestone_tracker";
   }
 
@@ -57,7 +57,7 @@ public abstract class LodestoneTrackerComponent<T> implements SerialComponent<T>
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     if (json.has("target")) target = json.getString("target");
     if (json.has("pos")) pos = json.getIntArray("pos");
     if (json.has("dimension")) dimension = json.getString("dimension");
@@ -65,8 +65,8 @@ public abstract class LodestoneTrackerComponent<T> implements SerialComponent<T>
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final LodestoneTrackerComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final LodestoneTrackerComponent<?, ?> other)) return false;
     return Objects.equals(this.target, other.target) &&
            Objects.equals(this.pos, other.pos) &&
            Objects.equals(this.dimension, other.dimension) &&

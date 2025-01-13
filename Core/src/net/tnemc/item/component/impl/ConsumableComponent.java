@@ -38,7 +38,7 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class ConsumableComponent<T> implements SerialComponent<T> {
+public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected float consumeSeconds = 1.6f; // Default to 1.6 seconds
   protected String animation = "eat"; // Default animation
@@ -47,7 +47,7 @@ public abstract class ConsumableComponent<T> implements SerialComponent<T> {
   protected final List<ComponentEffect> onConsumeEffects = new ArrayList<>();
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "consumable";
   }
 
@@ -69,7 +69,7 @@ public abstract class ConsumableComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     consumeSeconds = json.getFloat("consume_seconds");
     animation = json.getString("animation");
     sound = json.getString("sound");
@@ -101,8 +101,8 @@ public abstract class ConsumableComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final ConsumableComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final ConsumableComponent<?, ?> other)) return false;
     return Float.compare(this.consumeSeconds, other.consumeSeconds) == 0 &&
            Objects.equals(this.animation, other.animation) &&
            Objects.equals(this.sound, other.sound) &&

@@ -31,7 +31,7 @@ import org.json.simple.JSONObject;
  * @author creatorfromhell
  * @since 0.0.1.0
  */
-public abstract class FoodComponent<T> implements SerialComponent<T> {
+public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected boolean noHunger;
   protected float saturation;
@@ -41,7 +41,7 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
    * @return the type of component this is.
    */
   @Override
-  public String getType() {
+  public String identifier() {
 
     return "food";
   }
@@ -68,7 +68,7 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     noHunger = json.getBoolean("noHunger");
     saturation = json.getFloat("saturation");
@@ -84,9 +84,9 @@ public abstract class FoodComponent<T> implements SerialComponent<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
+  public boolean equals(final SerialComponent<I, T> component) {
 
-    if(component instanceof final FoodComponent<?> food) {
+    if(component instanceof final FoodComponent<?, ?> food) {
 
       return this.noHunger == food.noHunger &&
              Float.compare(this.saturation, food.saturation) == 0 &&

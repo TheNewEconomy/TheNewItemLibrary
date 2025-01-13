@@ -36,7 +36,7 @@ import java.util.List;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public abstract class ToolComponent<T> implements SerialComponent<T> {
+public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<ToolRule> rules = new LinkedList<>();
 
@@ -47,7 +47,7 @@ public abstract class ToolComponent<T> implements SerialComponent<T> {
    * @return the type of component this is.
    */
   @Override
-  public String getType() {
+  public String identifier() {
 
     return "tool";
   }
@@ -81,7 +81,7 @@ public abstract class ToolComponent<T> implements SerialComponent<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     defaultSpeed = json.getFloat("defaultSpeed");
     blockDamage = json.getInteger("blockDamage");
@@ -103,9 +103,9 @@ public abstract class ToolComponent<T> implements SerialComponent<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
+  public boolean equals(final SerialComponent<I, T> component) {
 
-    if(component instanceof final ToolComponent<?> tool) {
+    if(component instanceof final ToolComponent<?, ?> tool) {
 
       //TODO: This.
     }

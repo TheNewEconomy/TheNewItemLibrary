@@ -33,7 +33,7 @@ import org.json.simple.JSONObject;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class EnchantableComponent<T> implements SerialComponent<T> {
+public abstract class EnchantableComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected int value;
 
@@ -41,7 +41,7 @@ public abstract class EnchantableComponent<T> implements SerialComponent<T> {
    * @return the type of component this is.
    */
   @Override
-  public String getType() {
+  public String identifier() {
 
     return "enchantable";
   }
@@ -67,7 +67,7 @@ public abstract class EnchantableComponent<T> implements SerialComponent<T> {
    * @param json The JSONHelper instance of the json data.
    */
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
     value = json.getInteger("value");
   }
@@ -81,9 +81,9 @@ public abstract class EnchantableComponent<T> implements SerialComponent<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
+  public boolean equals(final SerialComponent<I, T> component) {
 
-    if(component instanceof final EnchantableComponent<?> enchant) {
+    if(component instanceof final EnchantableComponent<?, ?> enchant) {
 
       return this.value == enchant.value;
     }

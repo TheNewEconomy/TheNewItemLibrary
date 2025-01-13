@@ -34,12 +34,12 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class MaxDamageComponent<T> implements SerialComponent<T> {
+public abstract class MaxDamageComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected int maxDamage;
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "max_damage";
   }
 
@@ -51,13 +51,13 @@ public abstract class MaxDamageComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     maxDamage = json.getInteger("max_damage");
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final MaxDamageComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final MaxDamageComponent<?, ?> other)) return false;
     return this.maxDamage == other.maxDamage;
   }
 

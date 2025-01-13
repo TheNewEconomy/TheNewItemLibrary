@@ -39,7 +39,7 @@ import java.util.Objects;
  * @since 0.2.0.0
  */
 
-public abstract class BannerPatternsComponent<T> implements SerialComponent<T> {
+public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<PatternData> patterns = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public abstract class BannerPatternsComponent<T> implements SerialComponent<T> {
    * @return the type of component this is.
    */
   @Override
-  public String getType() {
+  public String identifier() {
     return "banner_patterns";
   }
 
@@ -80,7 +80,7 @@ public abstract class BannerPatternsComponent<T> implements SerialComponent<T> {
    * @param platform The ItemPlatform instance.
    */
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     patterns.clear();
 
     final JSONArray patternsArray = (JSONArray) json.getObject().get("patterns");
@@ -103,8 +103,8 @@ public abstract class BannerPatternsComponent<T> implements SerialComponent<T> {
    * @return True if similar, otherwise false.
    */
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if(!(component instanceof final BannerPatternsComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if(!(component instanceof final BannerPatternsComponent<?, ?> other)) return false;
 
     return Objects.equals(this.patterns, other.patterns);
   }

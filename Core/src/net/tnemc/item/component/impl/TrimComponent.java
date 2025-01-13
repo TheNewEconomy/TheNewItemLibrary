@@ -35,13 +35,13 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class TrimComponent<T> extends TooltippableSerialComponent<T> {
+public abstract class TrimComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
 
   protected String pattern;
   protected String material;
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "trim";
   }
 
@@ -55,15 +55,15 @@ public abstract class TrimComponent<T> extends TooltippableSerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     super.readJSON(json, platform); // Read tooltip visibility
     pattern = json.getString("pattern");
     material = json.getString("material");
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final TrimComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final TrimComponent<?, ?> other)) return false;
     return showInTooltip == other.showInTooltip &&
            Objects.equals(this.pattern, other.pattern) &&
            Objects.equals(this.material, other.material);

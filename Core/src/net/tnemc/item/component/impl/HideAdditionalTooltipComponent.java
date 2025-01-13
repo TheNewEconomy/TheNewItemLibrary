@@ -34,10 +34,10 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class HideAdditionalTooltipComponent<T> implements SerialComponent<T> {
+public abstract class HideAdditionalTooltipComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "hide_additional_tooltip";
   }
 
@@ -47,17 +47,17 @@ public abstract class HideAdditionalTooltipComponent<T> implements SerialCompone
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     // No data to read since this component has no fields
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    return component instanceof HideAdditionalTooltipComponent<?>;
+  public boolean equals(final SerialComponent<I, T> component) {
+    return component instanceof HideAdditionalTooltipComponent<?, ?>;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getType());
+    return Objects.hash(identifier());
   }
 }

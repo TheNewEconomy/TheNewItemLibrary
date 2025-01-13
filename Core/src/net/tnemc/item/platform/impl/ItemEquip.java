@@ -63,8 +63,8 @@ public abstract class ItemEquip<I extends AbstractItemStack<T>, T> implements It
   public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
 
     if(original.components().containsKey("equip") && check.components().containsKey("equip")) {
-      final EquipComponent<T> originalComponent = (EquipComponent<T>)original.components().get("equip");
-      final EquipComponent<T> checkComponent = (EquipComponent<T>)check.components().get("equip");
+      final EquipComponent<I, T> originalComponent = (EquipComponent<I, T>)original.components().get("equip");
+      final EquipComponent<I, T> checkComponent = (EquipComponent<I, T>)check.components().get("equip");
 
       return originalComponent.equals(checkComponent);
     }

@@ -63,8 +63,8 @@ public abstract class ItemFood<I extends AbstractItemStack<T>, T> implements Ite
   public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
 
     if(original.components().containsKey("food") && check.components().containsKey("food")) {
-      final FoodComponent<T> originalFood = (FoodComponent<T>)original.components().get("food");
-      final FoodComponent<T> checkFood = (FoodComponent<T>)check.components().get("food");
+      final FoodComponent<I, T> originalFood = (FoodComponent<I, T>)original.components().get("food");
+      final FoodComponent<I, T> checkFood = (FoodComponent<I, T>)check.components().get("food");
 
       return originalFood.equals(checkFood);
     }

@@ -311,8 +311,8 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @return The updated item stack instance.
    * @since 0.1.7.7
    */
-  default AbstractItemStack<T> applyComponent(final SerialComponent<T> component) {
-    components().put(component.getType(), component);
+  default AbstractItemStack<T> applyComponent(final SerialComponent<AbstractItemStack<T>, T> component) {
+    components().put(component.identifier(), component);
     return this;
   }
 
@@ -380,7 +380,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @return A map of component types and their serialized representations.
    * @since 0.1.7.7
    */
-  Map<String, SerialComponent<T>> components();
+  Map<String, SerialComponent<AbstractItemStack<T>, T>> components();
 
   /**
    * Retrieves the persistent data holder for the item stack.

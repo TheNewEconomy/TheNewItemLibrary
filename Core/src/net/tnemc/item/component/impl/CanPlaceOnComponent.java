@@ -38,12 +38,12 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class CanPlaceOnComponent<T> implements SerialComponent<T> {
+public abstract class CanPlaceOnComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<BlockPredicate> predicates = new ArrayList<>();
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "can_place_on";
   }
 
@@ -61,7 +61,7 @@ public abstract class CanPlaceOnComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     predicates.clear();
 
     final JSONArray predicatesArray = (JSONArray) json.getObject().get("predicates");
@@ -76,8 +76,8 @@ public abstract class CanPlaceOnComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if(!(component instanceof final CanPlaceOnComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if(!(component instanceof final CanPlaceOnComponent<?, ?> other)) return false;
 
     return Objects.equals(this.predicates, other.predicates);
   }

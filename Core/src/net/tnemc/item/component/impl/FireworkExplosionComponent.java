@@ -33,12 +33,12 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class FireworkExplosionComponent<T> implements SerialComponent<T> {
+public abstract class FireworkExplosionComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final ExplosionData explosion = new ExplosionData();
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "firework_explosion";
   }
 
@@ -50,15 +50,15 @@ public abstract class FireworkExplosionComponent<T> implements SerialComponent<T
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     if (json.has("explosion")) {
       explosion.readJSON(json.getHelper("explosion"));
     }
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final FireworkExplosionComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final FireworkExplosionComponent<?, ?> other)) return false;
 
     return Objects.equals(this.explosion, other.explosion);
   }

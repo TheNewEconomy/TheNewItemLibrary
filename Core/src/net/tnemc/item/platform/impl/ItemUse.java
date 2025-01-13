@@ -63,8 +63,8 @@ public abstract class ItemUse<I extends AbstractItemStack<T>, T> implements Item
   public boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
 
     if(original.components().containsKey("use") && check.components().containsKey("use")) {
-      final UseCooldownComponent<T> originalUse = (UseCooldownComponent<T>)original.components().get("use");
-      final UseCooldownComponent<T> checkUse = (UseCooldownComponent<T>)check.components().get("use");
+      final UseCooldownComponent<I, T> originalUse = (UseCooldownComponent<I, T>)original.components().get("use");
+      final UseCooldownComponent<I, T> checkUse = (UseCooldownComponent<I, T>)check.components().get("use");
 
       return originalUse.equals(checkUse);
     }

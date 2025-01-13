@@ -34,13 +34,13 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class UseCooldownComponent<T> implements SerialComponent<T> {
+public abstract class UseCooldownComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected float seconds;
   protected String cooldownGroup;
 
   @Override
-  public String getType() {
+  public String identifier() {
     return "use_cooldown";
   }
 
@@ -53,14 +53,14 @@ public abstract class UseCooldownComponent<T> implements SerialComponent<T> {
   }
 
   @Override
-  public <I extends AbstractItemStack<T>> void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     seconds = json.getFloat("seconds");
     cooldownGroup = json.getString("cooldown_group");
   }
 
   @Override
-  public boolean equals(final SerialComponent<? extends T> component) {
-    if (!(component instanceof final UseCooldownComponent<?> other)) return false;
+  public boolean equals(final SerialComponent<I, T> component) {
+    if (!(component instanceof final UseCooldownComponent<?, ?> other)) return false;
     return this.seconds == other.seconds && Objects.equals(this.cooldownGroup, other.cooldownGroup);
   }
 
