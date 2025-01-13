@@ -38,6 +38,11 @@ public abstract class EnchantmentGlintOverrideComponent<I extends AbstractItemSt
 
   protected boolean glintOverride;
 
+  public EnchantmentGlintOverrideComponent(final boolean glintOverride) {
+
+    this.glintOverride = glintOverride;
+  }
+
   @Override
   public String identifier() {
     return "enchantment_glint_override";

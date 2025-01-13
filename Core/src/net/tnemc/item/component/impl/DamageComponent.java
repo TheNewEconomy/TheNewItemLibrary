@@ -38,6 +38,24 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
 
   protected int damage = 0; // The number of uses consumed
 
+  /**
+   * Represents a component that manages damage information.
+   * This component stores and provides methods for handling damage values.
+   */
+  public DamageComponent() {
+
+  }
+
+  /**
+   * Constructs a new DamageComponent with the specified damage amount.
+   *
+   * @param damage the amount of damage for the component
+   */
+  public DamageComponent(final int damage) {
+
+    this.damage = damage;
+  }
+
   @Override
   public String identifier() {
     return "damage";
@@ -70,18 +88,22 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
   }
 
   /**
-   * @return The number of uses consumed.
+   * Retrieves the current damage value.
+   *
+   * @return the current damage value
    */
-  public int getDamage() {
+  public int damage() {
+
     return damage;
   }
 
   /**
-   * Sets the number of uses consumed.
+   * Sets the amount of damage.
    *
-   * @param damage The amount of damage to set.
+   * @param damage the amount of damage to set
    */
-  public void setDamage(final int damage) {
+  public void damage(final int damage) {
+
     this.damage = damage;
   }
 }

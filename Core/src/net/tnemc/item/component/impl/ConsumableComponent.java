@@ -44,7 +44,50 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
   protected String animation = "eat"; // Default animation
   protected String sound = "entity.generic.eat"; // Default sound
   protected boolean hasConsumeParticles = true; // Default true
-  protected final List<ComponentEffect> onConsumeEffects = new ArrayList<>();
+  protected final List<ComponentEffect> effects = new ArrayList<>();
+
+  public ConsumableComponent() {
+
+  }
+  public ConsumableComponent(final List<ComponentEffect> effects) {
+
+    this.effects.addAll(effects);
+  }
+
+  public ConsumableComponent(final float consumeSeconds) {
+
+    this.consumeSeconds = consumeSeconds;
+  }
+
+  public ConsumableComponent(final float consumeSeconds, final String animation) {
+
+    this.consumeSeconds = consumeSeconds;
+    this.animation = animation;
+  }
+
+  public ConsumableComponent(final float consumeSeconds, final String animation, final String sound) {
+
+    this.consumeSeconds = consumeSeconds;
+    this.animation = animation;
+    this.sound = sound;
+  }
+
+  public ConsumableComponent(final float consumeSeconds, final String animation, final String sound, final boolean hasConsumeParticles) {
+
+    this.consumeSeconds = consumeSeconds;
+    this.animation = animation;
+    this.sound = sound;
+    this.hasConsumeParticles = hasConsumeParticles;
+  }
+
+  public ConsumableComponent(final float consumeSeconds, final String animation, final String sound, final boolean hasConsumeParticles, final List<ComponentEffect> effects) {
+
+    this.consumeSeconds = consumeSeconds;
+    this.animation = animation;
+    this.sound = sound;
+    this.hasConsumeParticles = hasConsumeParticles;
+    this.effects.addAll(effects);
+  }
 
   @Override
   public String identifier() {
@@ -75,7 +118,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
     sound = json.getString("sound");
     hasConsumeParticles = json.getBoolean("has_consume_particles");
 
-    onConsumeEffects.clear();
+    effects.clear();
     if (json.has("on_consume_effects")) {
 
       final JSONArray effectsArray = (JSONArray) json.getObject().get("on_consume_effects");
@@ -91,7 +134,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
             // Instantiate the effect dynamically
             final ComponentEffect effect = effectClass.getDeclaredConstructor().newInstance();
             effect.readJSON(new JSONHelper(effectJson));
-            onConsumeEffects.add(effect);
+            effects.add(effect);
           } catch (final ReflectiveOperationException e) {
             throw new RuntimeException("Failed to instantiate ComponentEffect for type: " + type, e);
           }
@@ -107,11 +150,56 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
            Objects.equals(this.animation, other.animation) &&
            Objects.equals(this.sound, other.sound) &&
            this.hasConsumeParticles == other.hasConsumeParticles &&
-           Objects.equals(this.onConsumeEffects, other.onConsumeEffects);
+           Objects.equals(this.effects, other.effects);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(consumeSeconds, animation, sound, hasConsumeParticles, onConsumeEffects);
+    return Objects.hash(consumeSeconds, animation, sound, hasConsumeParticles, effects);
+  }
+
+  public float consumeSeconds() {
+
+    return consumeSeconds;
+  }
+
+  public void consumeSeconds(final float consumeSeconds) {
+
+    this.consumeSeconds = consumeSeconds;
+  }
+
+  public String animation() {
+
+    return animation;
+  }
+
+  public void animation(final String animation) {
+
+    this.animation = animation;
+  }
+
+  public String sound() {
+
+    return sound;
+  }
+
+  public void sound(final String sound) {
+
+    this.sound = sound;
+  }
+
+  public boolean hasConsumeParticles() {
+
+    return hasConsumeParticles;
+  }
+
+  public void hasConsumeParticles(final boolean hasConsumeParticles) {
+
+    this.hasConsumeParticles = hasConsumeParticles;
+  }
+
+  public List<ComponentEffect> effects() {
+
+    return effects;
   }
 }

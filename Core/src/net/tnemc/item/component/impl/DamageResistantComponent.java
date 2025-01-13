@@ -40,6 +40,18 @@ public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T
 
   protected final List<String> types = new ArrayList<>();
 
+  public DamageResistantComponent() {
+
+  }
+
+  public DamageResistantComponent(final String type) {
+    this.types.add(type);
+  }
+
+  public DamageResistantComponent(final List<String> types) {
+    this.types.addAll(types);
+  }
+
   @Override
   public String identifier() {
     return "damage_resistant";
@@ -70,5 +82,10 @@ public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T
   @Override
   public int hashCode() {
     return Objects.hash(types);
+  }
+
+  public List<String> types() {
+
+    return types;
   }
 }

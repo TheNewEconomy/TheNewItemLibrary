@@ -48,6 +48,38 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
   protected int bucketVariantTag = 0; // Default to 0
   protected int type = 0; // Default to 0
 
+  public BucketEntityDataComponent() {
+
+  }
+
+  public BucketEntityDataComponent(final boolean noAI, final boolean silent, final boolean noGravity,
+                                   final boolean glowing, final boolean invulnerable) {
+
+    this.noAI = noAI;
+    this.silent = silent;
+    this.noGravity = noGravity;
+    this.glowing = glowing;
+    this.invulnerable = invulnerable;
+  }
+
+  public BucketEntityDataComponent(final boolean noAI, final boolean silent, final boolean noGravity,
+                                   final boolean glowing, final boolean invulnerable, final float health,
+                                   final int age, final int variant, final long huntingCooldown,
+                                   final int bucketVariantTag, final int type) {
+
+    this.noAI = noAI;
+    this.silent = silent;
+    this.noGravity = noGravity;
+    this.glowing = glowing;
+    this.invulnerable = invulnerable;
+    this.health = health;
+    this.age = age;
+    this.variant = variant;
+    this.huntingCooldown = huntingCooldown;
+    this.bucketVariantTag = bucketVariantTag;
+    this.type = type;
+  }
+
   @Override
   public String identifier() {
     return "bucket_entity_data";
@@ -104,5 +136,115 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
   @Override
   public int hashCode() {
     return Objects.hash(noAI, silent, noGravity, glowing, invulnerable, health, age, variant, huntingCooldown, bucketVariantTag, type);
+  }
+
+  public boolean noAI() {
+
+    return noAI;
+  }
+
+  public void noAI(final boolean noAI) {
+
+    this.noAI = noAI;
+  }
+
+  public boolean silent() {
+
+    return silent;
+  }
+
+  public void silent(final boolean silent) {
+
+    this.silent = silent;
+  }
+
+  public boolean noGravity() {
+
+    return noGravity;
+  }
+
+  public void noGravity(final boolean noGravity) {
+
+    this.noGravity = noGravity;
+  }
+
+  public boolean glowing() {
+
+    return glowing;
+  }
+
+  public void glowing(final boolean glowing) {
+
+    this.glowing = glowing;
+  }
+
+  public boolean invulnerable() {
+
+    return invulnerable;
+  }
+
+  public void invulnerable(final boolean invulnerable) {
+
+    this.invulnerable = invulnerable;
+  }
+
+  public float health() {
+
+    return health;
+  }
+
+  public void health(final float health) {
+
+    this.health = health;
+  }
+
+  public int age() {
+
+    return age;
+  }
+
+  public void age(final int age) {
+
+    this.age = age;
+  }
+
+  public int variant() {
+
+    return variant;
+  }
+
+  public void variant(final int variant) {
+
+    this.variant = variant;
+  }
+
+  public long huntingCooldown() {
+
+    return huntingCooldown;
+  }
+
+  public void huntingCooldown(final long huntingCooldown) {
+
+    this.huntingCooldown = huntingCooldown;
+  }
+
+  public int bucketVariantTag() {
+
+    return bucketVariantTag;
+  }
+
+  public void bucketVariantTag(final int bucketVariantTag) {
+
+    this.bucketVariantTag = bucketVariantTag;
+  }
+
+  public int type() {
+
+    return type;
+  }
+
+  public void type(final int type) {
+
+    this.type = type;
   }
 }

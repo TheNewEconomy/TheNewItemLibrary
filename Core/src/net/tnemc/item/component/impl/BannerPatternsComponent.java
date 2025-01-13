@@ -21,6 +21,7 @@ package net.tnemc.item.component.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.PatternData;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONArray;
@@ -42,6 +43,23 @@ import java.util.Objects;
 public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<PatternData> patterns = new ArrayList<>();
+
+  /**
+   * Represents a component that handles banner patterns for an object.
+   */
+  public BannerPatternsComponent() {
+
+  }
+
+  /**
+   * Creates a new BannerPatternsComponent with the provided list of PatternData objects.
+   *
+   * @param patterns The list of PatternData objects to initialize the component with.
+   */
+  public BannerPatternsComponent(final List<PatternData> patterns) {
+
+    this.patterns.addAll(patterns);
+  }
 
   /**
    * @return the type of component this is.
@@ -112,5 +130,34 @@ public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T>
   @Override
   public int hashCode() {
     return Objects.hash(patterns);
+  }
+
+  /**
+   * Retrieve the list of PatternData objects associated with this BannerPatternsComponent.
+   *
+   * @return List of PatternData objects representing the patterns.
+   */
+  public List<PatternData> patterns() {
+
+    return patterns;
+  }
+
+  /**
+   * Sets the list of patterns for this object by replacing the existing patterns with the provided list.
+   *
+   * @param patterns List of PatternData objects to set as new patterns
+   */
+  public void patterns(final List<PatternData> patterns) {
+    this.patterns.clear();
+    this.patterns.addAll(patterns);
+  }
+
+  /**
+   * Adds a pattern to the list of patterns for this BannerPatternsComponent.
+   *
+   * @param pattern The PatternData to add.
+   */
+  public void patterns(final PatternData pattern) {
+    this.patterns.add(pattern);
   }
 }

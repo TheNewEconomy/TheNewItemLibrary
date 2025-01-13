@@ -38,6 +38,15 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
 
   protected String customName; // Stores the item's custom name as a string
 
+  public CustomNameComponent() {
+
+  }
+
+  public CustomNameComponent(final String customName) {
+
+    this.customName = customName;
+  }
+
   @Override
   public String identifier() {
     return "custom_name";
@@ -69,19 +78,13 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
     return Objects.hash(customName);
   }
 
-  /**
-   * @return The item's custom name as a string.
-   */
-  public String getCustomName() {
+  public String customName() {
+
     return customName;
   }
 
-  /**
-   * Sets the item's custom name.
-   *
-   * @param customName The custom name to set.
-   */
-  public void setCustomName(final String customName) {
+  public void customName(final String customName) {
+
     this.customName = customName;
   }
 }

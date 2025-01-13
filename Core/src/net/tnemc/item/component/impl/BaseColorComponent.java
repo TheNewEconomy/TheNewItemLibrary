@@ -40,6 +40,16 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
   protected String color;
 
   /**
+   * Constructs a new BaseColorComponent with the specified color.
+   *
+   * @param color The base color value for the component.
+   */
+  public BaseColorComponent(final String color) {
+
+    this.color = color;
+  }
+
+  /**
    * @return the type of component this is.
    */
   @Override
@@ -94,7 +104,7 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
   /**
    * @return The current base color.
    */
-  public String getColor() {
+  public String color() {
     return color;
   }
 
@@ -103,7 +113,7 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
    *
    * @param color The color to set.
    */
-  public void setColor(final String color) {
+  public void color(final String color) {
     this.color = color;
   }
 }

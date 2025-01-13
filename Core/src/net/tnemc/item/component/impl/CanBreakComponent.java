@@ -21,6 +21,7 @@ package net.tnemc.item.component.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.BlockPredicate;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONArray;
@@ -41,6 +42,18 @@ import java.util.Objects;
 public abstract class CanBreakComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<BlockPredicate> predicates = new ArrayList<>();
+
+  public CanBreakComponent() {
+
+  }
+
+  public CanBreakComponent(final BlockPredicate predicate) {
+    this.predicates.add(predicate);
+  }
+
+  public CanBreakComponent(final List<BlockPredicate> predicates) {
+    this.predicates.addAll(predicates);
+  }
 
   @Override
   public String identifier() {
@@ -85,5 +98,34 @@ public abstract class CanBreakComponent<I extends AbstractItemStack<T>, T> imple
   @Override
   public int hashCode() {
     return Objects.hash(predicates);
+  }
+
+  /**
+   * Retrieves the list of predicates associated with this CanBreakComponent.
+   *
+   * @return The list of BlockPredicate objects.
+   */
+  public List<BlockPredicate> predicates() {
+
+    return predicates;
+  }
+
+  /**
+   * Modifies the list of predicates associated with this CanBreakComponent by replacing it with a new list.
+   *
+   * @param predicates The new list of BlockPredicate objects to replace the existing list with.
+   */
+  public void predicates(final List<BlockPredicate> predicates) {
+    this.predicates.clear();
+    this.predicates.addAll(predicates);
+  }
+
+  /**
+   * Adds a block predicate to the list of predicates associated with this CanBreakComponent.
+   *
+   * @param predicate The BlockPredicate to add to the list.
+   */
+  public void predicates(final BlockPredicate predicate) {
+    this.predicates.add(predicate);
   }
 }

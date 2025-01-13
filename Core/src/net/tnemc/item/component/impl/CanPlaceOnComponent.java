@@ -42,6 +42,18 @@ public abstract class CanPlaceOnComponent<I extends AbstractItemStack<T>, T> imp
 
   protected final List<BlockPredicate> predicates = new ArrayList<>();
 
+  public CanPlaceOnComponent() {
+
+  }
+
+  public CanPlaceOnComponent(final BlockPredicate predicate) {
+    this.predicates.add(predicate);
+  }
+
+  public CanPlaceOnComponent(final List<BlockPredicate> predicates) {
+    this.predicates.addAll(predicates);
+  }
+
   @Override
   public String identifier() {
     return "can_place_on";
@@ -85,5 +97,34 @@ public abstract class CanPlaceOnComponent<I extends AbstractItemStack<T>, T> imp
   @Override
   public int hashCode() {
     return Objects.hash(predicates);
+  }
+
+  /**
+   * Retrieves the list of predicates associated with this CanBreakComponent.
+   *
+   * @return The list of BlockPredicate objects.
+   */
+  public List<BlockPredicate> predicates() {
+
+    return predicates;
+  }
+
+  /**
+   * Modifies the list of predicates associated with this CanBreakComponent by replacing it with a new list.
+   *
+   * @param predicates The new list of BlockPredicate objects to replace the existing list with.
+   */
+  public void predicates(final List<BlockPredicate> predicates) {
+    this.predicates.clear();
+    this.predicates.addAll(predicates);
+  }
+
+  /**
+   * Adds a block predicate to the list of predicates associated with this CanBreakComponent.
+   *
+   * @param predicate The BlockPredicate to add to the list.
+   */
+  public void predicates(final BlockPredicate predicate) {
+    this.predicates.add(predicate);
   }
 }

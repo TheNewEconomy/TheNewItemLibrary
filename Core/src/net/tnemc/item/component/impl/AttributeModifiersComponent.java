@@ -24,6 +24,7 @@ import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.TooltippableSerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.EquipSlot;
+import net.tnemc.item.component.helper.revive.ComponentEffect;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -43,6 +44,37 @@ import java.util.Objects;
 public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
 
   protected final List<AttributeModifier> modifiers = new ArrayList<>();
+
+  /**
+   * Constructor for AttributeModifiersComponent.
+   * Initializes an empty list of AttributeModifiers.
+   */
+  public AttributeModifiersComponent() {
+  }
+
+  /**
+   * Initializes an AttributeModifiersComponent with the specified showInTooltip flag.
+   *
+   * @param showInTooltip A boolean flag indicating whether to show the component in tooltip.
+   */
+  public AttributeModifiersComponent(final boolean showInTooltip) {
+
+    this.showInTooltip = showInTooltip;
+  }
+
+  /**
+   * Constructor for AttributeModifiersComponent.
+   * Initializes the component with a list of AttributeModifiers and a boolean flag to show in tooltip.
+   *
+   * @param modifiers The list of AttributeModifiers to associate with this component.
+   * @param showInTooltip A boolean flag indicating whether to show the component in tooltip.
+   */
+  public AttributeModifiersComponent(final List<AttributeModifier> modifiers,
+                                     final boolean showInTooltip) {
+
+    this.modifiers.addAll(modifiers);
+    this.showInTooltip = showInTooltip;
+  }
 
   /**
    * @return the type of component this is.
@@ -133,5 +165,34 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
   @Override
   public int hashCode() {
     return Objects.hash(modifiers, showInTooltip);
+  }
+
+  /**
+   * Retrieves the list of AttributeModifiers associated with this component.
+   *
+   * @return The list of AttributeModifiers.
+   */
+  public List<AttributeModifier> modifiers() {
+
+    return modifiers;
+  }
+
+  /**
+   * Sets the list of AttributeModifiers for this component.
+   *
+   * @param modifiers The list of AttributeModifiers to set.
+   */
+  public void modifiers(final List<AttributeModifier> modifiers) {
+    this.modifiers.clear();
+    this.modifiers.addAll(modifiers);
+  }
+
+  /**
+   * Adds a new AttributeModifier to the list of modifiers for this component.
+   *
+   * @param modifier The AttributeModifier to add to the list of modifiers.
+   */
+  public void modifiers(final AttributeModifier modifier) {
+    this.modifiers.add(modifier);
   }
 }

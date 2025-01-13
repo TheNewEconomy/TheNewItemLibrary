@@ -104,8 +104,18 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
    *
    * @return A list of `ReviveEffect` objects.
    */
-  public List<ComponentEffect> getDeathEffects() {
+  public List<ComponentEffect> deathEffects() {
     return deathEffects;
+  }
+
+  /**
+   * Applies death effects to the component's list of effects.
+   *
+   * @param deathEffects The list of ComponentEffect to apply as death effects.
+   */
+  public void deathEffects(final List<ComponentEffect> deathEffects) {
+    this.deathEffects.clear();
+    this.deathEffects.addAll(deathEffects);
   }
 
   /**
@@ -113,7 +123,7 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
    *
    * @param effect The `ReviveEffect` to add.
    */
-  public void addDeathEffect(final ComponentEffect effect) {
-    deathEffects.add(effect);
+  public void deathEffect(final ComponentEffect effect) {
+    this.deathEffects.add(effect);
   }
 }
