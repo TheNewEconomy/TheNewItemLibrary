@@ -40,6 +40,10 @@ public class ExplosionData {
   protected boolean hasTrail;
   protected boolean hasTwinkle;
 
+  public ExplosionData() {
+
+  }
+
   public ExplosionData(final String shape, final boolean hasTrail, final boolean hasTwinkle) {
 
     this.shape = shape;
