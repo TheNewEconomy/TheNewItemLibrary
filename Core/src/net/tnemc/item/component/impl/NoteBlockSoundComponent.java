@@ -38,6 +38,15 @@ public abstract class NoteBlockSoundComponent<I extends AbstractItemStack<T>, T>
 
   protected String soundId;
 
+  public NoteBlockSoundComponent() {
+
+  }
+
+  public NoteBlockSoundComponent(final String soundId) {
+
+    this.soundId = soundId;
+  }
+
   @Override
   public String identifier() {
     return "note_block_sound";
@@ -64,5 +73,15 @@ public abstract class NoteBlockSoundComponent<I extends AbstractItemStack<T>, T>
   @Override
   public int hashCode() {
     return Objects.hash(soundId);
+  }
+
+  public String soundId() {
+
+    return soundId;
+  }
+
+  public void soundId(final String soundId) {
+
+    this.soundId = soundId;
   }
 }

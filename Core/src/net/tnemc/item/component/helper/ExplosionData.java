@@ -22,6 +22,7 @@ import net.tnemc.item.JSONHelper;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +39,22 @@ public class ExplosionData {
   protected final List<Integer> fadeColors = new ArrayList<>();
   protected boolean hasTrail;
   protected boolean hasTwinkle;
+
+  public ExplosionData(final String shape, final boolean hasTrail, final boolean hasTwinkle) {
+
+    this.shape = shape;
+    this.hasTrail = hasTrail;
+    this.hasTwinkle = hasTwinkle;
+  }
+
+  public ExplosionData(final String shape, final boolean hasTrail, final boolean hasTwinkle, final List<Integer> colors, final List<Integer> fadeColors) {
+
+    this.shape = shape;
+    this.hasTrail = hasTrail;
+    this.hasTwinkle = hasTwinkle;
+    this.colors.addAll(colors);
+    this.fadeColors.addAll(fadeColors);
+  }
 
   /**
    * Converts this explosion data to a JSON object.
@@ -86,5 +103,69 @@ public class ExplosionData {
   @Override
   public int hashCode() {
     return Objects.hash(shape, colors, fadeColors, hasTrail, hasTwinkle);
+  }
+
+  public String shape() {
+
+    return shape;
+  }
+
+  public void shape(final String shape) {
+
+    this.shape = shape;
+  }
+
+  public List<Integer> colors() {
+
+    return colors;
+  }
+
+  public void colors(final List<Integer> colors) {
+
+    this.colors.clear();
+    this.colors.addAll(colors);
+  }
+
+  public void colors(final Integer... colors) {
+
+    this.colors.clear();
+    this.colors.addAll(Arrays.asList(colors));
+  }
+
+  public List<Integer> fadeColors() {
+
+    return fadeColors;
+  }
+
+  public void fadeColors(final List<Integer> colors) {
+
+    this.fadeColors.clear();
+    this.fadeColors.addAll(colors);
+  }
+
+  public void fadeColors(final Integer... colors) {
+
+    this.fadeColors.clear();
+    this.fadeColors.addAll(Arrays.asList(colors));
+  }
+
+  public boolean hasTrail() {
+
+    return hasTrail;
+  }
+
+  public void hasTrail(final boolean hasTrail) {
+
+    this.hasTrail = hasTrail;
+  }
+
+  public boolean hasTwinkle() {
+
+    return hasTwinkle;
+  }
+
+  public void hasTwinkle(final boolean hasTwinkle) {
+
+    this.hasTwinkle = hasTwinkle;
   }
 }

@@ -25,6 +25,7 @@ import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -87,5 +88,17 @@ public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T
   public List<String> types() {
 
     return types;
+  }
+
+  public void types(final List<String> types) {
+
+    this.types.clear();
+    this.types.addAll(types);
+  }
+
+  public void types(final String... types) {
+
+    this.types.clear();
+    this.types.addAll(Arrays.asList(types));
   }
 }

@@ -27,6 +27,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,10 +41,51 @@ import java.util.Objects;
  */
 public abstract class PotionContentsComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
+  protected final List<EffectInstance> customEffects = new ArrayList<>();
+
   protected String potionId;
   protected int customColor;
   protected String customName;
-  protected final List<EffectInstance> customEffects = new ArrayList<>();
+
+  public PotionContentsComponent() {
+
+  }
+
+  public PotionContentsComponent(final String potionId) {
+
+    this.potionId = potionId;
+  }
+
+  public PotionContentsComponent(final String potionId, final int customColor) {
+
+    this.potionId = potionId;
+    this.customColor = customColor;
+  }
+
+  public PotionContentsComponent(final String potionId, final int customColor, final String customName) {
+
+    this.potionId = potionId;
+    this.customColor = customColor;
+    this.customName = customName;
+  }
+
+  public PotionContentsComponent(final String potionId, final int customColor, final String customName, final List<EffectInstance> effects) {
+
+    this.potionId = potionId;
+    this.customColor = customColor;
+    this.customName = customName;
+
+    this.customEffects.addAll(effects);
+  }
+
+  public PotionContentsComponent(final String potionId, final int customColor, final String customName, final EffectInstance... effects) {
+
+    this.potionId = potionId;
+    this.customColor = customColor;
+    this.customName = customName;
+
+    this.customEffects.addAll(Arrays.asList(effects));
+  }
 
   @Override
   public String identifier() {
@@ -92,5 +134,52 @@ public abstract class PotionContentsComponent<I extends AbstractItemStack<T>, T>
   @Override
   public int hashCode() {
     return Objects.hash(potionId, customColor, customName, customEffects);
+  }
+
+  public String potionId() {
+
+    return potionId;
+  }
+
+  public void potionId(final String potionId) {
+
+    this.potionId = potionId;
+  }
+
+  public int customColor() {
+
+    return customColor;
+  }
+
+  public void customColor(final int customColor) {
+
+    this.customColor = customColor;
+  }
+
+  public String customName() {
+
+    return customName;
+  }
+
+  public void customName(final String customName) {
+
+    this.customName = customName;
+  }
+
+  public List<EffectInstance> customEffects() {
+
+    return customEffects;
+  }
+
+  public void customEffects(final List<EffectInstance> effects) {
+
+    this.customEffects.clear();
+    this.customEffects.addAll(effects);
+  }
+
+  public void customEffects(final EffectInstance... effects) {
+
+    this.customEffects.clear();
+    this.customEffects.addAll(Arrays.asList(effects));
   }
 }

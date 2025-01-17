@@ -27,6 +27,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +41,21 @@ public abstract class FireworksComponent<I extends AbstractItemStack<T>, T> impl
 
   protected final List<ExplosionData> explosions = new ArrayList<>();
   protected byte flightDuration;
+
+  public FireworksComponent() {
+
+  }
+
+  public FireworksComponent(final byte flightDuration) {
+
+    this.flightDuration = flightDuration;
+  }
+
+  public FireworksComponent(final byte flightDuration, final List<ExplosionData> explosions) {
+
+    this.flightDuration = flightDuration;
+    this.explosions.addAll(explosions);
+  }
 
   @Override
   public String identifier() {
@@ -91,5 +107,32 @@ public abstract class FireworksComponent<I extends AbstractItemStack<T>, T> impl
   @Override
   public int hashCode() {
     return Objects.hash(explosions, flightDuration);
+  }
+
+  public List<ExplosionData> explosions() {
+
+    return explosions;
+  }
+
+  public void explosions(final List<ExplosionData> explosions) {
+
+    this.explosions.clear();
+    this.explosions.addAll(explosions);
+  }
+
+  public void explosions(final ExplosionData... explosions) {
+
+    this.explosions.clear();
+    this.explosions.addAll(Arrays.asList(explosions));
+  }
+
+  public byte flightDuration() {
+
+    return flightDuration;
+  }
+
+  public void flightDuration(final byte flightDuration) {
+
+    this.flightDuration = flightDuration;
   }
 }

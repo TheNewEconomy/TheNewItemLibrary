@@ -38,6 +38,15 @@ public abstract class ItemModelComponent<I extends AbstractItemStack<T>, T> impl
 
   protected String model;
 
+  public ItemModelComponent() {
+
+  }
+
+  public ItemModelComponent(final String model) {
+
+    this.model = model;
+  }
+
   @Override
   public String identifier() {
     return "item_model";
@@ -65,5 +74,15 @@ public abstract class ItemModelComponent<I extends AbstractItemStack<T>, T> impl
   @Override
   public int hashCode() {
     return Objects.hash(model);
+  }
+
+  public String model() {
+
+    return model;
+  }
+
+  public void model(final String model) {
+
+    this.model = model;
   }
 }

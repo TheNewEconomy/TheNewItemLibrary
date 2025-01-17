@@ -37,6 +37,28 @@ public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implement
   protected float saturation;
   protected int nutrition;
 
+  public FoodComponent() {
+
+  }
+
+  public FoodComponent(final boolean noHunger) {
+
+    this.noHunger = noHunger;
+  }
+
+  public FoodComponent(final boolean noHunger, final float saturation) {
+
+    this.noHunger = noHunger;
+    this.saturation = saturation;
+  }
+
+  public FoodComponent(final boolean noHunger, final float saturation, final int nutrition) {
+
+    this.noHunger = noHunger;
+    this.saturation = saturation;
+    this.nutrition = nutrition;
+  }
+
   /**
    * @return the type of component this is.
    */
@@ -93,5 +115,35 @@ public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implement
              this.nutrition == food.nutrition;
     }
     return false;
+  }
+
+  public boolean noHunger() {
+
+    return noHunger;
+  }
+
+  public void noHunger(final boolean noHunger) {
+
+    this.noHunger = noHunger;
+  }
+
+  public float saturation() {
+
+    return saturation;
+  }
+
+  public void saturation(final float saturation) {
+
+    this.saturation = saturation;
+  }
+
+  public int nutrition() {
+
+    return nutrition;
+  }
+
+  public void nutrition(final int nutrition) {
+
+    this.nutrition = nutrition;
   }
 }

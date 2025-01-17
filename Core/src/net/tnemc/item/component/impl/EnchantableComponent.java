@@ -37,6 +37,15 @@ public abstract class EnchantableComponent<I extends AbstractItemStack<T>, T> im
 
   protected int value;
 
+  public EnchantableComponent() {
+
+  }
+
+  public EnchantableComponent(final int value) {
+
+    this.value = value;
+  }
+
   /**
    * @return the type of component this is.
    */
@@ -88,5 +97,15 @@ public abstract class EnchantableComponent<I extends AbstractItemStack<T>, T> im
       return this.value == enchant.value;
     }
     return false;
+  }
+
+  public int value() {
+
+    return value;
+  }
+
+  public void value(final int value) {
+
+    this.value = value;
   }
 }

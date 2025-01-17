@@ -36,6 +36,10 @@ import java.util.Objects;
  */
 public abstract class HideAdditionalTooltipComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
+  public HideAdditionalTooltipComponent() {
+
+  }
+
   @Override
   public String identifier() {
     return "hide_additional_tooltip";

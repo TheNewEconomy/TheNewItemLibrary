@@ -38,6 +38,11 @@ public abstract class RarityComponent<I extends AbstractItemStack<T>, T> impleme
 
   protected String rarity;
 
+  public RarityComponent(final String rarity) {
+
+    this.rarity = rarity;
+  }
+
   @Override
   public String identifier() {
     return "rarity";
@@ -64,5 +69,15 @@ public abstract class RarityComponent<I extends AbstractItemStack<T>, T> impleme
   @Override
   public int hashCode() {
     return Objects.hash(rarity);
+  }
+
+  public String rarity() {
+
+    return rarity;
+  }
+
+  public void rarity(final String rarity) {
+
+    this.rarity = rarity;
   }
 }

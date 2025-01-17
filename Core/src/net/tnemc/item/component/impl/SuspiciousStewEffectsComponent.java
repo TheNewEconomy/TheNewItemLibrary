@@ -39,6 +39,12 @@ public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack
   protected String effectId;
   protected int duration;
 
+  public SuspiciousStewEffectsComponent(final String effectId, final int duration) {
+
+    this.effectId = effectId;
+    this.duration = duration;
+  }
+
   @Override
   public String identifier() {
     return "suspicious_stew_effects";
@@ -68,5 +74,25 @@ public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack
   @Override
   public int hashCode() {
     return Objects.hash(effectId, duration);
+  }
+
+  public String effectId() {
+
+    return effectId;
+  }
+
+  public void effectId(final String effectId) {
+
+    this.effectId = effectId;
+  }
+
+  public int duration() {
+
+    return duration;
+  }
+
+  public void duration(final int duration) {
+
+    this.duration = duration;
   }
 }

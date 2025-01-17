@@ -38,6 +38,11 @@ public abstract class RepairCostComponent<I extends AbstractItemStack<T>, T> imp
 
   protected int repairCost;
 
+  public RepairCostComponent(final int repairCost) {
+
+    this.repairCost = repairCost;
+  }
+
   @Override
   public String identifier() {
     return "repair_cost";
@@ -64,5 +69,15 @@ public abstract class RepairCostComponent<I extends AbstractItemStack<T>, T> imp
   @Override
   public int hashCode() {
     return Objects.hash(repairCost);
+  }
+
+  public int repairCost() {
+
+    return repairCost;
+  }
+
+  public void repairCost(final int repairCost) {
+
+    this.repairCost = repairCost;
   }
 }

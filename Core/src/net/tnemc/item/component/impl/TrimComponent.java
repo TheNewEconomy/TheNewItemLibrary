@@ -40,6 +40,12 @@ public abstract class TrimComponent<I extends AbstractItemStack<T>, T> extends T
   protected String pattern;
   protected String material;
 
+  public TrimComponent(final String pattern, final String material) {
+
+    this.pattern = pattern;
+    this.material = material;
+  }
+
   @Override
   public String identifier() {
     return "trim";
@@ -72,5 +78,25 @@ public abstract class TrimComponent<I extends AbstractItemStack<T>, T> extends T
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), pattern, material);
+  }
+
+  public String pattern() {
+
+    return pattern;
+  }
+
+  public void pattern(final String pattern) {
+
+    this.pattern = pattern;
+  }
+
+  public String material() {
+
+    return material;
+  }
+
+  public void material(final String material) {
+
+    this.material = material;
   }
 }

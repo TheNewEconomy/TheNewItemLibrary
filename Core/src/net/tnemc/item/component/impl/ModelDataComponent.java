@@ -25,6 +25,7 @@ import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,6 +44,18 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
   protected final List<Float> floats = new ArrayList<>();
   protected final List<Boolean> flags = new ArrayList<>();
   protected final List<String> strings = new ArrayList<>();
+
+  public ModelDataComponent() {
+
+  }
+
+  public ModelDataComponent(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
+
+    this.colours.addAll(colours);
+    this.floats.addAll(floats);
+    this.flags.addAll(flags);
+    this.strings.addAll(strings);
+  }
 
   /**
    * @return the type of component this is.
@@ -107,5 +120,73 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
   @Override
   public int hashCode() {
     return Objects.hash(colours, floats, flags, strings);
+  }
+
+  public List<String> colours() {
+
+    return colours;
+  }
+
+  public void colours(final List<String> colours) {
+
+    this.colours.clear();
+    this.colours.addAll(colours);
+  }
+
+  public void colours(final String... colours) {
+
+    this.colours.clear();
+    this.colours.addAll(Arrays.asList(colours));
+  }
+
+  public List<Float> floats() {
+
+    return floats;
+  }
+
+  public void floats(final List<Float> floats) {
+
+    this.floats.clear();
+    this.floats.addAll(floats);
+  }
+
+  public void floats(final Float... floats) {
+
+    this.floats.clear();
+    this.floats.addAll(Arrays.asList(floats));
+  }
+
+  public List<Boolean> flags() {
+
+    return flags;
+  }
+
+  public void flags(final List<Boolean> flags) {
+
+    this.flags.clear();
+    this.flags.addAll(flags);
+  }
+
+  public void flags(final Boolean... flags) {
+
+    this.flags.clear();
+    this.flags.addAll(Arrays.asList(flags));
+  }
+
+  public List<String> strings() {
+
+    return strings;
+  }
+
+  public void strings(final List<String> strings) {
+
+    this.strings.clear();
+    this.strings.addAll(strings);
+  }
+
+  public void strings(final String... strings) {
+
+    this.strings.clear();
+    this.strings.addAll(Arrays.asList(strings));
   }
 }

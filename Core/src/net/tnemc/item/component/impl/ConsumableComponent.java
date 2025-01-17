@@ -27,6 +27,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -103,7 +104,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
     json.put("has_consume_particles", hasConsumeParticles);
 
     final JSONArray effectsArray = new JSONArray();
-    for (final ComponentEffect effect : onConsumeEffects) {
+    for (final ComponentEffect effect : effects) {
       effectsArray.add(effect.toJSON());
     }
     json.put("on_consume_effects", effectsArray);
@@ -201,5 +202,14 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
   public List<ComponentEffect> effects() {
 
     return effects;
+  }
+
+  public void effects(final ComponentEffect... effects) {
+    this.effects.addAll(Arrays.asList(effects));
+  }
+
+  public void effects(final List<ComponentEffect> effects) {
+    this.effects.clear();
+    this.effects.addAll(effects);
   }
 }

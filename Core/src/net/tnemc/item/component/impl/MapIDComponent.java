@@ -38,6 +38,15 @@ public abstract class MapIDComponent<I extends AbstractItemStack<T>, T> implemen
 
   protected int mapId;
 
+  public MapIDComponent() {
+
+  }
+
+  public MapIDComponent(final int mapId) {
+
+    this.mapId = mapId;
+  }
+
   @Override
   public String identifier() {
     return "map_id";
@@ -64,5 +73,15 @@ public abstract class MapIDComponent<I extends AbstractItemStack<T>, T> implemen
   @Override
   public int hashCode() {
     return Objects.hash(mapId);
+  }
+
+  public int mapId() {
+
+    return mapId;
+  }
+
+  public void mapId(final int mapId) {
+
+    this.mapId = mapId;
   }
 }

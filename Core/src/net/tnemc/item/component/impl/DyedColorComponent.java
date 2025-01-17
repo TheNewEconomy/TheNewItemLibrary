@@ -39,6 +39,15 @@ public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> exte
 
   protected int rgb;
 
+  public DyedColorComponent() {
+
+  }
+
+  public DyedColorComponent(final int rgb) {
+
+    this.rgb = rgb;
+  }
+
   @Override
   public String identifier() {
     return "dyed_color";
@@ -69,5 +78,15 @@ public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> exte
   @Override
   public int hashCode() {
     return Objects.hash(rgb, showInTooltip);
+  }
+
+  public int rgb() {
+
+    return rgb;
+  }
+
+  public void rgb(final int rgb) {
+
+    this.rgb = rgb;
   }
 }

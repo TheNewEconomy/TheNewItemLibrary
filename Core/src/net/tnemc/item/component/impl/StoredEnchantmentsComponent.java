@@ -41,6 +41,15 @@ public abstract class StoredEnchantmentsComponent<I extends AbstractItemStack<T>
 
   protected final Map<String, Integer> enchantments = new HashMap<>();
 
+  public StoredEnchantmentsComponent() {
+
+  }
+
+  public StoredEnchantmentsComponent(final Map<String, Integer> enchantments) {
+
+    this.enchantments.putAll(enchantments);
+  }
+
   @Override
   public String identifier() {
     return "stored_enchantments";
@@ -80,5 +89,16 @@ public abstract class StoredEnchantmentsComponent<I extends AbstractItemStack<T>
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), enchantments);
+  }
+
+  public Map<String, Integer> enchantments() {
+
+    return enchantments;
+  }
+
+  public void enchantments(final Map<String, Integer> enchantments) {
+
+    this.enchantments.clear();
+    this.enchantments.putAll(enchantments);
   }
 }

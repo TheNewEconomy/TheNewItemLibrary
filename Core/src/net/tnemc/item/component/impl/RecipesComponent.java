@@ -26,6 +26,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +41,20 @@ import java.util.Objects;
 public abstract class RecipesComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<String> recipes = new ArrayList<>();
+
+  public RecipesComponent() {
+
+  }
+
+  public RecipesComponent(final String recipe) {
+
+    this.recipes.add(recipe);
+  }
+
+  public RecipesComponent(final List<String> recipes) {
+
+    this.recipes.addAll(recipes);
+  }
 
   @Override
   public String identifier() {
@@ -70,5 +85,20 @@ public abstract class RecipesComponent<I extends AbstractItemStack<T>, T> implem
   @Override
   public int hashCode() {
     return Objects.hash(recipes);
+  }
+
+  public List<String> recipes() {
+
+    return recipes;
+  }
+
+  public void recipes(final List<String> recipes) {
+
+    this.recipes.addAll(recipes);
+  }
+
+  public void recipes(final String... recipes) {
+
+    this.recipes.addAll(Arrays.asList(recipes));
   }
 }

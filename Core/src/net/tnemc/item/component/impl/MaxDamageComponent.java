@@ -38,6 +38,15 @@ public abstract class MaxDamageComponent<I extends AbstractItemStack<T>, T> impl
 
   protected int maxDamage;
 
+  public MaxDamageComponent() {
+
+  }
+
+  public MaxDamageComponent(final int maxDamage) {
+
+    this.maxDamage = maxDamage;
+  }
+
   @Override
   public String identifier() {
     return "max_damage";
@@ -64,5 +73,15 @@ public abstract class MaxDamageComponent<I extends AbstractItemStack<T>, T> impl
   @Override
   public int hashCode() {
     return Objects.hash(maxDamage);
+  }
+
+  public int maxDamage() {
+
+    return maxDamage;
+  }
+
+  public void maxDamage(final int maxDamage) {
+
+    this.maxDamage = maxDamage;
   }
 }

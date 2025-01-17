@@ -26,6 +26,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,6 +45,47 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
   protected String author;
   protected int generation;
   protected boolean resolved;
+
+  public WrittenBookContentComponent() {
+
+  }
+
+  public WrittenBookContentComponent(final String title) {
+
+    this.title = title;
+  }
+
+  public WrittenBookContentComponent(final String title, final String author) {
+
+    this.title = title;
+    this.author = author;
+  }
+
+  public WrittenBookContentComponent(final String title, final String author, final int generation) {
+
+    this.title = title;
+    this.author = author;
+    this.generation = generation;
+  }
+
+  public WrittenBookContentComponent(final String title, final String author, final int generation,
+                                     final boolean resolved) {
+
+    this.title = title;
+    this.author = author;
+    this.generation = generation;
+    this.resolved = resolved;
+  }
+
+  public WrittenBookContentComponent(final String title, final String author, final int generation,
+                                     final boolean resolved, final List<String> pages) {
+
+    this.title = title;
+    this.author = author;
+    this.generation = generation;
+    this.resolved = resolved;
+    this.pages.addAll(pages);
+  }
 
   @Override
   public String identifier() {
@@ -86,5 +128,62 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
   @Override
   public int hashCode() {
     return Objects.hash(pages, title, author, generation, resolved);
+  }
+
+  public List<String> pages() {
+
+    return pages;
+  }
+
+  public void pages(final List<String> pages) {
+
+    this.pages.clear();
+    this.pages.addAll(pages);
+  }
+
+  public void pages(final String... pages) {
+
+    this.pages.clear();
+    this.pages.addAll(Arrays.asList(pages));
+  }
+
+  public String title() {
+
+    return title;
+  }
+
+  public void title(final String title) {
+
+    this.title = title;
+  }
+
+  public String author() {
+
+    return author;
+  }
+
+  public void author(final String author) {
+
+    this.author = author;
+  }
+
+  public int generation() {
+
+    return generation;
+  }
+
+  public void generation(final int generation) {
+
+    this.generation = generation;
+  }
+
+  public boolean resolved() {
+
+    return resolved;
+  }
+
+  public void resolved(final boolean resolved) {
+
+    this.resolved = resolved;
   }
 }

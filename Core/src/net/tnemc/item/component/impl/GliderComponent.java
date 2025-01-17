@@ -36,6 +36,10 @@ import java.util.Objects;
  */
 public abstract class GliderComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
+  public GliderComponent() {
+
+  }
+
   @Override
   public String identifier() {
     return "glider";

@@ -38,6 +38,11 @@ public abstract class TooltipStyleComponent<I extends AbstractItemStack<T>, T> i
 
   protected String style;
 
+  public TooltipStyleComponent(final String style) {
+
+    this.style = style;
+  }
+
   @Override
   public String identifier() {
     return "tooltip_style";
@@ -64,5 +69,15 @@ public abstract class TooltipStyleComponent<I extends AbstractItemStack<T>, T> i
   @Override
   public int hashCode() {
     return Objects.hash(style);
+  }
+
+  public String style() {
+
+    return style;
+  }
+
+  public void style(final String style) {
+
+    this.style = style;
   }
 }

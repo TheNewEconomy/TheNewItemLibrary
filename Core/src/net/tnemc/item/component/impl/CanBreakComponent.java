@@ -28,6 +28,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -121,11 +122,11 @@ public abstract class CanBreakComponent<I extends AbstractItemStack<T>, T> imple
   }
 
   /**
-   * Adds a block predicate to the list of predicates associated with this CanBreakComponent.
+   * Add one or more BlockPredicate objects to the list of predicates associated with this component.
    *
-   * @param predicate The BlockPredicate to add to the list.
+   * @param predicates The BlockPredicate objects to add to the list.
    */
-  public void predicates(final BlockPredicate predicate) {
-    this.predicates.add(predicate);
+  public void predicates(final BlockPredicate... predicates) {
+    this.predicates.addAll(Arrays.asList(predicates));
   }
 }

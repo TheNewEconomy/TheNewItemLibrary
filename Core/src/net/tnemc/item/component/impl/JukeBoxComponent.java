@@ -38,6 +38,15 @@ public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> extend
 
   protected String song;
 
+  public JukeBoxComponent() {
+
+  }
+
+  public JukeBoxComponent(final String song) {
+
+    this.song = song;
+  }
+
   /**
    * @return the type of component this is.
    */
@@ -91,5 +100,15 @@ public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> extend
       return jukeBox.showInTooltip == this.showInTooltip && Objects.equals(jukeBox.song, this.song);
     }
     return false;
+  }
+
+  public String song() {
+
+    return song;
+  }
+
+  public void song(final String song) {
+
+    this.song = song;
   }
 }

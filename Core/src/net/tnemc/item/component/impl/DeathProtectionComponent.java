@@ -27,6 +27,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -119,11 +120,11 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
   }
 
   /**
-   * Adds a `ReviveEffect` to the list of death effects.
+   * Adds one or more ComponentEffect objects to the list of death effects for this DeathProtectionComponent.
    *
-   * @param effect The `ReviveEffect` to add.
+   * @param effects One or more ComponentEffect objects to be added as death effects.
    */
-  public void deathEffect(final ComponentEffect effect) {
-    this.deathEffects.add(effect);
+  public void deathEffect(final ComponentEffect... effects) {
+    this.deathEffects.addAll(Arrays.asList(effects));
   }
 }

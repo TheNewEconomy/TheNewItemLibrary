@@ -27,6 +27,7 @@ import net.tnemc.item.component.helper.ToolRule;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,6 +43,28 @@ public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implement
 
   protected float defaultSpeed;
   protected int blockDamage;
+
+  public ToolComponent(final float defaultSpeed, final int blockDamage) {
+
+    this.defaultSpeed = defaultSpeed;
+    this.blockDamage = blockDamage;
+  }
+
+  public ToolComponent(final float defaultSpeed, final int blockDamage, final ToolRule rule) {
+
+    this.defaultSpeed = defaultSpeed;
+    this.blockDamage = blockDamage;
+
+    this.rules.add(rule);
+  }
+
+  public ToolComponent(final float defaultSpeed, final int blockDamage, final List<ToolRule> rules) {
+
+    this.defaultSpeed = defaultSpeed;
+    this.blockDamage = blockDamage;
+
+    this.rules.addAll(rules);
+  }
 
   /**
    * @return the type of component this is.
@@ -110,5 +133,40 @@ public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implement
       //TODO: This.
     }
     return false;
+  }
+
+  public List<ToolRule> rules() {
+
+    return rules;
+  }
+
+  public void rules(final List<ToolRule> rules) {
+    this.rules.clear();
+    this.rules.addAll(rules);
+  }
+
+  public void rules(final ToolRule... rules) {
+    this.rules.clear();
+    this.rules.addAll(Arrays.asList(rules));
+  }
+
+  public float defaultSpeed() {
+
+    return defaultSpeed;
+  }
+
+  public void defaultSpeed(final float defaultSpeed) {
+
+    this.defaultSpeed = defaultSpeed;
+  }
+
+  public int blockDamage() {
+
+    return blockDamage;
+  }
+
+  public void blockDamage(final int blockDamage) {
+
+    this.blockDamage = blockDamage;
   }
 }

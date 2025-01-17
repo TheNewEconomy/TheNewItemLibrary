@@ -38,6 +38,15 @@ public abstract class MapColorComponent<I extends AbstractItemStack<T>, T> imple
 
   protected int mapColor;
 
+  public MapColorComponent() {
+
+  }
+
+  public MapColorComponent(final int mapColor) {
+
+    this.mapColor = mapColor;
+  }
+
   @Override
   public String identifier() {
     return "map_color";
@@ -64,5 +73,15 @@ public abstract class MapColorComponent<I extends AbstractItemStack<T>, T> imple
   @Override
   public int hashCode() {
     return Objects.hash(mapColor);
+  }
+
+  public int mapColor() {
+
+    return mapColor;
+  }
+
+  public void mapColor(final int mapColor) {
+
+    this.mapColor = mapColor;
   }
 }

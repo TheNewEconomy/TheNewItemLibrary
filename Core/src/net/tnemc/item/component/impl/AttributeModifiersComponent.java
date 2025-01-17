@@ -30,6 +30,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -185,6 +186,11 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
   public void modifiers(final List<AttributeModifier> modifiers) {
     this.modifiers.clear();
     this.modifiers.addAll(modifiers);
+  }
+
+  public void modifiers(final AttributeModifier... modifiers) {
+    this.modifiers.clear();
+    this.modifiers.addAll(Arrays.asList(modifiers));
   }
 
   /**

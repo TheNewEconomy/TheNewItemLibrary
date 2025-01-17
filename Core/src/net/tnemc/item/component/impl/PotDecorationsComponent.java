@@ -26,6 +26,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +41,20 @@ import java.util.Objects;
 public abstract class PotDecorationsComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<String> decorations = new ArrayList<>();
+
+  public PotDecorationsComponent() {
+
+  }
+
+  public PotDecorationsComponent(final List<String> decorations) {
+
+    this.decorations.addAll(decorations);
+  }
+
+  public PotDecorationsComponent(final String... decorations) {
+
+    this.decorations.addAll(Arrays.asList(decorations));
+  }
 
   @Override
   public String identifier() {
@@ -70,5 +85,22 @@ public abstract class PotDecorationsComponent<I extends AbstractItemStack<T>, T>
   @Override
   public int hashCode() {
     return Objects.hash(decorations);
+  }
+
+  public List<String> decorations() {
+
+    return decorations;
+  }
+
+  public void decorations(final List<String> decorations) {
+
+    this.decorations.clear();
+    this.decorations.addAll(decorations);
+  }
+
+  public void decorations(final String... decorations) {
+
+    this.decorations.clear();
+    this.decorations.addAll(Arrays.asList(decorations));
   }
 }

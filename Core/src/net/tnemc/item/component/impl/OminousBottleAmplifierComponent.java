@@ -38,6 +38,15 @@ public abstract class OminousBottleAmplifierComponent<I extends AbstractItemStac
 
   protected int amplifier;
 
+  public OminousBottleAmplifierComponent() {
+
+  }
+
+  public OminousBottleAmplifierComponent(final int amplifier) {
+
+    this.amplifier = amplifier;
+  }
+
   @Override
   public String identifier() {
     return "ominous_bottle_amplifier";
@@ -64,5 +73,15 @@ public abstract class OminousBottleAmplifierComponent<I extends AbstractItemStac
   @Override
   public int hashCode() {
     return Objects.hash(amplifier);
+  }
+
+  public int amplifier() {
+
+    return amplifier;
+  }
+
+  public void amplifier(final int amplifier) {
+
+    this.amplifier = amplifier;
   }
 }

@@ -40,6 +40,28 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
   protected int useDuration;
   protected int range;
 
+  public InstrumentComponent() {
+
+  }
+
+  public InstrumentComponent(final String soundEvent) {
+
+    this.soundEvent = soundEvent;
+  }
+
+  public InstrumentComponent(final String soundEvent, final int useDuration) {
+
+    this.soundEvent = soundEvent;
+    this.useDuration = useDuration;
+  }
+
+  public InstrumentComponent(final String soundEvent, final int useDuration, final int range) {
+
+    this.soundEvent = soundEvent;
+    this.useDuration = useDuration;
+    this.range = range;
+  }
+
   @Override
   public String identifier() {
     return "instrument";
@@ -73,5 +95,35 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
   @Override
   public int hashCode() {
     return Objects.hash(soundEvent, useDuration, range);
+  }
+
+  public String soundEvent() {
+
+    return soundEvent;
+  }
+
+  public void soundEvent(final String soundEvent) {
+
+    this.soundEvent = soundEvent;
+  }
+
+  public int useDuration() {
+
+    return useDuration;
+  }
+
+  public void useDuration(final int useDuration) {
+
+    this.useDuration = useDuration;
+  }
+
+  public int range() {
+
+    return range;
+  }
+
+  public void range(final int range) {
+
+    this.range = range;
   }
 }

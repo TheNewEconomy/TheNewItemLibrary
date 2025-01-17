@@ -41,6 +41,36 @@ public abstract class LodestoneTrackerComponent<I extends AbstractItemStack<T>, 
   protected String dimension;
   protected boolean tracked = true;
 
+  public LodestoneTrackerComponent() {
+
+  }
+
+  public LodestoneTrackerComponent(final String target) {
+
+    this.target = target;
+  }
+
+  public LodestoneTrackerComponent(final String target, final int[] pos) {
+
+    this.target = target;
+    this.pos = pos;
+  }
+
+  public LodestoneTrackerComponent(final String target, final int[] pos, final String dimension) {
+
+    this.target = target;
+    this.pos = pos;
+    this.dimension = dimension;
+  }
+
+  public LodestoneTrackerComponent(final String target, final int[] pos, final String dimension, final boolean tracked) {
+
+    this.target = target;
+    this.pos = pos;
+    this.dimension = dimension;
+    this.tracked = tracked;
+  }
+
   @Override
   public String identifier() {
     return "lodestone_tracker";
@@ -76,5 +106,45 @@ public abstract class LodestoneTrackerComponent<I extends AbstractItemStack<T>, 
   @Override
   public int hashCode() {
     return Objects.hash(target, pos, dimension, tracked);
+  }
+
+  public String target() {
+
+    return target;
+  }
+
+  public void target(final String target) {
+
+    this.target = target;
+  }
+
+  public int[] pos() {
+
+    return pos;
+  }
+
+  public void pos(final int[] pos) {
+
+    this.pos = pos;
+  }
+
+  public String dimension() {
+
+    return dimension;
+  }
+
+  public void dimension(final String dimension) {
+
+    this.dimension = dimension;
+  }
+
+  public boolean tracked() {
+
+    return tracked;
+  }
+
+  public void tracked(final boolean tracked) {
+
+    this.tracked = tracked;
   }
 }

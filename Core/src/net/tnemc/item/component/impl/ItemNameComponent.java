@@ -38,6 +38,15 @@ public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> imple
 
   protected String itemName;
 
+  public ItemNameComponent() {
+
+  }
+
+  public ItemNameComponent(final String itemName) {
+
+    this.itemName = itemName;
+  }
+
   @Override
   public String identifier() {
     return "item_name";
@@ -65,5 +74,15 @@ public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> imple
   @Override
   public int hashCode() {
     return Objects.hash(itemName);
+  }
+
+  public String itemName() {
+
+    return itemName;
+  }
+
+  public void itemName(final String itemName) {
+
+    this.itemName = itemName;
   }
 }

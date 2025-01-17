@@ -26,6 +26,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +41,20 @@ import java.util.Objects;
 public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<String> lore = new ArrayList<>();
+
+  public LoreComponent() {
+
+  }
+
+  public LoreComponent(final List<String> lore) {
+
+    this.lore.addAll(lore);
+  }
+
+  public LoreComponent(final String... lore) {
+
+    this.lore.addAll(Arrays.asList(lore));
+  }
 
   @Override
   public String identifier() {
@@ -70,5 +85,22 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), lore);
+  }
+
+  public List<String> lore() {
+
+    return lore;
+  }
+
+  public void lore(final List<String> lore) {
+
+    this.lore.clear();
+    this.lore.addAll(lore);
+  }
+
+  public void lore(final String... lore) {
+
+    this.lore.clear();
+    this.lore.addAll(Arrays.asList(lore));
   }
 }

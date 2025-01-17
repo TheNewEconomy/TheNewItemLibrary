@@ -38,6 +38,15 @@ public abstract class MaxStackSizeComponent<I extends AbstractItemStack<T>, T> i
 
   protected int maxStackSize;
 
+  public MaxStackSizeComponent() {
+
+  }
+
+  public MaxStackSizeComponent(final int maxStackSize) {
+
+    this.maxStackSize = maxStackSize;
+  }
+
   @Override
   public String identifier() {
     return "max_stack_size";
@@ -64,5 +73,15 @@ public abstract class MaxStackSizeComponent<I extends AbstractItemStack<T>, T> i
   @Override
   public int hashCode() {
     return Objects.hash(maxStackSize);
+  }
+
+  public int maxStackSize() {
+
+    return maxStackSize;
+  }
+
+  public void maxStackSize(final int maxStackSize) {
+
+    this.maxStackSize = maxStackSize;
   }
 }

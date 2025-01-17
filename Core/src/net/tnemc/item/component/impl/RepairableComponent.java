@@ -26,6 +26,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +41,20 @@ import java.util.Objects;
 public abstract class RepairableComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<String> repairItems = new ArrayList<>();
+
+  public RepairableComponent() {
+
+  }
+
+  public RepairableComponent(final String repairItem) {
+
+    this.repairItems.add(repairItem);
+  }
+
+  public RepairableComponent(final List<String> repairItems) {
+
+    this.repairItems.addAll(repairItems);
+  }
 
   @Override
   public String identifier() {
@@ -70,5 +85,25 @@ public abstract class RepairableComponent<I extends AbstractItemStack<T>, T> imp
   @Override
   public int hashCode() {
     return Objects.hash(repairItems);
+  }
+
+  public List<String> repairItems() {
+
+    return repairItems;
+  }
+
+  public void repairItem(final String repairItem) {
+
+    this.repairItems.add(repairItem);
+  }
+
+  public void repairItem(final List<String> repairItems) {
+
+    this.repairItems.addAll(repairItems);
+  }
+
+  public void repairItem(final String... repairItems) {
+
+    this.repairItems.addAll(Arrays.asList(repairItems));
   }
 }

@@ -26,6 +26,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,6 +41,20 @@ import java.util.Objects;
 public abstract class WritableBookContentComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<String> pages = new ArrayList<>();
+
+  public WritableBookContentComponent() {
+
+  }
+
+  public WritableBookContentComponent(final List<String> pages) {
+
+    this.pages.addAll(pages);
+  }
+
+  public WritableBookContentComponent(final String... pages) {
+
+    this.pages.addAll(Arrays.asList(pages));
+  }
 
   @Override
   public String identifier() {
@@ -70,5 +85,22 @@ public abstract class WritableBookContentComponent<I extends AbstractItemStack<T
   @Override
   public int hashCode() {
     return Objects.hash(pages);
+  }
+
+  public List<String> pages() {
+
+    return pages;
+  }
+
+  public void pages(final List<String> pages) {
+
+    this.pages.clear();
+    this.pages.addAll(pages);
+  }
+
+  public void pages(final String... pages) {
+
+    this.pages.clear();
+    this.pages.addAll(Arrays.asList(pages));
   }
 }

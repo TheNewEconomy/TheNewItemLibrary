@@ -40,6 +40,15 @@ public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> e
 
   protected final Map<String, Integer> levels = new HashMap<>();
 
+  public EnchantmentsComponent() {
+
+  }
+
+  public EnchantmentsComponent(final Map<String, Integer> levels) {
+
+    this.levels.putAll(levels);
+  }
+
   @Override
   public String identifier() {
     return "enchantments";
@@ -91,5 +100,16 @@ public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> e
   @Override
   public int hashCode() {
     return Objects.hash(levels, showInTooltip);
+  }
+
+  public Map<String, Integer> levels() {
+
+    return levels;
+  }
+
+  public void levels(final Map<String, Integer> levels) {
+
+    this.levels.clear();
+    this.levels.putAll(levels);
   }
 }

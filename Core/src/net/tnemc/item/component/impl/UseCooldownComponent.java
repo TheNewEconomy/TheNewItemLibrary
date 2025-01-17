@@ -39,6 +39,22 @@ public abstract class UseCooldownComponent<I extends AbstractItemStack<T>, T> im
   protected float seconds;
   protected String cooldownGroup;
 
+  public UseCooldownComponent(final float seconds) {
+
+    this.seconds = seconds;
+  }
+
+  public UseCooldownComponent(final String cooldownGroup) {
+
+    this.cooldownGroup = cooldownGroup;
+  }
+
+  public UseCooldownComponent(final String cooldownGroup, final float seconds) {
+
+    this.cooldownGroup = cooldownGroup;
+    this.seconds = seconds;
+  }
+
   @Override
   public String identifier() {
     return "use_cooldown";
@@ -67,5 +83,25 @@ public abstract class UseCooldownComponent<I extends AbstractItemStack<T>, T> im
   @Override
   public int hashCode() {
     return Objects.hash(seconds, cooldownGroup);
+  }
+
+  public float seconds() {
+
+    return seconds;
+  }
+
+  public void seconds(final float seconds) {
+
+    this.seconds = seconds;
+  }
+
+  public String cooldownGroup() {
+
+    return cooldownGroup;
+  }
+
+  public void cooldownGroup(final String cooldownGroup) {
+
+    this.cooldownGroup = cooldownGroup;
   }
 }

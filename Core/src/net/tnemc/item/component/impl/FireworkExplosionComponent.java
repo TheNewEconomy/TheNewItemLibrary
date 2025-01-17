@@ -25,6 +25,7 @@ import net.tnemc.item.component.helper.ExplosionData;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -35,7 +36,23 @@ import java.util.Objects;
  */
 public abstract class FireworkExplosionComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected final ExplosionData explosion = new ExplosionData();
+  protected ExplosionData explosion;
+
+  public FireworkExplosionComponent() {
+
+  }
+
+  public FireworkExplosionComponent(final ExplosionData explosion) {
+
+    this.explosion = explosion;
+  }
+
+  public FireworkExplosionComponent(final String shape, final boolean hasTrail,
+                                    final boolean hasTwinkle, final List<Integer> colors,
+                                    final List<Integer> fadeColors) {
+
+    this.explosion = new ExplosionData(shape, hasTrail, hasTwinkle, colors, fadeColors);
+  }
 
   @Override
   public String identifier() {
@@ -66,5 +83,15 @@ public abstract class FireworkExplosionComponent<I extends AbstractItemStack<T>,
   @Override
   public int hashCode() {
     return Objects.hash(explosion);
+  }
+
+  public ExplosionData explosion() {
+
+    return explosion;
+  }
+
+  public void explosion(final ExplosionData explosion) {
+
+    this.explosion = explosion;
   }
 }

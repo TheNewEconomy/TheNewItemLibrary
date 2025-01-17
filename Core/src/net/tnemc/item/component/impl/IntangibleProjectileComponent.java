@@ -36,6 +36,10 @@ import java.util.Objects;
  */
 public abstract class IntangibleProjectileComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
+  public IntangibleProjectileComponent() {
+
+  }
+
   @Override
   public String identifier() {
     return "intangible_projectile";

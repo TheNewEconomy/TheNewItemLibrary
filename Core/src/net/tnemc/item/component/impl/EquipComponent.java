@@ -27,6 +27,7 @@ import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,6 +50,81 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
   protected boolean damageOnHurt;
   protected boolean dispensable;
   protected boolean swappable;
+
+  public EquipComponent(final String cameraKey) {
+
+    this.cameraKey = cameraKey;
+  }
+
+  public EquipComponent(final String cameraKey, final String equipSound) {
+
+    this.cameraKey = cameraKey;
+    this.equipSound = equipSound;
+  }
+
+  public EquipComponent(final String cameraKey, final String equipSound, final String modelKey) {
+
+    this.cameraKey = cameraKey;
+    this.equipSound = equipSound;
+    this.modelKey = modelKey;
+  }
+
+  public EquipComponent(final String cameraKey, final String equipSound, final String modelKey,
+                        final EquipSlot slot) {
+
+    this.cameraKey = cameraKey;
+    this.equipSound = equipSound;
+    this.modelKey = modelKey;
+    this.slot = slot;
+  }
+
+  public EquipComponent(final String cameraKey, final String equipSound, final String modelKey,
+                        final EquipSlot slot, final boolean damageOnHurt) {
+
+    this.cameraKey = cameraKey;
+    this.equipSound = equipSound;
+    this.modelKey = modelKey;
+    this.slot = slot;
+    this.damageOnHurt = damageOnHurt;
+  }
+
+  public EquipComponent(final String cameraKey, final String equipSound, final String modelKey,
+                        final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable) {
+
+    this.cameraKey = cameraKey;
+    this.equipSound = equipSound;
+    this.modelKey = modelKey;
+    this.slot = slot;
+    this.damageOnHurt = damageOnHurt;
+    this.dispensable = dispensable;
+  }
+
+  public EquipComponent(final String cameraKey, final String equipSound, final String modelKey,
+                        final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable,
+                        final boolean swappable) {
+
+    this.cameraKey = cameraKey;
+    this.equipSound = equipSound;
+    this.modelKey = modelKey;
+    this.slot = slot;
+    this.damageOnHurt = damageOnHurt;
+    this.dispensable = dispensable;
+    this.swappable = swappable;
+  }
+
+  public EquipComponent(final String cameraKey, final String equipSound, final String modelKey,
+                        final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable,
+                        final boolean swappable, final List<String> entities) {
+
+    this.cameraKey = cameraKey;
+    this.equipSound = equipSound;
+    this.modelKey = modelKey;
+    this.slot = slot;
+    this.damageOnHurt = damageOnHurt;
+    this.dispensable = dispensable;
+    this.swappable = swappable;
+    this.entities.addAll(entities);
+  }
 
   /**
    * @return the type of component this is.
@@ -132,5 +208,92 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
 
     }
     return false;
+  }
+
+  public List<String> entities() {
+
+    return entities;
+  }
+
+  public void entities(final List<String> entities) {
+
+    this.entities.clear();
+    this.entities.addAll(entities);
+  }
+
+  public void entities(final String... entities) {
+
+    this.entities.clear();
+    this.entities.addAll(Arrays.asList(entities));
+  }
+
+  public String cameraKey() {
+
+    return cameraKey;
+  }
+
+  public void cameraKey(final String cameraKey) {
+
+    this.cameraKey = cameraKey;
+  }
+
+  public String equipSound() {
+
+    return equipSound;
+  }
+
+  public void equipSound(final String equipSound) {
+
+    this.equipSound = equipSound;
+  }
+
+  public String modelKey() {
+
+    return modelKey;
+  }
+
+  public void modelKey(final String modelKey) {
+
+    this.modelKey = modelKey;
+  }
+
+  public EquipSlot slot() {
+
+    return slot;
+  }
+
+  public void slot(final EquipSlot slot) {
+
+    this.slot = slot;
+  }
+
+  public boolean damageOnHurt() {
+
+    return damageOnHurt;
+  }
+
+  public void damageOnHurt(final boolean damageOnHurt) {
+
+    this.damageOnHurt = damageOnHurt;
+  }
+
+  public boolean dispensable() {
+
+    return dispensable;
+  }
+
+  public void dispensable(final boolean dispensable) {
+
+    this.dispensable = dispensable;
+  }
+
+  public boolean swappable() {
+
+    return swappable;
+  }
+
+  public void swappable(final boolean swappable) {
+
+    this.swappable = swappable;
   }
 }

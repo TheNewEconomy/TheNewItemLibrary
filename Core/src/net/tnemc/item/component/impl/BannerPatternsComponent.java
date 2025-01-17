@@ -28,6 +28,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -150,6 +151,11 @@ public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T>
   public void patterns(final List<PatternData> patterns) {
     this.patterns.clear();
     this.patterns.addAll(patterns);
+  }
+
+  public void patterns(final PatternData... patterns) {
+    this.patterns.clear();
+    this.patterns.addAll(Arrays.asList(patterns));
   }
 
   /**

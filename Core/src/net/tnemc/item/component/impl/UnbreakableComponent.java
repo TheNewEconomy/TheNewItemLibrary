@@ -35,6 +35,14 @@ import org.json.simple.JSONObject;
  */
 public abstract class UnbreakableComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
 
+  public UnbreakableComponent() {
+
+  }
+
+  public UnbreakableComponent(final boolean showInTooltip) {
+    this.showInTooltip = showInTooltip;
+  }
+
   @Override
   public String identifier() {
     return "unbreakable";
@@ -61,5 +69,14 @@ public abstract class UnbreakableComponent<I extends AbstractItemStack<T>, T> ex
   @Override
   public int hashCode() {
     return super.hashCode();
+  }
+
+  public boolean isShowInTooltip() {
+
+    return showInTooltip;
+  }
+
+  public void setShowInTooltip(final boolean showInTooltip) {
+    this.showInTooltip = showInTooltip;
   }
 }

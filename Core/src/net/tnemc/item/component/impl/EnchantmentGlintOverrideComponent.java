@@ -38,6 +38,10 @@ public abstract class EnchantmentGlintOverrideComponent<I extends AbstractItemSt
 
   protected boolean glintOverride;
 
+  public EnchantmentGlintOverrideComponent() {
+
+  }
+
   public EnchantmentGlintOverrideComponent(final boolean glintOverride) {
 
     this.glintOverride = glintOverride;
@@ -69,5 +73,15 @@ public abstract class EnchantmentGlintOverrideComponent<I extends AbstractItemSt
   @Override
   public int hashCode() {
     return Objects.hash(glintOverride);
+  }
+
+  public boolean glintOverride() {
+
+    return glintOverride;
+  }
+
+  public void glintOverride(final boolean glintOverride) {
+
+    this.glintOverride = glintOverride;
   }
 }
