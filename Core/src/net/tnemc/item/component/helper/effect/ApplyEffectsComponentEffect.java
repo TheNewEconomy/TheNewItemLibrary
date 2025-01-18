@@ -1,4 +1,4 @@
-package net.tnemc.item.component.helper.revive;
+package net.tnemc.item.component.helper.effect;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -19,23 +19,26 @@ package net.tnemc.item.component.helper.revive;
  */
 
 import net.tnemc.item.JSONHelper;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
- * PlaySoundReviveEffect
+ * ApplyEffectsReviveEffect
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PlaySoundComponentEffect extends ComponentEffect {
+public class ApplyEffectsComponentEffect extends ComponentEffect {
 
-  private String sound;
+  private final List<EffectInstance> effects = new ArrayList<>();
 
   @Override
   public String getType() {
-    return "play_sound";
+    return "apply_effects";
   }
 
   @Override
@@ -43,7 +46,12 @@ public class PlaySoundComponentEffect extends ComponentEffect {
     final JSONObject json = new JSONObject();
     json.put("type", getType());
     json.put("probability", probability);
-    json.put("sound", sound);
+
+    final JSONArray effectsArray = new JSONArray();
+    for (final EffectInstance effect : effects) {
+      effectsArray.add(effect.toJSON());
+    }
+    json.put("effects", effectsArray);
 
     return json;
   }
@@ -51,26 +59,31 @@ public class PlaySoundComponentEffect extends ComponentEffect {
   @Override
   public void readJSON(final JSONHelper json) {
     probability = json.getFloat("probability");
-    sound = json.getString("sound");
+
+    effects.clear();
+    if (json.has("effects")) {
+      final JSONArray effectsArray = (JSONArray) json.getObject().get("effects");
+      for (final Object obj : effectsArray) {
+        final EffectInstance effect = new EffectInstance();
+        effect.readJSON(new JSONHelper((JSONObject) obj));
+        effects.add(effect);
+      }
+    }
   }
 
-  public String getSound() {
-    return sound;
-  }
-
-  public void setSound(final String sound) {
-    this.sound = sound;
+  public List<EffectInstance> getEffects() {
+    return effects;
   }
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final PlaySoundComponentEffect other)) return false;
+    if (!(obj instanceof final ApplyEffectsComponentEffect other)) return false;
 
-    return super.equals(obj) && Objects.equals(this.sound, other.sound);
+    return super.equals(obj) && Objects.equals(this.effects, other.effects);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode(), sound);
+    return Objects.hash(super.hashCode(), effects);
   }
 }

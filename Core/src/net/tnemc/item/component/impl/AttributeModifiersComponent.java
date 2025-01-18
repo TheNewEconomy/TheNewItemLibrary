@@ -24,7 +24,6 @@ import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.TooltippableSerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.EquipSlot;
-import net.tnemc.item.component.helper.revive.ComponentEffect;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

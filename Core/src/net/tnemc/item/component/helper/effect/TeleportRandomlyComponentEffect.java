@@ -1,4 +1,4 @@
-package net.tnemc.item.component.helper.revive;
+package net.tnemc.item.component.helper.effect;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -24,30 +24,53 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * ReviveEffect
+ * TeleportRandomlyReviveEffect
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class ComponentEffect {
+public class TeleportRandomlyComponentEffect extends ComponentEffect {
 
-  protected float probability = 1.0f; // Default to 100% chance
+  private float diameter = 16.0f; // Default to 16.0
 
-  public abstract String getType();
+  @Override
+  public String getType() {
+    return "teleport_randomly";
+  }
 
-  public abstract JSONObject toJSON();
+  @Override
+  public JSONObject toJSON() {
+    final JSONObject json = new JSONObject();
+    json.put("type", getType());
+    json.put("probability", probability);
+    json.put("diameter", diameter);
 
-  public abstract void readJSON(JSONHelper json);
+    return json;
+  }
+
+  @Override
+  public void readJSON(final JSONHelper json) {
+    probability = json.getFloat("probability");
+    diameter = json.getFloat("diameter");
+  }
+
+  public float getDiameter() {
+    return diameter;
+  }
+
+  public void setDiameter(final float diameter) {
+    this.diameter = diameter;
+  }
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final ComponentEffect other)) return false;
+    if (!(obj instanceof final TeleportRandomlyComponentEffect other)) return false;
 
-    return Float.compare(this.probability, other.probability) == 0;
+    return super.equals(obj) && Float.compare(this.diameter, other.diameter) == 0;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(probability);
+    return Objects.hash(super.hashCode(), diameter);
   }
 }

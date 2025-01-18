@@ -1,4 +1,4 @@
-package net.tnemc.item.component.helper.revive;
+package net.tnemc.item.component.helper.effect;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -19,64 +19,59 @@ package net.tnemc.item.component.helper.revive;
  */
 
 import net.tnemc.item.JSONHelper;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
- * RemoveEffectsReviveEffect
+ * EffectInstance
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class RemoveEffectsComponentEffect extends ComponentEffect {
+public class EffectInstance {
 
-  private final List<String> effectIds = new ArrayList<>();
+  protected String id;
+  protected int amplifier = 0;
+  protected int duration = 1;
+  protected boolean ambient = false;
+  protected boolean showParticles = true;
+  protected boolean showIcon = true;
 
-  @Override
-  public String getType() {
-    return "remove_effects";
-  }
-
-  @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
-    json.put("type", getType());
-    json.put("probability", probability);
-
-    final JSONArray effectsArray = new JSONArray();
-    effectsArray.addAll(effectIds);
-    json.put("effects", effectsArray);
-
+    json.put("id", id);
+    json.put("amplifier", amplifier);
+    json.put("duration", duration);
+    json.put("ambient", ambient);
+    json.put("show_particles", showParticles);
+    json.put("show_icon", showIcon);
     return json;
   }
 
-  @Override
   public void readJSON(final JSONHelper json) {
-    probability = json.getFloat("probability");
-
-    effectIds.clear();
-    if (json.has("effects")) {
-      effectIds.addAll(json.getStringList("effects"));
-    }
-  }
-
-  public List<String> getEffectIds() {
-    return effectIds;
+    id = json.getString("id");
+    amplifier = json.getInteger("amplifier");
+    duration = json.getInteger("duration");
+    ambient = json.getBoolean("ambient");
+    showParticles = json.getBoolean("show_particles");
+    showIcon = json.getBoolean("show_icon");
   }
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final RemoveEffectsComponentEffect other)) return false;
+    if (!(obj instanceof final EffectInstance other)) return false;
 
-    return super.equals(obj) && Objects.equals(this.effectIds, other.effectIds);
+    return Objects.equals(this.id, other.id) &&
+           this.amplifier == other.amplifier &&
+           this.duration == other.duration &&
+           this.ambient == other.ambient &&
+           this.showParticles == other.showParticles &&
+           this.showIcon == other.showIcon;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode(), effectIds);
+    return Objects.hash(id, amplifier, duration, ambient, showParticles, showIcon);
   }
 }

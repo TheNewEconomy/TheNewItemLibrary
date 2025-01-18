@@ -21,9 +21,6 @@ package net.tnemc.item;
  */
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.BlockPredicate;
@@ -31,15 +28,17 @@ import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.component.helper.ExplosionData;
 import net.tnemc.item.component.helper.PatternData;
 import net.tnemc.item.component.helper.ToolRule;
-import net.tnemc.item.component.helper.revive.ComponentEffect;
-import net.tnemc.item.component.helper.revive.EffectInstance;
+import net.tnemc.item.component.helper.effect.ComponentEffect;
+import net.tnemc.item.component.helper.effect.EffectInstance;
 import net.tnemc.item.component.impl.AttributeModifiersComponent;
 import net.tnemc.item.component.impl.BannerPatternsComponent;
 import net.tnemc.item.component.impl.BaseColorComponent;
 import net.tnemc.item.component.impl.BucketEntityDataComponent;
+import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.component.impl.CanBreakComponent;
 import net.tnemc.item.component.impl.CanPlaceOnComponent;
 import net.tnemc.item.component.impl.ConsumableComponent;
+import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.component.impl.DamageResistantComponent;
@@ -86,19 +85,12 @@ import net.tnemc.item.component.impl.WritableBookContentComponent;
 import net.tnemc.item.component.impl.WrittenBookContentComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.persistent.PersistentDataType;
-import net.tnemc.item.providers.SkullProfile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Represents a generic abstraction for an item stack with various attributes and properties.
@@ -422,6 +414,30 @@ public interface AbstractItemStackRevamp<T> extends Cloneable {
   AbstractItemStackRevamp<T> bucketEntityData(boolean noAI, boolean silent, boolean noGravity, boolean glowing, boolean invulnerable, float health, int age, int variant, long huntingCooldown, int bucketVariantTag, int type);
 
   /**
+   * Retrieves the bundle component from the components map.
+   *
+   * @return An Optional containing the BundleComponent of AbstractItemStack with type T,
+   *          or an empty Optional if the bundle component does not exist in the components map.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see BundleComponent
+   */
+  default Optional<BundleComponent<AbstractItemStack<T>, T>> bundle() {
+    return Optional.ofNullable((BundleComponent<AbstractItemStack<T>, T>) components().get("bundle"));
+  }
+
+  /**
+   * Bundles a collection of {@link AbstractItemStackRevamp} instances into a single collection.
+   *
+   * @param items A {@link Map} containing integer keys and {@link AbstractItemStackRevamp} values to be bundled.
+   * @return An {@link AbstractItemStackRevamp} instance that represents the bundled items.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see BundleComponent
+   */
+  AbstractItemStackRevamp<T> bundle(final Map<Integer, AbstractItemStackRevamp<?>> items);
+
+  /**
    * Retrieves the CanBreakComponent of the item stack if present.
    *
    * @return an Optional containing the CanBreakComponent if it exists
@@ -493,6 +509,30 @@ public interface AbstractItemStackRevamp<T> extends Cloneable {
    * @see ConsumableComponent
    */
   AbstractItemStackRevamp<T> consumable(float consumeSeconds, String animation, String sound, boolean hasConsumeParticles, List<ComponentEffect> effects);
+
+  /**
+   * Returns an {@link Optional} containing the {@link ContainerComponent} with type parameters {@link AbstractItemStack} and T stored in this container.
+   *
+   * @return an {@link Optional} object containing the {@link ContainerComponent} with type parameters {@link AbstractItemStack} and T, or an empty {@link Optional} if the component
+   *  is not found
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see ContainerComponent
+   */
+  default Optional<ContainerComponent<AbstractItemStack<T>, T>> container() {
+    return Optional.ofNullable((ContainerComponent<AbstractItemStack<T>, T>) components().get("container"));
+  }
+
+  /**
+   * Constructs a container with the given map of items.
+   *
+   * @param items a map of items where the key is the position of the item in the container and the value is the item
+   * @return an AbstractItemStackRevamp container with the specified items
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see ContainerComponent
+   */
+  AbstractItemStackRevamp<T> container(final Map<Integer, AbstractItemStackRevamp<?>> items);
 
   /**
    * Retrieves the CustomNameComponent of the item stack if present.
