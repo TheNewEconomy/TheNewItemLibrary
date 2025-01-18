@@ -57,7 +57,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * ItemPlatform
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 

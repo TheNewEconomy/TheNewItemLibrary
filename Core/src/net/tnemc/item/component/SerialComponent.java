@@ -31,7 +31,7 @@ import org.json.simple.JSONObject;
  * SerialComponent
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 
 public interface SerialComponent<I extends AbstractItemStack<T>, T> extends ItemCheck<T>, ItemApplicator<I, T>, ItemSerializer<I, T> {

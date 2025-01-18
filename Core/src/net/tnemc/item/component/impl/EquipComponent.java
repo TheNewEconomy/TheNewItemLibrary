@@ -50,6 +50,7 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
   protected boolean damageOnHurt;
   protected boolean dispensable;
   protected boolean swappable;
+  protected boolean equipOnInteract; //as of SnapShot 25w03a
 
   public EquipComponent(final String cameraKey) {
 
@@ -114,7 +115,7 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
 
   public EquipComponent(final String cameraKey, final String equipSound, final String modelKey,
                         final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable,
-                        final boolean swappable, final List<String> entities) {
+                        final boolean swappable, final boolean equipOnInteract) {
 
     this.cameraKey = cameraKey;
     this.equipSound = equipSound;
@@ -123,6 +124,21 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
     this.damageOnHurt = damageOnHurt;
     this.dispensable = dispensable;
     this.swappable = swappable;
+    this.equipOnInteract = equipOnInteract;
+  }
+
+  public EquipComponent(final String cameraKey, final String equipSound, final String modelKey,
+                        final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable,
+                        final boolean swappable, final boolean equipOnInteract, final List<String> entities) {
+
+    this.cameraKey = cameraKey;
+    this.equipSound = equipSound;
+    this.modelKey = modelKey;
+    this.slot = slot;
+    this.damageOnHurt = damageOnHurt;
+    this.dispensable = dispensable;
+    this.swappable = swappable;
+    this.equipOnInteract = equipOnInteract;
     this.entities.addAll(entities);
   }
 
@@ -152,6 +168,7 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
     equip.put("damageWithEntity", damageOnHurt);
     equip.put("dispensable", dispensable);
     equip.put("swappable", swappable);
+    equip.put("equipOnInteract", equipOnInteract);
 
     if(!entities.isEmpty()) {
 
@@ -179,6 +196,7 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
     damageOnHurt = json.getBoolean("damageWithEntity");
     dispensable = json.getBoolean("dispensable");
     swappable = json.getBoolean("swappable");
+    equipOnInteract = json.getBoolean("equipOnInteract");
 
     entities.clear();
     entities.addAll(json.getStringList("entities"));
@@ -204,6 +222,7 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
              this.damageOnHurt == equipComponent.damageOnHurt &&
              this.dispensable == equipComponent.dispensable &&
              this.swappable == equipComponent.swappable &&
+             this.equipOnInteract == equipComponent.equipOnInteract &&
              this.entities.equals(equipComponent.entities);
 
     }
@@ -295,5 +314,15 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
   public void swappable(final boolean swappable) {
 
     this.swappable = swappable;
+  }
+
+  public boolean equipOnInteract() {
+
+    return equipOnInteract;
+  }
+
+  public void equipOnInteract(final boolean equipOnInteract) {
+
+    this.equipOnInteract = equipOnInteract;
   }
 }

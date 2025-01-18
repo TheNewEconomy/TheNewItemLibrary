@@ -70,6 +70,7 @@ import net.tnemc.item.component.impl.NoteBlockSoundComponent;
 import net.tnemc.item.component.impl.OminousBottleAmplifierComponent;
 import net.tnemc.item.component.impl.PotDecorationsComponent;
 import net.tnemc.item.component.impl.PotionContentsComponent;
+import net.tnemc.item.component.impl.PotionDurationScaleComponent;
 import net.tnemc.item.component.impl.RarityComponent;
 import net.tnemc.item.component.impl.RecipesComponent;
 import net.tnemc.item.component.impl.RepairCostComponent;
@@ -81,6 +82,7 @@ import net.tnemc.item.component.impl.TooltipStyleComponent;
 import net.tnemc.item.component.impl.TrimComponent;
 import net.tnemc.item.component.impl.UnbreakableComponent;
 import net.tnemc.item.component.impl.UseCooldownComponent;
+import net.tnemc.item.component.impl.WeaponComponent;
 import net.tnemc.item.component.impl.WritableBookContentComponent;
 import net.tnemc.item.component.impl.WrittenBookContentComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
@@ -731,22 +733,26 @@ public interface AbstractItemStackRevamp<T> extends Cloneable {
   }
 
   /**
-   * Updates the equip properties of the item stack.
+   * Equips an item with specified parameters.
    *
-   * @param cameraKey      the camera key identifier
-   * @param equipSound     the equip sound identifier
-   * @param modelKey       the model key identifier
-   * @param slot           the equip slot
-   * @param damageOnHurt   whether to apply damage on hurt
-   * @param dispensable    whether the item is dispensable
-   * @param swappable      whether the item is swappable
-   * @param entities       a list of entity types
-   * @return the updated AbstractItemStackRevamp instance
+   * @param cameraKey the key identifying the camera
+   * @param equipSound the key identifying the equip sound
+   * @param modelKey the key identifying the model
+   * @param slot the slot in which the item should be equipped
+   * @param damageOnHurt flag indicating if damage should be taken on hurt
+   * @param dispensable flag indicating if the item is dispensable
+   * @param swappable flag indicating if the item is swappable
+   * @param equipOnInteract flag indicating if the item should be equipped on interact
+   * @param entities a list of entities to be equipped
+   *
+   * @return an AbstractItemStackRevamp object representing the equipped item
    * @since 0.2.0.0
    * @author creatorfromhell
    * @see EquipComponent
    */
-  AbstractItemStackRevamp<T> equip(String cameraKey, String equipSound, String modelKey, EquipSlot slot, boolean damageOnHurt, boolean dispensable, boolean swappable, List<String> entities);
+  AbstractItemStackRevamp<T> equip(String cameraKey, String equipSound, String modelKey, EquipSlot slot,
+                                   boolean damageOnHurt, boolean dispensable, boolean swappable,
+                                   boolean equipOnInteract, List<String> entities);
 
   /**
    * Retrieves the FireworkExplosionComponent of the item stack if present.
@@ -1266,6 +1272,29 @@ public interface AbstractItemStackRevamp<T> extends Cloneable {
   AbstractItemStackRevamp<T> potionContents(String potionId, int customColor, String customName, List<EffectInstance> effects);
 
   /**
+   * Retrieves the potion duration scale component from the item's components. Since MC Snapshot 25w02a.
+   *
+   * @return an Optional containing the PotionDurationScaleComponent if present, otherwise an empty Optional
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see PotionDurationScaleComponent
+   */
+  default Optional<PotionDurationScaleComponent<AbstractItemStack<T>, T>> potionDuration() {
+    return Optional.ofNullable((PotionDurationScaleComponent<AbstractItemStack<T>, T>) components().get("potion_duration_scale"));
+  }
+
+  /**
+   * Sets the duration of a potion effect for the item stack. Since MC Snapshot 25w02a.
+   *
+   * @param potionDuration the duration of the potion effect in seconds
+   * @return the modified AbstractItemStackRevamp object with the updated potion duration
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see PotionDurationScaleComponent
+   */
+  AbstractItemStackRevamp<T> potionDuration(final float potionDuration);
+
+  /**
    * Retrieves the RarityComponent of the item stack if present.
    *
    * @return an Optional containing the RarityComponent if it exists
@@ -1417,17 +1446,18 @@ public interface AbstractItemStackRevamp<T> extends Cloneable {
   }
 
   /**
-   * Updates the tool properties of the item stack.
+   * Constructs a new tool item with the specified characteristics.
    *
-   * @param defaultSpeed the default mining speed
-   * @param blockDamage  the damage dealt to blocks
-   * @param rules        a list of tool rules
-   * @return the updated AbstractItemStackRevamp instance
+   * @param defaultSpeed the default speed of the tool
+   * @param blockDamage the damage inflicted by the tool to blocks
+   * @param canDestroyBlocksCreative if the tool can destroy blocks in creative mode
+   * @param rules a list of rules that define the behavior of the tool
+   * @return an AbstractItemStackRevamp instance representing the created tool
    * @since 0.2.0.0
    * @author creatorfromhell
    * @see ToolComponent
    */
-  AbstractItemStackRevamp<T> tool(float defaultSpeed, int blockDamage, List<ToolRule> rules);
+  AbstractItemStackRevamp<T> tool(float defaultSpeed, int blockDamage, boolean canDestroyBlocksCreative, List<ToolRule> rules);
 
   /**
    * Retrieves the TooltipStyleComponent of the item stack if present.
@@ -1523,6 +1553,29 @@ public interface AbstractItemStackRevamp<T> extends Cloneable {
    * @see UseCooldownComponent
    */
   AbstractItemStackRevamp<T> useCooldown(String cooldownGroup, float seconds);
+
+  /**
+   * Retrieves the weapon component associated with this item. Since MC Snapshot 25w02a.
+   *
+   * @return an Optional containing the weapon component if it exists, otherwise an empty Optional.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see WeaponComponent
+   */
+  default Optional<WeaponComponent<AbstractItemStack<T>, T>> weapon() {
+    return Optional.ofNullable((WeaponComponent<AbstractItemStack<T>, T>) components().get("weapon"));
+  }
+
+  /**
+   * Represents a weapon item that can be used for combat. Since MC Snapshot 25w02a.
+   *
+   * @param damagePerAttack The amount of damage this weapon inflicts per attack
+   * @param canDisableBlocking Whether this weapon can disable blocking when used
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see WeaponComponent
+   */
+  AbstractItemStackRevamp<T> weapon(final int damagePerAttack, final boolean canDisableBlocking);
 
   /**
    * Retrieves the WritableBookContentComponent of the item stack if present.

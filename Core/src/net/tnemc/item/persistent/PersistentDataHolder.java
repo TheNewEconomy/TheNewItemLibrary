@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * PersistentDataHolder
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 public class PersistentDataHolder {
 

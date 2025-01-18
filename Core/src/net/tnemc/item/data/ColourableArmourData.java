@@ -28,7 +28,7 @@ import org.json.simple.JSONObject;
  * ColourableArmourData
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 public abstract class ColourableArmourData<T> extends ArmourData<T> {
 

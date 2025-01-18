@@ -28,7 +28,7 @@ import net.tnemc.item.providers.VersionUtil;
  * ItemAttribute
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 public abstract class ItemAttribute<I extends AbstractItemStack<T>, T> implements ItemCheck<T>, ItemApplicator<I, T>, ItemSerializer<I, T> {
 

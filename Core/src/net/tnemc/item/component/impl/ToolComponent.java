@@ -30,19 +30,26 @@ import org.json.simple.JSONObject;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * ToolComponent
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<ToolRule> rules = new LinkedList<>();
 
-  protected float defaultSpeed;
+  protected float defaultSpeed = 1.0f;
   protected int blockDamage;
+  protected boolean canDestroyBlocksCreative = true; //since MC Snapshot 25w02a
+
+  public ToolComponent(final int blockDamage) {
+
+    this.blockDamage = blockDamage;
+  }
 
   public ToolComponent(final float defaultSpeed, final int blockDamage) {
 
@@ -50,18 +57,35 @@ public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implement
     this.blockDamage = blockDamage;
   }
 
-  public ToolComponent(final float defaultSpeed, final int blockDamage, final ToolRule rule) {
+  public ToolComponent(final boolean canDestroyBlocksCreative, final int blockDamage) {
+
+    this.canDestroyBlocksCreative = canDestroyBlocksCreative;
+    this.blockDamage = blockDamage;
+  }
+
+  public ToolComponent(final float defaultSpeed, final int blockDamage, final boolean canDestroyBlocksCreative) {
 
     this.defaultSpeed = defaultSpeed;
     this.blockDamage = blockDamage;
+    this.canDestroyBlocksCreative = canDestroyBlocksCreative;
+  }
+
+  public ToolComponent(final float defaultSpeed, final int blockDamage, final boolean canDestroyBlocksCreative,
+                       final ToolRule rule) {
+
+    this.defaultSpeed = defaultSpeed;
+    this.blockDamage = blockDamage;
+    this.canDestroyBlocksCreative = canDestroyBlocksCreative;
 
     this.rules.add(rule);
   }
 
-  public ToolComponent(final float defaultSpeed, final int blockDamage, final List<ToolRule> rules) {
+  public ToolComponent(final float defaultSpeed, final int blockDamage, final boolean canDestroyBlocksCreative,
+                       final List<ToolRule> rules) {
 
     this.defaultSpeed = defaultSpeed;
     this.blockDamage = blockDamage;
+    this.canDestroyBlocksCreative = canDestroyBlocksCreative;
 
     this.rules.addAll(rules);
   }
@@ -129,8 +153,10 @@ public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implement
   public boolean equals(final SerialComponent<I, T> component) {
 
     if(component instanceof final ToolComponent<?, ?> tool) {
-
-      //TODO: This.
+      return Float.compare(this.defaultSpeed, tool.defaultSpeed) == 0 &&
+             this.blockDamage == tool.blockDamage &&
+             this.canDestroyBlocksCreative == tool.canDestroyBlocksCreative &&
+             Objects.equals(this.rules, tool.rules);
     }
     return false;
   }
@@ -168,5 +194,15 @@ public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implement
   public void blockDamage(final int blockDamage) {
 
     this.blockDamage = blockDamage;
+  }
+
+  public boolean canDestroyBlocksCreative() {
+
+    return canDestroyBlocksCreative;
+  }
+
+  public void canDestroyBlocksCreative(final boolean canDestroyBlocksCreative) {
+
+    this.canDestroyBlocksCreative = canDestroyBlocksCreative;
   }
 }

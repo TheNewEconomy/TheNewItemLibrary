@@ -26,7 +26,7 @@ import java.util.Arrays;
  * PersistentLongArray
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 public class PersistentLongArray extends PersistentDataType<long[]> {
 

@@ -24,7 +24,7 @@ import net.tnemc.item.persistent.PersistentDataType;
  * PersistentInt
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 public class PersistentInt extends PersistentDataType<Integer> {
 

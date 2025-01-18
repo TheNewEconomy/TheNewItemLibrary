@@ -30,7 +30,7 @@ import java.util.Objects;
  * ArmourData
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 public abstract class ArmourData<T> implements SerialItemData<T> {
 

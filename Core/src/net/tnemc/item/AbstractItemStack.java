@@ -81,7 +81,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param resistence A set of resistance types.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> resistence(HashSet<String> resistence);
 
@@ -212,7 +212,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param model The model identifier.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> model(String model);
 
@@ -229,7 +229,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param maxStack The maximum stack size.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> maxStack(int maxStack);
 
@@ -238,7 +238,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param hideTooltip True to hide tooltips.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> hideTooltip(boolean hideTooltip);
 
@@ -247,7 +247,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param tooltipStyle The tooltip style identifier.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> tooltipStyle(@NotNull final String tooltipStyle);
 
@@ -256,7 +256,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param enchantGlint True to enable the glint effect, false to disable.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> enchantGlint(boolean enchantGlint);
 
@@ -265,7 +265,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param enchantable The enchantability level.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> enchantable(final int enchantable);
 
@@ -274,7 +274,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param rarity The rarity identifier.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> rarity(String rarity);
 
@@ -283,7 +283,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param glider True if the item should act as a glider, false otherwise.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> glider(boolean glider);
 
@@ -292,7 +292,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param remainder The remaining item stack.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> remainder(@Nullable final AbstractItemStack<T> remainder);
 
@@ -309,7 +309,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param component The component to apply.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   default AbstractItemStack<T> applyComponent(final SerialComponent<AbstractItemStack<T>, T> component) {
     components().put(component.identifier(), component);
@@ -321,7 +321,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param data The persistent data to apply.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   default AbstractItemStack<T> applyPersistent(final PersistentDataType<?> data) {
     persistentHolder().getData().put(data.identifier(), data);
@@ -334,7 +334,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @param newHolder The new persistent data holder.
    * @param replaceOld True to replace existing data, false to merge.
    * @return The updated item stack instance.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> applyPersistentHolder(final PersistentDataHolder newHolder, boolean replaceOld);
 
@@ -342,7 +342,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Retrieves the resistance types applied to the item stack.
    *
    * @return A set of resistance types.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   HashSet<String> resistence();
 
@@ -378,7 +378,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Retrieves the components applied to the item stack.
    *
    * @return A map of component types and their serialized representations.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   Map<String, SerialComponent<AbstractItemStack<T>, T>> components();
 
@@ -386,7 +386,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Retrieves the persistent data holder for the item stack.
    *
    * @return The persistent data holder.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   PersistentDataHolder persistentHolder();
 
@@ -450,7 +450,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Retrieves the model identifier of the item stack.
    *
    * @return The model identifier.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   String model();
 
@@ -465,7 +465,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Retrieves the maximum stack size for the item stack.
    *
    * @return The maximum stack size.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   int maxStack();
 
@@ -473,7 +473,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Checks if tooltips are hidden for the item stack.
    *
    * @return True if tooltips are hidden, otherwise false.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   boolean hideTooltip();
 
@@ -481,7 +481,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Retrieves the tooltip style of the item stack.
    *
    * @return The tooltip style identifier.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   String tooltipStyle();
 
@@ -489,7 +489,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Checks if the item stack has an enchantment glint effect.
    *
    * @return True if the enchantment glint is enabled, otherwise false.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   boolean enchantGlint();
 
@@ -497,7 +497,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Retrieves the enchantability level of the item stack.
    *
    * @return The enchantability level.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   int enchantable();
 
@@ -505,7 +505,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Retrieves the rarity of the item stack.
    *
    * @return The rarity identifier.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   String rarity();
 
@@ -513,7 +513,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Checks if the item stack functions as a glider.
    *
    * @return True if the item acts as a glider, otherwise false.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   boolean glider();
 
@@ -521,7 +521,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Retrieves the remaining item stack after the current stack is used.
    *
    * @return The remainder item stack.
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   AbstractItemStack<T> remainder();
 
@@ -555,7 +555,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    */
   T locale();
 
-  //Since 0.1.7.7
+  //Since 0.2.0.0
   default JSONObject toJSON() {
 
     final JSONObject json = new JSONObject();
@@ -613,25 +613,25 @@ public interface AbstractItemStack<T> extends Cloneable {
     return json;
   }
 
-  //Since 0.1.7.7
+  //Since 0.2.0.0
   default String serialize() {
 
     return toJSON().toJSONString();
   }
 
-  //Since 0.1.7.7
+  //Since 0.2.0.0
   default void unserialize(final String serialized) throws ParseException {
 
     parse(new JSONHelper((JSONObject)new JSONParser().parse(serialized)));
   }
 
-  //Since 0.1.7.7
+  //Since 0.2.0.0
   default void unserialize(final JSONObject json) throws ParseException {
 
     parse(new JSONHelper(json));
   }
 
-  //Since 0.1.7.7
+  //Since 0.2.0.0
   void parse(final JSONHelper json) throws ParseException;
 
   default boolean jsonEquals(final AbstractItemStack<T> serial) {

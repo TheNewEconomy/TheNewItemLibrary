@@ -24,7 +24,7 @@ import net.tnemc.item.AbstractItemStack;
  * LocaleItemCheck
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
 public interface LocaleItemCheck<T> extends ItemCheck<T> {
 
