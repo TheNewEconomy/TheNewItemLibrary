@@ -37,6 +37,12 @@ public class SkullProfile {
 
   }
 
+  public SkullProfile(final String name, final UUID uuid) {
+
+    this.name = name;
+    this.uuid = uuid;
+  }
+
   public SkullProfile(final String name, final UUID uuid, final String texture) {
 
     this.name = name;

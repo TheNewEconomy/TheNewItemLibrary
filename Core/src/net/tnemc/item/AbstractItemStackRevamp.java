@@ -71,6 +71,7 @@ import net.tnemc.item.component.impl.OminousBottleAmplifierComponent;
 import net.tnemc.item.component.impl.PotDecorationsComponent;
 import net.tnemc.item.component.impl.PotionContentsComponent;
 import net.tnemc.item.component.impl.PotionDurationScaleComponent;
+import net.tnemc.item.component.impl.ProfileComponent;
 import net.tnemc.item.component.impl.RarityComponent;
 import net.tnemc.item.component.impl.RecipesComponent;
 import net.tnemc.item.component.impl.RepairCostComponent;
@@ -87,12 +88,14 @@ import net.tnemc.item.component.impl.WritableBookContentComponent;
 import net.tnemc.item.component.impl.WrittenBookContentComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.persistent.PersistentDataType;
+import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Represents a generic abstraction for an item stack with various attributes and properties.
@@ -1295,6 +1298,55 @@ public interface AbstractItemStackRevamp<T> extends Cloneable {
    * @see PotionDurationScaleComponent
    */
   AbstractItemStackRevamp<T> potionDuration(final float potionDuration);
+
+  /**
+   * Retrieves the profile component from the components map if it exists.
+   *
+   * @return An Optional containing the profile component if found, or an empty Optional otherwise.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see ProfileComponent
+   */
+  default Optional<ProfileComponent<AbstractItemStack<T>, T>> profile() {
+    return Optional.ofNullable((ProfileComponent<AbstractItemStack<T>, T>) components().get("profile"));
+  }
+
+  /**
+   * Create a Profile based on the provided name and UUID.
+   *
+   * @param name The name for the profile.
+   * @param uuid The UUID for the profile.
+   * @return A new AbstractItemStackRevamp based on the created SkullProfile with the given name and UUID.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see ProfileComponent
+   */
+  default AbstractItemStackRevamp<T> profile(final String name, final UUID uuid) {
+    return profile(new SkullProfile(name, uuid));
+  }
+
+  /**
+   * Profiles the item stack with the given name, UUID, and texture.
+   *
+   * @param name The name of the profile.
+   * @param uuid The UUID of the profile.
+   * @param texture The texture of the profile.
+   * @return The AbstractItemStackRevamp with the specified profile.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see ProfileComponent
+   */
+  default AbstractItemStackRevamp<T> profile(final String name, final UUID uuid, final String texture) {
+    return profile(new SkullProfile(name, uuid, texture));
+  }
+
+  /**
+   * Profiles the given SkullProfile to the AbstractItemStackRevamp object.
+   *
+   * @param profile the SkullProfile to be assigned
+   * @return an AbstractItemStackRevamp object with the provided profile
+   */
+  AbstractItemStackRevamp<T> profile(final SkullProfile profile);
 
   /**
    * Retrieves the RarityComponent of the item stack if present.
