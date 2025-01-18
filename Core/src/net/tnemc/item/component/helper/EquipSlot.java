@@ -27,6 +27,7 @@ package net.tnemc.item.component.helper;
 public enum EquipSlot {
 
   ANY,
+  SADDLE,
   ARMOUR,
   BODY,
   HEAD,

@@ -46,7 +46,7 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
   protected int variant = 0; // Default to 0
   protected long huntingCooldown = 0L; // Default to 0
   protected int bucketVariantTag = 0; // Default to 0
-  protected int type = 0; // Default to 0
+  protected String type = ""; // Default to 0
 
   public BucketEntityDataComponent() {
 
@@ -65,7 +65,7 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
   public BucketEntityDataComponent(final boolean noAI, final boolean silent, final boolean noGravity,
                                    final boolean glowing, final boolean invulnerable, final float health,
                                    final int age, final int variant, final long huntingCooldown,
-                                   final int bucketVariantTag, final int type) {
+                                   final int bucketVariantTag, final String type) {
 
     this.noAI = noAI;
     this.silent = silent;
@@ -114,7 +114,7 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
     variant = json.getInteger("Variant");
     huntingCooldown = json.getLong("HuntingCooldown");
     bucketVariantTag = json.getInteger("BucketVariantTag");
-    type = json.getInteger("type");
+    type = json.getString("type");
   }
 
   @Override
@@ -130,7 +130,7 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
            this.variant == other.variant &&
            this.huntingCooldown == other.huntingCooldown &&
            this.bucketVariantTag == other.bucketVariantTag &&
-           this.type == other.type;
+           Objects.equals(this.type, other.type);
   }
 
   @Override
@@ -238,12 +238,12 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
     this.bucketVariantTag = bucketVariantTag;
   }
 
-  public int type() {
+  public String type() {
 
     return type;
   }
 
-  public void type(final int type) {
+  public void type(final String type) {
 
     this.type = type;
   }

@@ -413,7 +413,9 @@ public interface AbstractItemStackRevamp<T> extends Cloneable {
    * @author creatorfromhell
    * @see BucketEntityDataComponent
    */
-  AbstractItemStackRevamp<T> bucketEntityData(boolean noAI, boolean silent, boolean noGravity, boolean glowing, boolean invulnerable, float health, int age, int variant, long huntingCooldown, int bucketVariantTag, int type);
+  AbstractItemStackRevamp<T> bucketEntityData(boolean noAI, boolean silent, boolean noGravity, boolean glowing,
+                                              boolean invulnerable, float health, int age, int variant,
+                                              long huntingCooldown, int bucketVariantTag, String type);
 
   /**
    * Retrieves the bundle component from the components map.
