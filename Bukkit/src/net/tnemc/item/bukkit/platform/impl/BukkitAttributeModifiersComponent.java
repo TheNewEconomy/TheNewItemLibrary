@@ -1,7 +1,7 @@
 package net.tnemc.item.bukkit.platform.impl;
 /*
  * The New Item Library
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,19 +18,18 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.component.BukkitToolComponent;
-import net.tnemc.item.platform.impl.ItemTool;
+import net.tnemc.item.component.impl.AttributeModifiersComponent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * BukkitItemTool
+ * BukkitAttributeModifiersComponent
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
-public class BukkitItemTool extends ItemTool<BukkitItemStack, ItemStack> {
+public class BukkitAttributeModifiersComponent extends AttributeModifiersComponent<BukkitItemStack, ItemStack> {
 
   /**
    * @param serialized the serialized item stack to use
@@ -41,14 +40,18 @@ public class BukkitItemTool extends ItemTool<BukkitItemStack, ItemStack> {
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null) {
+    return null;
+  }
 
-      if(serialized.components().containsKey("tool")) {
-        return serialized.components().get("tool").apply(item);
-      }
-    }
-    return item;
+  /**
+   * @param version the version being used when this check is called.
+   *
+   * @return true if this check is enabled for the version, otherwise false
+   */
+  @Override
+  public boolean enabled(final String version) {
+
+    return false;
   }
 
   /**
@@ -60,10 +63,6 @@ public class BukkitItemTool extends ItemTool<BukkitItemStack, ItemStack> {
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasTool()) {
-      serialized.components().put("tool", BukkitToolComponent.create(item));
-    }
-    return serialized;
+    return null;
   }
 }

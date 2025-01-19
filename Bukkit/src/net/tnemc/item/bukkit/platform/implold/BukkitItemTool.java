@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform.impl;
+package net.tnemc.item.bukkit.platform.implold;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,20 +19,18 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkitbase.data.BukkitSkullData;
-import net.tnemc.item.platform.impl.ItemProfile;
-import org.bukkit.Bukkit;
+import net.tnemc.item.bukkit.component.BukkitToolComponent;
+import net.tnemc.item.platform.impl.ItemTool;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 /**
- * BukkitItemProfile
+ * BukkitItemTool
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemProfile extends ItemProfile<BukkitItemStack, ItemStack> {
+public class BukkitItemTool extends ItemTool<BukkitItemStack, ItemStack> {
 
   /**
    * @param serialized the serialized item stack to use
@@ -44,17 +42,11 @@ public class BukkitItemProfile extends ItemProfile<BukkitItemStack, ItemStack> {
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(serialized.profile().isPresent() && meta instanceof SkullMeta skull) {
+    if(meta != null) {
 
-      if(serialized.profile().get().getUuid() != null) {
-
-        skull.setOwningPlayer(Bukkit.getOfflinePlayer(serialized.profile().get().getUuid()));
-
-      } else if(serialized.profile().get().getUuid() == null && serialized.profile().get().getName() != null) {
-
-        skull.setOwner(serialized.profile().get().getName());
+      if(serialized.components().containsKey("tool")) {
+        return serialized.components().get("tool").apply(item);
       }
-      item.setItemMeta(meta);
     }
     return item;
   }
@@ -68,11 +60,9 @@ public class BukkitItemProfile extends ItemProfile<BukkitItemStack, ItemStack> {
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    if(item.getItemMeta() instanceof SkullMeta) {
-      final BukkitSkullData skullData = new BukkitSkullData();
-      skullData.of(item);
-
-      serialized.profile(skullData.getProfile());
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasTool()) {
+      serialized.components().put("tool", BukkitToolComponent.create(item));
     }
     return serialized;
   }

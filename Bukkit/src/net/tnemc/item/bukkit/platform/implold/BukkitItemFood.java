@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform.impl;
+package net.tnemc.item.bukkit.platform.implold;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,18 +19,18 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.component.BukkitEquipComponent;
-import net.tnemc.item.platform.impl.ItemEquip;
+import net.tnemc.item.bukkitbase.component.BukkitBaseFoodComponent;
+import net.tnemc.item.platform.impl.ItemFood;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * BukkitItemEquip
+ * BukkitItemFood
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemEquip extends ItemEquip<BukkitItemStack, ItemStack> {
+public class BukkitItemFood extends ItemFood<BukkitItemStack, ItemStack> {
 
   /**
    * @param serialized the serialized item stack to use
@@ -44,8 +44,8 @@ public class BukkitItemEquip extends ItemEquip<BukkitItemStack, ItemStack> {
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
 
-      if(serialized.components().containsKey("equip")) {
-        return serialized.components().get("equip").apply(item);
+      if(serialized.components().containsKey("food")) {
+        return serialized.components().get("food").apply(item);
       }
     }
     return item;
@@ -61,8 +61,8 @@ public class BukkitItemEquip extends ItemEquip<BukkitItemStack, ItemStack> {
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasEquippable()) {
-      serialized.components().put("equip", BukkitEquipComponent.create(item));
+    if(meta != null && meta.hasFood()) {
+      serialized.components().put("food", BukkitBaseFoodComponent.create(item));
     }
     return serialized;
   }

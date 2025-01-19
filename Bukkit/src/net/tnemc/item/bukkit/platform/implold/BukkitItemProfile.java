@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform.impl;
+package net.tnemc.item.bukkit.platform.implold;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,20 +19,20 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.platform.impl.ItemEnchant;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
-import org.bukkit.enchantments.Enchantment;
+import net.tnemc.item.bukkitbase.data.BukkitSkullData;
+import net.tnemc.item.platform.impl.ItemProfile;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 /**
- * BukkitItemEnchant
+ * BukkitItemProfile
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemEnchant extends ItemEnchant<BukkitItemStack, ItemStack> {
+public class BukkitItemProfile extends ItemProfile<BukkitItemStack, ItemStack> {
 
   /**
    * @param serialized the serialized item stack to use
@@ -44,25 +44,17 @@ public class BukkitItemEnchant extends ItemEnchant<BukkitItemStack, ItemStack> {
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null) {
-      serialized.enchantments().forEach((name, level)->{
+    if(serialized.profile().isPresent() && meta instanceof final SkullMeta skull) {
 
-        final NamespacedKey space = NamespacedKey.fromString(name);
-        if(space != null) {
+      if(serialized.profile().get().getUuid() != null) {
 
-          Enchantment enchant;
+        skull.setOwningPlayer(Bukkit.getOfflinePlayer(serialized.profile().get().getUuid()));
 
-          try {
-            enchant = Registry.ENCHANTMENT.get(space);
-          } catch(final Exception ignore) {
-            enchant = Enchantment.getByKey(space);
-          }
+      } else if(serialized.profile().get().getUuid() == null && serialized.profile().get().getName() != null) {
 
-          if(enchant != null) {
-            meta.addEnchant(enchant, level, true);
-          }
-        }
-      });
+        skull.setOwner(serialized.profile().get().getName());
+      }
+      item.setItemMeta(meta);
     }
     return item;
   }
@@ -76,10 +68,11 @@ public class BukkitItemEnchant extends ItemEnchant<BukkitItemStack, ItemStack> {
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasEnchants()) {
+    if(item.getItemMeta() instanceof SkullMeta) {
+      final BukkitSkullData skullData = new BukkitSkullData();
+      skullData.of(item);
 
-      meta.getEnchants().forEach(((enchantment, level)->serialized.enchantments().put(enchantment.getKey().toString(), level)));
+      serialized.profile(skullData.getProfile());
     }
     return serialized;
   }

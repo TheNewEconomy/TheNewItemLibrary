@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform;
+package net.tnemc.item.bukkit;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -19,7 +19,6 @@ package net.tnemc.item.bukkit.platform;
  */
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.data.BukkitArmourData;
 import net.tnemc.item.bukkit.data.BukkitBannerModernData;
 import net.tnemc.item.bukkit.data.BukkitBundleData;
@@ -114,11 +113,11 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack> {
+public class BukkitItemRevampPlatform extends ItemPlatform<BukkitItemStackRevamp, ItemStack> {
 
-  public static final BukkitItemPlatform PLATFORM = new BukkitItemPlatform();
+  public static final BukkitItemRevampPlatform PLATFORM = new BukkitItemRevampPlatform();
 
-  private BukkitItemPlatform() {
+  private BukkitItemRevampPlatform() {
 
     super();
   }
@@ -171,10 +170,10 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
    * @return an initialized AbstractItemStack object
    */
   @Override
-  public Optional<BukkitItemStack> initSerialized(final JSONObject object) {
+  public Optional<BukkitItemStackRevamp> initSerialized(final JSONObject object) {
 
     try {
-      return Optional.ofNullable(new BukkitItemStack().of(object));
+      return Optional.ofNullable(new BukkitItemStackRevamp().of(object));
     } catch(final ParseException e) {
       return Optional.empty();
     }

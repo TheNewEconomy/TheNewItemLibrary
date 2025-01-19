@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform.impl;
+package net.tnemc.item.bukkit.platform.implold;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,19 +18,22 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.platform.impl.ItemDisplay;
+import net.tnemc.item.platform.impl.ItemLore;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.LinkedList;
+
 /**
- * BukkitItemDisplay
+ * BukkitItemLore
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemDisplay extends ItemDisplay<BukkitItemStack, ItemStack> {
+public class BukkitItemLore extends ItemLore<BukkitItemStack, ItemStack> {
 
   /**
    * @param serialized the serialized item stack to use
@@ -42,9 +45,14 @@ public class BukkitItemDisplay extends ItemDisplay<BukkitItemStack, ItemStack> {
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && serialized.display() != null) {
+    if(meta != null) {
 
-      meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(serialized.display()));
+      final LinkedList<String> newLore = new LinkedList<>();
+      for(final Component comp : serialized.lore()) {
+        newLore.add(LegacyComponentSerializer.legacySection().serialize(comp));
+      }
+      meta.setLore(newLore);
+      item.setItemMeta(meta);
     }
     return item;
   }
@@ -58,10 +66,12 @@ public class BukkitItemDisplay extends ItemDisplay<BukkitItemStack, ItemStack> {
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasDisplayName()) {
+    if(item.getItemMeta() != null && item.getItemMeta().getLore() != null) {
+      serialized.lore().clear();
 
-      serialized.display(LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName()));
+      for(final String str : item.getItemMeta().getLore()) {
+        serialized.lore().add(LegacyComponentSerializer.legacySection().deserialize(str));
+      }
     }
     return serialized;
   }

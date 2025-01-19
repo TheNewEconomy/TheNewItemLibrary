@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform.impl;
+package net.tnemc.item.bukkit.platform.implold;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
@@ -18,20 +18,19 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.platform.impl.ItemMaterial;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
+import net.tnemc.item.platform.impl.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
- * BukkitItemMaterial
+ * BukkitItemDisplay
  *
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemMaterial extends ItemMaterial<BukkitItemStack, ItemStack> {
+public class BukkitItemDisplay extends ItemDisplay<BukkitItemStack, ItemStack> {
 
   /**
    * @param serialized the serialized item stack to use
@@ -42,19 +41,10 @@ public class BukkitItemMaterial extends ItemMaterial<BukkitItemStack, ItemStack>
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
-    Material material = null;
-    try {
-      final NamespacedKey key = NamespacedKey.fromString(serialized.material());
-      if(key != null) {
-        material = Registry.MATERIAL.get(key);
-      }
-    } catch(Exception ignore) {
-      material = Material.matchMaterial(serialized.material());
-    }
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && serialized.display() != null) {
 
-    if(material != null) {
-
-      item.setType(material);
+      meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(serialized.display()));
     }
     return item;
   }
@@ -68,7 +58,11 @@ public class BukkitItemMaterial extends ItemMaterial<BukkitItemStack, ItemStack>
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    serialized.material(item.getType().getKey().toString());
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasDisplayName()) {
+
+      serialized.display(LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName()));
+    }
     return serialized;
   }
 }

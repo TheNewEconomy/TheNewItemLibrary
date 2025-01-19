@@ -1,0 +1,1346 @@
+package net.tnemc.item.bukkit;
+/*
+ * The New Item Library
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+import net.kyori.adventure.text.Component;
+import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.component.helper.AttributeModifier;
+import net.tnemc.item.component.helper.BlockPredicate;
+import net.tnemc.item.component.helper.EquipSlot;
+import net.tnemc.item.component.helper.ExplosionData;
+import net.tnemc.item.component.helper.PatternData;
+import net.tnemc.item.component.helper.ToolRule;
+import net.tnemc.item.component.helper.effect.ComponentEffect;
+import net.tnemc.item.component.helper.effect.EffectInstance;
+import net.tnemc.item.component.impl.AttributeModifiersComponent;
+import net.tnemc.item.component.impl.BannerPatternsComponent;
+import net.tnemc.item.component.impl.BaseColorComponent;
+import net.tnemc.item.component.impl.BucketEntityDataComponent;
+import net.tnemc.item.component.impl.BundleComponent;
+import net.tnemc.item.component.impl.CanBreakComponent;
+import net.tnemc.item.component.impl.CanPlaceOnComponent;
+import net.tnemc.item.component.impl.ConsumableComponent;
+import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.component.impl.CustomNameComponent;
+import net.tnemc.item.component.impl.DamageComponent;
+import net.tnemc.item.component.impl.DamageResistantComponent;
+import net.tnemc.item.component.impl.DeathProtectionComponent;
+import net.tnemc.item.component.impl.DyedColorComponent;
+import net.tnemc.item.component.impl.EnchantableComponent;
+import net.tnemc.item.component.impl.EnchantmentGlintOverrideComponent;
+import net.tnemc.item.component.impl.EnchantmentsComponent;
+import net.tnemc.item.component.impl.EquipComponent;
+import net.tnemc.item.component.impl.FireworkExplosionComponent;
+import net.tnemc.item.component.impl.FireworksComponent;
+import net.tnemc.item.component.impl.FoodComponent;
+import net.tnemc.item.component.impl.GliderComponent;
+import net.tnemc.item.component.impl.HideAdditionalTooltipComponent;
+import net.tnemc.item.component.impl.HideTooltipComponent;
+import net.tnemc.item.component.impl.InstrumentComponent;
+import net.tnemc.item.component.impl.IntangibleProjectileComponent;
+import net.tnemc.item.component.impl.ItemModelComponent;
+import net.tnemc.item.component.impl.ItemNameComponent;
+import net.tnemc.item.component.impl.JukeBoxComponent;
+import net.tnemc.item.component.impl.LodestoneTrackerComponent;
+import net.tnemc.item.component.impl.LoreComponent;
+import net.tnemc.item.component.impl.MapColorComponent;
+import net.tnemc.item.component.impl.MapIDComponent;
+import net.tnemc.item.component.impl.MaxDamageComponent;
+import net.tnemc.item.component.impl.MaxStackSizeComponent;
+import net.tnemc.item.component.impl.ModelDataComponent;
+import net.tnemc.item.component.impl.NoteBlockSoundComponent;
+import net.tnemc.item.component.impl.OminousBottleAmplifierComponent;
+import net.tnemc.item.component.impl.PotDecorationsComponent;
+import net.tnemc.item.component.impl.PotionContentsComponent;
+import net.tnemc.item.component.impl.PotionDurationScaleComponent;
+import net.tnemc.item.component.impl.RarityComponent;
+import net.tnemc.item.component.impl.RecipesComponent;
+import net.tnemc.item.component.impl.RepairCostComponent;
+import net.tnemc.item.component.impl.RepairableComponent;
+import net.tnemc.item.component.impl.StoredEnchantmentsComponent;
+import net.tnemc.item.component.impl.SuspiciousStewEffectsComponent;
+import net.tnemc.item.component.impl.ToolComponent;
+import net.tnemc.item.component.impl.TooltipStyleComponent;
+import net.tnemc.item.component.impl.TrimComponent;
+import net.tnemc.item.component.impl.UnbreakableComponent;
+import net.tnemc.item.component.impl.UseCooldownComponent;
+import net.tnemc.item.component.impl.WeaponComponent;
+import net.tnemc.item.component.impl.WritableBookContentComponent;
+import net.tnemc.item.component.impl.WrittenBookContentComponent;
+import net.tnemc.item.persistent.PersistentDataHolder;
+import net.tnemc.item.providers.SkullProfile;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.inventory.ItemStack;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * BukkitItemStackRevamp
+ *
+ * @author creatorfromhell
+ * @since 0.2.0.0
+ */
+public class BukkitItemStackRevamp implements AbstractItemStack<ItemStack> {
+
+  private final Map<String, SerialComponent<AbstractItemStack<ItemStack>, ItemStack>> components = new HashMap<>();
+
+  private final List<String> flags = new ArrayList<>();
+
+  private final PersistentDataHolder holder = new PersistentDataHolder();
+
+  private int slot = 0;
+  private String material;
+  private int amount;
+  private boolean debug = false;
+
+  //our locale stack
+  private boolean dirty = false;
+  private ItemStack localeStack;
+
+  /**
+   * Creates a new item stack with the specified material and amount.
+   *
+   * @param material The material of the item.
+   * @param amount   The number of items in the stack.
+   *
+   * @return A new item stack instance.
+   */
+  @Override
+  public BukkitItemStackRevamp of(final String material, final int amount) {
+
+    this.material = material;
+    this.amount = amount;
+    this.dirty = true;
+    return this;
+  }
+
+  /**
+   * Creates a new item stack from a locale-specific object.
+   *
+   * @param locale The locale-specific representation.
+   *
+   * @return A new item stack instance.
+   */
+  @Override
+  public BukkitItemStackRevamp of(final ItemStack locale) {
+
+    this.localeStack = locale;
+
+    return BukkitItemRevampPlatform.PLATFORM.serializer(this.localeStack, this);
+  }
+
+  /**
+   * Creates a new item stack from a JSON representation.
+   *
+   * @param json The JSON object containing item stack data.
+   *
+   * @return A new item stack instance.
+   *
+   * @throws ParseException If the JSON structure is invalid.
+   */
+  @Override
+  public BukkitItemStackRevamp of(final JSONObject json) throws ParseException {
+
+
+    return null;
+  }
+
+  /**
+   * Sets the item flags.
+   *
+   * @param flags A list of flags to apply to the item.
+   *
+   * @return The updated item stack instance.
+   */
+  @Override
+  public BukkitItemStackRevamp flags(final List<String> flags) {
+
+    this.flags.addAll(flags);
+    this.dirty = true;
+    return this;
+  }
+
+  /**
+   * Sets the lore (descriptive text) of the item stack.
+   *
+   * @param lore A list of components representing the lore.
+   *
+   * @return The updated item stack instance.
+   */
+  @Override
+  public BukkitItemStackRevamp loreComponent(final List<Component> lore) {
+
+    return null;
+  }
+
+  /**
+   * Adds an enchantment to the item stack.
+   *
+   * @param enchantment The enchantment name.
+   * @param level       The level of the enchantment.
+   *
+   * @return The updated item stack instance.
+   */
+  @Override
+  public BukkitItemStackRevamp enchant(final String enchantment, final int level) {
+
+    return null;
+  }
+
+  /**
+   * Adds multiple enchantments to the item stack.
+   *
+   * @param enchantments A map of enchantment names and levels.
+   *
+   * @return The updated item stack instance.
+   */
+  @Override
+  public BukkitItemStackRevamp enchant(final Map<String, Integer> enchantments) {
+
+    return null;
+  }
+
+  /**
+   * Adds enchantments to the item stack by name.
+   *
+   * @param enchantments A list of enchantment names.
+   *
+   * @return The updated item stack instance.
+   */
+  @Override
+  public BukkitItemStackRevamp enchant(final List<String> enchantments) {
+
+    return null;
+  }
+
+  /**
+   * Sets the material of the item stack.
+   *
+   * @param material The material name.
+   *
+   * @return The updated item stack instance.
+   */
+  @Override
+  public BukkitItemStackRevamp material(final String material) {
+
+    return null;
+  }
+
+  /**
+   * Sets the quantity of the item stack.
+   *
+   * @param amount The number of items in the stack.
+   *
+   * @return The updated item stack instance.
+   */
+  @Override
+  public BukkitItemStackRevamp amount(final int amount) {
+
+    this.amount = amount;
+    this.dirty = true;
+    return this;
+  }
+
+  /**
+   * Sets the inventory slot of the item stack.
+   *
+   * @param slot The slot index.
+   *
+   * @return The updated item stack instance.
+   */
+  @Override
+  public BukkitItemStackRevamp slot(final int slot) {
+
+    this.slot = slot;
+    this.dirty = true;
+    return this;
+  }
+
+  /**
+   * Enables or disables debug mode for the item stack.
+   *
+   * @param debug True to enable, false to disable.
+   *
+   * @return The updated item stack instance.
+   */
+  @Override
+  public BukkitItemStackRevamp debug(final boolean debug) {
+
+    this.debug = true;
+    return this;
+  }
+
+  /**
+   * Replaces the persistent data holder for the item stack.
+   *
+   * @param newHolder  The new persistent data holder.
+   * @param replaceOld True to replace existing data, false to merge.
+   *
+   * @return The updated item stack instance.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp applyPersistentHolder(final PersistentDataHolder newHolder, final boolean replaceOld) {
+
+    if(replaceOld) {
+      this.holder.getData().clear();
+    }
+
+    this.holder.getData().putAll(newHolder.getData());
+    this.dirty = true;
+    return this;
+  }
+
+  /**
+   * Retrieves the item flags.
+   *
+   * @return A list of flags applied to the item.
+   */
+  @Override
+  public List<String> flags() {
+
+    return this.flags;
+  }
+
+  /**
+   * Retrieves the components applied to the item stack.
+   *
+   * @return A map of component types and their serialized representations.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public Map<String, SerialComponent<AbstractItemStack<ItemStack>, ItemStack>> components() {
+
+    return components;
+  }
+
+  /**
+   * Retrieves the persistent data holder for the item stack.
+   *
+   * @return The persistent data holder.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PersistentDataHolder persistentHolder() {
+
+    return holder;
+  }
+
+  /**
+   * Marks the item stack as dirty, indicating changes have been made.
+   */
+  @Override
+  public void markDirty() {
+
+  }
+
+  /**
+   * Returns true if the provided item is similar to this. An item is similar if the basic
+   * information is the same, except for the amount. What this includes: - material - display -
+   * modelData - flags - lore - attributes - enchantments
+   *
+   * What this does not include: - Item Data.
+   *
+   * @param compare The stack to compare.
+   *
+   * @return True if the two are similar, otherwise false.
+   */
+  @Override
+  public boolean similar(final AbstractItemStack<? extends ItemStack> compare) {
+
+    return false;
+  }
+
+  /**
+   * @return An instance of the implementation's locale version of BukkitItemStackRevamp.
+   */
+  @Override
+  public ItemStack locale() {
+
+    if(localeStack == null || dirty) {
+
+      Material material = null;
+      try {
+        final NamespacedKey key = NamespacedKey.fromString(this.material);
+        if(key != null) {
+          material = Registry.MATERIAL.get(key);
+        }
+      } catch(final Exception ignore) {
+        material = Material.matchMaterial(this.material);
+      }
+
+      if(material != null) {
+
+        localeStack = new ItemStack(material, amount);
+
+        localeStack = BukkitItemRevampPlatform.PLATFORM.apply(this, localeStack);
+
+        this.dirty = false;
+      }
+    }
+
+    return localeStack;
+  }
+
+  /**
+   * Updates the attribute modifiers of the item stack.
+   *
+   * @param modifiers     a list of attribute modifiers
+   * @param showInTooltip whether to display the modifiers in the tooltip
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see AttributeModifiersComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp attributeModifiers(final List<AttributeModifier> modifiers, final boolean showInTooltip) {
+
+    return null;
+  }
+
+  /**
+   * Updates the banner patterns of the item stack.
+   *
+   * @param patterns a list of pattern data
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see BannerPatternsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp bannerPatterns(final List<PatternData> patterns) {
+
+    return null;
+  }
+
+  /**
+   * Updates the base color of the item stack.
+   *
+   * @param color the new base color
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see BaseColorComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp baseColor(final String color) {
+
+    return null;
+  }
+
+  /**
+   * Updates the bucket entity data of the item stack.
+   *
+   * @param noAI             whether the entity has AI disabled
+   * @param silent           whether the entity is silent
+   * @param noGravity        whether the entity is affected by gravity
+   * @param glowing          whether the entity is glowing
+   * @param invulnerable     whether the entity is invulnerable
+   * @param health           the health of the entity
+   * @param age              the age of the entity
+   * @param variant          the variant of the entity
+   * @param huntingCooldown  the hunting cooldown of the entity
+   * @param bucketVariantTag the variant tag of the bucket
+   * @param type             the type of the entity
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see BucketEntityDataComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp bucketEntityData(final boolean noAI, final boolean silent, final boolean noGravity, final boolean glowing, final boolean invulnerable, final float health, final int age, final int variant, final long huntingCooldown, final int bucketVariantTag, final String type) {
+
+    return null;
+  }
+
+  /**
+   * Bundles a collection of {@link AbstractItemStack} instances into a single collection.
+   *
+   * @param items A {@link Map} containing integer keys and {@link AbstractItemStack} values to be
+   *              bundled.
+   *
+   * @return An {@link AbstractItemStack} instance that represents the bundled items.
+   *
+   * @see BundleComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp bundle(final Map<Integer, AbstractItemStack<?>> items) {
+
+    return null;
+  }
+
+  /**
+   * Updates the blocks that the item stack can break.
+   *
+   * @param predicates a list of block predicates
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see CanBreakComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp canBreak(final List<BlockPredicate> predicates) {
+
+    return null;
+  }
+
+  /**
+   * Updates the blocks that the item stack can be placed on.
+   *
+   * @param predicates a list of block predicates
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see CanPlaceOnComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp canPlaceOn(final List<BlockPredicate> predicates) {
+
+    return null;
+  }
+
+  /**
+   * Updates the consumable properties of the item stack.
+   *
+   * @param consumeSeconds      the time it takes to consume the item
+   * @param animation           the animation to display when consuming
+   * @param sound               the sound to play when consuming
+   * @param hasConsumeParticles whether to show consume particles
+   * @param effects             a list of effects applied on consumption
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see ConsumableComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp consumable(final float consumeSeconds, final String animation, final String sound, final boolean hasConsumeParticles, final List<ComponentEffect> effects) {
+
+    return null;
+  }
+
+  /**
+   * Constructs a container with the given map of items.
+   *
+   * @param items a map of items where the key is the position of the item in the container and the
+   *              value is the item
+   *
+   * @return an AbstractItemStack container with the specified items
+   *
+   * @see ContainerComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp container(final Map<Integer, AbstractItemStack<?>> items) {
+
+    return null;
+  }
+
+  /**
+   * Updates the custom name of the item stack.
+   *
+   * @param customName the custom name to set
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see CustomNameComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp customName(final String customName) {
+
+    return null;
+  }
+
+  /**
+   * Updates the damage of the item stack.
+   *
+   * @param damage the damage value to set
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see DamageComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp damage(final int damage) {
+
+    return null;
+  }
+
+  /**
+   * Updates the damage-resistant types of the item stack.
+   *
+   * @param types a list of damage-resistant types
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see DamageResistantComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp damageResistant(final List<String> types) {
+
+    return null;
+  }
+
+  /**
+   * Updates the death protection effects of the item stack.
+   *
+   * @param deathEffects a list of death protection effects
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see DeathProtectionComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp deathProtection(final List<ComponentEffect> deathEffects) {
+
+    return null;
+  }
+
+  /**
+   * Updates the dyed color of the item stack.
+   *
+   * @param rgb the RGB color value to set
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see DyedColorComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp dyedColor(final int rgb) {
+
+    return null;
+  }
+
+  /**
+   * Updates the enchantability of the item stack.
+   *
+   * @param value the enchantability value to set
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see EnchantableComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp enchantable(final int value) {
+
+    return null;
+  }
+
+  /**
+   * Updates the enchantment glint override of the item stack.
+   *
+   * @param glintOverride whether the enchantment glint should be overridden
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see EnchantmentGlintOverrideComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp enchantmentGlintOverride(final boolean glintOverride) {
+
+    return null;
+  }
+
+  /**
+   * Updates the enchantments of the item stack.
+   *
+   * @param levels a map of enchantments and their levels
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see EnchantmentsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp enchantments(final Map<String, Integer> levels) {
+
+    return null;
+  }
+
+  /**
+   * Equips an item with specified parameters.
+   *
+   * @param cameraKey       the key identifying the camera
+   * @param equipSound      the key identifying the equip sound
+   * @param modelKey        the key identifying the model
+   * @param slot            the slot in which the item should be equipped
+   * @param damageOnHurt    flag indicating if damage should be taken on hurt
+   * @param dispensable     flag indicating if the item is dispensable
+   * @param swappable       flag indicating if the item is swappable
+   * @param equipOnInteract flag indicating if the item should be equipped on interact
+   * @param entities        a list of entities to be equipped
+   *
+   * @return an BukkitItemStackRevamp object representing the equipped item
+   *
+   * @see EquipComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp equip(final String cameraKey, final String equipSound, final String modelKey, final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable, final boolean swappable, final boolean equipOnInteract, final List<String> entities) {
+
+    return null;
+  }
+
+  /**
+   * Updates the firework explosion properties of the item stack.
+   *
+   * @param explosion the explosion data to set
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see FireworkExplosionComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp fireworkExplosion(final ExplosionData explosion) {
+
+    return null;
+  }
+
+  /**
+   * Updates the fireworks properties of the item stack.
+   *
+   * @param flightDuration the flight duration of the fireworks
+   * @param explosions     a list of explosion data
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see FireworksComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp fireworks(final byte flightDuration, final List<ExplosionData> explosions) {
+
+    return null;
+  }
+
+  /**
+   * Updates the food properties of the item stack.
+   *
+   * @param noHunger   whether the item causes no hunger
+   * @param saturation the saturation value
+   * @param nutrition  the nutrition value
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see FoodComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp food(final boolean noHunger, final float saturation, final int nutrition) {
+
+    return null;
+  }
+
+  /**
+   * Updates the item stack to enable glider functionality.
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see GliderComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp gliderTag() {
+
+    return null;
+  }
+
+  /**
+   * Updates the item stack to hide additional tooltip.
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see HideAdditionalTooltipComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp hideAdditionalTooltipTag() {
+
+    return null;
+  }
+
+  /**
+   * Updates the item stack to hide its tooltip.
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see HideTooltipComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp hideTooltipTag() {
+
+    return null;
+  }
+
+  /**
+   * Updates the instrument properties of the item stack.
+   *
+   * @param soundEvent  the sound event identifier
+   * @param useDuration the duration of the sound in ticks
+   * @param range       the range of the sound
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see InstrumentComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp instrument(final String soundEvent, final int useDuration, final int range) {
+
+    return null;
+  }
+
+  /**
+   * Updates the item stack as an intangible projectile.
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see IntangibleProjectileComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp intangibleProjectileTag() {
+
+    return null;
+  }
+
+  /**
+   * Updates the model properties of the item stack.
+   *
+   * @param model the model identifier
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see ItemModelComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp itemModel(final String model) {
+
+    return null;
+  }
+
+  /**
+   * Updates the name of the item stack.
+   *
+   * @param itemName the name of the item
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see ItemNameComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp itemName(final String itemName) {
+
+    return null;
+  }
+
+  /**
+   * Updates the jukebox properties of the item stack.
+   *
+   * @param song          the song identifier
+   * @param showInTooltip whether to display the song in the tooltip
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see JukeBoxComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp jukebox(final String song, final boolean showInTooltip) {
+
+    return null;
+  }
+
+  /**
+   * Updates the lodestone tracker properties of the item stack.
+   *
+   * @param target    the target identifier
+   * @param pos       the position array
+   * @param dimension the dimension identifier
+   * @param tracked   whether the lodestone is tracked
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see LodestoneTrackerComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp lodestoneTracker(final String target, final int[] pos, final String dimension, final boolean tracked) {
+
+    return null;
+  }
+
+  /**
+   * Updates the lore of the item stack.
+   *
+   * @param lore a list of lore strings
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see LoreComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp lore(final List<String> lore) {
+
+    return null;
+  }
+
+  /**
+   * Updates the map color of the item stack.
+   *
+   * @param mapColor the map color value
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see MapColorComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp mapColor(final int mapColor) {
+
+    return null;
+  }
+
+  /**
+   * Updates the map ID of the item stack.
+   *
+   * @param mapId the map ID value
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see MapIDComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp mapId(final int mapId) {
+
+    return null;
+  }
+
+  /**
+   * Updates the maximum damage of the item stack.
+   *
+   * @param maxDamage the maximum damage value
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see MaxDamageComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp maxDamage(final int maxDamage) {
+
+    return null;
+  }
+
+  /**
+   * Updates the maximum stack size of the item stack.
+   *
+   * @param maxStackSize the maximum stack size value
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see MaxStackSizeComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp maxStackSize(final int maxStackSize) {
+
+    return null;
+  }
+
+  /**
+   * Updates the model data of the item stack.
+   *
+   * @param colours a list of color strings
+   * @param floats  a list of float values
+   * @param flags   a list of boolean flags
+   * @param strings a list of string identifiers
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see ModelDataComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp modelData(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
+
+    return null;
+  }
+
+  /**
+   * Updates the note block sound of the item stack.
+   *
+   * @param soundId the identifier of the sound
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see NoteBlockSoundComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp noteBlockSound(final String soundId) {
+
+    return null;
+  }
+
+  /**
+   * Updates the ominous bottle amplifier of the item stack.
+   *
+   * @param amplifier the amplifier value
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see OminousBottleAmplifierComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp ominousBottleAmplifier(final int amplifier) {
+
+    return null;
+  }
+
+  /**
+   * Updates the pot decorations of the item stack.
+   *
+   * @param decorations a list of decorations
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see PotDecorationsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp potDecorations(final List<String> decorations) {
+
+    return null;
+  }
+
+  /**
+   * Updates the potion contents of the item stack.
+   *
+   * @param potionId    the ID of the potion
+   * @param customColor the custom color of the potion
+   * @param customName  the custom name of the potion
+   * @param effects     a list of effect instances
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see PotionContentsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp potionContents(final String potionId, final int customColor, final String customName, final List<EffectInstance> effects) {
+
+    return null;
+  }
+
+  /**
+   * Sets the duration of a potion effect for the item stack. Since MC Snapshot 25w02a.
+   *
+   * @param potionDuration the duration of the potion effect in seconds
+   *
+   * @return the modified BukkitItemStackRevamp object with the updated potion duration
+   *
+   * @see PotionDurationScaleComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp potionDuration(final float potionDuration) {
+
+    return null;
+  }
+
+  /**
+   * Profiles the given SkullProfile to the BukkitItemStackRevamp object.
+   *
+   * @param profile the SkullProfile to be assigned
+   *
+   * @return an BukkitItemStackRevamp object with the provided profile
+   */
+  @Override
+  public BukkitItemStackRevamp profile(final SkullProfile profile) {
+
+    return null;
+  }
+
+  /**
+   * Updates the rarity of the item stack.
+   *
+   * @param rarity the rarity value
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see RarityComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp rarity(final String rarity) {
+
+    return null;
+  }
+
+  /**
+   * Updates the recipes of the item stack.
+   *
+   * @param recipes a list of recipe identifiers
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see RecipesComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp recipes(final List<String> recipes) {
+
+    return null;
+  }
+
+  /**
+   * Updates the repairable items of the item stack.
+   *
+   * @param repairItems a list of repair item identifiers
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see RepairableComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp repairable(final List<String> repairItems) {
+
+    return null;
+  }
+
+  /**
+   * Updates the repair cost of the item stack.
+   *
+   * @param repairCost the repair cost value
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see RepairCostComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp repairCost(final int repairCost) {
+
+    return null;
+  }
+
+  /**
+   * Updates the stored enchantments of the item stack.
+   *
+   * @param enchantments a map of enchantment names to their levels
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see StoredEnchantmentsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp storedEnchantments(final Map<String, Integer> enchantments) {
+
+    return null;
+  }
+
+  /**
+   * Updates the suspicious stew effects of the item stack.
+   *
+   * @param effectId the ID of the effect
+   * @param duration the duration of the effect in ticks
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see SuspiciousStewEffectsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp suspiciousStewEffects(final String effectId, final int duration) {
+
+    return null;
+  }
+
+  /**
+   * Constructs a new tool item with the specified characteristics.
+   *
+   * @param defaultSpeed             the default speed of the tool
+   * @param blockDamage              the damage inflicted by the tool to blocks
+   * @param canDestroyBlocksCreative if the tool can destroy blocks in creative mode
+   * @param rules                    a list of rules that define the behavior of the tool
+   *
+   * @return an BukkitItemStackRevamp instance representing the created tool
+   *
+   * @see ToolComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp tool(final float defaultSpeed, final int blockDamage, final boolean canDestroyBlocksCreative, final List<ToolRule> rules) {
+
+    return null;
+  }
+
+  /**
+   * Updates the tooltip style of the item stack.
+   *
+   * @param style the style to apply to the tooltip
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see TooltipStyleComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp tooltipStyle(final String style) {
+
+    return null;
+  }
+
+  /**
+   * Updates the trim properties of the item stack.
+   *
+   * @param pattern       the trim pattern
+   * @param material      the trim material
+   * @param showInTooltip whether to display the trim in the tooltip
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see TrimComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp trim(final String pattern, final String material, final boolean showInTooltip) {
+
+    return null;
+  }
+
+  /**
+   * Updates the unbreakable property of the item stack.
+   *
+   * @param showInTooltip whether to display the unbreakable property in the tooltip
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see UnbreakableComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp unbreakable(final boolean showInTooltip) {
+
+    return null;
+  }
+
+  /**
+   * Updates the use cooldown properties of the item stack.
+   *
+   * @param cooldownGroup the cooldown group identifier
+   * @param seconds       the cooldown duration in seconds
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see UseCooldownComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp useCooldown(final String cooldownGroup, final float seconds) {
+
+    return null;
+  }
+
+  /**
+   * Represents a weapon item that can be used for combat. Since MC Snapshot 25w02a.
+   *
+   * @param damagePerAttack    The amount of damage this weapon inflicts per attack
+   * @param canDisableBlocking Whether this weapon can disable blocking when used
+   *
+   * @see WeaponComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp weapon(final int damagePerAttack, final boolean canDisableBlocking) {
+
+    return null;
+  }
+
+  /**
+   * Updates the writable book content of the item stack.
+   *
+   * @param pages the pages to include in the writable book
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see WritableBookContentComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp writableBookContent(final List<String> pages) {
+
+    return null;
+  }
+
+  /**
+   * Updates the written book content of the item stack.
+   *
+   * @param title      the title of the book
+   * @param author     the author of the book
+   * @param generation the generation of the book
+   * @param resolved   whether the book is resolved
+   * @param pages      the pages to include in the book
+   *
+   * @return the updated BukkitItemStackRevamp instance
+   *
+   * @see WrittenBookContentComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStackRevamp writtenBookContent(final String title, final String author, final int generation, final boolean resolved, final List<String> pages) {
+
+    return null;
+  }
+}
