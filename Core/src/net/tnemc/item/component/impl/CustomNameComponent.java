@@ -18,6 +18,8 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
@@ -36,13 +38,13 @@ import java.util.Objects;
  */
 public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected String customName; // Stores the item's custom name as a string
+  protected Component customName; // Stores the item's custom name as a string
 
   public CustomNameComponent() {
 
   }
 
-  public CustomNameComponent(final String customName) {
+  public CustomNameComponent(final Component customName) {
 
     this.customName = customName;
   }
@@ -55,14 +57,14 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
   @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
-    json.put("custom_name", customName);
+    json.put("custom_name", LegacyComponentSerializer.legacySection().serialize(customName));
     return json;
   }
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     if (json.has("custom_name")) {
-      customName = json.getString("custom_name");
+      customName = LegacyComponentSerializer.legacySection().deserialize(json.getString("custom_name"));
     }
   }
 
@@ -78,12 +80,12 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
     return Objects.hash(customName);
   }
 
-  public String customName() {
+  public Component customName() {
 
     return customName;
   }
 
-  public void customName(final String customName) {
+  public void customName(final Component customName) {
 
     this.customName = customName;
   }

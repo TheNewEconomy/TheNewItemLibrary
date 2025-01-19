@@ -113,7 +113,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemRevampPlatform extends ItemPlatform<BukkitItemStackRevamp, ItemStack> {
+public class BukkitItemRevampPlatform extends ItemPlatform<BukkitItemStack, ItemStack> {
 
   public static final BukkitItemRevampPlatform PLATFORM = new BukkitItemRevampPlatform();
 
@@ -170,10 +170,10 @@ public class BukkitItemRevampPlatform extends ItemPlatform<BukkitItemStackRevamp
    * @return an initialized AbstractItemStack object
    */
   @Override
-  public Optional<BukkitItemStackRevamp> initSerialized(final JSONObject object) {
+  public Optional<BukkitItemStack> initSerialized(final JSONObject object) {
 
     try {
-      return Optional.ofNullable(new BukkitItemStackRevamp().of(object));
+      return Optional.ofNullable(new BukkitItemStack().of(object));
     } catch(final ParseException e) {
       return Optional.empty();
     }

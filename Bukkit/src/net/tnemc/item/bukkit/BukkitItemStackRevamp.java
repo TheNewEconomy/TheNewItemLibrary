@@ -238,6 +238,17 @@ public class BukkitItemStackRevamp implements AbstractItemStack<ItemStack> {
   }
 
   /**
+   * Returns the material of the item stack.
+   *
+   * @return The material of the item stack.
+   */
+  @Override
+  public String material() {
+
+    return material;
+  }
+
+  /**
    * Sets the material of the item stack.
    *
    * @param material The material name.
@@ -247,7 +258,20 @@ public class BukkitItemStackRevamp implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStackRevamp material(final String material) {
 
-    return null;
+    this.material = material;
+    this.dirty = true;
+    return this;
+  }
+
+  /**
+   * The quantity of the item stack.
+   *
+   * @return the quantity of the item stack.
+   */
+  @Override
+  public int amount() {
+
+    return amount;
   }
 
   /**
@@ -263,6 +287,17 @@ public class BukkitItemStackRevamp implements AbstractItemStack<ItemStack> {
     this.amount = amount;
     this.dirty = true;
     return this;
+  }
+
+  /**
+   * Represents the inventory slot of the item stack.
+   *
+   * @return the inventory slot of the item stack.
+   */
+  @Override
+  public int slot() {
+
+    return slot;
   }
 
   /**
@@ -290,7 +325,7 @@ public class BukkitItemStackRevamp implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStackRevamp debug(final boolean debug) {
 
-    this.debug = true;
+    this.debug = debug;
     return this;
   }
 
@@ -359,6 +394,7 @@ public class BukkitItemStackRevamp implements AbstractItemStack<ItemStack> {
   @Override
   public void markDirty() {
 
+    this.dirty = true;
   }
 
   /**
@@ -407,6 +443,17 @@ public class BukkitItemStackRevamp implements AbstractItemStack<ItemStack> {
     }
 
     return localeStack;
+  }
+
+  /**
+   * Converts the object to a JSONObject representation.
+   *
+   * @return A JSONObject representing the object data.
+   */
+  @Override
+  public JSONObject toJSON() {
+
+    return null;
   }
 
   /**

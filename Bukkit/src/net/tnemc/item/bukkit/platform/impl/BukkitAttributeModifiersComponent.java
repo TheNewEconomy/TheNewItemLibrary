@@ -19,9 +19,17 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.component.impl.AttributeModifiersComponent;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * BukkitAttributeModifiersComponent
@@ -40,6 +48,23 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
+    final ItemMeta meta = item.getItemMeta();
+    final Optional<AttributeModifiersComponent<AbstractItemStack<ItemStack>, ItemStack>> attributes = serialized.attributeModifiers();
+    if(meta != null && attributes.isPresent()) {
+
+      for(final net.tnemc.item.component.helper.AttributeModifier attribute : attributes.get().modifiers()) {
+
+        final AttributeModifier attr = new AttributeModifier(attribute.getId(),
+                                                             attribute.getType(),
+                                                             attribute.getAmount(),
+                                                             ParsingUtil.attributeOperation(attribute.getOperation()),
+                                                             ParsingUtil.attributeSlot(attribute.getSlot()));
+
+
+        meta.addAttributeModifier(Attribute.valueOf(attribute.getId()), attr);
+      }
+    }
+
     return null;
   }
 
@@ -51,7 +76,7 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
   @Override
   public boolean enabled(final String version) {
 
-    return false;
+    return true;
   }
 
   /**

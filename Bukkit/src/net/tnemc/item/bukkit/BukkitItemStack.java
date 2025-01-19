@@ -1,9 +1,7 @@
 package net.tnemc.item.bukkit;
-
 /*
- * The New Item Library Minecraft Server Plugin
- *
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * The New Item Library
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,615 +19,389 @@ package net.tnemc.item.bukkit;
  */
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.JSONHelper;
-import net.tnemc.item.SerialItemData;
-import net.tnemc.item.attribute.SerialAttribute;
-import net.tnemc.item.attribute.SerialAttributeOperation;
-import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.component.helper.AttributeModifier;
+import net.tnemc.item.component.helper.BlockPredicate;
 import net.tnemc.item.component.helper.EquipSlot;
+import net.tnemc.item.component.helper.ExplosionData;
+import net.tnemc.item.component.helper.PatternData;
+import net.tnemc.item.component.helper.ToolRule;
+import net.tnemc.item.component.helper.effect.ComponentEffect;
+import net.tnemc.item.component.helper.effect.EffectInstance;
+import net.tnemc.item.component.impl.AttributeModifiersComponent;
+import net.tnemc.item.component.impl.BannerPatternsComponent;
+import net.tnemc.item.component.impl.BaseColorComponent;
+import net.tnemc.item.component.impl.BucketEntityDataComponent;
+import net.tnemc.item.component.impl.BundleComponent;
+import net.tnemc.item.component.impl.CanBreakComponent;
+import net.tnemc.item.component.impl.CanPlaceOnComponent;
+import net.tnemc.item.component.impl.ConsumableComponent;
+import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.component.impl.CustomNameComponent;
+import net.tnemc.item.component.impl.DamageComponent;
+import net.tnemc.item.component.impl.DamageResistantComponent;
+import net.tnemc.item.component.impl.DeathProtectionComponent;
+import net.tnemc.item.component.impl.DyedColorComponent;
+import net.tnemc.item.component.impl.EnchantableComponent;
+import net.tnemc.item.component.impl.EnchantmentGlintOverrideComponent;
+import net.tnemc.item.component.impl.EnchantmentsComponent;
+import net.tnemc.item.component.impl.EquipComponent;
+import net.tnemc.item.component.impl.FireworkExplosionComponent;
+import net.tnemc.item.component.impl.FireworksComponent;
+import net.tnemc.item.component.impl.FoodComponent;
+import net.tnemc.item.component.impl.GliderComponent;
+import net.tnemc.item.component.impl.HideAdditionalTooltipComponent;
+import net.tnemc.item.component.impl.HideTooltipComponent;
+import net.tnemc.item.component.impl.InstrumentComponent;
+import net.tnemc.item.component.impl.IntangibleProjectileComponent;
+import net.tnemc.item.component.impl.ItemModelComponent;
+import net.tnemc.item.component.impl.ItemNameComponent;
+import net.tnemc.item.component.impl.JukeBoxComponent;
+import net.tnemc.item.component.impl.LodestoneTrackerComponent;
+import net.tnemc.item.component.impl.LoreComponent;
+import net.tnemc.item.component.impl.MapColorComponent;
+import net.tnemc.item.component.impl.MapIDComponent;
+import net.tnemc.item.component.impl.MaxDamageComponent;
+import net.tnemc.item.component.impl.MaxStackSizeComponent;
+import net.tnemc.item.component.impl.ModelDataComponent;
+import net.tnemc.item.component.impl.NoteBlockSoundComponent;
+import net.tnemc.item.component.impl.OminousBottleAmplifierComponent;
+import net.tnemc.item.component.impl.PotDecorationsComponent;
+import net.tnemc.item.component.impl.PotionContentsComponent;
+import net.tnemc.item.component.impl.PotionDurationScaleComponent;
+import net.tnemc.item.component.impl.RarityComponent;
+import net.tnemc.item.component.impl.RecipesComponent;
+import net.tnemc.item.component.impl.RepairCostComponent;
+import net.tnemc.item.component.impl.RepairableComponent;
+import net.tnemc.item.component.impl.StoredEnchantmentsComponent;
+import net.tnemc.item.component.impl.SuspiciousStewEffectsComponent;
+import net.tnemc.item.component.impl.ToolComponent;
+import net.tnemc.item.component.impl.TooltipStyleComponent;
+import net.tnemc.item.component.impl.TrimComponent;
+import net.tnemc.item.component.impl.UnbreakableComponent;
+import net.tnemc.item.component.impl.UseCooldownComponent;
+import net.tnemc.item.component.impl.WeaponComponent;
+import net.tnemc.item.component.impl.WritableBookContentComponent;
+import net.tnemc.item.component.impl.WrittenBookContentComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.SkullProfile;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
- * Represents an ItemStack object related to the Bukkit API.
+ * BukkitItemStack
+ *
+ * @author creatorfromhell
+ * @since 0.2.0.0
  */
 public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
-  private final PersistentDataHolder holder = new PersistentDataHolder();
-  private final List<String> flags = new ArrayList<>();
-  private final Map<String, SerialAttribute> attributes = new HashMap<>();
-  private final Map<String, Integer> enchantments = new HashMap<>();
-  private final List<Component> lore = new ArrayList<>();
+  private final Map<String, SerialComponent<AbstractItemStack<ItemStack>, ItemStack>> components = new HashMap<>();
 
-  private final Map<String, SerialComponent<ItemStack>> components = new HashMap<>();
+  private final List<String> flags = new ArrayList<>();
+
+  private final PersistentDataHolder holder = new PersistentDataHolder();
 
   private int slot = 0;
-  private SkullProfile profile = null;
   private String material;
-  private Integer maxStack = 64;
-  private Integer amount = 1;
-  private Component display = Component.empty();
-  private short damage = 0;
-  private int customModelData = -1;
-  private boolean unbreakable = false;
-  private boolean hideTooltip = false;
-  private boolean enchantGlint = false;
-  private String rarity = "COMMON";
-  private SerialItemData<ItemStack> data;
+  private int amount;
+  private boolean debug = false;
 
   //our locale stack
   private boolean dirty = false;
-  private boolean debug = false;
-  private ItemStack stack;
+  private ItemStack localeStack;
 
+  /**
+   * Creates a new item stack with the specified material and amount.
+   *
+   * @param material The material of the item.
+   * @param amount   The number of items in the stack.
+   *
+   * @return A new item stack instance.
+   */
   @Override
   public BukkitItemStack of(final String material, final int amount) {
 
     this.material = material;
     this.amount = amount;
+    this.dirty = true;
     return this;
   }
 
-  public BukkitItemStack of(final BukkitItemStack stack) {
-
-    flags.addAll(stack.flags);
-    attributes.putAll(stack.attributes);
-    enchantments.putAll(stack.enchantments);
-    lore.addAll(stack.lore);
-    components.putAll(stack.components);
-
-    slot = stack.slot;
-    material = stack.material;
-    maxStack = stack.maxStack;
-    amount = stack.amount;
-    display = stack.display;
-    damage = stack.damage;
-    customModelData = stack.customModelData;
-    unbreakable = stack.unbreakable;
-    hideTooltip = stack.hideTooltip;
-    enchantGlint = stack.enchantGlint;
-    rarity = stack.rarity;
-
-    data = stack.data;
-
-    if(stack.profile != null) {
-      this.profile = stack.profile;
-    }
-
-    this.stack = stack.stack;
-
-    return this;
-  }
-
+  /**
+   * Creates a new item stack from a locale-specific object.
+   *
+   * @param locale The locale-specific representation.
+   *
+   * @return A new item stack instance.
+   */
   @Override
   public BukkitItemStack of(final ItemStack locale) {
 
-    this.stack = locale;
+    this.localeStack = locale;
 
-    return BukkitItemPlatform.PLATFORM.serializer(this.stack, this);
+    return BukkitItemRevampPlatform.PLATFORM.serializer(this.localeStack, this);
   }
 
+  /**
+   * Creates a new item stack from a JSON representation.
+   *
+   * @param json The JSON object containing item stack data.
+   *
+   * @return A new item stack instance.
+   *
+   * @throws ParseException If the JSON structure is invalid.
+   */
   @Override
   public BukkitItemStack of(final JSONObject json) throws ParseException {
 
-    unserialize(json);
-
-    return this;
-  }
-
-  /**
-   * Sets the resistance properties of the item stack.
-   *
-   * @param resistence A set of resistance types.
-   *
-   * @return The updated item stack instance.
-   *
-   * @since 0.1.7.7
-   */
-  @Override
-  public AbstractItemStack<ItemStack> resistence(final HashSet<String> resistence) {
 
     return null;
   }
 
+  /**
+   * Sets the item flags.
+   *
+   * @param flags A list of flags to apply to the item.
+   *
+   * @return The updated item stack instance.
+   */
   @Override
   public BukkitItemStack flags(final List<String> flags) {
 
-    this.dirty = true;
-    this.flags.clear();
     this.flags.addAll(flags);
-    return this;
-  }
-
-  @Override
-  public BukkitItemStack lore(final List<Component> lore) {
-
     this.dirty = true;
-    this.lore.clear();
-    this.lore.addAll(lore);
     return this;
   }
 
+  /**
+   * Sets the lore (descriptive text) of the item stack.
+   *
+   * @param lore A list of components representing the lore.
+   *
+   * @return The updated item stack instance.
+   */
   @Override
-  public BukkitItemStack attribute(final String name, final SerialAttribute attribute) {
+  public BukkitItemStack loreComponent(final List<Component> lore) {
 
-    this.dirty = true;
-    attributes.put(name, attribute);
-    return this;
+    return null;
   }
 
-  @Override
-  public BukkitItemStack attribute(final Map<String, SerialAttribute> attributes) {
-
-    this.dirty = true;
-
-    this.attributes.clear();
-    this.attributes.putAll(attributes);
-    return this;
-  }
-
+  /**
+   * Adds an enchantment to the item stack.
+   *
+   * @param enchantment The enchantment name.
+   * @param level       The level of the enchantment.
+   *
+   * @return The updated item stack instance.
+   */
   @Override
   public BukkitItemStack enchant(final String enchantment, final int level) {
 
-    this.dirty = true;
-    enchantments.put(enchantment, level);
-    return this;
+    return null;
   }
 
+  /**
+   * Adds multiple enchantments to the item stack.
+   *
+   * @param enchantments A map of enchantment names and levels.
+   *
+   * @return The updated item stack instance.
+   */
   @Override
   public BukkitItemStack enchant(final Map<String, Integer> enchantments) {
 
-    this.dirty = true;
-    this.enchantments.clear();
-    this.enchantments.putAll(enchantments);
-    return this;
+    return null;
   }
 
+  /**
+   * Adds enchantments to the item stack by name.
+   *
+   * @param enchantments A list of enchantment names.
+   *
+   * @return The updated item stack instance.
+   */
   @Override
   public BukkitItemStack enchant(final List<String> enchantments) {
 
-    this.dirty = true;
-    this.enchantments.clear();
-    for(final String str : enchantments) {
-      this.enchantments.put(str, 1);
-    }
-    return this;
-  }
-
-  @Override
-  public BukkitItemStack material(final String material) {
-
-    this.dirty = true;
-    this.material = material;
-    return this;
-  }
-
-  @Override
-  public BukkitItemStack amount(final int amount) {
-
-    this.dirty = true;
-    this.amount = amount;
-    return this;
-  }
-
-  public void setAmount(final int amount) {
-
-    this.amount = amount;
-
-    if(stack != null) {
-      stack.setAmount(amount);
-    }
-  }
-
-  @Override
-  public BukkitItemStack slot(final int slot) {
-
-    this.slot = slot;
-    return this;
-  }
-
-  @Override
-  public BukkitItemStack display(final Component display) {
-
-    this.dirty = true;
-    this.display = display;
-    return this;
-  }
-
-  @Override
-  public BukkitItemStack damage(final short damage) {
-
-    this.dirty = true;
-    this.damage = damage;
-    return this;
-  }
-
-  @Override
-  public AbstractItemStack<ItemStack> profile(final SkullProfile profile) {
-
-    this.dirty = true;
-    this.profile = profile;
-    return this;
-  }
-
-  @Override
-  public BukkitItemStack modelData(final int modelData) {
-
-    this.dirty = true;
-    this.customModelData = modelData;
-    return this;
-  }
-
-  /**
-   * Sets the model identifier for the item stack.
-   *
-   * @param model The model identifier.
-   *
-   * @return The updated item stack instance.
-   *
-   * @since 0.1.7.7
-   */
-  @Override
-  public AbstractItemStack<ItemStack> model(final String model) {
-
-    return null;
-  }
-
-  @Override
-  public BukkitItemStack unbreakable(final boolean unbreakable) {
-
-    this.dirty = true;
-    this.unbreakable = unbreakable;
-    return this;
-  }
-
-  @Override
-  public AbstractItemStack<ItemStack> maxStack(final int maxStack) {
-
-    this.dirty = true;
-    this.maxStack = maxStack;
-    return this;
-  }
-
-  @Override
-  public AbstractItemStack<ItemStack> hideTooltip(final boolean hideTooltip) {
-
-    this.dirty = true;
-    this.hideTooltip = hideTooltip;
-    return this;
-  }
-
-  /**
-   * Sets the tooltip style for the item stack.
-   *
-   * @param tooltipStyle The tooltip style identifier.
-   *
-   * @return The updated item stack instance.
-   *
-   * @since 0.1.7.7
-   */
-  @Override
-  public AbstractItemStack<ItemStack> tooltipStyle(final @NotNull String tooltipStyle) {
-
-    return null;
-  }
-
-  @Override
-  public AbstractItemStack<ItemStack> enchantGlint(final boolean enchantGlint) {
-
-    this.dirty = true;
-    this.enchantGlint = enchantGlint;
-    return this;
-  }
-
-  /**
-   * Sets the enchantability level of the item stack.
-   *
-   * @param enchantable The enchantability level.
-   *
-   * @return The updated item stack instance.
-   *
-   * @since 0.1.7.7
-   */
-  @Override
-  public AbstractItemStack<ItemStack> enchantable(final int enchantable) {
-
-    return null;
-  }
-
-  @Override
-  public AbstractItemStack<ItemStack> rarity(final String rarity) {
-
-    this.dirty = true;
-    this.rarity = rarity;
-    return this;
-  }
-
-  /**
-   * Sets whether the item stack can function as a glider.
-   *
-   * @param glider True if the item should act as a glider, false otherwise.
-   *
-   * @return The updated item stack instance.
-   *
-   * @since 0.1.7.7
-   */
-  @Override
-  public AbstractItemStack<ItemStack> glider(final boolean glider) {
-
     return null;
   }
 
   /**
-   * Sets the item that remains after the current item stack is used.
+   * Returns the material of the item stack.
    *
-   * @param remainder The remaining item stack.
-   *
-   * @return The updated item stack instance.
-   *
-   * @since 0.1.7.7
+   * @return The material of the item stack.
    */
-  @Override
-  public AbstractItemStack<ItemStack> remainder(final @Nullable AbstractItemStack<ItemStack> remainder) {
-
-    return null;
-  }
-
-  public BukkitItemStack debug(final boolean debug) {
-
-    this.debug = debug;
-    return this;
-  }
-
-  @Override
-  public BukkitItemStack applyData(final SerialItemData<ItemStack> data) {
-
-    this.dirty = true;
-    this.data = data;
-    return this;
-  }
-
-  @Override
-  public AbstractItemStack<ItemStack> applyPersistentHolder(final PersistentDataHolder newHolder, final boolean replaceOld) {
-
-    if(replaceOld) {
-      this.holder.getData().clear();
-    }
-
-    this.holder.getData().putAll(newHolder.getData());
-    return this;
-  }
-
-  /**
-   * Retrieves the resistance types applied to the item stack.
-   *
-   * @return A set of resistance types.
-   *
-   * @since 0.1.7.7
-   */
-  @Override
-  public HashSet<String> resistence() {
-
-    return null;
-  }
-
-  @Override
-  public List<String> flags() {
-
-    return flags;
-  }
-
-  @Override
-  public List<Component> lore() {
-
-    return lore;
-  }
-
-  @Override
-  public Map<String, SerialAttribute> attributes() {
-
-    return attributes;
-  }
-
-  @Override
-  public Map<String, Integer> enchantments() {
-
-    return enchantments;
-  }
-
-  @Override
-  public Map<String, SerialComponent<ItemStack>> components() {
-
-    return components;
-  }
-
-  @Override
-  public PersistentDataHolder persistentHolder() {
-
-    return holder;
-  }
-
   @Override
   public String material() {
 
     return material;
   }
 
+  /**
+   * Sets the material of the item stack.
+   *
+   * @param material The material name.
+   *
+   * @return The updated item stack instance.
+   */
+  @Override
+  public BukkitItemStack material(final String material) {
+
+    this.material = material;
+    this.dirty = true;
+    return this;
+  }
+
+  /**
+   * The quantity of the item stack.
+   *
+   * @return the quantity of the item stack.
+   */
   @Override
   public int amount() {
 
     return amount;
   }
 
+  /**
+   * Sets the quantity of the item stack.
+   *
+   * @param amount The number of items in the stack.
+   *
+   * @return The updated item stack instance.
+   */
+  @Override
+  public BukkitItemStack amount(final int amount) {
+
+    this.amount = amount;
+    this.dirty = true;
+    return this;
+  }
+
+  /**
+   * Represents the inventory slot of the item stack.
+   *
+   * @return the inventory slot of the item stack.
+   */
   @Override
   public int slot() {
 
     return slot;
   }
 
-  public String displayPlain() {
-
-    return PlainTextComponentSerializer.plainText().serialize(display);
-  }
-
+  /**
+   * Sets the inventory slot of the item stack.
+   *
+   * @param slot The slot index.
+   *
+   * @return The updated item stack instance.
+   */
   @Override
-  public Component display() {
+  public BukkitItemStack slot(final int slot) {
 
-    return display;
-  }
-
-  @Override
-  public short damage() {
-
-    return damage;
-  }
-
-  @Override
-  public Optional<SkullProfile> profile() {
-
-    return Optional.ofNullable(profile);
-  }
-
-  @Override
-  public int modelData() {
-
-    return customModelData;
+    this.slot = slot;
+    this.dirty = true;
+    return this;
   }
 
   /**
-   * Retrieves the model identifier of the item stack.
+   * Enables or disables debug mode for the item stack.
    *
-   * @return The model identifier.
+   * @param debug True to enable, false to disable.
    *
-   * @since 0.1.7.7
+   * @return The updated item stack instance.
    */
   @Override
-  public String model() {
+  public BukkitItemStack debug(final boolean debug) {
 
-    return "";
-  }
-
-  @Override
-  public boolean unbreakable() {
-
-    return unbreakable;
-  }
-
-  @Override
-  public int maxStack() {
-
-    return maxStack;
-  }
-
-  @Override
-  public boolean hideTooltip() {
-
-    return hideTooltip;
+    this.debug = debug;
+    return this;
   }
 
   /**
-   * Retrieves the tooltip style of the item stack.
+   * Replaces the persistent data holder for the item stack.
    *
-   * @return The tooltip style identifier.
+   * @param newHolder  The new persistent data holder.
+   * @param replaceOld True to replace existing data, false to merge.
    *
-   * @since 0.1.7.7
+   * @return The updated item stack instance.
+   *
+   * @since 0.2.0.0
    */
   @Override
-  public String tooltipStyle() {
+  public BukkitItemStack applyPersistentHolder(final PersistentDataHolder newHolder, final boolean replaceOld) {
 
-    return "";
-  }
+    if(replaceOld) {
+      this.holder.getData().clear();
+    }
 
-  @Override
-  public boolean enchantGlint() {
-
-    return enchantGlint;
+    this.holder.getData().putAll(newHolder.getData());
+    this.dirty = true;
+    return this;
   }
 
   /**
-   * Retrieves the enchantability level of the item stack.
+   * Retrieves the item flags.
    *
-   * @return The enchantability level.
-   *
-   * @since 0.1.7.7
+   * @return A list of flags applied to the item.
    */
   @Override
-  public int enchantable() {
+  public List<String> flags() {
 
-    return 0;
-  }
-
-  @Override
-  public String rarity() {
-
-    return rarity;
+    return this.flags;
   }
 
   /**
-   * Checks if the item stack functions as a glider.
+   * Retrieves the components applied to the item stack.
    *
-   * @return True if the item acts as a glider, otherwise false.
+   * @return A map of component types and their serialized representations.
    *
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   @Override
-  public boolean glider() {
+  public Map<String, SerialComponent<AbstractItemStack<ItemStack>, ItemStack>> components() {
 
-    return false;
+    return components;
   }
 
   /**
-   * Retrieves the remaining item stack after the current stack is used.
+   * Retrieves the persistent data holder for the item stack.
    *
-   * @return The remainder item stack.
+   * @return The persistent data holder.
    *
-   * @since 0.1.7.7
+   * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> remainder() {
+  public PersistentDataHolder persistentHolder() {
 
-    return null;
+    return holder;
   }
 
+  /**
+   * Marks the item stack as dirty, indicating changes have been made.
+   */
   @Override
   public void markDirty() {
 
     this.dirty = true;
   }
 
-  @Override
-  public Optional<SerialItemData<ItemStack>> data() {
-
-    return Optional.ofNullable(data);
-  }
-
   /**
    * Returns true if the provided item is similar to this. An item is similar if the basic
    * information is the same, except for the amount. What this includes: - material - display -
    * modelData - flags - lore - attributes - enchantments
-   * <p>
+   *
    * What this does not include: - Item Data.
    *
    * @param compare The stack to compare.
@@ -639,27 +411,16 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> compare) {
 
-    if(stack == null) return false;
-    return similarStack((BukkitItemStack)compare);
-  }
-
-  public static BukkitItemStack locale(final ItemStack stack) {
-
-    return new BukkitItemStack().of(stack);
-  }
-
-  public boolean similarStack(final BukkitItemStack stack) {
-
-    return BukkitItemPlatform.PLATFORM.check(this, stack);
+    return false;
   }
 
   /**
-   * @return An instance of the implementation's locale version of AbstractItemStack.
+   * @return An instance of the implementation's locale version of BukkitItemStack.
    */
   @Override
   public ItemStack locale() {
 
-    if(stack == null || dirty) {
+    if(localeStack == null || dirty) {
 
       Material material = null;
       try {
@@ -673,105 +434,960 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
       if(material != null) {
 
-        stack = new ItemStack(material, amount);
+        localeStack = new ItemStack(material, amount);
 
-        stack = BukkitItemPlatform.PLATFORM.apply(this, stack);
+        localeStack = BukkitItemRevampPlatform.PLATFORM.apply(this, localeStack);
+
+        this.dirty = false;
       }
     }
-    return stack;
+
+    return localeStack;
   }
 
+  /**
+   * Converts the object to a JSONObject representation.
+   *
+   * @return A JSONObject representing the object data.
+   */
   @Override
-  public void parse(final JSONHelper json) throws ParseException {
+  public JSONObject toJSON() {
 
-    this.dirty = true;
+    return null;
+  }
 
-    // Basic properties
-    slot(json.getInteger("slot"));
-    of(json.getString("material"), json.getInteger("amount"));
-    unbreakable(json.getBoolean("unbreakable"));
+  /**
+   * Updates the attribute modifiers of the item stack.
+   *
+   * @param modifiers     a list of attribute modifiers
+   * @param showInTooltip whether to display the modifiers in the tooltip
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see AttributeModifiersComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack attributeModifiers(final List<AttributeModifier> modifiers, final boolean showInTooltip) {
 
-    // Optional display component
-    if(json.has("display") && !json.isNull("display")) {
-      display(JSONComponentSerializer.json().deserialize(json.getString("display")));
-    }
+    return null;
+  }
 
-    // Optional damage
-    if(json.has("damage") && !json.isNull("damage")) {
-      damage(json.getShort("damage"));
-    }
+  /**
+   * Updates the banner patterns of the item stack.
+   *
+   * @param patterns a list of pattern data
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see BannerPatternsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack bannerPatterns(final List<PatternData> patterns) {
 
-    // Optional model data
-    if(json.has("modelData") && !json.isNull("modelData")) {
-      modelData(json.getInteger("modelData"));
-    }
+    return null;
+  }
 
-    // Optional lore
-    if(json.has("lore") && !json.isNull("lore")) {
+  /**
+   * Updates the base color of the item stack.
+   *
+   * @param color the new base color
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see BaseColorComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack baseColor(final String color) {
 
-      final String[] loreArray = json.getString("lore").split(",");
-      final List<Component> loreList = new LinkedList<>();
-      for(final String lore : loreArray) {
-        loreList.add(JSONComponentSerializer.json().deserialize(lore));
-      }
-      lore(loreList);
-    }
+    return null;
+  }
 
-    // Optional flags
-    if(json.has("flags") && !json.isNull("flags")) {
+  /**
+   * Updates the bucket entity data of the item stack.
+   *
+   * @param noAI             whether the entity has AI disabled
+   * @param silent           whether the entity is silent
+   * @param noGravity        whether the entity is affected by gravity
+   * @param glowing          whether the entity is glowing
+   * @param invulnerable     whether the entity is invulnerable
+   * @param health           the health of the entity
+   * @param age              the age of the entity
+   * @param variant          the variant of the entity
+   * @param huntingCooldown  the hunting cooldown of the entity
+   * @param bucketVariantTag the variant tag of the bucket
+   * @param type             the type of the entity
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see BucketEntityDataComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack bucketEntityData(final boolean noAI, final boolean silent, final boolean noGravity, final boolean glowing, final boolean invulnerable, final float health, final int age, final int variant, final long huntingCooldown, final int bucketVariantTag, final String type) {
 
-      final String[] flagsArray = json.getString("flags").split(",");
-      final List<String> flagsList = Arrays.asList(flagsArray);
-      flags(flagsList);
-    }
+    return null;
+  }
 
-    // Enchantments
-    if(json.has("enchantments") && !json.isNull("enchantments")) {
+  /**
+   * Bundles a collection of {@link AbstractItemStack} instances into a single collection.
+   *
+   * @param items A {@link Map} containing integer keys and {@link AbstractItemStack} values to be
+   *              bundled.
+   *
+   * @return An {@link AbstractItemStack} instance that represents the bundled items.
+   *
+   * @see BundleComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack bundle(final Map<Integer, AbstractItemStack<?>> items) {
 
+    return null;
+  }
 
-      final Map<String, Integer> enchantments = new HashMap<>();
-      final JSONObject enchants = json.getJSON("enchantments");
-      enchants.forEach((key, value)->{
-        enchantments.put(key.toString(), Integer.valueOf(value.toString()));
-      });
+  /**
+   * Updates the blocks that the item stack can break.
+   *
+   * @param predicates a list of block predicates
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see CanBreakComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack canBreak(final List<BlockPredicate> predicates) {
 
-      enchant(enchantments);
-    }
+    return null;
+  }
 
-    // Attributes
-    if(json.has("attributes") && !json.isNull("attributes")) {
+  /**
+   * Updates the blocks that the item stack can be placed on.
+   *
+   * @param predicates a list of block predicates
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see CanPlaceOnComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack canPlaceOn(final List<BlockPredicate> predicates) {
 
-      final JSONHelper attributesHelper = json.getHelper("attributes");
-      final Map<String, SerialAttribute> attributes = new HashMap<>();
+    return null;
+  }
 
-      attributesHelper.getObject().forEach((key, value)->{
+  /**
+   * Updates the consumable properties of the item stack.
+   *
+   * @param consumeSeconds      the time it takes to consume the item
+   * @param animation           the animation to display when consuming
+   * @param sound               the sound to play when consuming
+   * @param hasConsumeParticles whether to show consume particles
+   * @param effects             a list of effects applied on consumption
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see ConsumableComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack consumable(final float consumeSeconds, final String animation, final String sound, final boolean hasConsumeParticles, final List<ComponentEffect> effects) {
 
-        final JSONHelper modHelper = attributesHelper.getHelper(key.toString());
-        final UUID id = modHelper.getUUID("id");
-        final String name = modHelper.getString("name");
-        final double amount = modHelper.getDouble("amount");
-        final SerialAttributeOperation operation = SerialAttributeOperation.valueOf(modHelper.getString("operation"));
+    return null;
+  }
 
-        final SerialAttribute modifier = new SerialAttribute(id, name, amount, operation);
+  /**
+   * Constructs a container with the given map of items.
+   *
+   * @param items a map of items where the key is the position of the item in the container and the
+   *              value is the item
+   *
+   * @return an AbstractItemStack container with the specified items
+   *
+   * @see ContainerComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack container(final Map<Integer, AbstractItemStack<?>> items) {
 
-        if(modHelper.has("slot") && !modHelper.isNull("slot")) {
-          modifier.setSlot(EquipSlot.valueOf(modHelper.getString("slot")));
-        }
+    return null;
+  }
 
-        attributes.put(key.toString(), modifier);
-      });
+  /**
+   * Updates the custom name of the item stack.
+   *
+   * @param customName the custom name to set
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see CustomNameComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack customName(final String customName) {
 
-      attribute(attributes);
-    }
+    return null;
+  }
 
-    if(json.has("persistent-data")) {
-      holder.readJSON(json.getJSON("persistent-data"), BukkitItemPlatform.PLATFORM);
-    }
+  /**
+   * Updates the damage of the item stack.
+   *
+   * @param damage the damage value to set
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see DamageComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack damage(final int damage) {
 
-    // Optional custom data
-    if(json.has("data") && !json.isNull("data")) {
+    return null;
+  }
 
-      //ItemPlatform.applyData(CustomData.fromJSON(helper.getJSON("data")));
-    }
+  /**
+   * Updates the damage-resistant types of the item stack.
+   *
+   * @param types a list of damage-resistant types
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see DamageResistantComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack damageResistant(final List<String> types) {
+
+    return null;
+  }
+
+  /**
+   * Updates the death protection effects of the item stack.
+   *
+   * @param deathEffects a list of death protection effects
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see DeathProtectionComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack deathProtection(final List<ComponentEffect> deathEffects) {
+
+    return null;
+  }
+
+  /**
+   * Updates the dyed color of the item stack.
+   *
+   * @param rgb the RGB color value to set
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see DyedColorComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack dyedColor(final int rgb) {
+
+    return null;
+  }
+
+  /**
+   * Updates the enchantability of the item stack.
+   *
+   * @param value the enchantability value to set
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see EnchantableComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack enchantable(final int value) {
+
+    return null;
+  }
+
+  /**
+   * Updates the enchantment glint override of the item stack.
+   *
+   * @param glintOverride whether the enchantment glint should be overridden
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see EnchantmentGlintOverrideComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack enchantmentGlintOverride(final boolean glintOverride) {
+
+    return null;
+  }
+
+  /**
+   * Updates the enchantments of the item stack.
+   *
+   * @param levels a map of enchantments and their levels
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see EnchantmentsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack enchantments(final Map<String, Integer> levels) {
+
+    return null;
+  }
+
+  /**
+   * Equips an item with specified parameters.
+   *
+   * @param cameraKey       the key identifying the camera
+   * @param equipSound      the key identifying the equip sound
+   * @param modelKey        the key identifying the model
+   * @param slot            the slot in which the item should be equipped
+   * @param damageOnHurt    flag indicating if damage should be taken on hurt
+   * @param dispensable     flag indicating if the item is dispensable
+   * @param swappable       flag indicating if the item is swappable
+   * @param equipOnInteract flag indicating if the item should be equipped on interact
+   * @param entities        a list of entities to be equipped
+   *
+   * @return an BukkitItemStack object representing the equipped item
+   *
+   * @see EquipComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack equip(final String cameraKey, final String equipSound, final String modelKey, final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable, final boolean swappable, final boolean equipOnInteract, final List<String> entities) {
+
+    return null;
+  }
+
+  /**
+   * Updates the firework explosion properties of the item stack.
+   *
+   * @param explosion the explosion data to set
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see FireworkExplosionComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack fireworkExplosion(final ExplosionData explosion) {
+
+    return null;
+  }
+
+  /**
+   * Updates the fireworks properties of the item stack.
+   *
+   * @param flightDuration the flight duration of the fireworks
+   * @param explosions     a list of explosion data
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see FireworksComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack fireworks(final byte flightDuration, final List<ExplosionData> explosions) {
+
+    return null;
+  }
+
+  /**
+   * Updates the food properties of the item stack.
+   *
+   * @param noHunger   whether the item causes no hunger
+   * @param saturation the saturation value
+   * @param nutrition  the nutrition value
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see FoodComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack food(final boolean noHunger, final float saturation, final int nutrition) {
+
+    return null;
+  }
+
+  /**
+   * Updates the item stack to enable glider functionality.
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see GliderComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack gliderTag() {
+
+    return null;
+  }
+
+  /**
+   * Updates the item stack to hide additional tooltip.
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see HideAdditionalTooltipComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack hideAdditionalTooltipTag() {
+
+    return null;
+  }
+
+  /**
+   * Updates the item stack to hide its tooltip.
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see HideTooltipComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack hideTooltipTag() {
+
+    return null;
+  }
+
+  /**
+   * Updates the instrument properties of the item stack.
+   *
+   * @param soundEvent  the sound event identifier
+   * @param useDuration the duration of the sound in ticks
+   * @param range       the range of the sound
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see InstrumentComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack instrument(final String soundEvent, final int useDuration, final int range) {
+
+    return null;
+  }
+
+  /**
+   * Updates the item stack as an intangible projectile.
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see IntangibleProjectileComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack intangibleProjectileTag() {
+
+    return null;
+  }
+
+  /**
+   * Updates the model properties of the item stack.
+   *
+   * @param model the model identifier
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see ItemModelComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack itemModel(final String model) {
+
+    return null;
+  }
+
+  /**
+   * Updates the name of the item stack.
+   *
+   * @param itemName the name of the item
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see ItemNameComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack itemName(final String itemName) {
+
+    return null;
+  }
+
+  /**
+   * Updates the jukebox properties of the item stack.
+   *
+   * @param song          the song identifier
+   * @param showInTooltip whether to display the song in the tooltip
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see JukeBoxComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack jukebox(final String song, final boolean showInTooltip) {
+
+    return null;
+  }
+
+  /**
+   * Updates the lodestone tracker properties of the item stack.
+   *
+   * @param target    the target identifier
+   * @param pos       the position array
+   * @param dimension the dimension identifier
+   * @param tracked   whether the lodestone is tracked
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see LodestoneTrackerComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack lodestoneTracker(final String target, final int[] pos, final String dimension, final boolean tracked) {
+
+    return null;
+  }
+
+  /**
+   * Updates the lore of the item stack.
+   *
+   * @param lore a list of lore strings
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see LoreComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack lore(final List<String> lore) {
+
+    return null;
+  }
+
+  /**
+   * Updates the map color of the item stack.
+   *
+   * @param mapColor the map color value
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see MapColorComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack mapColor(final int mapColor) {
+
+    return null;
+  }
+
+  /**
+   * Updates the map ID of the item stack.
+   *
+   * @param mapId the map ID value
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see MapIDComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack mapId(final int mapId) {
+
+    return null;
+  }
+
+  /**
+   * Updates the maximum damage of the item stack.
+   *
+   * @param maxDamage the maximum damage value
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see MaxDamageComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack maxDamage(final int maxDamage) {
+
+    return null;
+  }
+
+  /**
+   * Updates the maximum stack size of the item stack.
+   *
+   * @param maxStackSize the maximum stack size value
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see MaxStackSizeComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack maxStackSize(final int maxStackSize) {
+
+    return null;
+  }
+
+  /**
+   * Updates the model data of the item stack.
+   *
+   * @param colours a list of color strings
+   * @param floats  a list of float values
+   * @param flags   a list of boolean flags
+   * @param strings a list of string identifiers
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see ModelDataComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack modelData(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
+
+    return null;
+  }
+
+  /**
+   * Updates the note block sound of the item stack.
+   *
+   * @param soundId the identifier of the sound
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see NoteBlockSoundComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack noteBlockSound(final String soundId) {
+
+    return null;
+  }
+
+  /**
+   * Updates the ominous bottle amplifier of the item stack.
+   *
+   * @param amplifier the amplifier value
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see OminousBottleAmplifierComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack ominousBottleAmplifier(final int amplifier) {
+
+    return null;
+  }
+
+  /**
+   * Updates the pot decorations of the item stack.
+   *
+   * @param decorations a list of decorations
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see PotDecorationsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack potDecorations(final List<String> decorations) {
+
+    return null;
+  }
+
+  /**
+   * Updates the potion contents of the item stack.
+   *
+   * @param potionId    the ID of the potion
+   * @param customColor the custom color of the potion
+   * @param customName  the custom name of the potion
+   * @param effects     a list of effect instances
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see PotionContentsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack potionContents(final String potionId, final int customColor, final String customName, final List<EffectInstance> effects) {
+
+    return null;
+  }
+
+  /**
+   * Sets the duration of a potion effect for the item stack. Since MC Snapshot 25w02a.
+   *
+   * @param potionDuration the duration of the potion effect in seconds
+   *
+   * @return the modified BukkitItemStack object with the updated potion duration
+   *
+   * @see PotionDurationScaleComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack potionDuration(final float potionDuration) {
+
+    return null;
+  }
+
+  /**
+   * Profiles the given SkullProfile to the BukkitItemStack object.
+   *
+   * @param profile the SkullProfile to be assigned
+   *
+   * @return an BukkitItemStack object with the provided profile
+   */
+  @Override
+  public BukkitItemStack profile(final SkullProfile profile) {
+
+    return null;
+  }
+
+  /**
+   * Updates the rarity of the item stack.
+   *
+   * @param rarity the rarity value
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see RarityComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack rarity(final String rarity) {
+
+    return null;
+  }
+
+  /**
+   * Updates the recipes of the item stack.
+   *
+   * @param recipes a list of recipe identifiers
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see RecipesComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack recipes(final List<String> recipes) {
+
+    return null;
+  }
+
+  /**
+   * Updates the repairable items of the item stack.
+   *
+   * @param repairItems a list of repair item identifiers
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see RepairableComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack repairable(final List<String> repairItems) {
+
+    return null;
+  }
+
+  /**
+   * Updates the repair cost of the item stack.
+   *
+   * @param repairCost the repair cost value
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see RepairCostComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack repairCost(final int repairCost) {
+
+    return null;
+  }
+
+  /**
+   * Updates the stored enchantments of the item stack.
+   *
+   * @param enchantments a map of enchantment names to their levels
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see StoredEnchantmentsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack storedEnchantments(final Map<String, Integer> enchantments) {
+
+    return null;
+  }
+
+  /**
+   * Updates the suspicious stew effects of the item stack.
+   *
+   * @param effectId the ID of the effect
+   * @param duration the duration of the effect in ticks
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see SuspiciousStewEffectsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack suspiciousStewEffects(final String effectId, final int duration) {
+
+    return null;
+  }
+
+  /**
+   * Constructs a new tool item with the specified characteristics.
+   *
+   * @param defaultSpeed             the default speed of the tool
+   * @param blockDamage              the damage inflicted by the tool to blocks
+   * @param canDestroyBlocksCreative if the tool can destroy blocks in creative mode
+   * @param rules                    a list of rules that define the behavior of the tool
+   *
+   * @return an BukkitItemStack instance representing the created tool
+   *
+   * @see ToolComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack tool(final float defaultSpeed, final int blockDamage, final boolean canDestroyBlocksCreative, final List<ToolRule> rules) {
+
+    return null;
+  }
+
+  /**
+   * Updates the tooltip style of the item stack.
+   *
+   * @param style the style to apply to the tooltip
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see TooltipStyleComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack tooltipStyle(final String style) {
+
+    return null;
+  }
+
+  /**
+   * Updates the trim properties of the item stack.
+   *
+   * @param pattern       the trim pattern
+   * @param material      the trim material
+   * @param showInTooltip whether to display the trim in the tooltip
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see TrimComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack trim(final String pattern, final String material, final boolean showInTooltip) {
+
+    return null;
+  }
+
+  /**
+   * Updates the unbreakable property of the item stack.
+   *
+   * @param showInTooltip whether to display the unbreakable property in the tooltip
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see UnbreakableComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack unbreakable(final boolean showInTooltip) {
+
+    return null;
+  }
+
+  /**
+   * Updates the use cooldown properties of the item stack.
+   *
+   * @param cooldownGroup the cooldown group identifier
+   * @param seconds       the cooldown duration in seconds
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see UseCooldownComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack useCooldown(final String cooldownGroup, final float seconds) {
+
+    return null;
+  }
+
+  /**
+   * Represents a weapon item that can be used for combat. Since MC Snapshot 25w02a.
+   *
+   * @param damagePerAttack    The amount of damage this weapon inflicts per attack
+   * @param canDisableBlocking Whether this weapon can disable blocking when used
+   *
+   * @see WeaponComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack weapon(final int damagePerAttack, final boolean canDisableBlocking) {
+
+    return null;
+  }
+
+  /**
+   * Updates the writable book content of the item stack.
+   *
+   * @param pages the pages to include in the writable book
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see WritableBookContentComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack writableBookContent(final List<String> pages) {
+
+    return null;
+  }
+
+  /**
+   * Updates the written book content of the item stack.
+   *
+   * @param title      the title of the book
+   * @param author     the author of the book
+   * @param generation the generation of the book
+   * @param resolved   whether the book is resolved
+   * @param pages      the pages to include in the book
+   *
+   * @return the updated BukkitItemStack instance
+   *
+   * @see WrittenBookContentComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public BukkitItemStack writtenBookContent(final String title, final String author, final int generation, final boolean resolved, final List<String> pages) {
+
+    return null;
   }
 }

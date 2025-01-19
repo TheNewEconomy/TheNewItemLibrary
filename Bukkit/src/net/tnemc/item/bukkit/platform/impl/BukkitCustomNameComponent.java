@@ -1,7 +1,7 @@
-package net.tnemc.item.bukkit.platform.implold;
+package net.tnemc.item.bukkit.platform.impl;
 /*
  * The New Item Library
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,17 +20,19 @@ package net.tnemc.item.bukkit.platform.implold;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.platform.impl.ItemDisplay;
+import net.tnemc.item.component.impl.CustomNameComponent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Optional;
+
 /**
- * BukkitItemDisplay
+ * BukkitCustomNameComponent
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
-public class BukkitItemDisplay extends ItemDisplay<BukkitItemStack, ItemStack> {
+public class BukkitCustomNameComponent extends CustomNameComponent<BukkitItemStack, ItemStack> {
 
   /**
    * @param serialized the serialized item stack to use
@@ -42,11 +44,23 @@ public class BukkitItemDisplay extends ItemDisplay<BukkitItemStack, ItemStack> {
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && serialized.display() != null) {
+    final Optional<BukkitCustomNameComponent> component = serialized.component("custom_name");
+    if(meta != null && component.isPresent()) {
 
-      meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(serialized.display()));
+      meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component.get().customName()));
     }
     return item;
+  }
+
+  /**
+   * @param version the version being used when this check is called.
+   *
+   * @return true if this check is enabled for the version, otherwise false
+   */
+  @Override
+  public boolean enabled(final String version) {
+
+    return true;
   }
 
   /**
@@ -61,7 +75,9 @@ public class BukkitItemDisplay extends ItemDisplay<BukkitItemStack, ItemStack> {
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasDisplayName()) {
 
-      serialized.display(LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName()));
+      this.customName = LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName());
+
+      serialized.applyComponent(this);
     }
     return serialized;
   }
