@@ -18,6 +18,8 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
@@ -40,18 +42,18 @@ import java.util.Objects;
  */
 public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected final List<String> lore = new ArrayList<>();
+  protected final List<Component> lore = new ArrayList<>();
 
   public LoreComponent() {
 
   }
 
-  public LoreComponent(final List<String> lore) {
+  public LoreComponent(final List<Component> lore) {
 
     this.lore.addAll(lore);
   }
 
-  public LoreComponent(final String... lore) {
+  public LoreComponent(final Component... lore) {
 
     this.lore.addAll(Arrays.asList(lore));
   }
@@ -65,7 +67,11 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
     final JSONArray loreArray = new JSONArray();
-    loreArray.addAll(lore);
+
+    for(final Component component : lore) {
+      loreArray.add(LegacyComponentSerializer.legacySection().serialize(component));
+    }
+
     json.put("lore", loreArray);
     return json;
   }
@@ -73,7 +79,10 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     lore.clear();
-    lore.addAll(json.getStringList("lore"));
+
+    for(final String str : json.getStringList("lore")) {
+      lore.add(LegacyComponentSerializer.legacySection().deserialize(str));
+    }
   }
 
   @Override
@@ -87,18 +96,18 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
     return Objects.hash(super.hashCode(), lore);
   }
 
-  public List<String> lore() {
+  public List<Component> lore() {
 
     return lore;
   }
 
-  public void lore(final List<String> lore) {
+  public void lore(final List<Component> lore) {
 
     this.lore.clear();
     this.lore.addAll(lore);
   }
 
-  public void lore(final String... lore) {
+  public void lore(final Component... lore) {
 
     this.lore.clear();
     this.lore.addAll(Arrays.asList(lore));

@@ -21,10 +21,13 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.component.impl.AttributeModifiersComponent;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -54,18 +57,18 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
 
       for(final net.tnemc.item.component.helper.AttributeModifier attribute : attributes.get().modifiers()) {
 
-        final AttributeModifier attr = new AttributeModifier(attribute.getId(),
-                                                             attribute.getType(),
+        final AttributeModifier.Operation operation = BukkitItemPlatform.PLATFORM.converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);
+        final EquipmentSlotGroup slot = BukkitItemPlatform.PLATFORM.converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);
+        final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType()),
                                                              attribute.getAmount(),
-                                                             ParsingUtil.attributeOperation(attribute.getOperation()),
-                                                             ParsingUtil.attributeSlot(attribute.getSlot()));
-
+                                                             operation,
+                                                             slot);
 
         meta.addAttributeModifier(Attribute.valueOf(attribute.getId()), attr);
       }
     }
 
-    return null;
+    return item;
   }
 
   /**

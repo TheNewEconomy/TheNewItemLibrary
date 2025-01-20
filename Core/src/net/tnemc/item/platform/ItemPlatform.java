@@ -42,6 +42,7 @@ import net.tnemc.item.persistent.impl.PersistentString;
 import net.tnemc.item.platform.applier.ItemApplicator;
 import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.check.LocaleItemCheck;
+import net.tnemc.item.platform.conversion.PlatformConverter;
 import net.tnemc.item.platform.serialize.ItemSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
@@ -69,7 +70,16 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
   protected final Map<String, Class<? extends ComponentEffect>> effects = new HashMap<>();
 
+  protected final PlatformConverter converter;
+
   public ItemPlatform() {
+
+    this(new PlatformConverter());
+  }
+
+  public ItemPlatform(final PlatformConverter converter) {
+
+    this.converter = converter;
 
     addPersistentDataType("bool", PersistentBool.class);
     addPersistentDataType("byte", PersistentByte.class);
@@ -95,6 +105,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   public abstract String version();
 
   public abstract void addDefaults();
+
+  public PlatformConverter converter() {
+
+    return converter;
+  }
 
   /**
    * Adds a persistent data type to the item platform.

@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit;
 
 import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.BlockPredicate;
@@ -150,7 +151,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
     this.localeStack = locale;
 
-    return BukkitItemRevampPlatform.PLATFORM.serializer(this.localeStack, this);
+    return BukkitItemPlatform.PLATFORM.serializer(this.localeStack, this);
   }
 
   /**
@@ -436,7 +437,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
         localeStack = new ItemStack(material, amount);
 
-        localeStack = BukkitItemRevampPlatform.PLATFORM.apply(this, localeStack);
+        localeStack = BukkitItemPlatform.PLATFORM.apply(this, localeStack);
 
         this.dirty = false;
       }

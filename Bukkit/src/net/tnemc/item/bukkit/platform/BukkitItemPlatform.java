@@ -28,8 +28,6 @@ import net.tnemc.item.bukkit.data.BukkitCrossbowData;
 import net.tnemc.item.bukkit.data.BukkitInstrumentData;
 import net.tnemc.item.bukkit.data.BukkitShieldData;
 import net.tnemc.item.bukkit.data.block.BukkitShulkerData;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemAttribute;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemDisplay;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemEnchant;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemEquip;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemFood;
@@ -74,7 +72,10 @@ import net.tnemc.item.bukkitbase.platform.impl.BukkitItemUnbreakable;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
@@ -135,6 +136,8 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
   @Override
   public void addDefaults() {
 
+    registerConversions();
+
     //bukkit base implementation.
     addMulti(new BukkitItemDamage<>());
     addMulti(new BukkitItemEnchantGlint<>());
@@ -150,8 +153,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
     //Bukkit-specific
     addMulti(new BukkitItemSerialData());
-    addMulti(new BukkitItemAttribute());
-    addMulti(new BukkitItemDisplay());
     addMulti(new BukkitItemEnchant());
     addMulti(new BukkitItemEquip());
     addMulti(new BukkitItemFood());
@@ -161,6 +162,63 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     addMulti(new BukkitItemProfile());
     addMulti(new BukkitItemTool());
     addMulti(new BukkitItemUse());
+  }
+
+  private void registerConversions() {
+
+    converter.registerConversion(String.class, EquipmentSlot.class, input -> {
+      switch (input.toUpperCase()) {
+        case "HAND": return EquipmentSlot.HAND;
+        case "OFF_HAND": return EquipmentSlot.OFF_HAND;
+        case "FEET": return EquipmentSlot.FEET;
+        case "LEGS": return EquipmentSlot.LEGS;
+        case "CHEST": return EquipmentSlot.CHEST;
+        case "HEAD": return EquipmentSlot.HEAD;
+        case "BODY": return EquipmentSlot.BODY;
+        default: return EquipmentSlot.HAND;
+      }
+    });
+
+    converter.registerConversion(EquipmentSlot.class, String.class, input -> {
+      switch (input) {
+        case HAND: return "HAND";
+        case OFF_HAND: return "OFF_HAND";
+        case FEET: return "FEET";
+        case LEGS: return "LEGS";
+        case CHEST: return "CHEST";
+        case HEAD: return "HEAD";
+        case BODY: return "BODY";
+        default: return "ANY";
+      }
+    });
+
+    converter.registerConversion(String.class, EquipmentSlotGroup.class, input -> {
+      final EquipmentSlotGroup group = EquipmentSlotGroup.getByName(input);
+      if (group == null) {
+        throw new IllegalArgumentException("Unknown input: " + input);
+      }
+      return group;
+    });
+
+    converter.registerConversion(EquipmentSlotGroup.class, String.class, EquipmentSlotGroup::toString);
+
+    converter.registerConversion(String.class, AttributeModifier.Operation.class, input -> {
+      switch (input.toLowerCase()) {
+        case "add_value": return AttributeModifier.Operation.ADD_NUMBER;
+        case "add_multiplied_base": return AttributeModifier.Operation.ADD_SCALAR;
+        case "add_multiplied_total": return AttributeModifier.Operation.MULTIPLY_SCALAR_1;
+        default: throw new IllegalArgumentException("Unknown input: " + input);
+      }
+    });
+
+    converter.registerConversion(AttributeModifier.Operation.class, String.class, input -> {
+      switch (input) {
+        case ADD_NUMBER: return "add_value";
+        case ADD_SCALAR: return "add_multiplied_base";
+        case MULTIPLY_SCALAR_1: return "add_multiplied_total";
+        default: throw new IllegalArgumentException("Unknown Operation: " + input);
+      }
+    });
   }
 
   /**
