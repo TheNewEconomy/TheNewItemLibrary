@@ -37,7 +37,7 @@ import java.util.Objects;
 
 public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected int rgb = -1;
+  protected String color = "none";
 
   public BaseColorComponent() {
 
@@ -46,16 +46,11 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
   /**
    * Constructs a new BaseColorComponent with the specified color.
    *
-   * @param rgb The base color value for the component.
+   * @param color The base color value for the component.
    */
-  public BaseColorComponent(final int rgb) {
+  public BaseColorComponent(final String color) {
 
-    this.rgb = rgb;
-  }
-
-  public BaseColorComponent(final int red, final int green, final int blue) {
-
-    this.rgb = (red << 16) + (green << 8) + blue;
+    this.color = color;
   }
 
   /**
@@ -74,7 +69,7 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
   @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
-    json.put("color", rgb);
+    json.put("color", color);
     return json;
   }
 
@@ -87,7 +82,7 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     if(json.has("color")) {
-      rgb = json.getInteger("color");
+      color = json.getString("color");
     }
   }
 
@@ -102,26 +97,21 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
   public boolean equals(final SerialComponent<I, T> component) {
     if(!(component instanceof final BaseColorComponent<?, ?> other)) return false;
 
-    return this.rgb == other.rgb;
+    return Objects.equals(color, other.color);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(rgb);
+    return Objects.hash(color);
   }
 
-  public int rgb() {
+  public String color() {
 
-    return rgb;
+    return color;
   }
 
-  public void rgb(final int rgb) {
+  public void color(final String color) {
 
-    this.rgb = rgb;
-  }
-
-  public void rgb(final int red, final int green, final int blue) {
-
-    this.rgb = (red << 16) + (green << 8) + blue;
+    this.color = color;
   }
 }

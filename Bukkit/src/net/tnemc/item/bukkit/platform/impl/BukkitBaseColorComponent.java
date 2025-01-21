@@ -19,6 +19,7 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.BaseColorComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Color;
@@ -61,12 +62,11 @@ public class BukkitBaseColorComponent  extends BaseColorComponent<BukkitItemStac
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final ShieldMeta meta) {
 
-        if(rgb < 0) {
-
+        try {
+          final DyeColor dyeColor = BukkitItemPlatform.PLATFORM.converter().convert(color, DyeColor.class);
+          meta.setBaseColor(dyeColor);
+        } catch(final IllegalArgumentException ignore) {
           meta.setBaseColor(null);
-        } else {
-          final DyeColor color = DyeColor.getByColor(Color.fromRGB(rgb));
-          meta.setBaseColor(color);
         }
 
         item.setItemMeta(meta);
@@ -87,7 +87,8 @@ public class BukkitBaseColorComponent  extends BaseColorComponent<BukkitItemStac
     if(item.hasItemMeta() && item.getItemMeta() instanceof final ShieldMeta meta) {
 
       if(meta.getBaseColor() != null) {
-        this.rgb = meta.getBaseColor().getColor().asRGB();
+
+        this.color = BukkitItemPlatform.PLATFORM.converter().convert(meta.getBaseColor(), String.class);
       }
     }
 

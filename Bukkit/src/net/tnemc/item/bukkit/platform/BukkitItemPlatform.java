@@ -72,6 +72,7 @@ import net.tnemc.item.bukkitbase.platform.impl.BukkitItemUnbreakable;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.EquipmentSlot;
@@ -107,6 +108,7 @@ import org.bukkit.inventory.meta.WritableBookMeta;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -187,12 +189,11 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       case CHEST -> "CHEST";
       case HEAD -> "HEAD";
       case BODY -> "BODY";
-      default -> "ANY";
     });
 
     converter.registerConversion(String.class, EquipmentSlotGroup.class, input -> {
       final EquipmentSlotGroup group = EquipmentSlotGroup.getByName(input);
-      if (group == null) {
+      if(group == null) {
         throw new IllegalArgumentException("Unknown input: " + input);
       }
       return group;
@@ -207,13 +208,51 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       default -> throw new IllegalArgumentException("Unknown input: " + input);
     });
 
-    converter.registerConversion(AttributeModifier.Operation.class, String.class, input -> {
-      switch (input) {
-        case ADD_NUMBER: return "add_value";
-        case ADD_SCALAR: return "add_multiplied_base";
-        case MULTIPLY_SCALAR_1: return "add_multiplied_total";
-        default: throw new IllegalArgumentException("Unknown Operation: " + input);
-      }
+    converter.registerConversion(AttributeModifier.Operation.class, String.class, input ->switch(input) {
+      case ADD_NUMBER -> "add_value";
+      case ADD_SCALAR -> "add_multiplied_base";
+      case MULTIPLY_SCALAR_1 -> "add_multiplied_total";
+    });
+
+    //Register conversions from string to DyeColor
+    converter.registerConversion(String.class, DyeColor.class, input ->switch(input.toLowerCase(Locale.ROOT)) {
+      case "white" -> DyeColor.WHITE;
+      case "orange" -> DyeColor.ORANGE;
+      case "magenta" -> DyeColor.MAGENTA;
+      case "light_blue" -> DyeColor.LIGHT_BLUE;
+      case "yellow" -> DyeColor.YELLOW;
+      case "lime" -> DyeColor.LIME;
+      case "pink" -> DyeColor.PINK;
+      case "gray" -> DyeColor.GRAY;
+      case "light_gray" -> DyeColor.LIGHT_GRAY;
+      case "cyan" -> DyeColor.CYAN;
+      case "purple" -> DyeColor.PURPLE;
+      case "blue" -> DyeColor.BLUE;
+      case "brown" -> DyeColor.BROWN;
+      case "green" -> DyeColor.GREEN;
+      case "red" -> DyeColor.RED;
+      case "black" -> DyeColor.BLACK;
+      default -> throw new IllegalArgumentException("Unknown DyeColor: " + input);
+    });
+
+    //Register conversions from DyeColor to string
+    converter.registerConversion(DyeColor.class, String.class, input ->switch(input) {
+      case WHITE -> "white";
+      case ORANGE -> "orange";
+      case MAGENTA -> "magenta";
+      case LIGHT_BLUE -> "light_blue";
+      case YELLOW -> "yellow";
+      case LIME -> "lime";
+      case PINK -> "pink";
+      case GRAY -> "gray";
+      case LIGHT_GRAY -> "light_gray";
+      case CYAN -> "cyan";
+      case PURPLE -> "purple";
+      case BLUE -> "blue";
+      case BROWN -> "brown";
+      case GREEN -> "green";
+      case RED -> "red";
+      case BLACK -> "black";
     });
   }
 
