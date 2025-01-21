@@ -28,7 +28,9 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * DyedColorComponent
+ * DyedColorComponent -The color applied of this leather armor piece. Color codes are the hex code of
+ * the color converted to a decimal number, or can be calculated from the Red, Green and Blue components
+ * using this formula: R << 16 + G << 8 + B
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#dyed_color">Reference</a>
@@ -46,6 +48,11 @@ public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> exte
   public DyedColorComponent(final int rgb) {
 
     this.rgb = rgb;
+  }
+
+  public DyedColorComponent(final int red, final int green, final int blue) {
+
+    this.rgb = (red << 16) + (green << 8) + blue;
   }
 
   @Override
@@ -88,5 +95,10 @@ public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> exte
   public void rgb(final int rgb) {
 
     this.rgb = rgb;
+  }
+
+  public void rgb(final int red, final int green, final int blue) {
+
+    this.rgb = (red << 16) + (green << 8) + blue;
   }
 }
