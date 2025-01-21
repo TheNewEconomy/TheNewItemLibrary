@@ -33,7 +33,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * ContainerComponent
+ * ContainerComponent - The items contained in this container.
  *
  * @author creatorfromhell
  * @since 0.2.0.0
