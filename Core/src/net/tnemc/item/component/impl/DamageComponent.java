@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * DamageComponent
+ * DamageComponent - The number of uses consumed (not remaining) of the item's durability.
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#damage">Reference</a>
@@ -53,7 +53,10 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
    */
   public DamageComponent(final int damage) {
 
-    this.damage = damage;
+    if(damage >= 0) {
+
+      this.damage = damage;
+    }
   }
 
   @Override
@@ -104,6 +107,9 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
    */
   public void damage(final int damage) {
 
-    this.damage = damage;
+    if(damage >= 0) {
+
+      this.damage = damage;
+    }
   }
 }

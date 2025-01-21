@@ -44,7 +44,7 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
-    final Optional<BukkitDamageComponent> component = serialized.component("damage");
+    final Optional<BukkitDamageComponent> component = serialized.component(identifier());
     component.ifPresent(bukkitDamageComponent->item.setDurability((short)bukkitDamageComponent.damage));
     return item;
   }
@@ -72,5 +72,18 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
     this.damage = item.getDurability();
     serialized.applyComponent(this);
     return serialized;
+  }
+
+  /**
+   * Checks if this component applies to the specified item.
+   *
+   * @param item The item to check against.
+   *
+   * @return True if this component applies to the item, false otherwise.
+   */
+  @Override
+  public boolean appliesTo(final ItemStack item) {
+
+    return true;
   }
 }

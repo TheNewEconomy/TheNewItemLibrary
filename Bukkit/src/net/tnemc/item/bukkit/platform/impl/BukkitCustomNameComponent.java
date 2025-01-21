@@ -44,7 +44,7 @@ public class BukkitCustomNameComponent extends CustomNameComponent<BukkitItemSta
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
-    final Optional<BukkitCustomNameComponent> component = serialized.component("custom_name");
+    final Optional<BukkitCustomNameComponent> component = serialized.component(identifier());
     if(meta != null && component.isPresent()) {
 
       meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component.get().customName()));
@@ -80,5 +80,18 @@ public class BukkitCustomNameComponent extends CustomNameComponent<BukkitItemSta
       serialized.applyComponent(this);
     }
     return serialized;
+  }
+
+  /**
+   * Checks if this component applies to the specified item.
+   *
+   * @param item The item to check against.
+   *
+   * @return True if this component applies to the item, false otherwise.
+   */
+  @Override
+  public boolean appliesTo(final ItemStack item) {
+
+    return true;
   }
 }

@@ -36,6 +36,15 @@ import org.json.simple.JSONObject;
 
 public interface SerialComponent<I extends AbstractItemStack<T>, T> extends ItemCheck<T>, ItemApplicator<I, T>, ItemSerializer<I, T> {
 
+
+  /**
+   * Checks if this component applies to the specified item.
+   *
+   * @param item The item to check against.
+   * @return True if this component applies to the item, false otherwise.
+   */
+  boolean appliesTo(T item);
+
   /**
    * Converts the {@link SerialComponent} to a JSON object.
    *

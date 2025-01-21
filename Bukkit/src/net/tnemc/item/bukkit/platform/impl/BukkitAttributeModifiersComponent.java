@@ -93,4 +93,17 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
 
     return null;
   }
+
+  /**
+   * Checks if this component applies to the specified item.
+   *
+   * @param item The item to check against.
+   *
+   * @return True if this component applies to the item, false otherwise.
+   */
+  @Override
+  public boolean appliesTo(final ItemStack item) {
+
+    return true;
+  }
 }

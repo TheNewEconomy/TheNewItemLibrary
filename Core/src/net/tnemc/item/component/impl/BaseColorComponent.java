@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * BaseColorComponent
+ * BaseColorComponent - The base dye color of the banner applied on a shield
  *
  * @see <a href="https://minecraft.wiki/w/Data_component_format#base_color">Reference</a>
  *

@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * BannerComponent
+ * BannerComponent - List of all patterns applied to the banner or the shield.
  *
  * @see <a href="https://minecraft.wiki/w/Data_component_format#banner_patterns">Reference</a>
  *

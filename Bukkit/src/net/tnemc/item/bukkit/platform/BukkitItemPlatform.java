@@ -179,17 +179,15 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       }
     });
 
-    converter.registerConversion(EquipmentSlot.class, String.class, input -> {
-      switch (input) {
-        case HAND: return "HAND";
-        case OFF_HAND: return "OFF_HAND";
-        case FEET: return "FEET";
-        case LEGS: return "LEGS";
-        case CHEST: return "CHEST";
-        case HEAD: return "HEAD";
-        case BODY: return "BODY";
-        default: return "ANY";
-      }
+    converter.registerConversion(EquipmentSlot.class, String.class, input->switch(input) {
+      case HAND -> "HAND";
+      case OFF_HAND -> "OFF_HAND";
+      case FEET -> "FEET";
+      case LEGS -> "LEGS";
+      case CHEST -> "CHEST";
+      case HEAD -> "HEAD";
+      case BODY -> "BODY";
+      default -> "ANY";
     });
 
     converter.registerConversion(String.class, EquipmentSlotGroup.class, input -> {
@@ -202,13 +200,11 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
     converter.registerConversion(EquipmentSlotGroup.class, String.class, EquipmentSlotGroup::toString);
 
-    converter.registerConversion(String.class, AttributeModifier.Operation.class, input -> {
-      switch (input.toLowerCase()) {
-        case "add_value": return AttributeModifier.Operation.ADD_NUMBER;
-        case "add_multiplied_base": return AttributeModifier.Operation.ADD_SCALAR;
-        case "add_multiplied_total": return AttributeModifier.Operation.MULTIPLY_SCALAR_1;
-        default: throw new IllegalArgumentException("Unknown input: " + input);
-      }
+    converter.registerConversion(String.class, AttributeModifier.Operation.class, input->switch(input.toLowerCase()) {
+      case "add_value" -> AttributeModifier.Operation.ADD_NUMBER;
+      case "add_multiplied_base" -> AttributeModifier.Operation.ADD_SCALAR;
+      case "add_multiplied_total" -> AttributeModifier.Operation.MULTIPLY_SCALAR_1;
+      default -> throw new IllegalArgumentException("Unknown input: " + input);
     });
 
     converter.registerConversion(AttributeModifier.Operation.class, String.class, input -> {
@@ -257,6 +253,22 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
           return Optional.of(new BukkitOminousBottleData());
 
+        }
+      }
+
+      if(VersionUtil.isOneTwenty(currentVersion)) {
+
+        if(meta instanceof ColorableArmorMeta) {
+
+          return Optional.of(new BukkitColourArmourData());
+
+        } else if(meta instanceof MusicInstrumentMeta) {
+
+          return Optional.of(new BukkitInstrumentData());
+
+        } else if(meta instanceof ArmorMeta) {
+
+          return Optional.of(new BukkitArmourData());
         }
       }
 
@@ -354,22 +366,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
         } else if(meta instanceof CompassMeta) {
 
           return Optional.of(new BukkitCompassData());
-        }
-      }
-
-      if(VersionUtil.isOneTwenty(currentVersion)) {
-
-        if(meta instanceof ColorableArmorMeta) {
-
-          return Optional.of(new BukkitColourArmourData());
-
-        } else if(meta instanceof MusicInstrumentMeta) {
-
-          return Optional.of(new BukkitInstrumentData());
-
-        } else if(meta instanceof ArmorMeta) {
-
-          return Optional.of(new BukkitArmourData());
         }
       }
     }
