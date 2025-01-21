@@ -35,6 +35,17 @@ import java.util.Optional;
 public class BukkitCustomNameComponent extends CustomNameComponent<BukkitItemStack, ItemStack> {
 
   /**
+   * @param version the version being used when this check is called.
+   *
+   * @return true if this check is enabled for the version, otherwise false
+   */
+  @Override
+  public boolean enabled(final String version) {
+
+    return true;
+  }
+
+  /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
    *
@@ -50,17 +61,6 @@ public class BukkitCustomNameComponent extends CustomNameComponent<BukkitItemSta
       meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component.get().customName()));
     }
     return item;
-  }
-
-  /**
-   * @param version the version being used when this check is called.
-   *
-   * @return true if this check is enabled for the version, otherwise false
-   */
-  @Override
-  public boolean enabled(final String version) {
-
-    return true;
   }
 
   /**

@@ -43,6 +43,17 @@ import java.util.Optional;
 public class BukkitAttributeModifiersComponent extends AttributeModifiersComponent<BukkitItemStack, ItemStack> {
 
   /**
+   * @param version the version being used when this check is called.
+   *
+   * @return true if this check is enabled for the version, otherwise false
+   */
+  @Override
+  public boolean enabled(final String version) {
+
+    return true;
+  }
+
+  /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
    *
@@ -69,17 +80,6 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
     }
 
     return item;
-  }
-
-  /**
-   * @param version the version being used when this check is called.
-   *
-   * @return true if this check is enabled for the version, otherwise false
-   */
-  @Override
-  public boolean enabled(final String version) {
-
-    return true;
   }
 
   /**

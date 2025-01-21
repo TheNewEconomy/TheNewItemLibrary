@@ -19,13 +19,9 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
-import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.component.impl.DyedColorComponent;
-import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ColorableArmorMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.Optional;
@@ -37,6 +33,17 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class BukkitDyedColorComponent extends DyedColorComponent<BukkitItemStack, ItemStack> {
+
+  /**
+   * @param version the version being used when this check is called.
+   *
+   * @return true if this check is enabled for the version, otherwise false
+   */
+  @Override
+  public boolean enabled(final String version) {
+
+    return true;
+  }
 
   /**
    * @param serialized the serialized item stack to use
@@ -58,17 +65,6 @@ public class BukkitDyedColorComponent extends DyedColorComponent<BukkitItemStack
       }
     });
     return item;
-  }
-
-  /**
-   * @param version the version being used when this check is called.
-   *
-   * @return true if this check is enabled for the version, otherwise false
-   */
-  @Override
-  public boolean enabled(final String version) {
-
-    return true;
   }
 
   /**

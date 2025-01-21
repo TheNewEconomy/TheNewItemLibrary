@@ -20,9 +20,12 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.component.impl.DamageComponent;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
@@ -36,20 +39,6 @@ import java.util.Optional;
 public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, ItemStack> {
 
   /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   */
-  @Override
-  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
-
-    final Optional<BukkitDamageComponent> component = serialized.component(identifier());
-    component.ifPresent(bukkitDamageComponent->item.setDurability((short)bukkitDamageComponent.damage));
-    return item;
-  }
-
-  /**
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
@@ -61,6 +50,33 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
   }
 
   /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   */
+  @Override
+  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
+
+    final Optional<BukkitDamageComponent> component = serialized.component(identifier());
+
+    if(component.isPresent()) {
+      if(VersionUtil.isOneThirteen(BukkitItemPlatform.PLATFORM.version())) {
+
+        if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
+
+          meta.setDamage(component.get().damage());
+          item.setItemMeta(meta);
+        }
+      } else {
+
+        item.setDurability((short)component.get().damage);
+      }
+    }
+    return item;
+  }
+
+  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -69,7 +85,15 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    this.damage = item.getDurability();
+    if(VersionUtil.isOneThirteen(BukkitItemPlatform.PLATFORM.version())) {
+
+      if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
+        this.damage = meta.getDamage();
+      }
+    } else {
+      this.damage = item.getDurability();
+    }
+
     serialized.applyComponent(this);
     return serialized;
   }
