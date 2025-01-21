@@ -21,7 +21,6 @@ package net.tnemc.item.bukkit.platform;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.data.BukkitArmourData;
-import net.tnemc.item.bukkit.data.BukkitColourArmourData;
 import net.tnemc.item.bukkit.data.BukkitCrossbowData;
 import net.tnemc.item.bukkit.data.BukkitInstrumentData;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemEquip;
@@ -37,7 +36,6 @@ import net.tnemc.item.bukkitbase.data.BukkitAxolotlData;
 import net.tnemc.item.bukkitbase.data.BukkitBannerData;
 import net.tnemc.item.bukkitbase.data.BukkitBookData;
 import net.tnemc.item.bukkitbase.data.BukkitCompassData;
-import net.tnemc.item.bukkitbase.data.BukkitEnchantData;
 import net.tnemc.item.bukkitbase.data.BukkitFireworkData;
 import net.tnemc.item.bukkitbase.data.BukkitFireworkEffectData;
 import net.tnemc.item.bukkitbase.data.BukkitKnowledgeBookData;
@@ -77,10 +75,8 @@ import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.ColorableArmorMeta;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.CrossbowMeta;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -95,6 +91,8 @@ import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.inventory.meta.SuspiciousStewMeta;
 import org.bukkit.inventory.meta.TropicalFishBucketMeta;
 import org.bukkit.inventory.meta.WritableBookMeta;
+import org.bukkit.inventory.meta.trim.TrimMaterial;
+import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -265,12 +263,23 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
         throw new IllegalArgumentException("Unknown PatternType: " + input);
       });
 
-      converter.registerConversion(PatternType.class, String.class, input->{
+      if(VersionUtil.isOneTwentyOneFour(version())) {
 
-        final NamespacedKey key = input.getKeyOrThrow();
+        converter.registerConversion(PatternType.class, String.class, input->{
 
-        return key.toString();
-      });
+          final NamespacedKey key = input.getKeyOrThrow();
+
+          return key.toString();
+        });
+      } else {
+
+        converter.registerConversion(PatternType.class, String.class, input->{
+
+          final NamespacedKey key = input.getKey();
+
+          return key.toString();
+        });
+      }
 
     } else {
 
@@ -282,7 +291,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     //Register Conversions for Enchantment, which will be dependent on versions
     //We'll separate the legacy find methods from the modern ones in order to maintain one component
     // class for both.
-    if(VersionUtil.isOneTwentyOne(version())) {
+    if(VersionUtil.isOneTwentyOneFour(version())) {
 
       converter.registerConversion(String.class, Enchantment.class, (final String input)->{
 
@@ -321,6 +330,66 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       });
 
       converter.registerConversion(Enchantment.class, String.class, Enchantment::getName);
+    }
+
+    //Register Conversions for Trim Material, which will be dependent on versions
+    //We'll separate the legacy find methods from the modern ones in order to maintain one component
+    // class for both.
+    if(VersionUtil.isOneTwentyOneFour(version())) {
+
+      converter.registerConversion(TrimMaterial.class, String.class, input->input.getKeyOrThrow().toString());
+
+      converter.registerConversion(String.class, TrimMaterial.class, input->{
+        final NamespacedKey key = NamespacedKey.fromString(input);
+        if(key != null) {
+
+          return Registry.TRIM_MATERIAL.get(key);
+        }
+        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
+      });
+
+    } else if(VersionUtil.isOneTwenty(version())) {
+
+      converter.registerConversion(TrimMaterial.class, String.class, input->input.getKey().toString());
+
+      converter.registerConversion(String.class, TrimMaterial.class, input->{
+        final NamespacedKey key = NamespacedKey.fromString(input);
+        if(key != null) {
+
+          return Registry.TRIM_MATERIAL.get(key);
+        }
+        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
+      });
+    }
+
+    //Register Conversions for Trim Pattern, which will be dependent on versions
+    //We'll separate the legacy find methods from the modern ones in order to maintain one component
+    // class for both.
+    if(VersionUtil.isOneTwentyOneFour(version())) {
+
+      converter.registerConversion(TrimPattern.class, String.class, input->input.getKeyOrThrow().toString());
+
+      converter.registerConversion(String.class, TrimPattern.class, input->{
+        final NamespacedKey key = NamespacedKey.fromString(input);
+        if(key != null) {
+
+          return Registry.TRIM_PATTERN.get(key);
+        }
+        throw new IllegalArgumentException("Unknown TrimPattern: " + input);
+      });
+
+    } else if(VersionUtil.isOneTwenty(version())) {
+
+      converter.registerConversion(TrimPattern.class, String.class, input->input.getKey().toString());
+
+      converter.registerConversion(String.class, TrimPattern.class, input->{
+        final NamespacedKey key = NamespacedKey.fromString(input);
+        if(key != null) {
+
+          return Registry.TRIM_PATTERN.get(key);
+        }
+        throw new IllegalArgumentException("Unknown TrimPattern: " + input);
+      });
     }
   }
 
@@ -361,11 +430,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
       if(VersionUtil.isOneTwenty(currentVersion)) {
 
-        if(meta instanceof ColorableArmorMeta) {
-
-          return Optional.of(new BukkitColourArmourData());
-
-        } else if(meta instanceof MusicInstrumentMeta) {
+        if(meta instanceof MusicInstrumentMeta) {
 
           return Optional.of(new BukkitInstrumentData());
 
@@ -382,10 +447,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       } else if(meta instanceof BookMeta) {
 
         return Optional.of(new BukkitBookData());
-
-      } else if(meta instanceof EnchantmentStorageMeta) {
-
-        return Optional.of(new BukkitEnchantData());
 
       } else if(meta instanceof FireworkEffectMeta) {
 

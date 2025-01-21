@@ -37,8 +37,12 @@ import java.util.Objects;
  */
 public abstract class TrimComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
 
-  protected String pattern;
-  protected String material;
+  protected String pattern = "";
+  protected String material = "";
+
+  public TrimComponent() {
+
+  }
 
   public TrimComponent(final String pattern, final String material) {
 

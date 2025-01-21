@@ -145,6 +145,14 @@ public class VersionUtil {
   }
 
   /**
+   * @return Whether the bukkit in use is for MC >= 1.21.4
+   */
+  public static boolean isOneTwentyOneFour(final String version) {
+
+    return isVersion(version, "1.21.4");
+  }
+
+  /**
    * @return Whether the bukkit in use is for MC >= 1.22
    */
   public static boolean isOneTwentyTwo(final String version) {
