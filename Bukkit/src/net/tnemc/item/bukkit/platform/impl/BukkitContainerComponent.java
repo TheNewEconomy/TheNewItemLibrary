@@ -20,14 +20,11 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ContainerComponent;
-import net.tnemc.item.component.impl.DyedColorComponent;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Container;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.Optional;
 

@@ -20,16 +20,9 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
-import net.tnemc.item.component.helper.PatternData;
-import net.tnemc.item.component.impl.BannerPatternsComponent;
 import net.tnemc.item.component.impl.EnchantmentsComponent;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
 
 import java.util.Map;
 import java.util.Optional;

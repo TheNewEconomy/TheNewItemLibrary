@@ -20,7 +20,6 @@ package net.tnemc.item.bukkit.platform;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.data.BukkitArmourData;
 import net.tnemc.item.bukkit.data.BukkitCrossbowData;
 import net.tnemc.item.bukkit.data.BukkitInstrumentData;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemEquip;
@@ -71,7 +70,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BookMeta;
@@ -434,9 +432,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
           return Optional.of(new BukkitInstrumentData());
 
-        } else if(meta instanceof ArmorMeta) {
-
-          return Optional.of(new BukkitArmourData());
         }
       }
 

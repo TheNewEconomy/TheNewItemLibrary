@@ -20,7 +20,6 @@ package net.tnemc.sponge.platform.registry;
 
 import net.tnemc.item.platform.registry.BaseHelper;
 import net.tnemc.item.platform.registry.SupplierRegistryHandler;
-import net.tnemc.item.providers.VersionUtil;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.registry.RegistryTypes;
 

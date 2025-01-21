@@ -18,8 +18,6 @@ package net.tnemc.item.platform.registry;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.providers.HelperMethods;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;

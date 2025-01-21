@@ -19,10 +19,8 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.attribute.SerialAttribute;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
-import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.component.impl.AttributeModifiersComponent;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -31,7 +29,6 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Map;
 import java.util.Optional;
 
 /**
