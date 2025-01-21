@@ -60,6 +60,7 @@ public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("types", types);
     return json;

@@ -19,11 +19,14 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.helper.PatternData;
 import net.tnemc.item.component.impl.BannerPatternsComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
@@ -32,7 +35,7 @@ import org.bukkit.inventory.meta.BannerMeta;
 import java.util.Optional;
 
 /**
- * BukkitBannerPatternsComponent
+ * BukkitModernBannerPatternsComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
@@ -47,7 +50,7 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
   @Override
   public boolean enabled(final String version) {
 
-    return !VersionUtil.isOneTwentyOne(version);
+    return VersionUtil.isOneTwentyOne(version);
   }
 
   /**
@@ -67,11 +70,17 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
         for(final PatternData pattern : patterns) {
 
           final DyeColor color = DyeColor.getByColor(Color.fromRGB(Integer.parseInt(pattern.getColor())));
+
           if(color != null) {
 
-            meta.addPattern(new Pattern(color, PatternType.valueOf(pattern.getPattern())));
-          }
+            try {
 
+              meta.addPattern(new Pattern(color, BukkitItemPlatform.PLATFORM.converter().convert(pattern.getPattern(), PatternType.class)));
+            } catch(final Exception ignore) {
+
+              //pattern type doesn't exist.
+            }
+          }
         }
 
         item.setItemMeta(meta);
@@ -92,8 +101,14 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
     if(item.hasItemMeta() && item.getItemMeta() instanceof final BannerMeta meta) {
       for(final Pattern pattern : meta.getPatterns()) {
 
-        patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                     pattern.getPattern().getIdentifier()));
+        try {
+          patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
+                                       BukkitItemPlatform.PLATFORM.converter().convert(pattern.getPattern(), String.class)));
+        } catch(final Exception ignore) {
+
+          //key isn't found
+        }
+
       }
     }
 

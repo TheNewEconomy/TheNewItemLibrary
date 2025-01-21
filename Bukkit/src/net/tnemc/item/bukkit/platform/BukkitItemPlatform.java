@@ -30,7 +30,6 @@ import net.tnemc.item.bukkit.data.BukkitShieldData;
 import net.tnemc.item.bukkit.data.block.BukkitShulkerData;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemEnchant;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemEquip;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemFood;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemJuke;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemLore;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemMaterial;
@@ -73,8 +72,11 @@ import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
@@ -157,7 +159,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     addMulti(new BukkitItemSerialData());
     addMulti(new BukkitItemEnchant());
     addMulti(new BukkitItemEquip());
-    addMulti(new BukkitItemFood());
     addMulti(new BukkitItemJuke());
     addMulti(new BukkitItemLore());
     addMulti(new BukkitItemMaterial());
@@ -168,6 +169,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
   private void registerConversions() {
 
+    //RegisterConversion for EquipmentSlot
     converter.registerConversion(String.class, EquipmentSlot.class, input -> {
       switch (input.toUpperCase()) {
         case "HAND": return EquipmentSlot.HAND;
@@ -191,6 +193,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       case BODY -> "BODY";
     });
 
+    //RegisterConversion for EquipmentSlotGroup
     converter.registerConversion(String.class, EquipmentSlotGroup.class, input -> {
       final EquipmentSlotGroup group = EquipmentSlotGroup.getByName(input);
       if(group == null) {
@@ -201,6 +204,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
     converter.registerConversion(EquipmentSlotGroup.class, String.class, EquipmentSlotGroup::toString);
 
+    //Register Conversions for AttributeModifier
     converter.registerConversion(String.class, AttributeModifier.Operation.class, input->switch(input.toLowerCase()) {
       case "add_value" -> AttributeModifier.Operation.ADD_NUMBER;
       case "add_multiplied_base" -> AttributeModifier.Operation.ADD_SCALAR;
@@ -214,7 +218,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       case MULTIPLY_SCALAR_1 -> "add_multiplied_total";
     });
 
-    //Register conversions from string to DyeColor
+    //Register conversions for DyeColor
     converter.registerConversion(String.class, DyeColor.class, input ->switch(input.toLowerCase(Locale.ROOT)) {
       case "white" -> DyeColor.WHITE;
       case "orange" -> DyeColor.ORANGE;
@@ -235,7 +239,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       default -> throw new IllegalArgumentException("Unknown DyeColor: " + input);
     });
 
-    //Register conversions from DyeColor to string
     converter.registerConversion(DyeColor.class, String.class, input ->switch(input) {
       case WHITE -> "white";
       case ORANGE -> "orange";
@@ -254,6 +257,38 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       case RED -> "red";
       case BLACK -> "black";
     });
+
+    //Register Conversions for PatternType, which will be dependent
+    //We'll separate the legacy find methods from the modern ones in order to maintain one component class for both.
+    if(VersionUtil.isOneTwentyOne(version())) {
+
+      converter.registerConversion(String.class, PatternType.class, input->{
+
+        final NamespacedKey key = NamespacedKey.fromString(input);
+        if(key != null) {
+
+          final PatternType patternType = Registry.BANNER_PATTERN.get(key);
+          if(patternType != null) {
+
+            return patternType;
+          }
+        }
+        throw new IllegalArgumentException("Unknown PatternType: " + input);
+      });
+
+      converter.registerConversion(PatternType.class, String.class, input->{
+
+        final NamespacedKey key = input.getKeyOrThrow();
+
+        return key.toString();
+      });
+
+    } else {
+
+      converter.registerConversion(String.class, PatternType.class, PatternType::valueOf);
+
+      converter.registerConversion(PatternType.class, String.class, PatternType::getIdentifier);
+    }
   }
 
   /**
