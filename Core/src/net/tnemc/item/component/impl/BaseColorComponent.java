@@ -37,16 +37,25 @@ import java.util.Objects;
 
 public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected String color;
+  protected int rgb = -1;
+
+  public BaseColorComponent() {
+
+  }
 
   /**
    * Constructs a new BaseColorComponent with the specified color.
    *
-   * @param color The base color value for the component.
+   * @param rgb The base color value for the component.
    */
-  public BaseColorComponent(final String color) {
+  public BaseColorComponent(final int rgb) {
 
-    this.color = color;
+    this.rgb = rgb;
+  }
+
+  public BaseColorComponent(final int red, final int green, final int blue) {
+
+    this.rgb = (red << 16) + (green << 8) + blue;
   }
 
   /**
@@ -65,7 +74,7 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
   @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
-    json.put("color", color);
+    json.put("color", rgb);
     return json;
   }
 
@@ -78,7 +87,7 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     if(json.has("color")) {
-      color = json.getString("color");
+      rgb = json.getInteger("color");
     }
   }
 
@@ -93,27 +102,26 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
   public boolean equals(final SerialComponent<I, T> component) {
     if(!(component instanceof final BaseColorComponent<?, ?> other)) return false;
 
-    return Objects.equals(this.color, other.color);
+    return this.rgb == other.rgb;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(color);
+    return Objects.hash(rgb);
   }
 
-  /**
-   * @return The current base color.
-   */
-  public String color() {
-    return color;
+  public int rgb() {
+
+    return rgb;
   }
 
-  /**
-   * Sets the base color for this component.
-   *
-   * @param color The color to set.
-   */
-  public void color(final String color) {
-    this.color = color;
+  public void rgb(final int rgb) {
+
+    this.rgb = rgb;
+  }
+
+  public void rgb(final int red, final int green, final int blue) {
+
+    this.rgb = (red << 16) + (green << 8) + blue;
   }
 }
