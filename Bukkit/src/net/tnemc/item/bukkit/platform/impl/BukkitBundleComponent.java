@@ -19,23 +19,20 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
-import net.tnemc.item.component.impl.BaseColorComponent;
+import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ShieldMeta;
+import org.bukkit.inventory.meta.BundleMeta;
 
 import java.util.Optional;
 
 /**
- * BukkitBaseColorComponent
+ * BukkitBundleComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack, ItemStack> {
+public class BukkitBundleComponent extends BundleComponent<BukkitItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -45,7 +42,7 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOne(version);
+    return VersionUtil.isOneSeventeen(version);
   }
 
   /**
@@ -57,17 +54,12 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
-    final Optional<BukkitBaseColorComponent> componentOptional = serialized.component(identifier());
+    final Optional<BukkitBundleComponent> componentOptional = serialized.component(identifier());
     componentOptional.ifPresent(component->{
 
-      if(item.hasItemMeta() && item.getItemMeta() instanceof final ShieldMeta meta) {
+      if(item.hasItemMeta() && item.getItemMeta() instanceof final BundleMeta meta) {
 
-        try {
-          final DyeColor dyeColor = BukkitItemPlatform.PLATFORM.converter().convert(color, DyeColor.class);
-          meta.setBaseColor(dyeColor);
-        } catch(final IllegalArgumentException ignore) {
-          meta.setBaseColor(null);
-        }
+        items.forEach((slot, stack)->meta.addItem(stack.locale()));
 
         item.setItemMeta(meta);
       }
@@ -84,11 +76,13 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    if(item.hasItemMeta() && item.getItemMeta() instanceof final ShieldMeta meta) {
+    if(item.hasItemMeta() && item.getItemMeta() instanceof final BundleMeta meta) {
 
-      if(meta.getBaseColor() != null) {
+      int i = 0;
+      for(final ItemStack stack : meta.getItems()) {
 
-        this.color = BukkitItemPlatform.PLATFORM.converter().convert(meta.getBaseColor(), String.class);
+        items.put(i, new BukkitItemStack().of(stack));
+        i++;
       }
     }
 
@@ -106,6 +100,6 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasItemMeta() && item.getItemMeta() instanceof ShieldMeta;
+    return item.hasItemMeta() && item.getItemMeta() instanceof BundleMeta;
   }
 }
