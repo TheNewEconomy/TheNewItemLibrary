@@ -26,14 +26,15 @@ import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 /**
- * FoodComponent
+ * FoodComponent - The food stats for this consumable item. Has no effect unless the item can be
+ * consumed (i.e. the item has the consumable component).
  *
  * @author creatorfromhell
  * @since 0.0.1.0
  */
 public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected boolean noHunger;
+  protected boolean canAlwaysEat = false;
   protected float saturation;
   protected int nutrition;
 
@@ -41,20 +42,20 @@ public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implement
 
   }
 
-  public FoodComponent(final boolean noHunger) {
+  public FoodComponent(final boolean canAlwaysEat) {
 
-    this.noHunger = noHunger;
+    this.canAlwaysEat = canAlwaysEat;
   }
 
-  public FoodComponent(final boolean noHunger, final float saturation) {
+  public FoodComponent(final boolean canAlwaysEat, final float saturation) {
 
-    this.noHunger = noHunger;
+    this.canAlwaysEat = canAlwaysEat;
     this.saturation = saturation;
   }
 
-  public FoodComponent(final boolean noHunger, final float saturation, final int nutrition) {
+  public FoodComponent(final boolean canAlwaysEat, final float saturation, final int nutrition) {
 
-    this.noHunger = noHunger;
+    this.canAlwaysEat = canAlwaysEat;
     this.saturation = saturation;
     this.nutrition = nutrition;
   }
@@ -78,7 +79,7 @@ public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implement
 
     final JSONObject food = new JSONObject();
     food.put("name", "food-component");
-    food.put("noHunger", noHunger);
+    food.put("canAlwaysEat", canAlwaysEat);
     food.put("saturation", saturation);
     food.put("nutrition", nutrition);
     return food;
@@ -92,7 +93,7 @@ public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implement
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
-    noHunger = json.getBoolean("noHunger");
+    canAlwaysEat = json.getBoolean("canAlwaysEat");
     saturation = json.getFloat("saturation");
     nutrition = json.getInteger("nutrition");
   }
@@ -110,21 +111,21 @@ public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implement
 
     if(component instanceof final FoodComponent<?, ?> food) {
 
-      return this.noHunger == food.noHunger &&
+      return this.canAlwaysEat == food.canAlwaysEat &&
              Float.compare(this.saturation, food.saturation) == 0 &&
              this.nutrition == food.nutrition;
     }
     return false;
   }
 
-  public boolean noHunger() {
+  public boolean canAlwaysEat() {
 
-    return noHunger;
+    return canAlwaysEat;
   }
 
-  public void noHunger(final boolean noHunger) {
+  public void canAlwaysEat(final boolean canAlwaysEat) {
 
-    this.noHunger = noHunger;
+    this.canAlwaysEat = canAlwaysEat;
   }
 
   public float saturation() {
