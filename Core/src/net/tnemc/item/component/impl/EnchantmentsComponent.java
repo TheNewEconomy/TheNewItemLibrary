@@ -31,8 +31,9 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * EnchantmentsComponent
+ * EnchantmentsComponent - Can contain either the following fields, or key-value pairs of levels of enchantments.
  *
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#enchantments">Reference</a>
  * @author creatorfromhell
  * @since 0.2.0.0
  */

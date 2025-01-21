@@ -23,9 +23,9 @@ import net.tnemc.item.AbstractItemStack;
 import java.util.Map;
 
 /**
- * BundleComponent
+ * BundleComponent - The items stored inside this bundle.
  *
- * @see <a href="https://minecraft.wiki/w/Data_component_format#damage_resistant">Reference</a>
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#bundle_contents">Reference</a>
  * @author creatorfromhell
  * @since 0.2.0.0
  */

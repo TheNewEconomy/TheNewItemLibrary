@@ -22,25 +22,25 @@ import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.helper.PatternData;
 import net.tnemc.item.component.impl.BannerPatternsComponent;
-import net.tnemc.item.providers.VersionUtil;
+import net.tnemc.item.component.impl.EnchantmentsComponent;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
- * BukkitModernBannerPatternsComponent
+ * BukkitEnchantmentsComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class BukkitBannerPatternsComponent extends BannerPatternsComponent<BukkitItemStack, ItemStack> {
+public class BukkitEnchantmentsComponent extends EnchantmentsComponent<BukkitItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -65,25 +65,18 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
     final Optional<BukkitBannerPatternsComponent> componentOptional = serialized.component(identifier());
     componentOptional.ifPresent(component->{
 
-      if(item.hasItemMeta() && item.getItemMeta() instanceof final BannerMeta meta) {
+      for(final Map.Entry<String, Integer> entry : levels.entrySet()) {
 
-        for(final PatternData pattern : patterns) {
+        try {
 
-          final DyeColor color = DyeColor.getByColor(Color.fromRGB(Integer.parseInt(pattern.getColor())));
+          final Enchantment enchant = BukkitItemPlatform.PLATFORM.converter().convert(entry.getKey(), Enchantment.class);
+          if(enchant != null) {
 
-          if(color != null) {
-
-            try {
-
-              meta.addPattern(new Pattern(color, BukkitItemPlatform.PLATFORM.converter().convert(pattern.getPattern(), PatternType.class)));
-            } catch(final Exception ignore) {
-
-              //pattern type doesn't exist.
-            }
+            item.addUnsafeEnchantment(enchant, entry.getValue());
           }
+        } catch(final Exception ignore) {
+          //enchantment couldn't be found.
         }
-
-        item.setItemMeta(meta);
       }
     });
     return item;
@@ -98,18 +91,9 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    if(item.hasItemMeta() && item.getItemMeta() instanceof final BannerMeta meta) {
-      for(final Pattern pattern : meta.getPatterns()) {
+    for(final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
 
-        try {
-          patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                       BukkitItemPlatform.PLATFORM.converter().convert(pattern.getPattern(), String.class)));
-        } catch(final Exception ignore) {
-
-          //key isn't found
-        }
-
-      }
+      levels.put(BukkitItemPlatform.PLATFORM.converter().convert(entry.getKey(), String.class), entry.getValue());
     }
 
     serialized.applyComponent(this);
@@ -126,6 +110,6 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasItemMeta() && item.getItemMeta() instanceof BannerMeta;
+    return true;
   }
 }

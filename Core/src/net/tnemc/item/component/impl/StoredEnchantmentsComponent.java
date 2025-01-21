@@ -30,24 +30,22 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * StoredEnchantmentsComponents
+ * StoredEnchantmentsComponents - Can contain either the following fields, or key-value pairs of levels of enchantments.
  *
  * @author creatorfromhell
- * @see <a href="https://minecraft.wiki/w/Data_component_format#">Reference</a>
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#stored_enchantments">Reference</a>
  * <p>
  * @since 0.2.0.0
  */
-public abstract class StoredEnchantmentsComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
-
-  protected final Map<String, Integer> enchantments = new HashMap<>();
+public abstract class StoredEnchantmentsComponent<I extends AbstractItemStack<T>, T> extends EnchantmentsComponent<I, T> {
 
   public StoredEnchantmentsComponent() {
 
   }
 
-  public StoredEnchantmentsComponent(final Map<String, Integer> enchantments) {
+  public StoredEnchantmentsComponent(final Map<String, Integer> levels) {
 
-    this.enchantments.putAll(enchantments);
+    super(levels);
   }
 
   @Override
@@ -56,49 +54,13 @@ public abstract class StoredEnchantmentsComponent<I extends AbstractItemStack<T>
   }
 
   @Override
-  public JSONObject toJSON() {
-    final JSONObject json = new JSONObject();
-    final JSONObject levels = new JSONObject();
-    for (final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
-      levels.put(entry.getKey(), entry.getValue());
-    }
-    json.put("levels", levels);
-    json.put("show_in_tooltip", showInTooltip);
-    return json;
-  }
-
-  @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    super.readJSON(json, platform);
-    enchantments.clear();
-
-    final JSONObject levels = json.getJSON("levels");
-    for (final Object key : levels.keySet()) {
-      final String enchantmentId = key.toString();
-      final int level = Integer.parseInt(levels.get(key).toString());
-      enchantments.put(enchantmentId, level);
-    }
-  }
-
-  @Override
   public boolean equals(final SerialComponent<I, T> component) {
     if (!(component instanceof final StoredEnchantmentsComponent<?, ?> other)) return false;
-    return showInTooltip == other.showInTooltip && Objects.equals(this.enchantments, other.enchantments);
+    return showInTooltip == other.showInTooltip && Objects.equals(this.levels, other.levels);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode(), enchantments);
-  }
-
-  public Map<String, Integer> enchantments() {
-
-    return enchantments;
-  }
-
-  public void enchantments(final Map<String, Integer> enchantments) {
-
-    this.enchantments.clear();
-    this.enchantments.putAll(enchantments);
+    return Objects.hash(super.hashCode(), levels);
   }
 }

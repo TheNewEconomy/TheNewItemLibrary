@@ -21,6 +21,7 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.component.impl.DyedColorComponent;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.Container;
@@ -47,7 +48,7 @@ public class BukkitShulkerColorComponent extends DyedColorComponent<BukkitItemSt
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    return VersionUtil.isOneEleven(version);
   }
 
   /**

@@ -21,14 +21,9 @@ package net.tnemc.item.bukkit.platform;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.data.BukkitArmourData;
-import net.tnemc.item.bukkit.data.BukkitBannerModernData;
-import net.tnemc.item.bukkit.data.BukkitBundleData;
 import net.tnemc.item.bukkit.data.BukkitColourArmourData;
 import net.tnemc.item.bukkit.data.BukkitCrossbowData;
 import net.tnemc.item.bukkit.data.BukkitInstrumentData;
-import net.tnemc.item.bukkit.data.BukkitShieldData;
-import net.tnemc.item.bukkit.data.block.BukkitShulkerData;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemEnchant;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemEquip;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemJuke;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemLore;
@@ -42,12 +37,10 @@ import net.tnemc.item.bukkitbase.data.BukkitAxolotlData;
 import net.tnemc.item.bukkitbase.data.BukkitBannerData;
 import net.tnemc.item.bukkitbase.data.BukkitBookData;
 import net.tnemc.item.bukkitbase.data.BukkitCompassData;
-import net.tnemc.item.bukkitbase.data.BukkitDamageData;
 import net.tnemc.item.bukkitbase.data.BukkitEnchantData;
 import net.tnemc.item.bukkitbase.data.BukkitFireworkData;
 import net.tnemc.item.bukkitbase.data.BukkitFireworkEffectData;
 import net.tnemc.item.bukkitbase.data.BukkitKnowledgeBookData;
-import net.tnemc.item.bukkitbase.data.BukkitLeatherData;
 import net.tnemc.item.bukkitbase.data.BukkitMapData;
 import net.tnemc.item.bukkitbase.data.BukkitOminousBottleData;
 import net.tnemc.item.bukkitbase.data.BukkitPotionData;
@@ -75,33 +68,28 @@ import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.block.ShulkerBox;
 import org.bukkit.block.banner.PatternType;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
 import org.bukkit.inventory.meta.BannerMeta;
-import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.BundleMeta;
 import org.bukkit.inventory.meta.ColorableArmorMeta;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.CrossbowMeta;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.KnowledgeBookMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.MusicInstrumentMeta;
 import org.bukkit.inventory.meta.OminousBottleMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.Repairable;
-import org.bukkit.inventory.meta.ShieldMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.inventory.meta.SuspiciousStewMeta;
@@ -157,7 +145,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
     //Bukkit-specific
     addMulti(new BukkitItemSerialData());
-    addMulti(new BukkitItemEnchant());
     addMulti(new BukkitItemEquip());
     addMulti(new BukkitItemJuke());
     addMulti(new BukkitItemLore());
@@ -167,6 +154,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     addMulti(new BukkitItemUse());
   }
 
+  @SuppressWarnings({"deprecation", "UnstableApiUsage" })
   private void registerConversions() {
 
     //RegisterConversion for EquipmentSlot
@@ -258,8 +246,9 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       case BLACK -> "black";
     });
 
-    //Register Conversions for PatternType, which will be dependent
-    //We'll separate the legacy find methods from the modern ones in order to maintain one component class for both.
+    //Register Conversions for PatternType, which will be dependent on versions
+    //We'll separate the legacy find methods from the modern ones in order to maintain one component
+    // class for both.
     if(VersionUtil.isOneTwentyOne(version())) {
 
       converter.registerConversion(String.class, PatternType.class, input->{
@@ -289,6 +278,50 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
       converter.registerConversion(PatternType.class, String.class, PatternType::getIdentifier);
     }
+
+    //Register Conversions for Enchantment, which will be dependent on versions
+    //We'll separate the legacy find methods from the modern ones in order to maintain one component
+    // class for both.
+    if(VersionUtil.isOneTwentyOne(version())) {
+
+      converter.registerConversion(String.class, Enchantment.class, (final String input)->{
+
+        final NamespacedKey key = NamespacedKey.fromString(input);
+        if(key != null) {
+
+          return Registry.ENCHANTMENT.getOrThrow(key);
+        }
+        throw new IllegalArgumentException("Unknown Enchantment: " + input);
+      });
+
+      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)->input.getKeyOrThrow().toString());
+
+    } else if(VersionUtil.isOneThirteen(version())) {
+      converter.registerConversion(String.class, Enchantment.class, (final String input)->{
+
+        final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.fromString(input));
+        if(enchantment == null) {
+
+          throw new IllegalArgumentException("Unknown Enchantment: " + input);
+        }
+        return enchantment;
+      });
+
+      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)->input.getKey().getKey());
+    } else {
+
+      converter.registerConversion(String.class, Enchantment.class, (final String input)->{
+
+        final Enchantment enchantment = Enchantment.getByName(input);
+        if(enchantment == null) {
+
+          throw new IllegalArgumentException("Unknown Enchantment: " + input);
+        }
+        return enchantment;
+      });
+
+      converter.registerConversion(Enchantment.class, String.class, Enchantment::getName);
+    }
   }
 
   /**
@@ -317,12 +350,8 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       final ItemMeta meta = stack.getItemMeta();
 
       if(VersionUtil.isOneTwentyOne(currentVersion)) {
-        if(meta instanceof ShieldMeta) {
-          return Optional.of(new BukkitShieldData());
-        } else if(meta instanceof WritableBookMeta) {
+        if(meta instanceof WritableBookMeta) {
           return Optional.of(new BukkitWritableBookData());
-        } else if(meta instanceof BannerMeta) {
-          return Optional.of(new BukkitBannerModernData());
         } else if(meta instanceof OminousBottleMeta) {
 
           return Optional.of(new BukkitOminousBottleData());
@@ -366,10 +395,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
         return Optional.of(new BukkitFireworkData());
 
-      } else if(meta instanceof LeatherArmorMeta) {
-
-        return Optional.of(new BukkitLeatherData());
-
       } else if(meta instanceof MapMeta) {
 
         return Optional.of(new BukkitMapData());
@@ -382,11 +407,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
         return Optional.of(new BukkitSkullData());
 
-      } else if(meta instanceof BlockStateMeta) {
-        if(VersionUtil.isOneEleven(currentVersion) && ((BlockStateMeta)meta).getBlockState() instanceof ShulkerBox) {
-
-          return Optional.of(new BukkitShulkerData());
-        }
       }
 
       if(VersionUtil.isOneEleven(currentVersion)) {
@@ -404,10 +424,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       }
 
       if(VersionUtil.isOneThirteen(currentVersion)) {
-        if(meta instanceof Damageable) {
-
-          return Optional.of(new BukkitDamageData());
-        } else if(meta instanceof Repairable) {
+        if(meta instanceof Repairable) {
 
           return Optional.of(new BukkitRepairableData());
         } else if(meta instanceof TropicalFishBucketMeta) {
@@ -434,10 +451,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
         if(meta instanceof AxolotlBucketMeta) {
 
           return Optional.of(new BukkitAxolotlData());
-        } else if(meta instanceof BundleMeta) {
-
-          return Optional.of(new BukkitBundleData());
-        } else if(meta instanceof CompassMeta) {
+        }  else if(meta instanceof CompassMeta) {
 
           return Optional.of(new BukkitCompassData());
         }
