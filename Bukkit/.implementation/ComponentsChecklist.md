@@ -1,33 +1,25 @@
-- [ ] attribute_modifiers
-- [ ] banner_patterns
-- [ ] base_color
-- [ ] bees
-- [ ] block_entity_data
-- [ ] block_state
+- [X] attribute_modifiers
+- [X] banner_patterns
+- [X] base_color
 - [ ] bucket_entity_data
-- [ ] bundle_contents
-- [ ] can_break
-- [ ] can_place_on
-- [ ] charged_projectiles
+- [X] bundle_contents
+- [ ] can_break(not in spigot as of 1.21.4)
+- [ ] can_place_on(not in spigot as of 1.21.4)
 - [ ] consumable
-- [ ] container
-- [ ] container_loot
-- [ ] custom_data
+- [X] container
 - [ ] custom_model_data
-- [ ] custom_name
-- [ ] damage
+- [X] custom_name
+- [X] damage
 - [ ] damage_resistant
-- [ ] debug_stick_state
 - [ ] death_protection
-- [ ] dyed_color
+- [X] dyed_color
 - [ ] enchantable
 - [ ] enchantment_glint_override
-- [ ] enchantments
-- [ ] entity_data
+- [X] enchantments
 - [ ] equippable
 - [ ] firework_explosion
 - [ ] fireworks
-- [ ] food
+- [X] food
 - [ ] glider
 - [ ] hide_additional_tooltip
 - [ ] hide_tooltip
@@ -36,7 +28,6 @@
 - [ ] item_model
 - [ ] item_name
 - [ ] jukebox_playable
-- [ ] lock
 - [ ] lodestone_tracker
 - [ ] lore
 - [ ] map_color
@@ -48,18 +39,20 @@
 - [ ] ominous_bottle_amplifier
 - [ ] pot_decorations
 - [ ] potion_contents
+- [ ] potion_duration_scale(not in spigot as of 1.21.4)
 - [ ] profile
 - [ ] rarity
 - [ ] recipes
 - [ ] repairable
 - [ ] repair_cost
-- [ ] stored_enchantments
+- [X] stored_enchantments
 - [ ] suspicious_stew_effects
 - [ ] tool
 - [ ] tooltip_style
-- [ ] trim
+- [X] trim
 - [ ] unbreakable
 - [ ] use_cooldown
 - [ ] use_remainder
+- [ ] weapon(not in spigot as of 1.21.4)
 - [ ] writable_book_content
 - [ ] written_book_content

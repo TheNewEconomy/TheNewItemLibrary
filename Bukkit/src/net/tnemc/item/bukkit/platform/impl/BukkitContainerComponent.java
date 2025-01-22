@@ -56,13 +56,13 @@ public class BukkitContainerComponent extends ContainerComponent<BukkitItemStack
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
-    final Optional<BukkitDyedColorComponent> componentOptional = serialized.component(identifier());
+    final Optional<BukkitContainerComponent> componentOptional = serialized.component(identifier());
     componentOptional.ifPresent(component->{
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
          && meta.hasBlockState() && meta.getBlockState() instanceof final Container container) {
 
-        items.forEach((slot, stack)->container.getInventory().setItem(slot, stack.locale()));
+        componentOptional.get().items.forEach((slot, stack)->container.getInventory().setItem(slot, stack.locale()));
         container.update(true);
         meta.setBlockState(container);
 

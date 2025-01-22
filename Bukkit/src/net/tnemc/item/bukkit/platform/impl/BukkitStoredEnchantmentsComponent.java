@@ -61,7 +61,7 @@ public class BukkitStoredEnchantmentsComponent extends StoredEnchantmentsCompone
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final EnchantmentStorageMeta meta) {
 
-        for(final Map.Entry<String, Integer> entry : levels.entrySet()) {
+        for(final Map.Entry<String, Integer> entry : componentOptional.get().levels.entrySet()) {
 
           try {
 

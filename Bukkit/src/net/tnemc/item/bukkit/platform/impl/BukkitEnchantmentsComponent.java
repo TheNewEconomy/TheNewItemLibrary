@@ -55,10 +55,10 @@ public class BukkitEnchantmentsComponent extends EnchantmentsComponent<BukkitIte
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
-    final Optional<BukkitBannerPatternsComponent> componentOptional = serialized.component(identifier());
+    final Optional<BukkitEnchantmentsComponent> componentOptional = serialized.component(identifier());
     componentOptional.ifPresent(component->{
 
-      for(final Map.Entry<String, Integer> entry : levels.entrySet()) {
+      for(final Map.Entry<String, Integer> entry : componentOptional.get().levels.entrySet()) {
 
         try {
 

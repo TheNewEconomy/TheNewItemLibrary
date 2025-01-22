@@ -25,7 +25,6 @@ import net.tnemc.item.bukkit.data.BukkitInstrumentData;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemEquip;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemJuke;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemLore;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemMaterial;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemProfile;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemSerialData;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemTool;
@@ -144,7 +143,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     addMulti(new BukkitItemEquip());
     addMulti(new BukkitItemJuke());
     addMulti(new BukkitItemLore());
-    addMulti(new BukkitItemMaterial());
     addMulti(new BukkitItemProfile());
     addMulti(new BukkitItemTool());
     addMulti(new BukkitItemUse());

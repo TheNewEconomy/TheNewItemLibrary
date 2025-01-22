@@ -62,7 +62,7 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
       if(item.hasItemMeta() && item.getItemMeta() instanceof final ShieldMeta meta) {
 
         try {
-          final DyeColor dyeColor = BukkitItemPlatform.PLATFORM.converter().convert(color, DyeColor.class);
+          final DyeColor dyeColor = BukkitItemPlatform.PLATFORM.converter().convert(componentOptional.get().color, DyeColor.class);
           meta.setBaseColor(dyeColor);
         } catch(final IllegalArgumentException ignore) {
           meta.setBaseColor(null);

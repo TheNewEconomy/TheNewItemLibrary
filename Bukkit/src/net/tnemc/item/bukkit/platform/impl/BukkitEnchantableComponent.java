@@ -1,7 +1,7 @@
-package net.tnemc.item.bukkit.platform.implold;
+package net.tnemc.item.bukkit.platform.impl;
 /*
  * The New Item Library
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,22 +18,32 @@ package net.tnemc.item.bukkit.platform.implold;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.platform.impl.ItemLore;
+import net.tnemc.item.component.impl.EnchantableComponent;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.LinkedList;
+import java.util.Optional;
 
 /**
- * BukkitItemLore
+ * BukkitEnchantableComponent
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
-public class BukkitItemLore extends ItemLore<BukkitItemStack, ItemStack> {
+public class BukkitEnchantableComponent extends EnchantableComponent<BukkitItemStack, ItemStack> {
+
+  /**
+   * @param version the version being used when this check is called.
+   *
+   * @return true if this check is enabled for the version, otherwise false
+   */
+  @Override
+  public boolean enabled(final String version) {
+
+    return VersionUtil.isOneTwentyOneTwo(version);
+  }
 
   /**
    * @param serialized the serialized item stack to use
@@ -44,16 +54,17 @@ public class BukkitItemLore extends ItemLore<BukkitItemStack, ItemStack> {
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null) {
+    final Optional<BukkitEnchantableComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->{
 
-      final LinkedList<String> newLore = new LinkedList<>();
-      for(final Component comp : serialized.lore()) {
-        newLore.add(LegacyComponentSerializer.legacySection().serialize(comp));
+      final ItemMeta meta = item.getItemMeta();
+      if(meta != null) {
+
+        meta.setEnchantable(componentOptional.get().value);
+
+        item.setItemMeta(meta);
       }
-      meta.setLore(newLore);
-      item.setItemMeta(meta);
-    }
+    });
     return item;
   }
 
@@ -66,13 +77,26 @@ public class BukkitItemLore extends ItemLore<BukkitItemStack, ItemStack> {
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    if(item.getItemMeta() != null && item.getItemMeta().getLore() != null) {
-      serialized.lore().clear();
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null) {
 
-      for(final String str : item.getItemMeta().getLore()) {
-        serialized.lore().add(LegacyComponentSerializer.legacySection().deserialize(str));
-      }
+      this.value = item.getItemMeta().getEnchantable();
     }
+
+    serialized.applyComponent(this);
     return serialized;
+  }
+
+  /**
+   * Checks if this component applies to the specified item.
+   *
+   * @param item The item to check against.
+   *
+   * @return True if this component applies to the item, false otherwise.
+   */
+  @Override
+  public boolean appliesTo(final ItemStack item) {
+
+    return item.hasItemMeta() && item.getItemMeta() != null;
   }
 }

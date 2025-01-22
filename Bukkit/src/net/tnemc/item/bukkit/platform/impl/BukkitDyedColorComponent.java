@@ -59,7 +59,7 @@ public class BukkitDyedColorComponent extends DyedColorComponent<BukkitItemStack
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final LeatherArmorMeta meta) {
 
-        meta.setColor(Color.fromRGB(this.rgb));
+        meta.setColor(Color.fromRGB(componentOptional.get().rgb));
 
         item.setItemMeta(meta);
       }

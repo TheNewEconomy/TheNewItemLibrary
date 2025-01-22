@@ -55,10 +55,10 @@ public class BukkitCustomNameComponent extends CustomNameComponent<BukkitItemSta
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
-    final Optional<BukkitCustomNameComponent> component = serialized.component(identifier());
-    if(meta != null && component.isPresent()) {
+    final Optional<BukkitCustomNameComponent> componentOptional = serialized.component(identifier());
+    if(meta != null && componentOptional.isPresent()) {
 
-      meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component.get().customName()));
+      meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().customName()));
     }
     return item;
   }

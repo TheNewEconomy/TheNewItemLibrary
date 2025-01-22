@@ -60,10 +60,10 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
-    final Optional<AttributeModifiersComponent<AbstractItemStack<ItemStack>, ItemStack>> attributes = serialized.attributeModifiers();
-    if(meta != null && attributes.isPresent()) {
+    final Optional<AttributeModifiersComponent<AbstractItemStack<ItemStack>, ItemStack>> componentOptional = serialized.attributeModifiers();
+    if(meta != null && componentOptional.isPresent()) {
 
-      for(final net.tnemc.item.component.helper.AttributeModifier attribute : attributes.get().modifiers()) {
+      for(final net.tnemc.item.component.helper.AttributeModifier attribute : componentOptional.get().modifiers()) {
 
         final AttributeModifier.Operation operation = BukkitItemPlatform.PLATFORM.converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);
         final EquipmentSlotGroup slot = BukkitItemPlatform.PLATFORM.converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);

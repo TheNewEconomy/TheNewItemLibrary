@@ -59,7 +59,7 @@ public class BukkitBundleComponent extends BundleComponent<BukkitItemStack, Item
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final BundleMeta meta) {
 
-        items.forEach((slot, stack)->meta.addItem(stack.locale()));
+        componentOptional.get().items.forEach((slot, stack)->meta.addItem(stack.locale()));
 
         item.setItemMeta(meta);
       }

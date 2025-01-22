@@ -63,9 +63,9 @@ public class BukkitFoodComponent extends FoodComponent<BukkitItemStack, ItemStac
 
         final org.bukkit.inventory.meta.components.FoodComponent bukkitComponent = meta.getFood();
 
-        bukkitComponent.setCanAlwaysEat(this.canAlwaysEat);
-        bukkitComponent.setSaturation(this.saturation);
-        bukkitComponent.setNutrition(this.nutrition);
+        bukkitComponent.setCanAlwaysEat(componentOptional.get().canAlwaysEat);
+        bukkitComponent.setSaturation(componentOptional.get().saturation);
+        bukkitComponent.setNutrition(componentOptional.get().nutrition);
 
         meta.setFood(bukkitComponent);
 

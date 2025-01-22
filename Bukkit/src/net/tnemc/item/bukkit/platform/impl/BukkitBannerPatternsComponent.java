@@ -64,7 +64,7 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final BannerMeta meta) {
 
-        for(final PatternData pattern : patterns) {
+        for(final PatternData pattern : componentOptional.get().patterns) {
 
           final DyeColor color = DyeColor.getByColor(Color.fromRGB(Integer.parseInt(pattern.getColor())));
 
