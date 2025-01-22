@@ -24,14 +24,12 @@ import net.tnemc.item.bukkit.data.BukkitCrossbowData;
 import net.tnemc.item.bukkit.data.BukkitInstrumentData;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemEquip;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemJuke;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemLore;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemProfile;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemSerialData;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemTool;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemUse;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.bukkitbase.data.BukkitAxolotlData;
-import net.tnemc.item.bukkitbase.data.BukkitBannerData;
 import net.tnemc.item.bukkitbase.data.BukkitBookData;
 import net.tnemc.item.bukkitbase.data.BukkitCompassData;
 import net.tnemc.item.bukkitbase.data.BukkitFireworkData;
@@ -40,7 +38,6 @@ import net.tnemc.item.bukkitbase.data.BukkitKnowledgeBookData;
 import net.tnemc.item.bukkitbase.data.BukkitMapData;
 import net.tnemc.item.bukkitbase.data.BukkitOminousBottleData;
 import net.tnemc.item.bukkitbase.data.BukkitPotionData;
-import net.tnemc.item.bukkitbase.data.BukkitRepairableData;
 import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.bukkitbase.data.BukkitSpawnEggData;
 import net.tnemc.item.bukkitbase.data.BukkitSuspiciousStewData;
@@ -70,7 +67,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
-import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.CrossbowMeta;
@@ -82,7 +78,6 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.MusicInstrumentMeta;
 import org.bukkit.inventory.meta.OminousBottleMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.Repairable;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.inventory.meta.SuspiciousStewMeta;
@@ -142,7 +137,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     addMulti(new BukkitItemSerialData());
     addMulti(new BukkitItemEquip());
     addMulti(new BukkitItemJuke());
-    addMulti(new BukkitItemLore());
     addMulti(new BukkitItemProfile());
     addMulti(new BukkitItemTool());
     addMulti(new BukkitItemUse());
@@ -433,11 +427,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
         }
       }
 
-      if(meta instanceof BannerMeta && !VersionUtil.isOneTwentyOne(currentVersion)) {
-
-        return Optional.of(new BukkitBannerData());
-
-      } else if(meta instanceof BookMeta) {
+      if(meta instanceof BookMeta) {
 
         return Optional.of(new BukkitBookData());
 
@@ -478,10 +468,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       }
 
       if(VersionUtil.isOneThirteen(currentVersion)) {
-        if(meta instanceof Repairable) {
-
-          return Optional.of(new BukkitRepairableData());
-        } else if(meta instanceof TropicalFishBucketMeta) {
+        if(meta instanceof TropicalFishBucketMeta) {
 
           return Optional.of(new BukkitTropicalFishData());
         }

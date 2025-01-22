@@ -27,7 +27,8 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * RepairCostComponent
+ * RepairCostComponent - The number of experience levels to add to the base level cost when repairing,
+ * combining, or renaming this item with an anvil. Must be a non-negative integer, defaults to 0.
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#repair_cost">Reference</a>
@@ -36,7 +37,11 @@ import java.util.Objects;
  */
 public abstract class RepairCostComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected int repairCost;
+  protected int repairCost = 0;
+
+  public RepairCostComponent() {
+
+  }
 
   public RepairCostComponent(final int repairCost) {
 
