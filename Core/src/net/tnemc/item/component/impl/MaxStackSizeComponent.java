@@ -27,7 +27,8 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * MaxStackSizeComponent
+ * MaxStackSizeComponent - The maximum number of items that can fit in a stack. Must be a positive
+ * integer between 1 and 99 (inclusive). Cannot be combined with max_damage.
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#max_stack_size">Reference</a>

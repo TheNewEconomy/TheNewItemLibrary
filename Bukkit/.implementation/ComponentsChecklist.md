@@ -34,7 +34,7 @@
 - [ ] map_decorations
 - [ ] map_id
 - [X] max_damage
-- [ ] max_stack_size
+- [X] max_stack_size
 - [ ] note_block_sound
 - [ ] ominous_bottle_amplifier
 - [ ] pot_decorations
