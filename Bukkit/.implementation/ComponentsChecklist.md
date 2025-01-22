@@ -13,7 +13,7 @@
 - [ ] damage_resistant
 - [ ] death_protection
 - [X] dyed_color
-- [ ] enchantable
+- [X] enchantable
 - [ ] enchantment_glint_override
 - [X] enchantments
 - [ ] equippable
@@ -29,11 +29,11 @@
 - [ ] item_name
 - [ ] jukebox_playable
 - [ ] lodestone_tracker
-- [ ] lore
+- [X] lore
 - [ ] map_color
 - [ ] map_decorations
 - [ ] map_id
-- [ ] max_damage
+- [X] max_damage
 - [ ] max_stack_size
 - [ ] note_block_sound
 - [ ] ominous_bottle_amplifier
@@ -43,8 +43,8 @@
 - [ ] profile
 - [ ] rarity
 - [ ] recipes
-- [ ] repairable
-- [ ] repair_cost
+- [ ] repairable(not in spigot as of 1.21.4)
+- [X] repair_cost
 - [X] stored_enchantments
 - [ ] suspicious_stew_effects
 - [ ] tool
