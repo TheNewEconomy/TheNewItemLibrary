@@ -80,7 +80,7 @@ public class BukkitUnbreakableComponent extends UnbreakableComponent<BukkitItemS
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.isHideTooltip()) {
+    if(meta != null && meta.isUnbreakable()) {
 
       serialized.applyComponent(this);
     }
