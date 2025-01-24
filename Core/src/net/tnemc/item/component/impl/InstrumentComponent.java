@@ -29,7 +29,7 @@ import java.util.Objects;
 /**
  * InstrumentComponent
  *
- * @see <a href="https://minecraft.wiki/w/Data_component_format#item_model">Reference</a>
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#instrument">Reference</a>
  * <p>
  * @author creatorfromhell
  * @since 0.2.0.0

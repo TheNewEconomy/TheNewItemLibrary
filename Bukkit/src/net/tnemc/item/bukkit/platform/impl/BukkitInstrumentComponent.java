@@ -1,7 +1,7 @@
-package net.tnemc.item.bukkitbase.platform.impl;
+package net.tnemc.item.bukkit.platform.impl;
 /*
  * The New Item Library
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,30 +18,11 @@ package net.tnemc.item.bukkitbase.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.platform.impl.ItemSerialData;
-import org.bukkit.inventory.ItemStack;
-
 /**
- * BukkitItemSerialData
+ * BukkitInstrumentComponent
  *
  * @author creatorfromhell
- * @since 0.1.7.7
+ * @since 0.2.0.0
  */
-public abstract class BukkitBaseItemSerialData<I extends AbstractItemStack<ItemStack>> extends ItemSerialData<I, ItemStack> {
-
-  /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   */
-  @Override
-  public ItemStack apply(final I serialized, final ItemStack item) {
-
-    if(serialized.data().isPresent()) {
-      return serialized.data().get().apply(item);
-    }
-    return item;
-  }
+public class BukkitInstrumentComponent {
 }
