@@ -1,10 +1,13 @@
 - [X] attribute_modifiers
 - [X] banner_patterns
 - [X] base_color
+- [ ] blocks_attack
+- [ ] break_sound
 - [ ] bucket_entity_data
 - [X] bundle_contents
 - [ ] can_break(not in spigot as of 1.21.4)
 - [ ] can_place_on(not in spigot as of 1.21.4)
+- [X] charged_projectiles
 - [ ] consumable
 - [X] container
 - [ ] custom_model_data
@@ -16,6 +19,7 @@
 - [X] enchantable
 - [ ] enchantment_glint_override
 - [X] enchantments
+- [ ] entity_variant
 - [ ] equippable
 - [ ] firework_explosion
 - [ ] fireworks
@@ -41,6 +45,8 @@
 - [ ] potion_contents
 - [ ] potion_duration_scale(not in spigot as of 1.21.4)
 - [ ] profile
+- [ ] provides_banner_patterns
+- [ ] provides_trim_patterns
 - [X] rarity
 - [ ] recipes
 - [ ] repairable(not in spigot as of 1.21.4)

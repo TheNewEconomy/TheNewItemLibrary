@@ -28,7 +28,8 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * EntityVariantComponent
+ * EntityVariantComponent - Holds information about the entity variant that should be carried over
+ * for items such as mob bucket, spawn egg, etc. Added in MC 1.21.5
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#">Reference</a>

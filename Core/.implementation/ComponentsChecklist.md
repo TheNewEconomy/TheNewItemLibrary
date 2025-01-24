@@ -8,9 +8,9 @@
 - [ ] bundle_contents
 - [X] can_break
 - [X] can_place_on
-- [ ] charged_projectiles
+- [X] charged_projectiles
 - [X] consumable
-- [ ] container
+- [X] container
 - [ ] container_loot
 - [ ] custom_data
 - [X] custom_model_data
@@ -48,7 +48,7 @@
 - [X] ominous_bottle_amplifier
 - [X] pot_decorations
 - [X] potion_contents
-- [ ] profile
+- [X] profile
 - [X] rarity
 - [X] recipes
 - [X] repairable
