@@ -48,7 +48,7 @@
 - [X] stored_enchantments
 - [ ] suspicious_stew_effects
 - [ ] tool
-- [ ] tooltip_style
+- [X] tooltip_style
 - [X] trim
 - [X] unbreakable
 - [ ] use_cooldown

@@ -38,6 +38,22 @@ public class EffectInstance {
   protected boolean showParticles = true;
   protected boolean showIcon = true;
 
+  public EffectInstance(final String id) {
+
+    this.id = id;
+  }
+
+  public EffectInstance(final String id, final int amplifier, final int duration,
+                        final boolean showParticles, final boolean ambient, final boolean showIcon) {
+
+    this.id = id;
+    this.amplifier = amplifier;
+    this.duration = duration;
+    this.showParticles = showParticles;
+    this.ambient = ambient;
+    this.showIcon = showIcon;
+  }
+
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
     json.put("id", id);
@@ -73,5 +89,65 @@ public class EffectInstance {
   @Override
   public int hashCode() {
     return Objects.hash(id, amplifier, duration, ambient, showParticles, showIcon);
+  }
+
+  public String id() {
+
+    return id;
+  }
+
+  public void id(final String id) {
+
+    this.id = id;
+  }
+
+  public int amplifier() {
+
+    return amplifier;
+  }
+
+  public void amplifier(final int amplifier) {
+
+    this.amplifier = amplifier;
+  }
+
+  public int duration() {
+
+    return duration;
+  }
+
+  public void duration(final int duration) {
+
+    this.duration = duration;
+  }
+
+  public boolean ambient() {
+
+    return ambient;
+  }
+
+  public void ambient(final boolean ambient) {
+
+    this.ambient = ambient;
+  }
+
+  public boolean showParticles() {
+
+    return showParticles;
+  }
+
+  public void showParticles(final boolean showParticles) {
+
+    this.showParticles = showParticles;
+  }
+
+  public boolean showIcon() {
+
+    return showIcon;
+  }
+
+  public void showIcon(final boolean showIcon) {
+
+    this.showIcon = showIcon;
   }
 }

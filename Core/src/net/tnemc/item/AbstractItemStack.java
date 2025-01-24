@@ -1579,20 +1579,31 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @see SuspiciousStewEffectsComponent
    */
   default Optional<SuspiciousStewEffectsComponent<AbstractItemStack<T>, T>> suspiciousStewEffects() {
+
     return Optional.ofNullable((SuspiciousStewEffectsComponent<AbstractItemStack<T>, T>) components().get("suspicious_stew_effects"));
   }
 
   /**
-   * Updates the suspicious stew effects of the item stack.
+   * Applies the given effects to the suspicious stew item.
    *
-   * @param effectId the ID of the effect
-   * @param duration the duration of the effect in ticks
-   * @return the updated AbstractItemStack instance
+   * @param effects a list of EffectInstance objects representing the effects to be applied to the suspicious stew
+   * @return an AbstractItemStack representing the suspicious stew with the applied effects
    * @since 0.2.0.0
    * @author creatorfromhell
    * @see SuspiciousStewEffectsComponent
    */
-  AbstractItemStack<T> suspiciousStewEffects(String effectId, int duration);
+  AbstractItemStack<T> suspiciousStewEffects(final List<EffectInstance> effects);
+
+  /**
+   * Applies the given effects to a suspicious stew item.
+   *
+   * @param effects an array of EffectInstance objects representing the effects to apply to the suspicious stew
+   * @return an AbstractItemStack representing the suspicious stew item with the applied effects
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see SuspiciousStewEffectsComponent
+   */
+  AbstractItemStack<T> suspiciousStewEffects(final EffectInstance... effects);
 
   /**
    * Retrieves the ToolComponent of the item stack if present.

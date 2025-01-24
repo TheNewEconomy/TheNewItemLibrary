@@ -1239,18 +1239,35 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   /**
-   * Updates the suspicious stew effects of the item stack.
+   * Applies the given effects to the suspicious stew item.
    *
-   * @param effectId the ID of the effect
-   * @param duration the duration of the effect in ticks
+   * @param effects a list of EffectInstance objects representing the effects to be applied to the
+   *                suspicious stew
    *
-   * @return the updated BukkitItemStack instance
+   * @return an AbstractItemStack representing the suspicious stew with the applied effects
    *
    * @see SuspiciousStewEffectsComponent
    * @since 0.2.0.0
    */
   @Override
-  public BukkitItemStack suspiciousStewEffects(final String effectId, final int duration) {
+  public AbstractItemStack<ItemStack> suspiciousStewEffects(final List<EffectInstance> effects) {
+
+    return null;
+  }
+
+  /**
+   * Applies the given effects to a suspicious stew item.
+   *
+   * @param effects an array of EffectInstance objects representing the effects to apply to the
+   *                suspicious stew
+   *
+   * @return an AbstractItemStack representing the suspicious stew item with the applied effects
+   *
+   * @see SuspiciousStewEffectsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public AbstractItemStack<ItemStack> suspiciousStewEffects(final EffectInstance... effects) {
 
     return null;
   }

@@ -40,7 +40,6 @@ import net.tnemc.item.bukkitbase.data.BukkitOminousBottleData;
 import net.tnemc.item.bukkitbase.data.BukkitPotionData;
 import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.bukkitbase.data.BukkitSpawnEggData;
-import net.tnemc.item.bukkitbase.data.BukkitSuspiciousStewData;
 import net.tnemc.item.bukkitbase.data.BukkitTropicalFishData;
 import net.tnemc.item.bukkitbase.data.BukkitWritableBookData;
 import net.tnemc.item.bukkitbase.platform.impl.BukkitItemDamage;
@@ -81,11 +80,11 @@ import org.bukkit.inventory.meta.OminousBottleMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.SpawnEggMeta;
-import org.bukkit.inventory.meta.SuspiciousStewMeta;
 import org.bukkit.inventory.meta.TropicalFishBucketMeta;
 import org.bukkit.inventory.meta.WritableBookMeta;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.potion.PotionEffectType;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -334,7 +333,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
         final NamespacedKey key = NamespacedKey.fromString(input);
         if(key != null) {
 
-          return Registry.TRIM_MATERIAL.get(key);
+          return Registry.TRIM_MATERIAL.getOrThrow(key);
         }
         throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
       });
@@ -381,7 +380,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
         final NamespacedKey key = NamespacedKey.fromString(input);
         if(key != null) {
 
-          return Registry.TRIM_PATTERN.get(key);
+          return Registry.TRIM_PATTERN.getOrThrow(key);
         }
         throw new IllegalArgumentException("Unknown TrimPattern: " + input);
       });
@@ -397,6 +396,31 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
           return Registry.TRIM_PATTERN.get(key);
         }
         throw new IllegalArgumentException("Unknown TrimPattern: " + input);
+      });
+    }
+
+    if(VersionUtil.isOneTwentyOneFour(version())) {
+
+      converter.registerConversion(PotionEffectType.class, String.class, input->input.getKeyOrThrow().toString());
+      converter.registerConversion(String.class, PotionEffectType.class, input->{
+        final NamespacedKey key = NamespacedKey.fromString(input);
+        if(key != null) {
+
+          return Registry.EFFECT.getOrThrow(key);
+        }
+        throw new IllegalArgumentException("Unknown PotionEffectType: " + input);
+      });
+    } else {
+
+      converter.registerConversion(PotionEffectType.class, String.class, PotionEffectType::getName);
+      converter.registerConversion(String.class, PotionEffectType.class, input->{
+
+        final PotionEffectType type = PotionEffectType.getByName(input);
+        if(type != null) {
+
+          return type;
+        }
+        throw new IllegalArgumentException("Unknown PotionEffectType: " + input);
       });
     }
   }
@@ -496,13 +520,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
         if(meta instanceof CrossbowMeta) {
 
           return Optional.of(new BukkitCrossbowData());
-        }
-      }
-
-      if(VersionUtil.isOneFifteen(currentVersion)) {
-        if(meta instanceof SuspiciousStewMeta) {
-
-          return Optional.of(new BukkitSuspiciousStewData());
         }
       }
 

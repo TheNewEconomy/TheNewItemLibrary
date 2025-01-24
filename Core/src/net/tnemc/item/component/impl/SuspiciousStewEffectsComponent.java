@@ -21,28 +21,41 @@ package net.tnemc.item.component.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
+import net.tnemc.item.component.helper.effect.EffectInstance;
 import net.tnemc.item.platform.ItemPlatform;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
- * SuspiciousStewEffectsComponent
+ * SuspiciousStewEffectsComponent - The effects applied when consuming this suspicious stew.
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#suspicious_stew_effects">Reference</a>
+ * @see <a href="https://minecraft.wiki/w/Suspicious_Stew">Suspicious_Stew</a>
  * <p>
  * @since 0.2.0.0
  */
 public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected String effectId;
-  protected int duration;
+  protected final List<EffectInstance> effects = new ArrayList<>();
 
-  public SuspiciousStewEffectsComponent(final String effectId, final int duration) {
+  public SuspiciousStewEffectsComponent() {
 
-    this.effectId = effectId;
-    this.duration = duration;
+  }
+
+  public SuspiciousStewEffectsComponent(final List<EffectInstance> effects) {
+
+    this.effects.addAll(effects);
+  }
+
+  public SuspiciousStewEffectsComponent(final EffectInstance... effects) {
+
+    this.effects.addAll(Arrays.asList(effects));
   }
 
   @Override
@@ -53,15 +66,26 @@ public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack
   @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
-    json.put("id", effectId);
-    json.put("duration", duration);
+
+    final JSONArray effectsArray = new JSONArray();
+    for (final EffectInstance effect : effects) {
+      effectsArray.add(effect.toJSON());
+    }
+    json.put("custom_effects", effectsArray);
     return json;
   }
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    effectId = json.getString("id");
-    duration = json.getInteger("duration");
+
+    effects.clear();
+    final JSONArray effectsArray = (JSONArray) json.getObject().get("custom_effects");
+    for (final Object obj : effectsArray) {
+
+      final EffectInstance effect = new EffectInstance();
+      effect.readJSON(new JSONHelper((JSONObject) obj));
+      effects.add(effect);
+    }
   }
 
   @Override
@@ -76,23 +100,20 @@ public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack
     return Objects.hash(effectId, duration);
   }
 
-  public String effectId() {
+  public List<EffectInstance> effects() {
 
-    return effectId;
+    return effects;
   }
 
-  public void effectId(final String effectId) {
+  public void effects(final List<EffectInstance> effects) {
 
-    this.effectId = effectId;
+    this.effects.clear();
+    this.effects.addAll(effects);
   }
 
-  public int duration() {
+  public void effects(final EffectInstance... effects) {
 
-    return duration;
-  }
-
-  public void duration(final int duration) {
-
-    this.duration = duration;
+    this.effects.clear();
+    this.effects.addAll(Arrays.asList(effects));
   }
 }
