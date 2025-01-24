@@ -20,7 +20,6 @@ package net.tnemc.item.bukkit.platform;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.data.BukkitCrossbowData;
 import net.tnemc.item.bukkit.data.BukkitInstrumentData;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemEquip;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemJuke;
@@ -69,7 +68,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.CompassMeta;
-import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -513,13 +511,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
         if(meta instanceof TropicalFishBucketMeta) {
 
           return Optional.of(new BukkitTropicalFishData());
-        }
-      }
-
-      if(VersionUtil.isOneFourteen(currentVersion)) {
-        if(meta instanceof CrossbowMeta) {
-
-          return Optional.of(new BukkitCrossbowData());
         }
       }
 
