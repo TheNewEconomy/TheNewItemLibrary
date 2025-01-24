@@ -41,7 +41,7 @@
 - [ ] potion_contents
 - [ ] potion_duration_scale(not in spigot as of 1.21.4)
 - [ ] profile
-- [ ] rarity
+- [X] rarity
 - [ ] recipes
 - [ ] repairable(not in spigot as of 1.21.4)
 - [X] repair_cost

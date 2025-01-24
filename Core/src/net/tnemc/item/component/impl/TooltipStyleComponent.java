@@ -27,7 +27,8 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * TooltipStyleComponent
+ * TooltipStyleComponent -The resource location of the custom sprites for the tooltip background and
+ * frame which references textures
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#tooltip_style">Reference</a>
@@ -36,7 +37,11 @@ import java.util.Objects;
  */
 public abstract class TooltipStyleComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected String style;
+  protected String style = "";
+
+  public TooltipStyleComponent() {
+
+  }
 
   public TooltipStyleComponent(final String style) {
 
