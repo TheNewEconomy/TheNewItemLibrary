@@ -1,4 +1,4 @@
-package net.tnemc.item.component.impl;
+package net.tnemc.item.component.helper;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -18,35 +18,40 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.AbstractItemStack;
-
-import java.util.Map;
-
 /**
- * ChargedProjectilesComponent - The items loaded as projectiles into this crossbow. If not present, this crossbow is not charged.
- *
+ * ItemDamage - Controls how much damage should be applied to the item from a given attack
+ * If not specified, a point of durability is removed for every point of damage dealt
+ * The final damage applied to the item is determined by: floor(base + factor * dealt_damage)
+ * The final value may be negative, causing the item to be repaired
  * @author creatorfromhell
- * @see <a href="https://minecraft.wiki/w/Data_component_format#charged_projectiles">Reference</a>
- * <p>
  * @since 0.2.0.0
+ * @see net.tnemc.item.component.impl.BlocksAttacksComponent
  */
-public abstract class ChargedProjectilesComponent<I extends AbstractItemStack<T>, T> extends ContainerComponent<I, T> {
+public class ItemDamage {
 
-  public ChargedProjectilesComponent() {
-    super();
+  protected final float threshold;
+  protected final float base;
+  protected final float factor;
+
+  public ItemDamage(final float threshold, final float base, final float factor) {
+
+    this.threshold = threshold;
+    this.base = base;
+    this.factor = factor;
   }
 
-  public ChargedProjectilesComponent(final Map<Integer, AbstractItemStack<T>> items) {
+  public float threshold() {
 
-    super(items);
+    return threshold;
   }
 
-  /**
-   * @return the type of component this is.
-   */
-  @Override
-  public String identifier() {
+  public float base() {
 
-    return "charged_projectiles";
+    return base;
+  }
+
+  public float factor() {
+
+    return factor;
   }
 }

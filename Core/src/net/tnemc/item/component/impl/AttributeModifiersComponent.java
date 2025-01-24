@@ -21,7 +21,6 @@ package net.tnemc.item.component.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.TooltippableSerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.platform.ItemPlatform;
