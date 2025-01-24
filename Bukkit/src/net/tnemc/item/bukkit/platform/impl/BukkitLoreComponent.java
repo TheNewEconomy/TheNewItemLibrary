@@ -21,12 +21,9 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.component.impl.DyedColorComponent;
 import net.tnemc.item.component.impl.LoreComponent;
-import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.LinkedList;
 import java.util.Optional;

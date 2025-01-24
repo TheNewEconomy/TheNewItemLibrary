@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * GliderComponent
+ * GliderComponent - If present, this item allows players to glide (as with elytra) when equipped.
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#glider">Reference</a>

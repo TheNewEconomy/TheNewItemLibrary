@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * HideTooltipComponent
+ * HideTooltipComponent - If set, it completely hides this item's tooltip, including its name.
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#hide_tooltip">Reference</a>

@@ -27,16 +27,22 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * RarityComponent
+ * RarityComponent - Sets the rarity of this item, which affects the default color of its name. Can
+ * be common, uncommon, rare or epic.
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#rarity">Reference</a>
+ * @see <a href="https://minecraft.wiki/w/Rarity">What is Rarity?</a>
  * <p>
  * @since 0.2.0.0
  */
 public abstract class RarityComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected String rarity;
+  protected String rarity = "common";
+
+  public RarityComponent() {
+
+  }
 
   public RarityComponent(final String rarity) {
 

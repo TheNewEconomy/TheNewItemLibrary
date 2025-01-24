@@ -26,7 +26,7 @@ import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 /**
- * UnbreakableComponent
+ * UnbreakableComponent -  If set, this item doesn't lose durability when used.
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#unbreakable">Reference</a>

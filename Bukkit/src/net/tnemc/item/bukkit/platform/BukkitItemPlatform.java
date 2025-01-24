@@ -65,6 +65,7 @@ import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
+import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
 import org.bukkit.inventory.meta.BookMeta;
@@ -351,6 +352,23 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
         throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
       });
     }
+
+    //Register Conversions for NamespacedKey, which will be dependent on versions
+    //We'll separate the legacy find methods from the modern ones in order to maintain one component
+    // class for both.
+    converter.registerConversion(ItemRarity.class, String.class, input->switch(input) {
+      case EPIC -> "epic";
+      case RARE -> "rare";
+      case UNCOMMON -> "uncommon";
+      default -> "common";
+    });
+
+    converter.registerConversion(String.class, ItemRarity.class, input->switch(input.toLowerCase()) {
+      case "epic" -> ItemRarity.EPIC;
+      case "rare" -> ItemRarity.RARE;
+      case "uncommon" -> ItemRarity.UNCOMMON;
+      default -> ItemRarity.COMMON;
+    });
 
     //Register Conversions for Trim Pattern, which will be dependent on versions
     //We'll separate the legacy find methods from the modern ones in order to maintain one component

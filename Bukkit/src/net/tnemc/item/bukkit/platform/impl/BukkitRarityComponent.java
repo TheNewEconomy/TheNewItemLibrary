@@ -19,20 +19,22 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.component.impl.HideTooltipComponent;
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
+import net.tnemc.item.component.impl.RarityComponent;
 import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
 /**
- * BukkitHideTooltipComponent
+ * BukkitRarityComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class BukkitHideTooltipComponent extends HideTooltipComponent<BukkitItemStack, ItemStack> {
+public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -55,14 +57,15 @@ public class BukkitHideTooltipComponent extends HideTooltipComponent<BukkitItemS
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
-    final Optional<BukkitHideTooltipComponent> componentOptional = serialized.component(identifier());
+    final Optional<BukkitRarityComponent> componentOptional = serialized.component(identifier());
 
     if(componentOptional.isPresent()) {
 
       final ItemMeta meta = item.getItemMeta();
       if(meta != null) {
 
-        meta.setHideTooltip(true);
+        meta.setRarity(BukkitItemPlatform.PLATFORM.converter().convert(componentOptional.get().rarity,
+                                                                       ItemRarity.class));
         item.setItemMeta(meta);
       }
     }
@@ -79,10 +82,11 @@ public class BukkitHideTooltipComponent extends HideTooltipComponent<BukkitItemS
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.isHideTooltip()) {
+    if(meta != null && meta.hasRarity()) {
 
-      serialized.applyComponent(this);
+      rarity = BukkitItemPlatform.PLATFORM.converter().convert(meta.getRarity(), String.class);
     }
+    serialized.applyComponent(this);
     return serialized;
   }
 

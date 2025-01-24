@@ -20,9 +20,9 @@
 - [ ] firework_explosion
 - [ ] fireworks
 - [X] food
-- [ ] glider
-- [ ] hide_additional_tooltip
-- [ ] hide_tooltip
+- [X] glider
+- [ ] hide_additional_tooltip(not in spigot as of 1.21.4)
+- [X] hide_tooltip
 - [ ] instrument
 - [ ] intangible_projectile
 - [ ] item_model
@@ -50,7 +50,7 @@
 - [ ] tool
 - [ ] tooltip_style
 - [X] trim
-- [ ] unbreakable
+- [X] unbreakable
 - [ ] use_cooldown
 - [ ] use_remainder
 - [ ] weapon(not in spigot as of 1.21.4)
