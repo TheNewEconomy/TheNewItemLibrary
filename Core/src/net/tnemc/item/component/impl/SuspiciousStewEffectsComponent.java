@@ -91,13 +91,12 @@ public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
     if (!(component instanceof final SuspiciousStewEffectsComponent<?, ?> other)) return false;
-    return Objects.equals(this.effectId, other.effectId) &&
-           this.duration == other.duration;
+    return Objects.equals(this.effects, other.effects);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(effectId, duration);
+    return Objects.hash(effects);
   }
 
   public List<EffectInstance> effects() {

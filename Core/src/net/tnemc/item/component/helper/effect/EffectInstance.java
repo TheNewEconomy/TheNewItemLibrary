@@ -38,6 +38,10 @@ public class EffectInstance {
   protected boolean showParticles = true;
   protected boolean showIcon = true;
 
+  public EffectInstance() {
+
+  }
+
   public EffectInstance(final String id) {
 
     this.id = id;

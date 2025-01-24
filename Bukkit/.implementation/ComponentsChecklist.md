@@ -46,7 +46,7 @@
 - [ ] repairable(not in spigot as of 1.21.4)
 - [X] repair_cost
 - [X] stored_enchantments
-- [ ] suspicious_stew_effects
+- [X] suspicious_stew_effects
 - [ ] tool
 - [X] tooltip_style
 - [X] trim
