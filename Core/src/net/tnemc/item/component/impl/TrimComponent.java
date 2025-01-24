@@ -35,7 +35,7 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class TrimComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
+public abstract class TrimComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected String pattern = "";
   protected String material = "";
@@ -60,13 +60,11 @@ public abstract class TrimComponent<I extends AbstractItemStack<T>, T> extends T
     final JSONObject json = new JSONObject();
     json.put("pattern", pattern);
     json.put("material", material);
-    json.put("show_in_tooltip", showInTooltip);
     return json;
   }
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    super.readJSON(json, platform); // Read tooltip visibility
     pattern = json.getString("pattern");
     material = json.getString("material");
   }
@@ -74,8 +72,7 @@ public abstract class TrimComponent<I extends AbstractItemStack<T>, T> extends T
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
     if (!(component instanceof final TrimComponent<?, ?> other)) return false;
-    return showInTooltip == other.showInTooltip &&
-           Objects.equals(this.pattern, other.pattern) &&
+    return Objects.equals(this.pattern, other.pattern) &&
            Objects.equals(this.material, other.material);
   }
 

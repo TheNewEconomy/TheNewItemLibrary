@@ -37,7 +37,7 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
+public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected int rgb;
 
@@ -63,14 +63,12 @@ public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> exte
   @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
-    json.put("showInTooltip", showInTooltip);
     json.put("rgb", rgb);
     return json;
   }
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    super.readJSON(json, platform); // Read tooltip visibility
     rgb = json.getInteger("rgb");
   }
 
@@ -78,13 +76,12 @@ public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> exte
   public boolean equals(final SerialComponent<I, T> component) {
     if(!(component instanceof final DyedColorComponent<?, ?> other)) return false;
 
-    return this.rgb == other.rgb &&
-           this.showInTooltip == other.showInTooltip;
+    return this.rgb == other.rgb;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(rgb, showInTooltip);
+    return Objects.hash(rgb);
   }
 
   public int rgb() {

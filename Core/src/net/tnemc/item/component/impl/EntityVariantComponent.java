@@ -1,7 +1,7 @@
 package net.tnemc.item.component.impl;
 /*
  * The New Item Library
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,29 +22,32 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.TooltippableSerialComponent;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
 
 /**
- * JukeBoxComponent
+ * EntityVariantComponent
  *
  * @author creatorfromhell
- * @since 0.0.1.0
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#">Reference</a>
+ * <p>
+ * @since 0.2.0.0
  */
-public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
+public abstract class EntityVariantComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected String song;
+  protected String entity = "";
+  protected String variant = "";
 
-  public JukeBoxComponent() {
+  public EntityVariantComponent() {
 
   }
 
-  public JukeBoxComponent(final String song) {
+  public EntityVariantComponent(final String entity, final String variant) {
 
-    this.song = song;
+    this.entity = entity;
+    this.variant = variant;
   }
 
   /**
@@ -53,7 +56,7 @@ public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> implem
   @Override
   public String identifier() {
 
-    return "jukebox";
+    return "entity_variant";
   }
 
   /**
@@ -64,10 +67,12 @@ public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> implem
   @Override
   public JSONObject toJSON() {
 
-    final JSONObject jukebox = new JSONObject();
-    jukebox.put("name", "jukebox-component");
+    final JSONObject json = new JSONObject();
 
-    return jukebox;
+    json.put("entity", entity);
+    json.put("variant", variant);
+
+    return json;
   }
 
   /**
@@ -78,7 +83,8 @@ public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> implem
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
 
-    song = json.getString("song");
+    this.entity = json.getString("entity");
+    this.variant = json.getString("variant");
   }
 
   /**
@@ -92,20 +98,34 @@ public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> implem
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
 
-    if(component instanceof final JukeBoxComponent<?, ?> jukeBox) {
+    if(!(component instanceof final EntityVariantComponent<?, ?> other)) return false;
 
-      return Objects.equals(jukeBox.song, this.song);
-    }
-    return false;
+    return entity.equals(other.entity) && variant.equals(other.variant);
   }
 
-  public String song() {
+  @Override
+  public int hashCode() {
 
-    return song;
+    return Objects.hash(entity, variant);
   }
 
-  public void song(final String song) {
+  public String entity() {
 
-    this.song = song;
+    return entity;
+  }
+
+  public void entity(final String entity) {
+
+    this.entity = entity;
+  }
+
+  public String variant() {
+
+    return variant;
+  }
+
+  public void variant(final String variant) {
+
+    this.variant = variant;
   }
 }

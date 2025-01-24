@@ -24,7 +24,6 @@ import net.tnemc.item.bukkit.data.BukkitInstrumentData;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemEquip;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemJuke;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemProfile;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemSerialData;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemTool;
 import net.tnemc.item.bukkit.platform.implold.BukkitItemUse;
 import net.tnemc.item.bukkitbase.ParsingUtil;
@@ -41,17 +40,6 @@ import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.bukkitbase.data.BukkitSpawnEggData;
 import net.tnemc.item.bukkitbase.data.BukkitTropicalFishData;
 import net.tnemc.item.bukkitbase.data.BukkitWritableBookData;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemDamage;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemEnchantGlint;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemFlag;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemGlider;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemMaxStack;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemModel;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemModelData;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemRarity;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemTooltip;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemTooltipStyle;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemUnbreakable;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -119,20 +107,8 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     registerConversions();
 
     //bukkit base implementation.
-    addMulti(new BukkitItemDamage<>());
-    addMulti(new BukkitItemEnchantGlint<>());
-    addMulti(new BukkitItemFlag<>());
-    addMulti(new BukkitItemGlider<>());
-    addMulti(new BukkitItemMaxStack<>());
-    addMulti(new BukkitItemModel<>());
-    addMulti(new BukkitItemModelData<>());
-    addMulti(new BukkitItemRarity<>());
-    addMulti(new BukkitItemTooltip<>());
-    addMulti(new BukkitItemTooltipStyle<>());
-    addMulti(new BukkitItemUnbreakable<>());
 
     //Bukkit-specific
-    addMulti(new BukkitItemSerialData());
     addMulti(new BukkitItemEquip());
     addMulti(new BukkitItemJuke());
     addMulti(new BukkitItemProfile());

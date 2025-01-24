@@ -41,7 +41,7 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
+public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final List<AttributeModifier> modifiers = new ArrayList<>();
 
@@ -53,27 +53,14 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
   }
 
   /**
-   * Initializes an AttributeModifiersComponent with the specified showInTooltip flag.
-   *
-   * @param showInTooltip A boolean flag indicating whether to show the component in tooltip.
-   */
-  public AttributeModifiersComponent(final boolean showInTooltip) {
-
-    this.showInTooltip = showInTooltip;
-  }
-
-  /**
    * Constructor for AttributeModifiersComponent.
    * Initializes the component with a list of AttributeModifiers and a boolean flag to show in tooltip.
    *
    * @param modifiers The list of AttributeModifiers to associate with this component.
-   * @param showInTooltip A boolean flag indicating whether to show the component in tooltip.
    */
-  public AttributeModifiersComponent(final List<AttributeModifier> modifiers,
-                                     final boolean showInTooltip) {
+  public AttributeModifiersComponent(final List<AttributeModifier> modifiers) {
 
     this.modifiers.addAll(modifiers);
-    this.showInTooltip = showInTooltip;
   }
 
   /**
@@ -92,7 +79,6 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
   @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
-    json.put("showInTooltip", showInTooltip);
 
     final JSONArray modifiersArray = new JSONArray();
     for(final AttributeModifier modifier : modifiers) {
@@ -118,7 +104,6 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
    */
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    super.readJSON(json, platform);
 
     modifiers.clear();
 
@@ -158,13 +143,12 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
     if(!(component instanceof final AttributeModifiersComponent<?, ?> other)) return false;
-    return this.showInTooltip == other.showInTooltip &&
-           Objects.equals(this.modifiers, other.modifiers);
+    return Objects.equals(this.modifiers, other.modifiers);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(modifiers, showInTooltip);
+    return Objects.hash(modifiers);
   }
 
   /**

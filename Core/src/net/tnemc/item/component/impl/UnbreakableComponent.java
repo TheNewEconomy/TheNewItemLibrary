@@ -21,7 +21,6 @@ package net.tnemc.item.component.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.TooltippableSerialComponent;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
@@ -33,14 +32,10 @@ import org.json.simple.JSONObject;
  * <p>
  * @since 0.2.0.0
  */
-public abstract class UnbreakableComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
+public abstract class UnbreakableComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   public UnbreakableComponent() {
 
-  }
-
-  public UnbreakableComponent(final boolean showInTooltip) {
-    this.showInTooltip = showInTooltip;
   }
 
   @Override
@@ -51,32 +46,21 @@ public abstract class UnbreakableComponent<I extends AbstractItemStack<T>, T> ex
   @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
-    json.put("show_in_tooltip", showInTooltip);
     return json;
   }
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    super.readJSON(json, platform); // Read tooltip visibility
   }
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
     if (!(component instanceof final UnbreakableComponent<?, ?> other)) return false;
-    return showInTooltip == other.showInTooltip;
+    return true;
   }
 
   @Override
   public int hashCode() {
     return super.hashCode();
-  }
-
-  public boolean isShowInTooltip() {
-
-    return showInTooltip;
-  }
-
-  public void setShowInTooltip(final boolean showInTooltip) {
-    this.showInTooltip = showInTooltip;
   }
 }

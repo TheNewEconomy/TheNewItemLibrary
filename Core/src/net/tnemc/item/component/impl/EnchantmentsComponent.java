@@ -21,7 +21,6 @@ package net.tnemc.item.component.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.component.TooltippableSerialComponent;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -37,7 +36,7 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> extends TooltippableSerialComponent<I, T> {
+public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected final Map<String, Integer> levels = new HashMap<>();
 
@@ -58,7 +57,6 @@ public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> e
   @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
-    json.put("showInTooltip", showInTooltip);
 
     final JSONArray enchantmentsArray = new JSONArray();
     for(final Map.Entry<String, Integer> entry : levels.entrySet()) {
@@ -76,7 +74,6 @@ public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> e
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
     levels.clear();
-    super.readJSON(json, platform);
 
     final JSONArray enchantmentsArray = (JSONArray) json.getObject().get("enchantments");
     if(enchantmentsArray != null) {
@@ -94,13 +91,12 @@ public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> e
   public boolean equals(final SerialComponent<I, T> component) {
     if(!(component instanceof final EnchantmentsComponent<?, ?> other)) return false;
 
-    return this.showInTooltip == other.showInTooltip &&
-           Objects.equals(this.levels, other.levels);
+    return Objects.equals(this.levels, other.levels);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(levels, showInTooltip);
+    return Objects.hash(levels);
   }
 
   public Map<String, Integer> levels() {

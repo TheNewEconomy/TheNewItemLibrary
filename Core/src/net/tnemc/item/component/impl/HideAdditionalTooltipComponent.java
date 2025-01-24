@@ -33,7 +33,12 @@ import java.util.Objects;
  * @see <a href="https://minecraft.wiki/w/Data_component_format#hide_additional_tooltip">Reference</a>
  * <p>
  * @since 0.2.0.0
+ * @deprecated This component was deprecated in MC 1.21.5 in favor of {@link TooltipDisplayComponent}
+ *
  */
+@Deprecated(
+        since = "1.21.5"
+)
 public abstract class HideAdditionalTooltipComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   public HideAdditionalTooltipComponent() {
