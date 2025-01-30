@@ -27,10 +27,11 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * BucketEntityDataComponent
+ * BucketEntityDataComponent - NBT applied to an entity when placed from this bucket. Only tags
+ * below are applied.
  *
  * @author creatorfromhell
- * @see <a href="https://minecraft.wiki/w/Data_component_format#">Reference</a>
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#bucket_entity_data">Reference</a>
  * <p>
  * @since 0.2.0.0
  */
@@ -42,11 +43,11 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
   protected boolean glowing;
   protected boolean invulnerable;
   protected float health = 0.0f; // Default to 0
-  protected int age = 0; // Default to 0
-  protected int variant = 0; // Default to 0
-  protected long huntingCooldown = 0L; // Default to 0
-  protected int bucketVariantTag = 0; // Default to 0
-  protected String type = ""; // Default to 0
+  protected int age = 0; // Default to 0 for axolotls and tadpoles.
+  protected int variant = 0; // Default to 0 for axolotls.
+  protected long huntingCooldown = 0L; // Default to 0 for axolotls.
+  protected int bucketVariantTag = 0; // Default to 0 - for tropical fish
+  protected String type = ""; // for salmon
 
   public BucketEntityDataComponent() {
 

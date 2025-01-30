@@ -46,6 +46,8 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
 
   protected final List<DamageReduction> reductions = new ArrayList<>();
 
+  protected final List<String> bypassedBy = new ArrayList<>();
+
   protected ItemDamage itemDamage = null;
 
   //The number of seconds that right-click must be held before successfully blocking attacks
@@ -91,9 +93,19 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
       reductionJson.put("type", reduction.type());
       reductionJson.put("base", reduction.base());
       reductionJson.put("factor", reduction.factor());
+      reductionJson.put("horizontalBlockingAngle", reduction.horizontalBlockingAngle());
       reductionsArray.add(reductionJson);
     }
     json.put("reductions", reductionsArray);
+
+
+    //Serialize bypassedBy
+    final JSONArray bypassedByArray = new JSONArray();
+    for(final String bypassedBy : bypassedBy) {
+
+      bypassedByArray.add(bypassedBy);
+    }
+    json.put("bypassedBy", bypassedByArray);
 
     // Serialize ItemDamage
     if(itemDamage != null) {
@@ -135,7 +147,20 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
         final String type = reductionJson.get("type").toString();
         final float base = Float.parseFloat(reductionJson.get("base").toString());
         final float factor = Float.parseFloat(reductionJson.get("factor").toString());
-        reductions.add(new DamageReduction(type, base, factor));
+        final float horizontalBlockingAngle = Float.parseFloat(reductionJson.get("horizontalBlockingAngle").toString());
+        reductions.add(new DamageReduction(type, base, factor, horizontalBlockingAngle));
+      }
+    }
+
+    //Deserialize bypassBy
+    final JSONArray bypassByArray = (JSONArray)json.getObject().get("bypassedBy");
+    bypassedBy.clear();
+
+    if(bypassByArray != null) {
+
+      for(final Object obj : bypassByArray) {
+
+        bypassedBy.add(obj.toString());
       }
     }
 
@@ -170,6 +195,7 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
     if(!(component instanceof final BlocksAttacksComponent<?, ?> other)) return false;
 
     return Objects.equals(this.reductions, other.reductions) &&
+           Objects.equals(this.bypassedBy, other.bypassedBy) &&
            Objects.equals(this.itemDamage, other.itemDamage) &&
            Float.compare(this.blockDelay, other.blockDelay) == 0 &&
            Float.compare(this.disableCooldownScale, other.disableCooldownScale) == 0 &&
@@ -180,7 +206,7 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
   @Override
   public int hashCode() {
 
-    return Objects.hash(reductions, itemDamage, blockDelay, disableCooldownScale, blockSound, disableSound);
+    return Objects.hash(reductions, bypassedBy, itemDamage, blockDelay, disableCooldownScale, blockSound, disableSound);
   }
 
   public List<DamageReduction> reductions() {
@@ -198,6 +224,23 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
 
     this.reductions.clear();
     this.reductions.addAll(Arrays.asList(reductions));
+  }
+
+  public List<String> bypassedBy() {
+
+    return bypassedBy;
+  }
+
+  public void bypassedBy(final List<String> bypassedBy) {
+
+    this.bypassedBy.clear();
+    this.bypassedBy.addAll(bypassedBy);
+  }
+
+  public void bypassedBy(final String... bypassedBy) {
+
+    this.bypassedBy.clear();
+    this.bypassedBy.addAll(Arrays.asList(bypassedBy));
   }
 
   public ItemDamage itemDamage() {

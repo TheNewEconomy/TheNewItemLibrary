@@ -29,12 +29,19 @@ public class DamageReduction {
   protected final String type;
   protected final float base;
   protected final float factor;
+  protected final float horizontalBlockingAngle;
 
   public DamageReduction(final String type, final float base, final float factor) {
+
+    this(type, base, factor, 90.0f);
+  }
+
+  public DamageReduction(final String type, final float base, final float factor, final float horizontalBlockingAngle) {
 
     this.type = type;
     this.base = base;
     this.factor = factor;
+    this.horizontalBlockingAngle = horizontalBlockingAngle;
   }
 
   public String type() {
@@ -50,5 +57,10 @@ public class DamageReduction {
   public float factor() {
 
     return factor;
+  }
+
+  public float horizontalBlockingAngle() {
+
+    return horizontalBlockingAngle;
   }
 }
