@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkitbase.data;
+package net.tnemc.item.paper.data;
 
 /*
  * The New Item Library Minecraft Server Plugin
@@ -20,6 +20,8 @@ package net.tnemc.item.bukkitbase.data;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.data.BannerData;
@@ -27,13 +29,12 @@ import net.tnemc.item.data.banner.PatternData;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 
-public class BukkitBannerData extends BannerData<ItemStack> {
+public class PaperBannerData extends BannerData<ItemStack> {
 
   /**
    * This method is used to convert from the implementation's ItemStack object to a valid
@@ -42,15 +43,21 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public void of(ItemStack stack) {
+  public void of(final ItemStack stack) {
     final BannerMeta meta = (BannerMeta)stack.getItemMeta();
 
     if(meta != null) {
       for(final Pattern pattern : meta.getPatterns()) {
         try {
-          patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                  pattern.getPattern().getKey().toString()));
-        } catch(Exception ignore) {
+
+          final NamespacedKey key = RegistryAccess.registryAccess().getRegistry(RegistryKey.BANNER_PATTERN).getKey(pattern.getPattern());
+
+          if(key != null) {
+            patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
+                                         key.toString()));
+          }
+
+        } catch(final Exception ignore) {
           //Compatibility
           patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
                   pattern.getPattern().getIdentifier()));
@@ -65,19 +72,26 @@ public class BukkitBannerData extends BannerData<ItemStack> {
    * @param stack The locale itemstack object of the implementation.
    */
   @Override
-  public ItemStack apply(ItemStack stack) {
+  public ItemStack apply(final ItemStack stack) {
 
     final BannerMeta meta = (BannerMeta)ParsingUtil.buildFor(stack, BannerMeta.class);
 
     for(final PatternData pattern : patterns) {
       try {
-        final NamespacedKey key = NamespacedKey.fromString(pattern.getPattern());
-        final DyeColor color = DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor())));
-        if(key != null && color != null && Registry.BANNER_PATTERN.get(key) != null) {
 
-          meta.addPattern(new Pattern(color, Registry.BANNER_PATTERN.get(key)));
+        final NamespacedKey key = NamespacedKey.fromString(pattern.getPattern());
+        if( key != null) {
+
+          final PatternType type = RegistryAccess.registryAccess().getRegistry(RegistryKey.BANNER_PATTERN).get(key);
+
+          final DyeColor color = DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor())));
+          if(color != null && type != null) {
+
+            meta.addPattern(new Pattern(color, type));
+          }
         }
-      } catch(Exception ignore) {
+      } catch(final Exception ignore) {
+
         //Compatibility
         meta.addPattern(new Pattern(DyeColor.getByColor(Color.fromRGB(Integer.valueOf(pattern.getColor()))),
                 PatternType.valueOf(pattern.getPattern())));

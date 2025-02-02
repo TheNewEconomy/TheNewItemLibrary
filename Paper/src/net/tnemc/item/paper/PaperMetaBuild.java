@@ -20,7 +20,6 @@ package net.tnemc.item.paper;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.data.BukkitAxolotlData;
-import net.tnemc.item.bukkitbase.data.BukkitBannerData;
 import net.tnemc.item.bukkitbase.data.BukkitBookData;
 import net.tnemc.item.bukkitbase.data.BukkitCompassData;
 import net.tnemc.item.bukkitbase.data.BukkitEnchantData;
@@ -34,6 +33,7 @@ import net.tnemc.item.bukkitbase.data.BukkitRepairableMeta;
 import net.tnemc.item.bukkitbase.data.BukkitSkullData;
 import net.tnemc.item.bukkitbase.data.BukkitSuspiciousStewData;
 import net.tnemc.item.bukkitbase.data.BukkitTropicalFishData;
+import net.tnemc.item.paper.data.PaperBannerData;
 import net.tnemc.item.paper.data.PaperBundleData;
 import net.tnemc.item.paper.data.PaperCrossbowMeta;
 import net.tnemc.item.paper.data.PaperShulkerData;
@@ -78,7 +78,7 @@ public class PaperMetaBuild {
       if(meta instanceof AxolotlBucketMeta) {
         data = new BukkitAxolotlData();
       } else if(meta instanceof BannerMeta) {
-        data = new BukkitBannerData();
+        data = new PaperBannerData();
       } else if(meta instanceof BlockStateMeta) {
         if(((BlockStateMeta)meta).getBlockState() instanceof ShulkerBox) {
           data = new PaperShulkerData();

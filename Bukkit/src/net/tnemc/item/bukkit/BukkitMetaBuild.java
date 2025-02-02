@@ -23,7 +23,7 @@ import net.tnemc.item.bukkit.data.BukkitBundleData;
 import net.tnemc.item.bukkit.data.BukkitCrossbowMeta;
 import net.tnemc.item.bukkit.data.BukkitShulkerData;
 import net.tnemc.item.bukkitbase.data.BukkitAxolotlData;
-import net.tnemc.item.bukkitbase.data.BukkitBannerData;
+import net.tnemc.item.bukkit.data.BukkitBannerData;
 import net.tnemc.item.bukkitbase.data.BukkitBookData;
 import net.tnemc.item.bukkitbase.data.BukkitCompassData;
 import net.tnemc.item.bukkitbase.data.BukkitEnchantData;
