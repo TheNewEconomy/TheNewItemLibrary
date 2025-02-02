@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.tnemc</groupId>
         <artifactId>TNIL</artifactId>
-        <version>0.1.7.6-LEGACY-14</version>
+        <version>0.1.7.6-LEGACY-15</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -106,7 +106,7 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-BukkitBase</artifactId>
-            <version>0.1.7.6-LEGACY-14</version>
+            <version>0.1.7.6-LEGACY-15</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
