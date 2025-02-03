@@ -20,87 +20,10 @@ package net.tnemc.item.paper.platform;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.bukkitbase.data.BukkitAxolotlData;
-import net.tnemc.item.bukkitbase.data.BukkitBannerData;
-import net.tnemc.item.bukkitbase.data.BukkitBookData;
-import net.tnemc.item.bukkitbase.data.BukkitCompassData;
-import net.tnemc.item.bukkitbase.data.BukkitDamageData;
-import net.tnemc.item.bukkitbase.data.BukkitEnchantData;
-import net.tnemc.item.bukkitbase.data.BukkitFireworkData;
-import net.tnemc.item.bukkitbase.data.BukkitFireworkEffectData;
-import net.tnemc.item.bukkitbase.data.BukkitKnowledgeBookData;
-import net.tnemc.item.bukkitbase.data.BukkitLeatherData;
-import net.tnemc.item.bukkitbase.data.BukkitMapData;
-import net.tnemc.item.bukkitbase.data.BukkitOminousBottleData;
-import net.tnemc.item.bukkitbase.data.BukkitPotionData;
-import net.tnemc.item.bukkitbase.data.BukkitRepairableData;
-import net.tnemc.item.bukkitbase.data.BukkitSkullData;
-import net.tnemc.item.bukkitbase.data.BukkitSpawnEggData;
-import net.tnemc.item.bukkitbase.data.BukkitSuspiciousStewData;
-import net.tnemc.item.bukkitbase.data.BukkitTropicalFishData;
-import net.tnemc.item.bukkitbase.data.BukkitWritableBookData;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemDamage;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemEnchantGlint;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemFlag;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemGlider;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemMaxStack;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemModel;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemModelData;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemRarity;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemTooltip;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemTooltipStyle;
-import net.tnemc.item.bukkitbase.platform.impl.BukkitItemUnbreakable;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.data.PaperArmourData;
-import net.tnemc.item.paper.data.PaperBannerModernData;
-import net.tnemc.item.paper.data.PaperBundleData;
-import net.tnemc.item.paper.data.PaperColourArmourData;
-import net.tnemc.item.paper.data.PaperCrossbowData;
-import net.tnemc.item.paper.data.PaperInstrumentData;
-import net.tnemc.item.paper.data.block.PaperShulkerData;
-import net.tnemc.item.paper.platform.impl.PaperItemAttribute;
-import net.tnemc.item.paper.platform.impl.PaperItemDisplay;
-import net.tnemc.item.paper.platform.impl.PaperItemEnchant;
-import net.tnemc.item.paper.platform.impl.PaperItemEquip;
-import net.tnemc.item.paper.platform.impl.PaperItemFood;
-import net.tnemc.item.paper.platform.impl.PaperItemJuke;
-import net.tnemc.item.paper.platform.impl.PaperItemLore;
-import net.tnemc.item.paper.platform.impl.PaperItemMaterial;
-import net.tnemc.item.paper.platform.impl.PaperItemProfile;
-import net.tnemc.item.paper.platform.impl.PaperItemSerialData;
-import net.tnemc.item.paper.platform.impl.PaperItemTool;
-import net.tnemc.item.paper.platform.impl.PaperItemUse;
 import net.tnemc.item.platform.ItemPlatform;
-import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ArmorMeta;
-import org.bukkit.inventory.meta.AxolotlBucketMeta;
-import org.bukkit.inventory.meta.BannerMeta;
-import org.bukkit.inventory.meta.BlockStateMeta;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.BundleMeta;
-import org.bukkit.inventory.meta.ColorableArmorMeta;
-import org.bukkit.inventory.meta.CompassMeta;
-import org.bukkit.inventory.meta.CrossbowMeta;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.FireworkEffectMeta;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.KnowledgeBookMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.inventory.meta.MusicInstrumentMeta;
-import org.bukkit.inventory.meta.OminousBottleMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.Repairable;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.inventory.meta.SpawnEggMeta;
-import org.bukkit.inventory.meta.SuspiciousStewMeta;
-import org.bukkit.inventory.meta.TropicalFishBucketMeta;
-import org.bukkit.inventory.meta.WritableBookMeta;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -134,31 +57,8 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
   public void addDefaults() {
 
     //bukkit base implementation.
-    addMulti(new BukkitItemDamage<>());
-    addMulti(new BukkitItemEnchantGlint<>());
-    addMulti(new BukkitItemFlag<>());
-    addMulti(new BukkitItemGlider<>());
-    addMulti(new BukkitItemMaxStack<>());
-    addMulti(new BukkitItemModel<>());
-    addMulti(new BukkitItemModelData<>());
-    addMulti(new BukkitItemRarity<>());
-    addMulti(new BukkitItemTooltip<>());
-    addMulti(new BukkitItemTooltipStyle<>());
-    addMulti(new BukkitItemUnbreakable<>());
 
     //Paper-specific
-    addMulti(new PaperItemSerialData());
-    addMulti(new PaperItemAttribute());
-    addMulti(new PaperItemDisplay());
-    addMulti(new PaperItemEnchant());
-    addMulti(new PaperItemEquip());
-    addMulti(new PaperItemFood());
-    addMulti(new PaperItemJuke());
-    addMulti(new PaperItemLore());
-    addMulti(new PaperItemMaterial());
-    addMulti(new PaperItemProfile());
-    addMulti(new PaperItemTool());
-    addMulti(new PaperItemUse());
   }
 
   /**
@@ -184,7 +84,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     final String currentVersion = Bukkit.getServer().getBukkitVersion().split("-")[0];
 
     if(stack.hasItemMeta()) {
-      final ItemMeta meta = stack.getItemMeta();
+      /*final ItemMeta meta = stack.getItemMeta();
 
       if(VersionUtil.isOneTwentyOne(currentVersion)) {
         if(meta instanceof WritableBookMeta) {
@@ -309,7 +209,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
 
           return Optional.of(new PaperArmourData());
         }
-      }
+      }*/
     }
     return Optional.empty();
   }

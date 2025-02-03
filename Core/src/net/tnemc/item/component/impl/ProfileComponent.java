@@ -41,6 +41,10 @@ public abstract class ProfileComponent<I extends AbstractItemStack<T>, T> implem
 
   protected SkullProfile profile;
 
+  public ProfileComponent() {
+
+  }
+
   public ProfileComponent(final SkullProfile profile) {
 
     this.profile = profile;

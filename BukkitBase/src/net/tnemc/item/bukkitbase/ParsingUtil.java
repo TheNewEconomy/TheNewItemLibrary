@@ -22,17 +22,11 @@ package net.tnemc.item.bukkitbase;
 
 import net.tnemc.item.attribute.SerialAttributeOperation;
 import net.tnemc.item.component.helper.EquipSlot;
-import net.tnemc.item.data.firework.SerialFireworkEffect;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static net.tnemc.item.component.helper.EquipSlot.HAND;
 
@@ -43,7 +37,7 @@ public class ParsingUtil {
     return stack.getItemMeta();
   }
 
-  public static FireworkEffect fromSerial(final SerialFireworkEffect effect) {
+  /*public static FireworkEffect fromSerial(final SerialFireworkEffect effect) {
 
     final List<Color> colors = new ArrayList<>();
     for(final Integer i : effect.getColors()) {
@@ -76,7 +70,7 @@ public class ParsingUtil {
     effect.setFlicker(eff.hasFlicker());
 
     return effect;
-  }
+  }*/
 
   public static EquipSlot attributeSlot(final EquipmentSlot slot) {
 

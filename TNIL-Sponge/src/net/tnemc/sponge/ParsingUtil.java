@@ -22,32 +22,14 @@ package net.tnemc.sponge;
 
 
 import net.tnemc.item.SerialItemData;
-import net.tnemc.item.data.firework.SerialFireworkEffect;
-import net.tnemc.sponge.data.SpongeCompassData;
-import net.tnemc.sponge.data.SpongeCrossbowData;
-import net.tnemc.sponge.data.SpongeDyeData;
-import net.tnemc.sponge.data.SpongeEnchantData;
-import net.tnemc.sponge.data.SpongeFireworkData;
-import net.tnemc.sponge.data.SpongePatternData;
-import net.tnemc.sponge.data.SpongePotionData;
-import net.tnemc.sponge.data.SpongeSkullData;
-import net.tnemc.sponge.data.SpongeWritableBookData;
-import org.spongepowered.api.ResourceKey;
-import org.spongepowered.api.item.FireworkEffect;
-import org.spongepowered.api.item.FireworkShape;
-import org.spongepowered.api.item.FireworkShapes;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.registry.RegistryTypes;
-import org.spongepowered.api.util.Color;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ParsingUtil {
 
-  public static FireworkEffect fromSerial(final SerialFireworkEffect effect) {
+  /*public static FireworkEffect fromSerial(final SerialFireworkEffect effect) {
 
     final List<Color> colors = new ArrayList<>();
     for(final Integer i : effect.getColors()) {
@@ -80,14 +62,14 @@ public class ParsingUtil {
     effect.setFlicker(eff.flickers());
 
     return effect;
-  }
+  }*/
 
   public static Map<String, SerialItemData<ItemStack>> parseMeta(final ItemStack stack) {
 
     final Map<String, SerialItemData<ItemStack>> data = new HashMap<>();
 
     //https://jd.spongepowered.org/spongeapi/8.0.0/org/spongepowered/api/data/Keys.html
-    final SpongeWritableBookData book = new SpongeWritableBookData();
+    /*final SpongeWritableBookData book = new SpongeWritableBookData();
     book.of(stack);
     if(book.applies()) {
       data.put(book.getClass().getSimpleName(), book);
@@ -139,7 +121,7 @@ public class ParsingUtil {
     skull.of(stack);
     if(skull.applies()) {
       data.put(skull.getClass().getSimpleName(), skull);
-    }
+    }*/
 
     return data;
   }

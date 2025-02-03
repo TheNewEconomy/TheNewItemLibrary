@@ -20,26 +20,7 @@ package net.tnemc.item.bukkit.platform;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.data.BukkitInstrumentData;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemEquip;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemJuke;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemProfile;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemTool;
-import net.tnemc.item.bukkit.platform.implold.BukkitItemUse;
 import net.tnemc.item.bukkitbase.ParsingUtil;
-import net.tnemc.item.bukkitbase.data.BukkitAxolotlData;
-import net.tnemc.item.bukkitbase.data.BukkitBookData;
-import net.tnemc.item.bukkitbase.data.BukkitCompassData;
-import net.tnemc.item.bukkitbase.data.BukkitFireworkData;
-import net.tnemc.item.bukkitbase.data.BukkitFireworkEffectData;
-import net.tnemc.item.bukkitbase.data.BukkitKnowledgeBookData;
-import net.tnemc.item.bukkitbase.data.BukkitMapData;
-import net.tnemc.item.bukkitbase.data.BukkitOminousBottleData;
-import net.tnemc.item.bukkitbase.data.BukkitPotionData;
-import net.tnemc.item.bukkitbase.data.BukkitSkullData;
-import net.tnemc.item.bukkitbase.data.BukkitSpawnEggData;
-import net.tnemc.item.bukkitbase.data.BukkitTropicalFishData;
-import net.tnemc.item.bukkitbase.data.BukkitWritableBookData;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -53,21 +34,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.AxolotlBucketMeta;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.CompassMeta;
-import org.bukkit.inventory.meta.FireworkEffectMeta;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.KnowledgeBookMeta;
-import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.inventory.meta.MusicInstrumentMeta;
-import org.bukkit.inventory.meta.OminousBottleMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.inventory.meta.SpawnEggMeta;
-import org.bukkit.inventory.meta.TropicalFishBucketMeta;
-import org.bukkit.inventory.meta.WritableBookMeta;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
@@ -108,12 +74,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
     //bukkit base implementation.
 
-    //Bukkit-specific
-    addMulti(new BukkitItemEquip());
-    addMulti(new BukkitItemJuke());
-    addMulti(new BukkitItemProfile());
-    addMulti(new BukkitItemTool());
-    addMulti(new BukkitItemUse());
   }
 
   @SuppressWarnings({"deprecation", "UnstableApiUsage" })
@@ -422,7 +382,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     final String currentVersion = Bukkit.getServer().getBukkitVersion().split("-")[0];
 
     if(stack.hasItemMeta()) {
-      final ItemMeta meta = stack.getItemMeta();
+      /*final ItemMeta meta = stack.getItemMeta();
 
       if(VersionUtil.isOneTwentyOne(currentVersion)) {
         if(meta instanceof WritableBookMeta) {
@@ -498,7 +458,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
           return Optional.of(new BukkitCompassData());
         }
-      }
+      }*/
     }
     return Optional.empty();
   }
