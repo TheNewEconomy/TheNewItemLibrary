@@ -27,6 +27,7 @@ import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.BlockPredicate;
 import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.component.helper.ExplosionData;
+import net.tnemc.item.component.helper.ItemDamage;
 import net.tnemc.item.component.helper.PatternData;
 import net.tnemc.item.component.helper.ToolRule;
 import net.tnemc.item.component.helper.effect.ComponentEffect;
@@ -34,6 +35,8 @@ import net.tnemc.item.component.helper.effect.EffectInstance;
 import net.tnemc.item.component.impl.AttributeModifiersComponent;
 import net.tnemc.item.component.impl.BannerPatternsComponent;
 import net.tnemc.item.component.impl.BaseColorComponent;
+import net.tnemc.item.component.impl.BlocksAttacksComponent;
+import net.tnemc.item.component.impl.BreakSoundComponent;
 import net.tnemc.item.component.impl.BucketEntityDataComponent;
 import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.component.impl.CanBreakComponent;
@@ -48,6 +51,7 @@ import net.tnemc.item.component.impl.DyedColorComponent;
 import net.tnemc.item.component.impl.EnchantableComponent;
 import net.tnemc.item.component.impl.EnchantmentGlintOverrideComponent;
 import net.tnemc.item.component.impl.EnchantmentsComponent;
+import net.tnemc.item.component.impl.EntityVariantComponent;
 import net.tnemc.item.component.impl.EquipComponent;
 import net.tnemc.item.component.impl.FireworkExplosionComponent;
 import net.tnemc.item.component.impl.FireworksComponent;
@@ -73,6 +77,8 @@ import net.tnemc.item.component.impl.PotDecorationsComponent;
 import net.tnemc.item.component.impl.PotionContentsComponent;
 import net.tnemc.item.component.impl.PotionDurationScaleComponent;
 import net.tnemc.item.component.impl.ProfileComponent;
+import net.tnemc.item.component.impl.ProvidesBannerPatternsComponent;
+import net.tnemc.item.component.impl.ProvidesTrimMaterialComponent;
 import net.tnemc.item.component.impl.RarityComponent;
 import net.tnemc.item.component.impl.RecipesComponent;
 import net.tnemc.item.component.impl.RepairCostComponent;
@@ -80,6 +86,7 @@ import net.tnemc.item.component.impl.RepairableComponent;
 import net.tnemc.item.component.impl.StoredEnchantmentsComponent;
 import net.tnemc.item.component.impl.SuspiciousStewEffectsComponent;
 import net.tnemc.item.component.impl.ToolComponent;
+import net.tnemc.item.component.impl.TooltipDisplayComponent;
 import net.tnemc.item.component.impl.TooltipStyleComponent;
 import net.tnemc.item.component.impl.TrimComponent;
 import net.tnemc.item.component.impl.UnbreakableComponent;
@@ -493,6 +500,52 @@ public interface AbstractItemStack<T> extends Cloneable {
   AbstractItemStack<T> baseColor(String color);
 
   /**
+   * Retrieves the BlocksAttacksComponent associated with this method.
+   *
+   * @return an Optional containing the BlocksAttacksComponent if found, otherwise an empty Optional
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see BlocksAttacksComponent
+   */
+  default Optional<BlocksAttacksComponent<AbstractItemStack<T>, T>> blocksAttacks() {
+    return Optional.ofNullable((BlocksAttacksComponent<AbstractItemStack<T>, T>) components().get("blocks_attacks"));
+  }
+
+  /**
+   * Blocks attacks with the specified damage type using this item.
+   *
+   * @param damage the type of damage to block attacks from
+   * @return an AbstractItemStack object representing the item after blocking attacks
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see BlocksAttacksComponent
+   */
+  AbstractItemStack<T> blocksAttacks(ItemDamage damage);
+
+  /**
+   * Retrieves the break sound component associated with the object.
+   *
+   * @return an Optional containing the BreakSoundComponent if it exists, else an empty Optional
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see BreakSoundComponent
+   */
+  default Optional<BreakSoundComponent<AbstractItemStack<T>, T>> breakSound() {
+    return Optional.ofNullable((BreakSoundComponent<AbstractItemStack<T>, T>) components().get("break_sound"));
+  }
+
+  /**
+   * Set the break sound for this item stack.
+   *
+   * @param sound the sound to be played when the item is broken
+   * @return the updated item stack object
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see BreakSoundComponent
+   */
+  AbstractItemStack<T> breakSound(final String sound);
+
+  /**
    * Retrieves the BucketEntityDataComponent of the item stack if present.
    *
    * @return an Optional containing the BucketEntityDataComponent if it exists
@@ -831,6 +884,30 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @see EnchantmentsComponent
    */
   AbstractItemStack<T> enchantments(Map<String, Integer> levels);
+
+  /**
+   * Retrieves the Entity Variant Component for the current stack.
+   *
+   * @return An optional containing the Entity Variant Component if present in the components map, otherwise empty.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see EntityVariantComponent
+   */
+  default Optional<EntityVariantComponent<AbstractItemStack<T>, T>> entityVariant() {
+    return Optional.ofNullable((EntityVariantComponent<AbstractItemStack<T>, T>) components().get("entity_variant"));
+  }
+
+  /**
+   * Generates an AbstractItemStack based on the given entity and variant.
+   *
+   * @param entity the entity name to create the stack for
+   * @param variant the variant of the entity
+   * @return an AbstractItemStack representing the entity with the specified variant
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see EntityVariantComponent
+   */
+  AbstractItemStack<T> entityVariant(final String entity, final String variant);
 
   /**
    * Retrieves the EquipComponent of the item stack if present.
@@ -1456,6 +1533,53 @@ public interface AbstractItemStack<T> extends Cloneable {
   AbstractItemStack<T> profile(final SkullProfile profile);
 
   /**
+   * Retrieves the component that provides banner patterns.
+   *
+   * @return an Optional containing the ProvidesBannerPatternsComponent for the specified item stack type T,
+   *         or an empty Optional if the component is not present
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see ProvidesBannerPatternsComponent
+   */
+  default Optional<ProvidesBannerPatternsComponent<AbstractItemStack<T>, T>> providesPattern() {
+    return Optional.ofNullable((ProvidesBannerPatternsComponent<AbstractItemStack<T>, T>) components().get("provides_trim_material"));
+  }
+
+  /**
+   * Retrieve an AbstractItemStack object that provides a specific pattern identified by the patternTag.
+   *
+   * @param patternTag The unique identifier of the pattern to be provided.
+   * @return An AbstractItemStack object that provides the specified pattern.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see ProvidesBannerPatternsComponent
+   */
+  AbstractItemStack<T> providesPattern(final String patternTag);
+
+  /**
+   * Retrieves the component responsible for providing trim materials.
+   *
+   * @return An Optional containing the ProvidesTrimMaterialComponent for trim, or an empty Optional if not found.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see ProvidesTrimMaterialComponent
+   */
+  default Optional<ProvidesTrimMaterialComponent<AbstractItemStack<T>, T>> providesTrim() {
+    return Optional.ofNullable((ProvidesTrimMaterialComponent<AbstractItemStack<T>, T>) components().get("provides_trim_material"));
+  }
+
+  /**
+   * Applies the specified trim material
+   *
+   * @param material the trim material
+   * @return an AbstractItemStack object representing the trimmed material
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see ProvidesTrimMaterialComponent
+   */
+  AbstractItemStack<T> providesTrim(final String material);
+
+  /**
    * Retrieves the RarityComponent of the item stack if present.
    *
    * @return an Optional containing the RarityComponent if it exists
@@ -1630,6 +1754,30 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @see ToolComponent
    */
   AbstractItemStack<T> tool(float defaultSpeed, int blockDamage, boolean canDestroyBlocksCreative, List<ToolRule> rules);
+
+  /**
+   * Retrieves the tooltip display component associated with the item.
+   *
+   * @return An Optional containing the tooltip display component, or empty if none is found.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see TooltipDisplayComponent
+   */
+  default Optional<TooltipDisplayComponent<AbstractItemStack<T>, T>> tooltipDisplay() {
+    return Optional.ofNullable((TooltipDisplayComponent<AbstractItemStack<T>, T>) components().get("tooltip_display"));
+  }
+
+  /**
+   * Displays tooltip for the item stack with an option to hide certain components.
+   *
+   * @param hideTooltip Flag to hide the tooltip
+   * @param hiddenComponents Array of components to hide in the tooltip
+   * @return An AbstractItemStack object with the tooltip displayed
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see TooltipDisplayComponent
+   */
+  AbstractItemStack<T> tooltipDisplay(final boolean hideTooltip, final String... hiddenComponents);
 
   /**
    * Retrieves the TooltipStyleComponent of the item stack if present.

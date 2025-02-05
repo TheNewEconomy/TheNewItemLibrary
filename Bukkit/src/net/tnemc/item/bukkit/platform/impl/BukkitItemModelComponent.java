@@ -20,22 +20,23 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
-import net.tnemc.item.component.impl.BaseColorComponent;
-import net.tnemc.item.component.impl.DamageResistantComponent;
+import net.tnemc.item.component.impl.DamageComponent;
+import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.DyeColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ShieldMeta;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
 /**
- * BukkitDamangeResistantComponent
+ * BukkitItemModelComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class BukkitDamangeResistantComponent extends DamageResistantComponent<BukkitItemStack, ItemStack> {
+public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -45,7 +46,7 @@ public class BukkitDamangeResistantComponent extends DamageResistantComponent<Bu
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOne(version);
+    return VersionUtil.isOneTwentyOneTwo(BukkitItemPlatform.PLATFORM.version());
   }
 
   /**
@@ -57,21 +58,19 @@ public class BukkitDamangeResistantComponent extends DamageResistantComponent<Bu
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
-    final Optional<BukkitDamangeResistantComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    final Optional<BukkitItemModelComponent> componentOptional = serialized.component(identifier());
 
-      if(item.hasItemMeta() && item.getItemMeta() instanceof final ShieldMeta meta) {
+    if(componentOptional.isPresent()) {
 
-        try {
-          final DyeColor dyeColor = BukkitItemPlatform.PLATFORM.converter().convert(componentOptional.get().color, DyeColor.class);
-          meta.setBaseColor(dyeColor);
-        } catch(final IllegalArgumentException ignore) {
-          meta.setBaseColor(null);
-        }
+      if(item.getItemMeta() != null && componentOptional.get().model != null
+         && !componentOptional.get().model.isEmpty()) {
 
+        final ItemMeta meta = item.getItemMeta();
+
+        meta.setItemModel(NamespacedKey.fromString(componentOptional.get().model));
         item.setItemMeta(meta);
       }
-    });
+    }
     return item;
   }
 
@@ -84,12 +83,10 @@ public class BukkitDamangeResistantComponent extends DamageResistantComponent<Bu
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    if(item.hasItemMeta() && item.getItemMeta() instanceof final ShieldMeta meta) {
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.getItemModel() != null) {
 
-      if(meta.getBaseColor() != null) {
-
-        this.color = BukkitItemPlatform.PLATFORM.converter().convert(meta.getBaseColor(), String.class);
-      }
+      this.model = meta.getItemModel().toString();
     }
 
     serialized.applyComponent(this);
@@ -106,6 +103,6 @@ public class BukkitDamangeResistantComponent extends DamageResistantComponent<Bu
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.getItemMeta() != null;
+    return true;
   }
 }

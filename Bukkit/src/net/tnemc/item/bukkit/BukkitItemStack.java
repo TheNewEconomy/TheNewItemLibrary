@@ -26,6 +26,7 @@ import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.BlockPredicate;
 import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.component.helper.ExplosionData;
+import net.tnemc.item.component.helper.ItemDamage;
 import net.tnemc.item.component.helper.PatternData;
 import net.tnemc.item.component.helper.ToolRule;
 import net.tnemc.item.component.helper.effect.ComponentEffect;
@@ -33,6 +34,8 @@ import net.tnemc.item.component.helper.effect.EffectInstance;
 import net.tnemc.item.component.impl.AttributeModifiersComponent;
 import net.tnemc.item.component.impl.BannerPatternsComponent;
 import net.tnemc.item.component.impl.BaseColorComponent;
+import net.tnemc.item.component.impl.BlocksAttacksComponent;
+import net.tnemc.item.component.impl.BreakSoundComponent;
 import net.tnemc.item.component.impl.BucketEntityDataComponent;
 import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.component.impl.CanBreakComponent;
@@ -47,6 +50,7 @@ import net.tnemc.item.component.impl.DyedColorComponent;
 import net.tnemc.item.component.impl.EnchantableComponent;
 import net.tnemc.item.component.impl.EnchantmentGlintOverrideComponent;
 import net.tnemc.item.component.impl.EnchantmentsComponent;
+import net.tnemc.item.component.impl.EntityVariantComponent;
 import net.tnemc.item.component.impl.EquipComponent;
 import net.tnemc.item.component.impl.FireworkExplosionComponent;
 import net.tnemc.item.component.impl.FireworksComponent;
@@ -71,6 +75,8 @@ import net.tnemc.item.component.impl.OminousBottleAmplifierComponent;
 import net.tnemc.item.component.impl.PotDecorationsComponent;
 import net.tnemc.item.component.impl.PotionContentsComponent;
 import net.tnemc.item.component.impl.PotionDurationScaleComponent;
+import net.tnemc.item.component.impl.ProvidesBannerPatternsComponent;
+import net.tnemc.item.component.impl.ProvidesTrimMaterialComponent;
 import net.tnemc.item.component.impl.RarityComponent;
 import net.tnemc.item.component.impl.RecipesComponent;
 import net.tnemc.item.component.impl.RepairCostComponent;
@@ -78,6 +84,7 @@ import net.tnemc.item.component.impl.RepairableComponent;
 import net.tnemc.item.component.impl.StoredEnchantmentsComponent;
 import net.tnemc.item.component.impl.SuspiciousStewEffectsComponent;
 import net.tnemc.item.component.impl.ToolComponent;
+import net.tnemc.item.component.impl.TooltipDisplayComponent;
 import net.tnemc.item.component.impl.TooltipStyleComponent;
 import net.tnemc.item.component.impl.TrimComponent;
 import net.tnemc.item.component.impl.UnbreakableComponent;
@@ -167,7 +174,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack of(final JSONObject json) throws ParseException {
 
 
-    return null;
+    return this;
   }
 
   /**
@@ -195,7 +202,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack loreComponent(final List<Component> lore) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -209,7 +216,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchant(final String enchantment, final int level) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -222,7 +229,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchant(final Map<String, Integer> enchantments) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -235,7 +242,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchant(final List<String> enchantments) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -471,7 +478,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack attributeModifiers(final List<AttributeModifier> modifiers, final boolean showInTooltip) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -487,7 +494,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack bannerPatterns(final List<PatternData> patterns) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -503,7 +510,39 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack baseColor(final String color) {
 
-    return null;
+    return this;
+  }
+
+  /**
+   * Blocks attacks with the specified damage type using this item.
+   *
+   * @param damage the type of damage to block attacks from
+   *
+   * @return an AbstractItemStack object representing the item after blocking attacks
+   *
+   * @see BlocksAttacksComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public AbstractItemStack<ItemStack> blocksAttacks(final ItemDamage damage) {
+
+    return this;
+  }
+
+  /**
+   * Set the break sound for this item stack.
+   *
+   * @param sound the sound to be played when the item is broken
+   *
+   * @return the updated item stack object
+   *
+   * @see BreakSoundComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public AbstractItemStack<ItemStack> breakSound(final String sound) {
+
+    return this;
   }
 
   /**
@@ -529,7 +568,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack bucketEntityData(final boolean noAI, final boolean silent, final boolean noGravity, final boolean glowing, final boolean invulnerable, final float health, final int age, final int variant, final long huntingCooldown, final int bucketVariantTag, final String type) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -546,7 +585,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack bundle(final Map<Integer, AbstractItemStack<?>> items) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -562,7 +601,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack canBreak(final List<BlockPredicate> predicates) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -578,7 +617,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack canPlaceOn(final List<BlockPredicate> predicates) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -598,7 +637,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack consumable(final float consumeSeconds, final String animation, final String sound, final boolean hasConsumeParticles, final List<ComponentEffect> effects) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -615,7 +654,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack container(final Map<Integer, AbstractItemStack<?>> items) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -631,7 +670,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack customName(final String customName) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -647,7 +686,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack damage(final int damage) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -663,7 +702,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack damageResistant(final List<String> types) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -679,7 +718,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack deathProtection(final List<ComponentEffect> deathEffects) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -695,7 +734,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack dyedColor(final int rgb) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -711,7 +750,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchantable(final int value) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -727,7 +766,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchantmentGlintOverride(final boolean glintOverride) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -743,7 +782,24 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchantments(final Map<String, Integer> levels) {
 
-    return null;
+    return this;
+  }
+
+  /**
+   * Generates an AbstractItemStack based on the given entity and variant.
+   *
+   * @param entity  the entity name to create the stack for
+   * @param variant the variant of the entity
+   *
+   * @return an AbstractItemStack representing the entity with the specified variant
+   *
+   * @see EntityVariantComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public AbstractItemStack<ItemStack> entityVariant(final String entity, final String variant) {
+
+    return this;
   }
 
   /**
@@ -767,7 +823,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack equip(final String cameraKey, final String equipSound, final String modelKey, final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable, final boolean swappable, final boolean equipOnInteract, final List<String> entities) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -783,7 +839,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack fireworkExplosion(final ExplosionData explosion) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -800,7 +856,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack fireworks(final byte flightDuration, final List<ExplosionData> explosions) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -818,7 +874,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack food(final boolean noHunger, final float saturation, final int nutrition) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -832,7 +888,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack gliderTag() {
 
-    return null;
+    return this;
   }
 
   /**
@@ -846,7 +902,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack hideAdditionalTooltipTag() {
 
-    return null;
+    return this;
   }
 
   /**
@@ -860,7 +916,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack hideTooltipTag() {
 
-    return null;
+    return this;
   }
 
   /**
@@ -878,7 +934,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack instrument(final String soundEvent, final int useDuration, final int range) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -892,7 +948,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack intangibleProjectileTag() {
 
-    return null;
+    return this;
   }
 
   /**
@@ -908,7 +964,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack itemModel(final String model) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -924,7 +980,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack itemName(final String itemName) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -941,7 +997,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack jukebox(final String song, final boolean showInTooltip) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -960,7 +1016,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack lodestoneTracker(final String target, final int[] pos, final String dimension, final boolean tracked) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -976,7 +1032,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack lore(final List<String> lore) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -992,7 +1048,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack mapColor(final int mapColor) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1008,7 +1064,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack mapId(final int mapId) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1024,7 +1080,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack maxDamage(final int maxDamage) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1040,7 +1096,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack maxStackSize(final int maxStackSize) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1059,7 +1115,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack modelData(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1075,7 +1131,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack noteBlockSound(final String soundId) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1091,7 +1147,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack ominousBottleAmplifier(final int amplifier) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1107,7 +1163,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack potDecorations(final List<String> decorations) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1126,7 +1182,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack potionContents(final String potionId, final int customColor, final String customName, final List<EffectInstance> effects) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1142,7 +1198,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack potionDuration(final float potionDuration) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1155,7 +1211,40 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack profile(final SkullProfile profile) {
 
-    return null;
+    return this;
+  }
+
+  /**
+   * Retrieve an AbstractItemStack object that provides a specific pattern identified by the
+   * patternTag.
+   *
+   * @param patternTag The unique identifier of the pattern to be provided.
+   *
+   * @return An AbstractItemStack object that provides the specified pattern.
+   *
+   * @see ProvidesBannerPatternsComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public AbstractItemStack<ItemStack> providesPattern(final String patternTag) {
+
+    return this;
+  }
+
+  /**
+   * Applies the specified trim material
+   *
+   * @param material the trim material
+   *
+   * @return an AbstractItemStack object representing the trimmed material
+   *
+   * @see ProvidesTrimMaterialComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public AbstractItemStack<ItemStack> providesTrim(final String material) {
+
+    return this;
   }
 
   /**
@@ -1171,7 +1260,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack rarity(final String rarity) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1187,7 +1276,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack recipes(final List<String> recipes) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1203,7 +1292,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack repairable(final List<String> repairItems) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1219,7 +1308,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack repairCost(final int repairCost) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1235,7 +1324,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack storedEnchantments(final Map<String, Integer> enchantments) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1252,7 +1341,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> suspiciousStewEffects(final List<EffectInstance> effects) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1269,7 +1358,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> suspiciousStewEffects(final EffectInstance... effects) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1288,7 +1377,24 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack tool(final float defaultSpeed, final int blockDamage, final boolean canDestroyBlocksCreative, final List<ToolRule> rules) {
 
-    return null;
+    return this;
+  }
+
+  /**
+   * Displays tooltip for the item stack with an option to hide certain components.
+   *
+   * @param hideTooltip      Flag to hide the tooltip
+   * @param hiddenComponents Array of components to hide in the tooltip
+   *
+   * @return An AbstractItemStack object with the tooltip displayed
+   *
+   * @see TooltipDisplayComponent
+   * @since 0.2.0.0
+   */
+  @Override
+  public AbstractItemStack<ItemStack> tooltipDisplay(final boolean hideTooltip, final String... hiddenComponents) {
+
+    return this;
   }
 
   /**
@@ -1304,7 +1410,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack tooltipStyle(final String style) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1322,7 +1428,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack trim(final String pattern, final String material, final boolean showInTooltip) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1338,7 +1444,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack unbreakable(final boolean showInTooltip) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1355,7 +1461,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack useCooldown(final String cooldownGroup, final float seconds) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1370,7 +1476,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack weapon(final int damagePerAttack, final boolean canDisableBlocking) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1386,7 +1492,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack writableBookContent(final List<String> pages) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1406,6 +1512,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack writtenBookContent(final String title, final String author, final int generation, final boolean resolved, final List<String> pages) {
 
-    return null;
+    return this;
   }
 }

@@ -20,6 +20,16 @@ package net.tnemc.item.bukkit.platform;
 
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.platform.impl.BukkitBundleComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitContainerComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitCustomNameComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitDamageComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitEnchantmentsComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitItemModelComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitLoreComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitMaxStackSizeComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitShulkerColorComponent;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
@@ -73,6 +83,16 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     registerConversions();
 
     //bukkit base implementation.
+    addMulti(new BukkitBundleComponent());
+    addMulti(new BukkitContainerComponent());
+    addMulti(new BukkitCustomNameComponent());
+    addMulti(new BukkitDamageComponent());
+    addMulti(new BukkitEnchantmentsComponent());
+    addMulti(new BukkitItemModelComponent());
+    addMulti(new BukkitLoreComponent());
+    addMulti(new BukkitMaxStackSizeComponent());
+    addMulti(new BukkitProfileComponent());
+    addMulti(new BukkitShulkerColorComponent());
 
   }
 

@@ -139,6 +139,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
       try {
 
+        if(!check.enabled(version())) {
+
+          return;
+        }
+
         checks.put(check.identifier(), (ItemCheck<T>)check);
       } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
@@ -150,6 +155,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
       try {
 
+        if(!check.enabled(version())) {
+
+          return;
+        }
+
         applicators.put(check.identifier(), (ItemApplicator<I, T>)check);
       } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
@@ -160,6 +170,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
     if(object instanceof final ItemSerializer<?, ?> check) {
 
       try {
+
+        if(!check.enabled(version())) {
+
+          return;
+        }
 
         serializers.put(check.identifier(), (ItemSerializer<I, T>)check);
       } catch(final Exception ignore) {
