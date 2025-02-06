@@ -20,8 +20,9 @@ package net.tnemc.item.paper;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.InventoryType;
-import net.tnemc.item.data.ItemStorageData;
+import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.providers.CalculationsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -80,23 +81,30 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
     compare.setAmount(1);
 
     int amount = 0;
-    final PaperItemStack comp = PaperItemStack.locale(compare);
+    final PaperItemStack comp = new PaperItemStack().of(compare);
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
       final ItemStack item = inventory.getItem(i);
       if(item != null) {
-        final PaperItemStack locale = PaperItemStack.locale(item);
+
+        final PaperItemStack locale = new PaperItemStack().of(item);
         final boolean equal = itemsEqual(comp, locale);
 
         if(equal) {
+
           amount += item.getAmount();
           inventory.setItem(i, null);
         } else {
-          if(locale.data().isPresent() && locale.data().get() instanceof ItemStorageData) {
-            final Iterator<Map.Entry<Integer, PaperItemStack>> it = ((ItemStorageData)locale.data().get()).getItems().entrySet().iterator();
+
+          final Optional<ContainerComponent<AbstractItemStack<ItemStack>, ItemStack>> containerComponent = locale.container();
+          if(containerComponent.isPresent()) {
+
+            final Iterator<Map.Entry<Integer, AbstractItemStack<ItemStack>>> it = containerComponent.get().items().entrySet().iterator();
             while(it.hasNext()) {
-              final Map.Entry<Integer, PaperItemStack> entry = it.next();
-              if(itemsEqual(comp, new PaperItemStack().of(entry.getValue()))) {
+
+              final Map.Entry<Integer, AbstractItemStack<ItemStack>> entry = it.next();
+              if(itemsEqual(comp, (PaperItemStack)entry.getValue())) {
+
                 amount += entry.getValue().amount();
                 it.remove();
                 locale.markDirty();
@@ -124,25 +132,23 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
     final ItemStack compare = stack.locale().clone();
     compare.setAmount(1);
 
-    final PaperItemStack comp = PaperItemStack.locale(compare);
+    final PaperItemStack comp = new PaperItemStack().of(compare);
     int amount = 0;
 
     for(final ItemStack itemStack : inventory.getStorageContents()) {
       if(itemStack != null) {
-        final PaperItemStack locale = PaperItemStack.locale(itemStack);
+        final PaperItemStack locale = new PaperItemStack().of(itemStack);
         final boolean equal = itemsEqual(comp, locale);
-        if(stack.debug()) {
-          System.out.println("Equal: " + equal);
-        }
 
-        if(locale.data().isPresent()) {
-          if(locale.data().get() instanceof ItemStorageData) {
-            for(final Object obj : ((ItemStorageData)locale.data().get()).getItems().entrySet()) {
+        final Optional<ContainerComponent<AbstractItemStack<ItemStack>, ItemStack>> containerComponent = locale.container();
 
-              final Map.Entry<Integer, PaperItemStack> entry = ((Map.Entry<Integer, PaperItemStack>)obj);
-              if(itemsEqual(comp, new PaperItemStack().of(entry.getValue()))) {
-                amount += entry.getValue().amount();
-              }
+        if(containerComponent.isPresent()) {
+
+          for(final Map.Entry<Integer, AbstractItemStack<ItemStack>> obj : containerComponent.get().items().entrySet()) {
+
+            if(itemsEqual(comp, (PaperItemStack)obj.getValue())) {
+
+              amount += obj.getValue().amount();
             }
           }
         }
@@ -181,12 +187,13 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
       final Map<Integer, ItemStack> left = inventory.addItem(item.locale());
 
       if(!left.isEmpty()) {
+
         for(final Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
           final ItemStack i = entry.getValue();
           if(i == null || i.getType() == Material.AIR) {
             continue;
           }
-          leftOver.add(PaperItemStack.locale(i));
+          leftOver.add(new PaperItemStack().of(i));
         }
       }
     }
@@ -209,7 +216,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
     final ItemStack compare = stack.locale().clone();
     compare.setAmount(1);
 
-    final PaperItemStack comp = PaperItemStack.locale(compare);
+    final PaperItemStack comp = new PaperItemStack().of(compare);
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
       if(left <= 0) break;
@@ -217,7 +224,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
 
       if(item == null) continue;
 
-      final PaperItemStack itemLocale = PaperItemStack.locale(item);
+      final PaperItemStack itemLocale = new PaperItemStack().of(item);
 
       if(item.isSimilar(stack.locale())) {
         if(item.getAmount() <= left) {
@@ -229,15 +236,17 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
           left = 0;
         }
       } else {
-        if(itemLocale.data().isPresent() && itemLocale.data().get() instanceof ItemStorageData) {
 
-          final Iterator<Map.Entry<Integer, PaperItemStack>> it = ((ItemStorageData)itemLocale.data().get()).getItems().entrySet().iterator();
+        final Optional<ContainerComponent<AbstractItemStack<ItemStack>, ItemStack>> containerComponent = itemLocale.container();
+        if(containerComponent.isPresent()) {
+
+          final Iterator<Map.Entry<Integer, AbstractItemStack<ItemStack>>> it = containerComponent.get().items().entrySet().iterator();
           while(it.hasNext()) {
 
             if(left <= 0) break;
-            final Map.Entry<Integer, PaperItemStack> entry = it.next();
 
-            if(itemsEqual(comp, new PaperItemStack().of(entry.getValue()))) {
+            final Map.Entry<Integer, AbstractItemStack<ItemStack>> entry = it.next();
+            if(itemsEqual(comp, (PaperItemStack)entry.getValue())) {
 
               if(entry.getValue().amount() <= left) {
 
@@ -245,7 +254,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
                 it.remove();
               } else {
 
-                entry.getValue().setAmount(entry.getValue().amount() - left);
+                entry.getValue().amount(entry.getValue().amount() - left);
                 left = 0;
               }
               itemLocale.markDirty();

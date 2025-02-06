@@ -186,7 +186,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     for(final BukkitItemStack item : items) {
       final Map<Integer, ItemStack> left = inventory.addItem(item.locale());
 
-      if(left.size() > 0) {
+      if(!left.isEmpty()) {
 
         for(final Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
           final ItemStack i = entry.getValue();
