@@ -3,7 +3,7 @@ package net.tnemc.item;
 /*
  * The New Item Library Minecraft Server Plugin
  *
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -123,6 +123,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @param material The material of the item.
    * @param amount   The number of items in the stack.
    * @return A new item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    */
   AbstractItemStack<T> of(final String material, final int amount);
@@ -132,6 +133,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param locale The locale-specific representation.
    * @return A new item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    */
   AbstractItemStack<T> of(T locale);
@@ -141,6 +143,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param json The JSON object containing item stack data.
    * @return A new item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    * @throws ParseException If the JSON structure is invalid.
    */
@@ -151,6 +154,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param flags A list of flags to apply to the item.
    * @return The updated item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    */
   AbstractItemStack<T> flags(List<String> flags);
@@ -160,6 +164,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param lore A list of components representing the lore.
    * @return The updated item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    */
   AbstractItemStack<T> loreComponent(List<Component> lore);
@@ -170,6 +175,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @param enchantment The enchantment name.
    * @param level       The level of the enchantment.
    * @return The updated item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    */
   AbstractItemStack<T> enchant(String enchantment, int level);
@@ -179,6 +185,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param enchantments A map of enchantment names and levels.
    * @return The updated item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    */
   AbstractItemStack<T> enchant(Map<String, Integer> enchantments);
@@ -188,6 +195,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param enchantments A list of enchantment names.
    * @return The updated item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    */
   AbstractItemStack<T> enchant(List<String> enchantments);
@@ -196,6 +204,8 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Returns the material of the item stack.
    *
    * @return The material of the item stack.
+   * @since 0.2.0.0
+   * @author creatorfromhell
    */
   String material();
 
@@ -204,6 +214,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param material The material name.
    * @return The updated item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    */
   AbstractItemStack<T> material(String material);
@@ -212,6 +223,8 @@ public interface AbstractItemStack<T> extends Cloneable {
    * The quantity of the item stack.
    *
    * @return the quantity of the item stack.
+   * @since 0.2.0.0
+   * @author creatorfromhell
    */
   int amount();
 
@@ -220,14 +233,43 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param amount The number of items in the stack.
    * @return The updated item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    */
   AbstractItemStack<T> amount(final int amount);
 
   /**
+   * Subtracts the specified amount from the current item stack.
+   *
+   * @param amount the amount to subtract from the item stack
+   * @return a new item stack with the specified amount subtracted
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   */
+  default AbstractItemStack<T> subtract(final int amount) {
+
+    return amount(amount() - amount);
+  }
+
+  /**
+   * Adds the specified amount to the current amount of this item stack.
+   *
+   * @param amount the amount to be added to the item stack
+   * @return a new AbstractItemStack with the updated amount
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   */
+  default AbstractItemStack<T> add(final int amount) {
+
+    return amount(amount() + amount);
+  }
+
+  /**
    * Represents the inventory slot of the item stack.
    *
    * @return the inventory slot of the item stack.
+   * @since 0.2.0.0
+   * @author creatorfromhell
    */
   int slot();
 
@@ -236,6 +278,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param slot The slot index.
    * @return The updated item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    */
   AbstractItemStack<T> slot(int slot);
@@ -245,6 +288,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param debug True to enable, false to disable.
    * @return The updated item stack instance.
+   * @since 0.2.0.0
    * @author creatorfromhell
    */
   AbstractItemStack<T> debug(boolean debug);
@@ -308,6 +352,8 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Retrieves the item flags.
    *
    * @return A list of flags applied to the item.
+   * @since 0.2.0.0
+   * @author creatorfromhell
    */
   List<String> flags();
 
@@ -338,17 +384,20 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Returns true if the provided item is similar to this. An item is similar if the basic
    * information is the same, except for the amount. What this includes: - material - display -
    * modelData - flags - lore - attributes - enchantments
-   *
    * What this does not include: - Item Data.
    *
    * @param compare The stack to compare.
    *
    * @return True if the two are similar, otherwise false.
+   * @since 0.2.0.0
+   * @author creatorfromhell
    */
   boolean similar(AbstractItemStack<? extends T> compare);
 
   /**
    * @return An instance of the implementation's locale version of AbstractItemStack.
+   * @since 0.2.0.0
+   * @author creatorfromhell
    */
   T locale();
 
@@ -356,6 +405,8 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Converts the object to a JSONObject representation.
    *
    * @return A JSONObject representing the object data.
+   * @since 0.2.0.0
+   * @author creatorfromhell
    */
   JSONObject toJSON();
 
@@ -365,6 +416,8 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @param list1 the first list of Components to compare
    * @param list2 the second list of Components to compare
    * @return true if the text content of the two lists is equal, false otherwise
+   * @since 0.2.0.0
+   * @author creatorfromhell
    */
   default boolean textComponentsEqual(final List<Component> list1, final List<Component> list2) {
     final LinkedList<String> list1Copy = new LinkedList<>();
@@ -385,6 +438,8 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @param list1 the first list to be compared
    * @param list2 the second list to be compared
    * @return true if the two lists contain the same elements, false otherwise
+   * @since 0.2.0.0
+   * @author creatorfromhell
    */
   default <V> boolean listsEquals(final List<V> list1, final List<V> list2) {
     return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
@@ -398,6 +453,8 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @param debug true if debug information should be printed, false otherwise
    * @param <V> the type of elements in the lists
    * @return true if the lists contain the same elements, false otherwise
+   * @since 0.2.0.0
+   * @author creatorfromhell
    */
   default <V> boolean listsEquals(final List<V> list1, final List<V> list2, final boolean debug) {
 
@@ -423,6 +480,8 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @param list1 the first set to be compared
    * @param list2 the second set to be compared
    * @return true if the sets are equal, false otherwise
+   * @since 0.2.0.0
+   * @author creatorfromhell
    */
   default <V> boolean setsEquals(final Set<V> list1, final Set<V> list2) {
     return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);

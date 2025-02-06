@@ -77,8 +77,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
   @Override
   public int removeAll(final PaperItemStack stack, final Inventory inventory) {
 
-    final ItemStack compare = stack.locale().clone();
-    compare.setAmount(1);
+    final ItemStack compare = stack.locale().asOne();
 
     int amount = 0;
     final PaperItemStack comp = new PaperItemStack().of(compare);
@@ -129,8 +128,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
   @Override
   public int count(final PaperItemStack stack, final Inventory inventory) {
 
-    final ItemStack compare = stack.locale().clone();
-    compare.setAmount(1);
+    final ItemStack compare = stack.locale().asOne();
 
     final PaperItemStack comp = new PaperItemStack().of(compare);
     int amount = 0;
@@ -213,8 +211,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
 
     int left = stack.locale().clone().getAmount();
 
-    final ItemStack compare = stack.locale().clone();
-    compare.setAmount(1);
+    final ItemStack compare = stack.locale().asOne();
 
     final PaperItemStack comp = new PaperItemStack().of(compare);
 
@@ -231,8 +228,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
           left -= item.getAmount();
           inventory.setItem(i, null);
         } else {
-          item.setAmount(item.getAmount() - left);
-          inventory.setItem(i, item);
+          inventory.setItem(i, item.subtract(left));
           left = 0;
         }
       } else {
@@ -254,7 +250,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
                 it.remove();
               } else {
 
-                entry.getValue().amount(entry.getValue().amount() - left);
+                entry.getValue().subtract(left);
                 left = 0;
               }
               itemLocale.markDirty();
