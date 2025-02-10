@@ -191,7 +191,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
 
         converter.registerConversion(PatternType.class, String.class, input->{
 
-          final NamespacedKey key = input.getKeyOrThrow();
+          final NamespacedKey key = input.getKey();
 
           return key.toString();
         });
@@ -227,7 +227,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
         throw new IllegalArgumentException("Unknown Enchantment: " + input);
       });
 
-      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)->input.getKeyOrThrow().toString());
+      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)->input.getKey().toString());
 
     } else if(VersionUtil.isOneThirteen(version())) {
       converter.registerConversion(String.class, Enchantment.class, (final String input)->{
@@ -261,7 +261,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     // class for both.
     if(VersionUtil.isOneTwentyOneFour(version())) {
 
-      converter.registerConversion(TrimMaterial.class, String.class, input->input.getKeyOrThrow().toString());
+      converter.registerConversion(TrimMaterial.class, String.class, input->input.getKey().toString());
 
       converter.registerConversion(String.class, TrimMaterial.class, input->{
         final NamespacedKey key = NamespacedKey.fromString(input);
@@ -308,7 +308,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     // class for both.
     if(VersionUtil.isOneTwentyOneFour(version())) {
 
-      converter.registerConversion(TrimPattern.class, String.class, input->input.getKeyOrThrow().toString());
+      converter.registerConversion(TrimPattern.class, String.class, input->input.getKey().toString());
 
       converter.registerConversion(String.class, TrimPattern.class, input->{
         final NamespacedKey key = NamespacedKey.fromString(input);
@@ -335,7 +335,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
 
     if(VersionUtil.isOneTwentyOneFour(version())) {
 
-      converter.registerConversion(PotionEffectType.class, String.class, input->input.getKeyOrThrow().toString());
+      converter.registerConversion(PotionEffectType.class, String.class, input->input.getKey().toString());
       converter.registerConversion(String.class, PotionEffectType.class, input->{
         final NamespacedKey key = NamespacedKey.fromString(input);
         if(key != null) {
