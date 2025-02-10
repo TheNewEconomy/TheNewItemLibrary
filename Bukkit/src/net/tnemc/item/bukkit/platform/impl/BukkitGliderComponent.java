@@ -42,8 +42,7 @@ public class BukkitGliderComponent extends GliderComponent<BukkitItemStack, Item
   @Override
   public boolean enabled(final String version) {
 
-    //TODO: Look up version
-    return VersionUtil.isOneThirteen(version);
+    return VersionUtil.isOneTwentyOneTwo(version);
   }
 
   /**

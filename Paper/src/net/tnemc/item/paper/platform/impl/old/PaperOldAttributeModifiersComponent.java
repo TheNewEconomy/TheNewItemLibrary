@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform.impl;
+package net.tnemc.item.paper.platform.impl.old;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -18,25 +18,26 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
-import net.tnemc.item.component.impl.DamageComponent;
-import net.tnemc.item.component.impl.ItemModelComponent;
-import net.tnemc.item.providers.VersionUtil;
+import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.component.impl.AttributeModifiersComponent;
+import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
 /**
- * BukkitItemModelComponent
+ * PaperOldAttributeModifiersComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack, ItemStack> {
+public class PaperOldAttributeModifiersComponent extends AttributeModifiersComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -46,7 +47,7 @@ public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOneTwo(version);
+    return true;
   }
 
   /**
@@ -56,21 +57,25 @@ public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
+  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final Optional<BukkitItemModelComponent> componentOptional = serialized.component(identifier());
+    final ItemMeta meta = item.getItemMeta();
+    final Optional<AttributeModifiersComponent<AbstractItemStack<ItemStack>, ItemStack>> componentOptional = serialized.attributeModifiers();
+    if(meta != null && componentOptional.isPresent()) {
 
-    if(componentOptional.isPresent()) {
+      for(final net.tnemc.item.component.helper.AttributeModifier attribute : componentOptional.get().modifiers()) {
 
-      if(item.getItemMeta() != null && componentOptional.get().model != null
-         && !componentOptional.get().model.isEmpty()) {
+        final AttributeModifier.Operation operation = PaperItemPlatform.PLATFORM.converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);
+        final EquipmentSlotGroup slot = PaperItemPlatform.PLATFORM.converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);
+        final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType()),
+                                                             attribute.getAmount(),
+                                                             operation,
+                                                             slot);
 
-        final ItemMeta meta = item.getItemMeta();
-
-        meta.setItemModel(NamespacedKey.fromString(componentOptional.get().model));
-        item.setItemMeta(meta);
+        meta.addAttributeModifier(Attribute.valueOf(attribute.getId()), attr);
       }
     }
+
     return item;
   }
 
@@ -81,16 +86,9 @@ public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.getItemModel() != null) {
-
-      this.model = meta.getItemModel().toString();
-    }
-
-    serialized.applyComponent(this);
-    return serialized;
+    return null;
   }
 
   /**

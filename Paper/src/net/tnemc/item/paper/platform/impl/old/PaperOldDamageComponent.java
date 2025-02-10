@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit.platform.impl;
+package net.tnemc.item.paper.platform.impl.old;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -18,25 +18,22 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.DamageComponent;
-import net.tnemc.item.component.impl.ItemModelComponent;
+import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
 /**
- * BukkitItemModelComponent
+ * PaperOldDamageComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack, ItemStack> {
+public class PaperOldDamageComponent extends DamageComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -46,7 +43,7 @@ public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOneTwo(version);
+    return true;
   }
 
   /**
@@ -56,19 +53,21 @@ public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
+  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final Optional<BukkitItemModelComponent> componentOptional = serialized.component(identifier());
+    final Optional<PaperOldDamageComponent> componentOptional = serialized.component(identifier());
 
     if(componentOptional.isPresent()) {
+      if(VersionUtil.isOneThirteen(PaperItemPlatform.PLATFORM.version())) {
 
-      if(item.getItemMeta() != null && componentOptional.get().model != null
-         && !componentOptional.get().model.isEmpty()) {
+        if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
 
-        final ItemMeta meta = item.getItemMeta();
+          meta.setDamage(componentOptional.get().damage());
+          item.setItemMeta(meta);
+        }
+      } else {
 
-        meta.setItemModel(NamespacedKey.fromString(componentOptional.get().model));
-        item.setItemMeta(meta);
+        item.setDurability((short)componentOptional.get().damage);
       }
     }
     return item;
@@ -81,12 +80,15 @@ public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack
    * @return the updated serialized item.
    */
   @Override
-  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.getItemModel() != null) {
+    if(VersionUtil.isOneThirteen(PaperItemPlatform.PLATFORM.version())) {
 
-      this.model = meta.getItemModel().toString();
+      if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
+        this.damage = meta.getDamage();
+      }
+    } else {
+      this.damage = item.getDurability();
     }
 
     serialized.applyComponent(this);
