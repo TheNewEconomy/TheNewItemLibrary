@@ -18,6 +18,8 @@ package net.tnemc.item.paper.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.paper.PaperItemStack;
@@ -261,13 +263,22 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     // class for both.
     if(VersionUtil.isOneTwentyOneFour(version())) {
 
-      converter.registerConversion(TrimMaterial.class, String.class, input->input.getKey().toString());
+      converter.registerConversion(TrimMaterial.class, String.class, input->{
+
+        final NamespacedKey key = RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).getKey(input);
+        if(key != null) {
+
+          return key.asString();
+        }
+
+        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
+      });
 
       converter.registerConversion(String.class, TrimMaterial.class, input->{
         final NamespacedKey key = NamespacedKey.fromString(input);
         if(key != null) {
 
-          return Registry.TRIM_MATERIAL.getOrThrow(key);
+          return RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).getOrThrow(key);
         }
         throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
       });
@@ -308,13 +319,22 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     // class for both.
     if(VersionUtil.isOneTwentyOneFour(version())) {
 
-      converter.registerConversion(TrimPattern.class, String.class, input->input.getKey().toString());
+      converter.registerConversion(TrimPattern.class, String.class, input->{
+
+        final NamespacedKey key = RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_PATTERN).getKey(input);
+        if(key != null) {
+
+          return key.asString();
+        }
+
+        throw new IllegalArgumentException("Unknown TrimPattern: " + input);
+      });
 
       converter.registerConversion(String.class, TrimPattern.class, input->{
         final NamespacedKey key = NamespacedKey.fromString(input);
         if(key != null) {
 
-          return Registry.TRIM_PATTERN.getOrThrow(key);
+          return RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_PATTERN).getOrThrow(key);
         }
         throw new IllegalArgumentException("Unknown TrimPattern: " + input);
       });
