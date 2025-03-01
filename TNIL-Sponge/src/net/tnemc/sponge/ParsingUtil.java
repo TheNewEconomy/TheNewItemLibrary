@@ -38,12 +38,12 @@ public class ParsingUtil {
 
     public static FireworkEffect fromSerial(final SerialFireworkEffect effect) {
         final List<Color> colors = new ArrayList<>();
-        for(Integer i : effect.getColors()) {
+        for(final Integer i : effect.getColors()) {
             colors.add(Color.ofRgb(i));
         }
 
         final List<Color> faded = new ArrayList<>();
-        for(Integer i : effect.getFadeColors()) {
+        for(final Integer i : effect.getFadeColors()) {
             faded.add(Color.ofRgb(i));
         }
 
@@ -54,11 +54,11 @@ public class ParsingUtil {
     public static SerialFireworkEffect fromEffect(final FireworkEffect eff) {
         final SerialFireworkEffect effect = new SerialFireworkEffect();
 
-        for(Color color : eff.colors()) {
+        for(final Color color : eff.colors()) {
             effect.getColors().add(color.rgb());
         }
 
-        for(Color color : eff.fadeColors()) {
+        for(final Color color : eff.fadeColors()) {
             effect.getFadeColors().add(color.rgb());
         }
 
@@ -107,12 +107,6 @@ public class ParsingUtil {
         firework.of(stack);
         if(firework.applies()) {
             data.put(firework.getClass().getSimpleName(), firework);
-        }
-
-        final SpongePatternData pattern = new SpongePatternData();
-        pattern.of(stack);
-        if(pattern.applies()) {
-            data.put(pattern.getClass().getSimpleName(), pattern);
         }
 
         final SpongePotionData potion = new SpongePotionData();

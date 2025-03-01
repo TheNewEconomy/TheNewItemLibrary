@@ -23,7 +23,6 @@ import net.tnemc.item.bukkit.data.BukkitBundleData;
 import net.tnemc.item.bukkit.data.BukkitCrossbowMeta;
 import net.tnemc.item.bukkit.data.BukkitShulkerData;
 import net.tnemc.item.bukkitbase.data.BukkitAxolotlData;
-import net.tnemc.item.bukkit.data.BukkitBannerData;
 import net.tnemc.item.bukkitbase.data.BukkitBookData;
 import net.tnemc.item.bukkitbase.data.BukkitCompassData;
 import net.tnemc.item.bukkitbase.data.BukkitEnchantData;
@@ -40,7 +39,6 @@ import net.tnemc.item.bukkitbase.data.BukkitTropicalFishData;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
-import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.BundleMeta;
@@ -77,8 +75,6 @@ public class BukkitMetaBuild {
       final ItemMeta meta = stack.getItemMeta();
       if(meta instanceof AxolotlBucketMeta) {
         data = new BukkitAxolotlData();
-      } else if(meta instanceof BannerMeta) {
-        data = new BukkitBannerData();
       } else if(meta instanceof BlockStateMeta) {
         if(((BlockStateMeta)meta).getBlockState() instanceof ShulkerBox) {
           data = new BukkitShulkerData();
