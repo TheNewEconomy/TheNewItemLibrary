@@ -94,6 +94,7 @@ import net.tnemc.item.component.impl.WritableBookContentComponent;
 import net.tnemc.item.component.impl.WrittenBookContentComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.SkullProfile;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
