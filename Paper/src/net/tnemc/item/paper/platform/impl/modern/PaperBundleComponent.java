@@ -18,22 +18,25 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.impl.ItemModelComponent;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.BundleContents;
+import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.BundleMeta;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
- * PaperOldItemModelComponent
+ * PaperOldBundleComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldItemModelComponent extends ItemModelComponent<PaperItemStack, ItemStack> {
+public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -43,7 +46,7 @@ public class PaperOldItemModelComponent extends ItemModelComponent<PaperItemStac
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOneTwo(version);
+    return VersionUtil.isOneTwentyOneFour(version);
   }
 
   /**
@@ -55,19 +58,16 @@ public class PaperOldItemModelComponent extends ItemModelComponent<PaperItemStac
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final Optional<PaperOldItemModelComponent> componentOptional = serialized.component(identifier());
-
-    if(componentOptional.isPresent()) {
-
-      if(item.getItemMeta() != null && componentOptional.get().model != null
-         && !componentOptional.get().model.isEmpty()) {
-
-        final ItemMeta meta = item.getItemMeta();
-
-        meta.setItemModel(NamespacedKey.fromString(componentOptional.get().model));
-        item.setItemMeta(meta);
-      }
+    final Optional<PaperBundleComponent> componentOptional = serialized.component(identifier());
+    if(componentOptional.isEmpty()) {
+      return item;
     }
+
+    final BundleContents.Builder builder = BundleContents.bundleContents();
+
+    componentOptional.get().items.forEach((slot, stack)->builder.add(stack.locale()));
+    item.setData(DataComponentTypes.BUNDLE_CONTENTS, builder);
+
     return item;
   }
 
@@ -80,10 +80,16 @@ public class PaperOldItemModelComponent extends ItemModelComponent<PaperItemStac
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.getItemModel() != null) {
+    final BundleContents contents = item.getData(DataComponentTypes.BUNDLE_CONTENTS);
+    if(contents == null) {
+      return serialized;
+    }
 
-      this.model = meta.getItemModel().toString();
+    int i = 0;
+    for(final ItemStack stack : contents.contents()) {
+
+      items.put(i, new PaperItemStack().of(stack));
+      i++;
     }
 
     serialized.applyComponent(this);

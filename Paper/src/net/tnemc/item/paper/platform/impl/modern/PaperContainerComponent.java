@@ -18,22 +18,27 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.impl.EnchantmentsComponent;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.BundleContents;
+import io.papermc.paper.datacomponent.item.ItemContainerContents;
+import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.platform.PaperItemPlatform;
-import org.bukkit.enchantments.Enchantment;
+import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Material;
+import org.bukkit.block.Container;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 
-import java.util.Map;
 import java.util.Optional;
 
 /**
- * PaperOldEnchantmentsComponent
+ * PaperOldContainerComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperItemStack, ItemStack> {
+public class PaperContainerComponent extends ContainerComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -43,7 +48,7 @@ public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperIt
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    return VersionUtil.isOneTwentyOneFour(version);
   }
 
   /**
@@ -55,23 +60,16 @@ public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperIt
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final Optional<PaperOldEnchantmentsComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    final Optional<PaperContainerComponent> componentOptional = serialized.component(identifier());
+    if(componentOptional.isEmpty()) {
+      return item;
+    }
 
-      for(final Map.Entry<String, Integer> entry : componentOptional.get().levels.entrySet()) {
+    final ItemContainerContents.Builder builder = ItemContainerContents.containerContents();
 
-        try {
+    componentOptional.get().items().forEach((slot, stack)->builder.add(stack.locale()));
+    item.setData(DataComponentTypes.CONTAINER, builder);
 
-          final Enchantment enchant = PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), Enchantment.class);
-          if(enchant != null) {
-
-            item.addUnsafeEnchantment(enchant, entry.getValue());
-          }
-        } catch(final Exception ignore) {
-          //enchantment couldn't be found.
-        }
-      }
-    });
     return item;
   }
 
@@ -84,9 +82,16 @@ public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperIt
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    for(final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
+    final ItemContainerContents contents = item.getData(DataComponentTypes.CONTAINER);
+    if(contents == null) {
+      return serialized;
+    }
 
-      levels.put(PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), String.class), entry.getValue());
+    int i = 0;
+    for(final ItemStack stack : contents.contents()) {
+
+      items.put(i, new PaperItemStack().of(stack));
+      i++;
     }
 
     serialized.applyComponent(this);

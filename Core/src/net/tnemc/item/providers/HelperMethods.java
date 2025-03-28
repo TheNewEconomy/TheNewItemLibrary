@@ -50,4 +50,12 @@ public interface HelperMethods {
    * @return a collection of flags
    */
   LinkedList<String> flags();
+
+  /*ItemType.PLAYER_HEAD.createItemStack(s -> {
+    final PlayerProfile profileExact = Bukkit.createProfileExact(uuid, name);
+    profileExact.setProperties(List.of(
+            new ProfileProperty("textures", "val", "signature")
+                                      ));
+    s.setPlayerProfile(profileExact);
+  });*/
 }

@@ -18,20 +18,30 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.impl.DyedColorComponent;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemEnchantments;
+import io.papermc.paper.datacomponent.item.ItemLore;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.component.impl.LoreComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.block.ShulkerBox;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * PaperOldShulkerColorComponent
+ * PaperOldLoreComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldShulkerColorComponent extends DyedColorComponent<PaperItemStack, ItemStack> {
+public class PaperLoreComponent extends LoreComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -41,42 +51,7 @@ public class PaperOldShulkerColorComponent extends DyedColorComponent<PaperItemS
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneEleven(version);
-  }
-
-  /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   */
-  @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
-
-    //no need to update the color, this is just for serialization purposes.
-    return item;
-  }
-
-  /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   */
-  @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
-
-    if(item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
-       && meta.hasBlockState() && meta.getBlockState() instanceof final ShulkerBox box) {
-
-      if(box.getColor() != null) {
-
-        rgb = box.getColor().getColor().asRGB();
-      }
-    }
-
-    serialized.applyComponent(this);
-    return serialized;
+    return VersionUtil.isOneTwentyOneFour(version);
   }
 
   /**
@@ -89,7 +64,47 @@ public class PaperOldShulkerColorComponent extends DyedColorComponent<PaperItemS
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
-           && meta.hasBlockState() && meta.getBlockState() instanceof ShulkerBox;
+    return item.hasItemMeta() && item.getItemMeta() != null;
+  }
+
+  /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   */
+  @Override
+  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+
+    final Optional<PaperLoreComponent> componentOptional = serialized.component(identifier());
+    if(componentOptional.isEmpty()) {
+      return item;
+    }
+
+    final ItemLore.Builder builder = ItemLore.lore().lines(componentOptional.get().lore);
+
+    item.setData(DataComponentTypes.LORE, builder);
+
+    return item;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   */
+  @Override
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+
+    final ItemLore itemLore = item.getData(DataComponentTypes.LORE);
+    if(itemLore == null) {
+      return serialized;
+    }
+
+    this.lore.addAll(itemLore.lines());
+
+    serialized.applyComponent(this);
+    return serialized;
   }
 }

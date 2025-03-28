@@ -18,21 +18,23 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.tnemc.item.component.impl.ItemNameComponent;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.Damageable;
 
 import java.util.Optional;
 
 /**
- * BukkitItemNameComponent
+ * PaperOldDamageComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldItemNameComponent extends ItemNameComponent<PaperItemStack, ItemStack> {
+public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -42,7 +44,7 @@ public class PaperOldItemNameComponent extends ItemNameComponent<PaperItemStack,
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    return VersionUtil.isOneTwentyOneFour(version);
   }
 
   /**
@@ -54,12 +56,12 @@ public class PaperOldItemNameComponent extends ItemNameComponent<PaperItemStack,
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final ItemMeta meta = item.getItemMeta();
-    final Optional<PaperOldItemNameComponent> componentOptional = serialized.component(identifier());
-    if(meta != null && componentOptional.isPresent()) {
-
-      meta.setItemName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().itemName()));
+    final Optional<PaperDamageComponent> componentOptional = serialized.component(identifier());
+    if(componentOptional.isEmpty()) {
+      return item;
     }
+
+    item.setData(DataComponentTypes.DAMAGE, this.damage);
     return item;
   }
 
@@ -72,13 +74,14 @@ public class PaperOldItemNameComponent extends ItemNameComponent<PaperItemStack,
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasDisplayName()) {
-
-      this.itemName = LegacyComponentSerializer.legacySection().deserialize(meta.getItemName());
-
-      serialized.applyComponent(this);
+    final Integer damageValue = item.getData(DataComponentTypes.DAMAGE);
+    if(damageValue == null) {
+      return serialized;
     }
+
+    this.damage = damageValue;
+
+    serialized.applyComponent(this);
     return serialized;
   }
 

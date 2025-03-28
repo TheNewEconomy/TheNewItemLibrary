@@ -18,23 +18,24 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.impl.ContainerComponent;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import org.bukkit.Material;
-import org.bukkit.block.Container;
-import org.bukkit.inventory.Inventory;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
 /**
- * PaperOldContainerComponent
+ * BukkitItemNameComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldContainerComponent extends ContainerComponent<PaperItemStack, ItemStack> {
+public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -44,7 +45,7 @@ public class PaperOldContainerComponent extends ContainerComponent<PaperItemStac
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    return VersionUtil.isOneTwentyOneFour(version);
   }
 
   /**
@@ -56,19 +57,12 @@ public class PaperOldContainerComponent extends ContainerComponent<PaperItemStac
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final Optional<PaperOldContainerComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    final Optional<PaperItemNameComponent> componentOptional = serialized.component(identifier());
+    if(componentOptional.isEmpty()) {
+      return item;
+    }
 
-      if(item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
-         && meta.hasBlockState() && meta.getBlockState() instanceof final Container container) {
-
-        componentOptional.get().items.forEach((slot, stack)->container.getInventory().setItem(slot, stack.locale()));
-        container.update(true);
-        meta.setBlockState(container);
-
-        item.setItemMeta(meta);
-      }
-    });
+    item.setData(DataComponentTypes.ITEM_NAME, this.itemName);
     return item;
   }
 
@@ -81,20 +75,12 @@ public class PaperOldContainerComponent extends ContainerComponent<PaperItemStac
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    if(item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
-       && meta.hasBlockState() && meta.getBlockState() instanceof final Container container) {
-
-      final Inventory inventory = container.getInventory();
-      for(int i = 0; i < inventory.getSize(); i++) {
-
-        final ItemStack stack = inventory.getItem(i);
-
-        if(stack != null && !stack.getType().equals(Material.AIR)) {
-
-          items.put(i, new PaperItemStack().of(stack));
-        }
-      }
+    final Component name = item.getData(DataComponentTypes.ITEM_NAME);
+    if(name == null) {
+      return serialized;
     }
+
+    this.itemName = name;
 
     serialized.applyComponent(this);
     return serialized;
@@ -110,7 +96,6 @@ public class PaperOldContainerComponent extends ContainerComponent<PaperItemStac
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
-           && meta.hasBlockState() && meta.getBlockState() instanceof Container;
+    return true;
   }
 }

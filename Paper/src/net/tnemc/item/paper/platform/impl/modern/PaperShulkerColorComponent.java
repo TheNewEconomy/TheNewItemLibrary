@@ -18,21 +18,17 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.Optional;
 
 /**
- * PaperOldCustomNameComponent
+ * PaperOldShulkerColorComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldCustomNameComponent extends CustomNameComponent<PaperItemStack, ItemStack> {
+public class PaperShulkerColorComponent extends PaperDyedColorComponent {
 
   /**
    * @param version the version being used when this check is called.
@@ -42,7 +38,7 @@ public class PaperOldCustomNameComponent extends CustomNameComponent<PaperItemSt
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    return VersionUtil.isOneTwentyOneFour(version);
   }
 
   /**
@@ -54,13 +50,8 @@ public class PaperOldCustomNameComponent extends CustomNameComponent<PaperItemSt
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final ItemMeta meta = item.getItemMeta();
-    final Optional<PaperOldCustomNameComponent> componentOptional = serialized.component(identifier());
-    if(meta != null && componentOptional.isPresent()) {
-
-      meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().customName()));
-    }
-    return item;
+    //no need to update the color, this is just for serialization purposes.
+    return super.apply(serialized, item);
   }
 
   /**
@@ -72,14 +63,7 @@ public class PaperOldCustomNameComponent extends CustomNameComponent<PaperItemSt
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasDisplayName()) {
-
-      this.customName = LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName());
-
-      serialized.applyComponent(this);
-    }
-    return serialized;
+    return super.serialize(item, serialized);
   }
 
   /**

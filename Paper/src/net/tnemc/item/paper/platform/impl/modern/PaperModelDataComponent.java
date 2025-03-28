@@ -18,22 +18,29 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.impl.DamageComponent;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.CustomModelData;
+import io.papermc.paper.datacomponent.item.DyedItemColor;
+import net.tnemc.item.component.impl.ModelDataComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 /**
- * PaperOldDamageComponent
+ * BukkitModelData
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldDamageComponent extends DamageComponent<PaperItemStack, ItemStack> {
+public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -43,56 +50,7 @@ public class PaperOldDamageComponent extends DamageComponent<PaperItemStack, Ite
   @Override
   public boolean enabled(final String version) {
 
-    return true;
-  }
-
-  /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   */
-  @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
-
-    final Optional<PaperOldDamageComponent> componentOptional = serialized.component(identifier());
-
-    if(componentOptional.isPresent()) {
-      if(VersionUtil.isOneThirteen(PaperItemPlatform.PLATFORM.version())) {
-
-        if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
-
-          meta.setDamage(componentOptional.get().damage());
-          item.setItemMeta(meta);
-        }
-      } else {
-
-        item.setDurability((short)componentOptional.get().damage);
-      }
-    }
-    return item;
-  }
-
-  /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   */
-  @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
-
-    if(VersionUtil.isOneThirteen(PaperItemPlatform.PLATFORM.version())) {
-
-      if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
-        this.damage = meta.getDamage();
-      }
-    } else {
-      this.damage = item.getDurability();
-    }
-
-    serialized.applyComponent(this);
-    return serialized;
+    return VersionUtil.isOneTwentyOneTwo(version);
   }
 
   /**
@@ -106,5 +64,67 @@ public class PaperOldDamageComponent extends DamageComponent<PaperItemStack, Ite
   public boolean appliesTo(final ItemStack item) {
 
     return true;
+  }
+
+  /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   */
+  @Override
+  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+
+    final Optional<PaperModelDataComponent> componentOptional = serialized.component(identifier());
+    if(componentOptional.isEmpty()) {
+      return item;
+    }
+
+    final CustomModelData.Builder builder = CustomModelData.customModelData();
+
+    builder.addFlags(this.flags);
+    builder.addFloats(this.floats);
+    builder.addStrings(this.strings);
+
+    final List<Color> colorList = new LinkedList<>();
+    for(final String colorStr : this.colours) {
+
+      try {
+
+        colorList.add(Color.fromARGB(Integer.parseInt(colorStr)));
+
+      } catch(final Exception ignore){}
+    }
+    builder.addColors(colorList);
+
+    item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, builder);
+
+    return item;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   */
+  @Override
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+
+    final CustomModelData color = item.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
+    if(color == null) {
+      return serialized;
+    }
+
+    this.flags.addAll(color.flags());
+    this.floats.addAll(color.floats());
+    this.strings.addAll(color.strings());
+
+    for(final Color colorObj : color.colors()) {
+      this.colours.add(String.valueOf(colorObj.asARGB()));
+    }
+
+    serialized.applyComponent(this);
+    return serialized;
   }
 }

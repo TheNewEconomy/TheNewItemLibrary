@@ -18,21 +18,24 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.impl.DyedColorComponent;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import org.bukkit.Color;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
 /**
- * PaperOldDyedColorComponent
+ * PaperOldCustomNameComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldDyedColorComponent extends DyedColorComponent<PaperItemStack, ItemStack> {
+public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -42,7 +45,7 @@ public class PaperOldDyedColorComponent extends DyedColorComponent<PaperItemStac
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    return VersionUtil.isOneTwentyOneFour(version);
   }
 
   /**
@@ -54,16 +57,12 @@ public class PaperOldDyedColorComponent extends DyedColorComponent<PaperItemStac
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final Optional<PaperOldDyedColorComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    final Optional<PaperCustomNameComponent> componentOptional = serialized.component(identifier());
+    if(componentOptional.isEmpty()) {
+      return item;
+    }
 
-      if(item.hasItemMeta() && item.getItemMeta() instanceof final LeatherArmorMeta meta) {
-
-        meta.setColor(Color.fromRGB(componentOptional.get().rgb));
-
-        item.setItemMeta(meta);
-      }
-    });
+    item.setData(DataComponentTypes.CUSTOM_NAME, this.customName);
     return item;
   }
 
@@ -76,9 +75,12 @@ public class PaperOldDyedColorComponent extends DyedColorComponent<PaperItemStac
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    if(item.hasItemMeta() && item.getItemMeta() instanceof final LeatherArmorMeta meta) {
-      this.rgb(meta.getColor().asRGB());
+    final Component name = item.getData(DataComponentTypes.CUSTOM_NAME);
+    if(name == null) {
+      return serialized;
     }
+
+    this.customName = name;
 
     serialized.applyComponent(this);
     return serialized;
@@ -94,6 +96,6 @@ public class PaperOldDyedColorComponent extends DyedColorComponent<PaperItemStac
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasItemMeta() && item.getItemMeta() instanceof LeatherArmorMeta;
+    return true;
   }
 }

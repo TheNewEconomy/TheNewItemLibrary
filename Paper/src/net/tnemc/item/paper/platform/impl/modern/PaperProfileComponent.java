@@ -18,23 +18,28 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.tnemc.item.component.impl.LoreComponent;
+import com.destroystokyo.paper.profile.ProfileProperty;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemLore;
+import io.papermc.paper.datacomponent.item.ResolvableProfile;
+import net.tnemc.item.component.impl.ProfileComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.providers.SkullProfile;
+import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.LinkedList;
 import java.util.Optional;
 
 /**
- * PaperOldLoreComponent
+ * PaperOldProfileComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldLoreComponent extends LoreComponent<PaperItemStack, ItemStack> {
+public class PaperProfileComponent extends ProfileComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -44,59 +49,7 @@ public class PaperOldLoreComponent extends LoreComponent<PaperItemStack, ItemSta
   @Override
   public boolean enabled(final String version) {
 
-    return true;
-  }
-
-  /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   */
-  @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
-
-    final Optional<PaperOldLoreComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
-
-      final ItemMeta meta = item.getItemMeta();
-      if(meta != null) {
-
-        final LinkedList<String> newLore = new LinkedList<>();
-        for(final Component comp : componentOptional.get().lore) {
-
-          newLore.add(LegacyComponentSerializer.legacySection().serialize(comp));
-        }
-        meta.setLore(newLore);
-
-        item.setItemMeta(meta);
-      }
-    });
-    return item;
-  }
-
-  /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   */
-  @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
-
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.getLore() != null) {
-
-      lore.clear();
-
-      for(final String str : meta.getLore()) {
-
-        lore.add(LegacyComponentSerializer.legacySection().deserialize(str));
-      }
-    }
-
-    serialized.applyComponent(this);
-    return serialized;
+    return VersionUtil.isOneTwentyOneFour(version);
   }
 
   /**
@@ -109,6 +62,65 @@ public class PaperOldLoreComponent extends LoreComponent<PaperItemStack, ItemSta
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasItemMeta() && item.getItemMeta() != null;
+    return item.getItemMeta() instanceof SkullMeta;
+  }
+
+  /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   */
+  @Override
+  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+
+    final Optional<PaperProfileComponent> componentOptional = serialized.component(identifier());
+    if(componentOptional.isEmpty()) {
+      return item;
+    }
+
+    final SkullProfile profile = componentOptional.get().profile;
+    if(profile.getTexture() == null) {
+      return item;
+    }
+
+    final ResolvableProfile.Builder builder = ResolvableProfile.resolvableProfile();
+
+    builder.name(profile.getName());
+    builder.uuid(profile.getUuid());
+    builder.addProperty(new ProfileProperty("textures", profile.getTexture()));
+
+    item.setData(DataComponentTypes.PROFILE, builder);
+
+    return item;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   */
+  @Override
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+
+    final ResolvableProfile resolvableProfile = item.getData(DataComponentTypes.PROFILE);
+    if(resolvableProfile == null) {
+      return serialized;
+    }
+
+    final SkullProfile skull = new SkullProfile();
+    skull.setUuid(resolvableProfile.uuid());
+    skull.setName(resolvableProfile.name());
+
+    for(final ProfileProperty property : resolvableProfile.properties()) {
+      if(property.getName().equalsIgnoreCase("textures")) {
+
+        skull.setTexture(property.getValue());
+      }
+    }
+
+    serialized.applyComponent(this);
+    return serialized;
   }
 }

@@ -20,15 +20,19 @@ package net.tnemc.item.paper;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.HelperMethods;
 import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Registry;
 import org.bukkit.inventory.ItemFlag;
 
 import java.util.LinkedList;
+import java.util.UUID;
 
 /**
  * BukkitHelper
@@ -92,5 +96,12 @@ public class PaperHelper implements HelperMethods {
   public LinkedList<String> flags() {
 
     return itemFlagKeys;
+  }
+
+  public PlayerProfile base64(final String base64) {
+
+    final PlayerProfile profile = Bukkit.createProfile(new UUID(base64.hashCode(), base64.hashCode()));
+    profile.setProperty(new ProfileProperty("textures", base64));
+    return profile;
   }
 }

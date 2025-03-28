@@ -18,23 +18,25 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.impl.ProfileComponent;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
+import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.providers.SkullProfile;
-import org.bukkit.Bukkit;
+import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Optional;
 
 /**
- * PaperOldProfileComponent
+ * PaperOldItemModelComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldProfileComponent extends ProfileComponent<PaperItemStack, ItemStack> {
+public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -44,7 +46,7 @@ public class PaperOldProfileComponent extends ProfileComponent<PaperItemStack, I
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    return VersionUtil.isOneTwentyOneTwo(version);
   }
 
   /**
@@ -56,25 +58,12 @@ public class PaperOldProfileComponent extends ProfileComponent<PaperItemStack, I
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final ItemMeta meta = item.getItemMeta();
-    final Optional<PaperOldProfileComponent> componentOptional = serialized.component(identifier());
-    if(meta instanceof final SkullMeta skullMeta && componentOptional.isPresent()) {
-
-      if(profile != null) {
-
-        try {
-
-          if(profile.getUuid() != null) {
-            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
-          }
-
-        } catch(final Exception ignore) {
-
-          skullMeta.setOwner(profile.getName());
-        }
-      }
-      item.setItemMeta(meta);
+    final Optional<PaperItemModelComponent> componentOptional = serialized.component(identifier());
+    if(componentOptional.isEmpty()) {
+      return item;
     }
+
+    item.setData(DataComponentTypes.ITEM_MODEL, Key.key(this.model));
     return item;
   }
 
@@ -87,23 +76,14 @@ public class PaperOldProfileComponent extends ProfileComponent<PaperItemStack, I
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    if(item.getItemMeta() instanceof final SkullMeta meta) {
-
-      profile = new SkullProfile();
-
-      try {
-
-        if(meta.getOwningPlayer() != null) {
-
-          profile.setUuid(meta.getOwningPlayer().getUniqueId());
-        }
-
-      } catch(final Exception ignore) {
-
-        profile.setName(meta.getOwner());
-      }
-      serialized.applyComponent(this);
+    final Key key = item.getData(DataComponentTypes.ITEM_MODEL);
+    if(key == null) {
+      return serialized;
     }
+
+    this.model = key.asString();
+
+    serialized.applyComponent(this);
     return serialized;
   }
 
@@ -117,6 +97,6 @@ public class PaperOldProfileComponent extends ProfileComponent<PaperItemStack, I
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.getItemMeta() instanceof SkullMeta;
+    return true;
   }
 }

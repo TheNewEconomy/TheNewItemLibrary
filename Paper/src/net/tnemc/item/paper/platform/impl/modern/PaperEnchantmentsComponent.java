@@ -18,21 +18,27 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.impl.BundleComponent;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.BundleContents;
+import io.papermc.paper.datacomponent.item.ItemEnchantments;
+import net.kyori.adventure.key.Key;
+import net.tnemc.item.component.impl.EnchantmentsComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BundleMeta;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
- * PaperOldBundleComponent
+ * PaperOldEnchantmentsComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldBundleComponent extends BundleComponent<PaperItemStack, ItemStack> {
+public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -42,52 +48,7 @@ public class PaperOldBundleComponent extends BundleComponent<PaperItemStack, Ite
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneSeventeen(version);
-  }
-
-  /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   */
-  @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
-
-    final Optional<PaperOldBundleComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
-
-      if(item.hasItemMeta() && item.getItemMeta() instanceof final BundleMeta meta) {
-
-        componentOptional.get().items.forEach((slot, stack)->meta.addItem(stack.locale()));
-
-        item.setItemMeta(meta);
-      }
-    });
-    return item;
-  }
-
-  /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   */
-  @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
-
-    if(item.hasItemMeta() && item.getItemMeta() instanceof final BundleMeta meta) {
-
-      int i = 0;
-      for(final ItemStack stack : meta.getItems()) {
-
-        items.put(i, new PaperItemStack().of(stack));
-        i++;
-      }
-    }
-
-    serialized.applyComponent(this);
-    return serialized;
+    return VersionUtil.isOneTwentyOneFour(version);
   }
 
   /**
@@ -100,6 +61,64 @@ public class PaperOldBundleComponent extends BundleComponent<PaperItemStack, Ite
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasItemMeta() && item.getItemMeta() instanceof BundleMeta;
+    return true;
+  }
+
+  /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   */
+  @Override
+  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+
+    final Optional<PaperEnchantmentsComponent> componentOptional = serialized.component(identifier());
+    if(componentOptional.isEmpty()) {
+      return item;
+    }
+
+    final ItemEnchantments.Builder builder = ItemEnchantments.itemEnchantments();
+
+    for(final Map.Entry<String, Integer> entry : componentOptional.get().levels.entrySet()) {
+
+      try {
+
+        final Enchantment enchant = PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), Enchantment.class);
+        if(enchant != null) {
+
+          builder.add(enchant, entry.getValue());
+        }
+      } catch(final Exception ignore) {
+        //enchantment couldn't be found.
+      }
+    }
+
+    item.setData(DataComponentTypes.ENCHANTMENTS, builder);
+
+    return item;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   */
+  @Override
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+
+    final ItemEnchantments enchants = item.getData(DataComponentTypes.ENCHANTMENTS);
+    if(enchants == null) {
+      return serialized;
+    }
+
+    for(final Map.Entry<Enchantment, Integer> entry : enchants.enchantments().entrySet()) {
+
+      levels.put(PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), String.class), entry.getValue());
+    }
+
+    serialized.applyComponent(this);
+    return serialized;
   }
 }
