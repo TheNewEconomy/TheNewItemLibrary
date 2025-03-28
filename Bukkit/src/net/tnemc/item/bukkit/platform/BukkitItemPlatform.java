@@ -121,6 +121,8 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
       case CHEST -> "CHEST";
       case HEAD -> "HEAD";
       case BODY -> "BODY";
+      case SADDLE -> "SADDLE";
+      default -> "HAND";
     });
 
     //RegisterConversion for EquipmentSlotGroup

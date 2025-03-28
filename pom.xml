@@ -19,6 +19,8 @@
         <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
         <maven.source.version>3.2.0</maven.source.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <depend.adventure>4.19.0</depend.adventure>
     </properties>
 
     <build>
@@ -96,7 +98,31 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-plain</artifactId>
-            <version>4.17.0</version>
+            <version>${depend.adventure}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>${depend.adventure}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-json</artifactId>
+            <version>${depend.adventure}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-legacy</artifactId>
+            <version>${depend.adventure}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

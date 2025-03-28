@@ -187,12 +187,10 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    */
   default boolean itemsEqual(final I original, final I compare) {
 
-    if(original.similar(compare)) {
-      if(original.data().isPresent() && compare.data().isPresent()) {
-        return original.data().get().similar(compare.data().get());
-      }
-      return original.data().isEmpty() && compare.data().isEmpty();
+    if(!original.similar(compare)) {
+      return false;
     }
-    return false;
+
+    return original.componentsEqual(compare);
   }
 }

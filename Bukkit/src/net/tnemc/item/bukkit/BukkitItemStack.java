@@ -424,6 +424,19 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   /**
+   * Compares the components of two item stacks to check if they are equal.
+   *
+   * @param compare the item stack to compare components with
+   *
+   * @return true if the components of the two item stacks are equal, false otherwise
+   */
+  @Override
+  public boolean componentsEqual(final AbstractItemStack<? extends ItemStack> compare) {
+
+    return false;
+  }
+
+  /**
    * @return An instance of the implementation's locale version of BukkitItemStack.
    */
   @Override

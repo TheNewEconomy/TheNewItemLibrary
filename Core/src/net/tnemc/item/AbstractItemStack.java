@@ -293,6 +293,12 @@ public interface AbstractItemStack<T> extends Cloneable {
    */
   AbstractItemStack<T> debug(boolean debug);
 
+  /**
+   * Checks if a component with the specified identifier is present.
+   *
+   * @param identifier The identifier of the component to check.
+   * @return true if a component with the specified identifier is present, false otherwise.
+   */
   default boolean hasComponent(final String identifier) {
 
     return components().containsKey(identifier);
@@ -384,7 +390,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * Returns true if the provided item is similar to this. An item is similar if the basic
    * information is the same, except for the amount. What this includes: - material - display -
    * modelData - flags - lore - attributes - enchantments
-   * What this does not include: - Item Data.
+   * What this does not include: - Item Data/components.
    *
    * @param compare The stack to compare.
    *
@@ -393,6 +399,14 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @author creatorfromhell
    */
   boolean similar(AbstractItemStack<? extends T> compare);
+
+  /**
+   * Compares the components of two item stacks to check if they are equal.
+   *
+   * @param compare the item stack to compare components with
+   * @return true if the components of the two item stacks are equal, false otherwise
+   */
+  boolean componentsEqual(AbstractItemStack<? extends T> compare);
 
   /**
    * @return An instance of the implementation's locale version of AbstractItemStack.

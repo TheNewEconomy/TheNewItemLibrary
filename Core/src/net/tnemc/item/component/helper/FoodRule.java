@@ -19,7 +19,7 @@ package net.tnemc.item.component.helper;
  */
 
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.data.potion.PotionEffectData;
+import net.tnemc.item.component.helper.effect.EffectInstance;
 import org.json.simple.JSONObject;
 
 /**
@@ -30,14 +30,14 @@ import org.json.simple.JSONObject;
  */
 public class FoodRule {
 
-  protected PotionEffectData potionEffect;
+  protected EffectInstance potionEffect;
   protected float chance;
 
   public FoodRule() {
 
   }
 
-  public FoodRule(final PotionEffectData potionEffect, final float chance) {
+  public FoodRule(final EffectInstance potionEffect, final float chance) {
 
     this.potionEffect = potionEffect;
     this.chance = chance;
@@ -57,7 +57,9 @@ public class FoodRule {
     final FoodRule rule = new FoodRule();
 
     if(json.has("effect")) {
-      rule.setPotionEffect(PotionEffectData.readJSON(json.getHelper("effect")));
+      final EffectInstance effect = new EffectInstance();
+      effect.readJSON(json.getHelper("effect"));
+      rule.setPotionEffect(effect);
     }
 
     if(json.has("chance")) {
@@ -67,12 +69,12 @@ public class FoodRule {
     return rule;
   }
 
-  public PotionEffectData getPotionEffect() {
+  public EffectInstance getPotionEffect() {
 
     return potionEffect;
   }
 
-  public void setPotionEffect(final PotionEffectData potionEffect) {
+  public void setPotionEffect(final EffectInstance potionEffect) {
 
     this.potionEffect = potionEffect;
   }
