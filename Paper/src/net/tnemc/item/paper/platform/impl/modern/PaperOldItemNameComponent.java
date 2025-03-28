@@ -18,21 +18,21 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.impl.MaxDamageComponent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
 /**
- * PaperOldMaxDamageComponent
+ * BukkitItemNameComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStack, ItemStack> {
+public class PaperOldItemNameComponent extends ItemNameComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -42,7 +42,7 @@ public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStac
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneThirteen(version);
+    return true;
   }
 
   /**
@@ -54,15 +54,11 @@ public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStac
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final Optional<PaperOldMaxDamageComponent> componentOptional = serialized.component(identifier());
+    final ItemMeta meta = item.getItemMeta();
+    final Optional<PaperOldItemNameComponent> componentOptional = serialized.component(identifier());
+    if(meta != null && componentOptional.isPresent()) {
 
-    if(componentOptional.isPresent()) {
-
-      if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
-
-        meta.setMaxDamage(componentOptional.get().maxDamage);
-        item.setItemMeta(meta);
-      }
+      meta.setItemName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().itemName()));
     }
     return item;
   }
@@ -76,12 +72,13 @@ public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStac
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasDisplayName()) {
 
-      this.maxDamage = meta.getMaxDamage();
+      this.itemName = LegacyComponentSerializer.legacySection().deserialize(meta.getItemName());
+
+      serialized.applyComponent(this);
     }
-
-    serialized.applyComponent(this);
     return serialized;
   }
 
@@ -95,6 +92,6 @@ public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStac
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasItemMeta() && item.getItemMeta() instanceof Damageable;
+    return true;
   }
 }

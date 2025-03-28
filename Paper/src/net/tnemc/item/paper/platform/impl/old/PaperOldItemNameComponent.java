@@ -1,4 +1,4 @@
-package net.tnemc.item.paper.platform.impl.modern;
+package net.tnemc.item.paper.platform.impl.old;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -18,26 +18,21 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.helper.PatternData;
-import net.tnemc.item.component.impl.BannerPatternsComponent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.platform.PaperItemPlatform;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
 /**
- * PaperOldModernBannerPatternsComponent
+ * BukkitItemNameComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldBannerPatternsComponent extends BannerPatternsComponent<PaperItemStack, ItemStack> {
+public class PaperOldItemNameComponent extends ItemNameComponent<PaperItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -59,30 +54,12 @@ public class PaperOldBannerPatternsComponent extends BannerPatternsComponent<Pap
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final Optional<PaperOldBannerPatternsComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    final ItemMeta meta = item.getItemMeta();
+    final Optional<PaperOldItemNameComponent> componentOptional = serialized.component(identifier());
+    if(meta != null && componentOptional.isPresent()) {
 
-      if(item.hasItemMeta() && item.getItemMeta() instanceof final BannerMeta meta) {
-
-        for(final PatternData pattern : componentOptional.get().patterns) {
-
-          final DyeColor color = DyeColor.getByColor(Color.fromRGB(Integer.parseInt(pattern.getColor())));
-
-          if(color != null) {
-
-            try {
-
-              meta.addPattern(new Pattern(color, PaperItemPlatform.PLATFORM.converter().convert(pattern.getPattern(), PatternType.class)));
-            } catch(final Exception ignore) {
-
-              //pattern type doesn't exist.
-            }
-          }
-        }
-
-        item.setItemMeta(meta);
-      }
-    });
+      meta.setItemName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().itemName()));
+    }
     return item;
   }
 
@@ -95,21 +72,13 @@ public class PaperOldBannerPatternsComponent extends BannerPatternsComponent<Pap
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    if(item.hasItemMeta() && item.getItemMeta() instanceof final BannerMeta meta) {
-      for(final Pattern pattern : meta.getPatterns()) {
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasDisplayName()) {
 
-        try {
-          patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                       PaperItemPlatform.PLATFORM.converter().convert(pattern.getPattern(), String.class)));
-        } catch(final Exception ignore) {
+      this.itemName = LegacyComponentSerializer.legacySection().deserialize(meta.getItemName());
 
-          //key isn't found
-        }
-
-      }
+      serialized.applyComponent(this);
     }
-
-    serialized.applyComponent(this);
     return serialized;
   }
 
@@ -123,6 +92,6 @@ public class PaperOldBannerPatternsComponent extends BannerPatternsComponent<Pap
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasItemMeta() && item.getItemMeta() instanceof BannerMeta;
+    return true;
   }
 }

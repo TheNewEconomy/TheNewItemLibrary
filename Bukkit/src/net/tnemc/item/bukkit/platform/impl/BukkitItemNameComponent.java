@@ -1,4 +1,4 @@
-package net.tnemc.item.paper.platform.impl.modern;
+package net.tnemc.item.bukkit.platform.impl;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -18,26 +18,22 @@ package net.tnemc.item.paper.platform.impl.modern;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.component.impl.AttributeModifiersComponent;
-import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.platform.PaperItemPlatform;
-import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.inventory.EquipmentSlotGroup;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.component.impl.CustomNameComponent;
+import net.tnemc.item.component.impl.ItemNameComponent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
 /**
- * PaperOldAttributeModifiersComponent
+ * BukkitItemNameComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperOldAttributeModifiersComponent extends AttributeModifiersComponent<PaperItemStack, ItemStack> {
+public class BukkitItemNameComponent extends ItemNameComponent<BukkitItemStack, ItemStack> {
 
   /**
    * @param version the version being used when this check is called.
@@ -57,25 +53,14 @@ public class PaperOldAttributeModifiersComponent extends AttributeModifiersCompo
    * @return the updated item.
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
-    final Optional<AttributeModifiersComponent<AbstractItemStack<ItemStack>, ItemStack>> componentOptional = serialized.attributeModifiers();
+    final Optional<BukkitItemNameComponent> componentOptional = serialized.component(identifier());
     if(meta != null && componentOptional.isPresent()) {
 
-      for(final net.tnemc.item.component.helper.AttributeModifier attribute : componentOptional.get().modifiers()) {
-
-        final AttributeModifier.Operation operation = PaperItemPlatform.PLATFORM.converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);
-        final EquipmentSlotGroup slot = PaperItemPlatform.PLATFORM.converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);
-        final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType()),
-                                                             attribute.getAmount(),
-                                                             operation,
-                                                             slot);
-
-        meta.addAttributeModifier(Attribute.valueOf(attribute.getId()), attr);
-      }
+      meta.setItemName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().itemName()));
     }
-
     return item;
   }
 
@@ -86,9 +71,16 @@ public class PaperOldAttributeModifiersComponent extends AttributeModifiersCompo
    * @return the updated serialized item.
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    return null;
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasDisplayName()) {
+
+      this.itemName = LegacyComponentSerializer.legacySection().deserialize(meta.getItemName());
+
+      serialized.applyComponent(this);
+    }
+    return serialized;
   }
 
   /**

@@ -18,6 +18,8 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
@@ -36,13 +38,13 @@ import java.util.Objects;
  */
 public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected String itemName;
+  protected Component itemName;
 
   public ItemNameComponent() {
 
   }
 
-  public ItemNameComponent(final String itemName) {
+  public ItemNameComponent(final Component itemName) {
 
     this.itemName = itemName;
   }
@@ -55,13 +57,13 @@ public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> imple
   @Override
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
-    json.put("item_name", itemName);
+    json.put("item_name", LegacyComponentSerializer.legacySection().serialize(itemName));
     return json;
   }
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    itemName = json.getString("item_name");
+    itemName = LegacyComponentSerializer.legacySection().deserialize(json.getString("item_name"));
   }
 
   @Override
@@ -76,12 +78,12 @@ public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> imple
     return Objects.hash(itemName);
   }
 
-  public String itemName() {
+  public Component itemName() {
 
     return itemName;
   }
 
-  public void itemName(final String itemName) {
+  public void itemName(final Component itemName) {
 
     this.itemName = itemName;
   }
