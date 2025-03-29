@@ -111,7 +111,9 @@ import net.tnemc.item.providers.SkullProfile;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -171,6 +173,16 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   public PaperItemStack of(final ItemStack locale) {
 
     this.localeStack = locale;
+    this.material = locale.getType().getKey().toString();
+
+    this.amount = locale.getAmount();
+    final ItemMeta meta = locale.getItemMeta();
+    if(meta != null) {
+      for(final ItemFlag flag : meta.getItemFlags()) {
+
+        this.flags.add(flag.name());
+      }
+    }
 
     return PaperItemPlatform.PLATFORM.serializer(this.localeStack, this);
   }
@@ -216,6 +228,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack loreComponent(final List<Component> lore) {
 
+    applyComponent(new PaperLoreComponent(lore));
     return this;
   }
 
@@ -230,6 +243,9 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack enchant(final String enchantment, final int level) {
 
+    applyComponent(new PaperEnchantmentsComponent(new HashMap<>(){{
+      put(enchantment, level);
+    }}));
     return this;
   }
 
@@ -243,6 +259,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack enchant(final Map<String, Integer> enchantments) {
 
+    applyComponent(new PaperEnchantmentsComponent(enchantments));
     return this;
   }
 
@@ -256,6 +273,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack enchant(final List<String> enchantments) {
 
+    final Map<String, Integer> enchants = new HashMap<>();
+    for(final String enchantment : enchantments) {
+      enchants.put(enchantment, 1);
+    }
+    applyComponent(new PaperEnchantmentsComponent(enchants));
     return this;
   }
 
