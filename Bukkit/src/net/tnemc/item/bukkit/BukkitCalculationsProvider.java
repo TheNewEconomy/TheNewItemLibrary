@@ -24,6 +24,7 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.InventoryType;
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.providers.CalculationsProvider;
+import net.tnemc.item.providers.ItemProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -190,6 +191,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
         for(final Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
           final ItemStack i = entry.getValue();
+
           if(i == null || i.getType() == Material.AIR) {
             continue;
           }
@@ -216,25 +218,38 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     final ItemStack compare = stack.locale().clone();
     compare.setAmount(1);
 
+    //TODO: improve this
+
     final BukkitItemStack comp = new BukkitItemStack().of(compare);
+    final ItemProvider<ItemStack> provider = stack.itemProviderObject();
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
       if(left <= 0) break;
+
       final ItemStack item = inventory.getItem(i);
 
       if(item == null) continue;
 
       final BukkitItemStack itemLocale = new BukkitItemStack().of(item);
 
-      if(item.isSimilar(stack.locale())) {
-        if(item.getAmount() <= left) {
-          left -= item.getAmount();
-          inventory.setItem(i, null);
-        } else {
+      if(provider.similar(stack, item)) {
+
+        if(item.getAmount() > left) {
           item.setAmount(item.getAmount() - left);
-          inventory.setItem(i, item);
+          inventory.setItem(i, null);
           left = 0;
+          break;
         }
+
+        if(item.getAmount() == left) {
+          inventory.setItem(i, null);
+          left = 0;
+          break;
+        }
+
+        left -= item.getAmount();
+        inventory.setItem(i, null);
+
       } else {
 
         final Optional<ContainerComponent<AbstractItemStack<ItemStack>, ItemStack>> containerComponent = itemLocale.container();
@@ -248,15 +263,24 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
             final Map.Entry<Integer, AbstractItemStack<ItemStack>> entry = it.next();
             if(itemsEqual(comp, (BukkitItemStack)entry.getValue())) {
 
-              if(entry.getValue().amount() <= left) {
 
-                left -= entry.getValue().amount();
-                it.remove();
-              } else {
+              if(item.getAmount() > left) {
 
                 entry.getValue().amount(entry.getValue().amount() - left);
+                itemLocale.markDirty();
                 left = 0;
+                break;
               }
+
+              if(item.getAmount() == left) {
+                it.remove();
+                itemLocale.markDirty();
+                left = 0;
+                break;
+              }
+
+              left -= item.getAmount();
+              it.remove();
               itemLocale.markDirty();
             }
           }

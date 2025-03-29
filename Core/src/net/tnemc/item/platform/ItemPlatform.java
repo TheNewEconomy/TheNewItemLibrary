@@ -44,6 +44,7 @@ import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.check.LocaleItemCheck;
 import net.tnemc.item.platform.conversion.PlatformConverter;
 import net.tnemc.item.platform.serialize.ItemSerializer;
+import net.tnemc.item.providers.ItemProvider;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
@@ -63,6 +64,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
   private final Map<String, Class<? extends PersistentDataType<?>>> classes = new ConcurrentHashMap<>();
+
+  private final Map<String, ItemProvider<T>> itemProviders = new ConcurrentHashMap<>();
 
   protected final Map<String, ItemCheck<T>> checks = new HashMap<>();
   protected final Map<String, ItemApplicator<I, T>> applicators = new HashMap<>();
@@ -104,11 +107,42 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    */
   public abstract String version();
 
+  /**
+   * Adds default configurations or settings to be used by the implementing class.
+   */
   public abstract void addDefaults();
 
   public PlatformConverter converter() {
 
     return converter;
+  }
+
+  /**
+   * Retrieves the default provider for the item stack comparison.
+   *
+   * @return the default provider for the item stack comparison.
+   */
+  public abstract @NotNull ItemProvider<T> defaultProvider();
+
+  /**
+   * Retrieves the item provider for the given itemProvider name, or returns the default provider if not found.
+   *
+   * @param itemProvider The name of the ItemProvider to retrieve.
+   * @return The ItemProvider associated with the itemProvider name, or the default provider if not found.
+   */
+  public ItemProvider<T> provider(final String itemProvider) {
+
+    return itemProviders.getOrDefault(itemProvider, defaultProvider());
+  }
+
+  /**
+   * Adds an ItemProvider to the ItemPlatform.
+   *
+   * @param provider The ItemProvider to add to the platform
+   */
+  public void addItemProvider(final ItemProvider<T> provider) {
+
+    itemProviders.put(provider.identifier(), provider);
   }
 
   /**

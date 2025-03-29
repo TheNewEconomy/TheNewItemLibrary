@@ -97,6 +97,7 @@ import net.tnemc.item.component.impl.WritableBookContentComponent;
 import net.tnemc.item.component.impl.WrittenBookContentComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.persistent.PersistentDataType;
+import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -388,33 +389,40 @@ public interface AbstractItemStack<T> extends Cloneable {
   void markDirty();
 
   /**
-   * Returns true if the provided item is similar to this. An item is similar if the basic
-   * information is the same, except for the amount. What this includes: - material - display -
-   * modelData - flags - lore - attributes - enchantments
-   * What this does not include: - Item Data/components.
+   * This method returns a String representing the item provider.
    *
-   * @param compare The stack to compare.
-   *
-   * @return True if the two are similar, otherwise false.
-   * @since 0.2.0.0
-   * @author creatorfromhell
+   * @see net.tnemc.item.providers.ItemProvider
+   * @return the item provider as a String
    */
-  boolean similar(AbstractItemStack<? extends T> compare);
+  String itemProvider();
 
   /**
-   * Compares the components of two item stacks to check if they are equal.
+   * Sets the item provider to be used for retrieving items.
    *
-   * @param compare the item stack to compare components with
-   * @return true if the components of the two item stacks are equal, false otherwise
+   * @param itemProvider the string representing the item provider to be set
    */
-  boolean componentsEqual(AbstractItemStack<? extends T> compare);
+  void setItemProvider(final String itemProvider);
 
   /**
-   * @return An instance of the implementation's locale version of AbstractItemStack.
-   * @since 0.2.0.0
-   * @author creatorfromhell
+   * Retrieves the provider item ID associated with the current object.
+   *
+   * @return The provider item ID of the object.
    */
-  T locale();
+  String providerItemID();
+
+  /**
+   * Sets the provider's item ID for the current item.
+   *
+   * @param providerItemID the unique ID assigned by the provider for the item
+   */
+  void setProviderItemID(final String providerItemID);
+
+  /**
+   * This method is used to return an ItemProvider object.
+   *
+   * @return ItemProvider object representing the item provider.
+   */
+  ItemProvider<T> itemProviderObject();
 
   /**
    * Converts the object to a JSONObject representation.

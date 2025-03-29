@@ -22,7 +22,7 @@ package net.tnemc.item;
 
 /**
  * Represents an inventory type.
- *
+ * TODO: Other inventories? Entities?
  * @author creatorfromhell
  * @since 0.1.5.0
  */
