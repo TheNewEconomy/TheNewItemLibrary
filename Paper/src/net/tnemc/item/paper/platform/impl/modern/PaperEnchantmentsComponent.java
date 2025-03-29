@@ -40,6 +40,15 @@ import java.util.Optional;
  */
 public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemStack, ItemStack> {
 
+  public PaperEnchantmentsComponent() {
+
+  }
+
+  public PaperEnchantmentsComponent(final Map<String, Integer> levels) {
+
+    super(levels);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

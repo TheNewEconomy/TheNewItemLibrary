@@ -34,6 +34,10 @@ import java.util.Optional;
  */
 public class BukkitUnbreakableComponent extends UnbreakableComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitUnbreakableComponent() {
+
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

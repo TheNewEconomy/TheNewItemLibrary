@@ -38,6 +38,15 @@ import java.util.Optional;
  */
 public class BukkitModelDataComponent extends ModelDataComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitModelDataComponent() {
+
+  }
+
+  public BukkitModelDataComponent(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
+
+    super(colours, floats, flags, strings);
+  }
+
   /**
    * Checks if this component applies to the specified item.
    *

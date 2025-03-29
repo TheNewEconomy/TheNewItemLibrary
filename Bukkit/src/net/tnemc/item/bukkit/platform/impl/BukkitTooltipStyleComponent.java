@@ -35,6 +35,15 @@ import java.util.Optional;
  */
 public class BukkitTooltipStyleComponent extends TooltipStyleComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitTooltipStyleComponent() {
+
+  }
+
+  public BukkitTooltipStyleComponent(final String style) {
+
+    super(style);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

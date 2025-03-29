@@ -36,6 +36,15 @@ import java.util.Optional;
  */
 public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitRarityComponent() {
+
+  }
+
+  public BukkitRarityComponent(final String rarity) {
+
+    super(rarity);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

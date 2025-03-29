@@ -34,6 +34,15 @@ import java.util.Optional;
  */
 public class BukkitMaxStackSizeComponent extends MaxStackSizeComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitMaxStackSizeComponent() {
+
+  }
+
+  public BukkitMaxStackSizeComponent(final int maxStackSize) {
+
+    super(maxStackSize);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

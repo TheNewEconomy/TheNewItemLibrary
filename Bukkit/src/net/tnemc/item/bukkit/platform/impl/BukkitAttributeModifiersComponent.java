@@ -29,6 +29,7 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -38,6 +39,24 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class BukkitAttributeModifiersComponent extends AttributeModifiersComponent<BukkitItemStack, ItemStack> {
+
+  /**
+   * Constructor for AttributeModifiersComponent. Initializes an empty list of AttributeModifiers.
+   */
+  public BukkitAttributeModifiersComponent() {
+
+  }
+
+  /**
+   * Constructor for AttributeModifiersComponent. Initializes the component with a list of
+   * AttributeModifiers and a boolean flag to show in tooltip.
+   *
+   * @param modifiers The list of AttributeModifiers to associate with this component.
+   */
+  public BukkitAttributeModifiersComponent(final List<net.tnemc.item.component.helper.AttributeModifier> modifiers) {
+
+    super(modifiers);
+  }
 
   /**
    * @param version the version being used when this check is called.

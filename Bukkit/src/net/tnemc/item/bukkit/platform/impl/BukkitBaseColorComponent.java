@@ -36,6 +36,20 @@ import java.util.Optional;
  */
 public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitBaseColorComponent() {
+
+  }
+
+  /**
+   * Constructs a new BaseColorComponent with the specified color.
+   *
+   * @param color The base color value for the component.
+   */
+  public BukkitBaseColorComponent(final String color) {
+
+    super(color);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

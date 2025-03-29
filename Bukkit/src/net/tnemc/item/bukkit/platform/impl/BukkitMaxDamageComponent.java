@@ -34,6 +34,15 @@ import java.util.Optional;
  */
 public class BukkitMaxDamageComponent extends MaxDamageComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitMaxDamageComponent() {
+
+  }
+
+  public BukkitMaxDamageComponent(final int maxDamage) {
+
+    super(maxDamage);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

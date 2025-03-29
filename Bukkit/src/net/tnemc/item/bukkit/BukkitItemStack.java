@@ -18,9 +18,22 @@ package net.tnemc.item.bukkit;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
+import net.tnemc.item.bukkit.platform.impl.BukkitBundleComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitContainerComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitCustomNameComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitDamageComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitDyedColorComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitEnchantmentsComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitItemModelComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitItemNameComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitLoreComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitModelDataComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitModelDataOldComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.BlockPredicate;
@@ -70,6 +83,7 @@ import net.tnemc.item.component.impl.MapIDComponent;
 import net.tnemc.item.component.impl.MaxDamageComponent;
 import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.component.impl.ModelDataComponent;
+import net.tnemc.item.component.impl.ModelDataOldComponent;
 import net.tnemc.item.component.impl.NoteBlockSoundComponent;
 import net.tnemc.item.component.impl.OminousBottleAmplifierComponent;
 import net.tnemc.item.component.impl.PotDecorationsComponent;
@@ -98,7 +112,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -158,6 +174,19 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack of(final ItemStack locale) {
 
     this.localeStack = locale;
+    final NamespacedKey key = locale.getType().getKeyOrNull();
+    if(key != null) {
+      this.material = key.toString();
+    }
+
+    this.amount = locale.getAmount();
+    final ItemMeta meta = locale.getItemMeta();
+    if(meta != null) {
+      for(final ItemFlag flag : meta.getItemFlags()) {
+
+        this.flags.add(flag.name());
+      }
+    }
 
     return BukkitItemPlatform.PLATFORM.serializer(this.localeStack, this);
   }
@@ -203,6 +232,8 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack loreComponent(final List<Component> lore) {
 
+    applyComponent(new BukkitLoreComponent(lore));
+
     return this;
   }
 
@@ -217,6 +248,9 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchant(final String enchantment, final int level) {
 
+    applyComponent(new BukkitEnchantmentsComponent(new HashMap<>(){{
+      put(enchantment, level);
+    }}));
     return this;
   }
 
@@ -230,6 +264,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchant(final Map<String, Integer> enchantments) {
 
+    applyComponent(new BukkitEnchantmentsComponent(enchantments));
     return this;
   }
 
@@ -243,6 +278,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchant(final List<String> enchantments) {
 
+    final Map<String, Integer> enchants = new HashMap<>();
+    for(final String enchantment : enchantments) {
+      enchants.put(enchantment, 1);
+    }
+    applyComponent(new BukkitEnchantmentsComponent(enchants));
     return this;
   }
 
@@ -597,8 +637,9 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public BukkitItemStack bundle(final Map<Integer, AbstractItemStack<?>> items) {
+  public BukkitItemStack bundle(final Map<Integer, AbstractItemStack<ItemStack>> items) {
 
+    applyComponent(new BukkitBundleComponent(items));
     return this;
   }
 
@@ -666,8 +707,9 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public BukkitItemStack container(final Map<Integer, AbstractItemStack<?>> items) {
+  public BukkitItemStack container(final Map<Integer, AbstractItemStack<ItemStack>> items) {
 
+    applyComponent(new BukkitContainerComponent(items));
     return this;
   }
 
@@ -682,8 +724,9 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public BukkitItemStack customName(final String customName) {
+  public BukkitItemStack customName(final Component customName) {
 
+    applyComponent(new BukkitCustomNameComponent(customName));
     return this;
   }
 
@@ -700,6 +743,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack damage(final int damage) {
 
+    applyComponent(new BukkitDamageComponent(damage));
     return this;
   }
 
@@ -748,6 +792,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack dyedColor(final int rgb) {
 
+    applyComponent(new BukkitDyedColorComponent(rgb));
     return this;
   }
 
@@ -796,6 +841,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchantments(final Map<String, Integer> levels) {
 
+    applyComponent(new BukkitEnchantmentsComponent(levels));
     return this;
   }
 
@@ -978,6 +1024,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack itemModel(final String model) {
 
+    applyComponent(new BukkitItemModelComponent(model));
     return this;
   }
 
@@ -992,8 +1039,9 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public BukkitItemStack itemName(final String itemName) {
+  public BukkitItemStack itemName(final Component itemName) {
 
+    applyComponent(new BukkitItemNameComponent(itemName));
     return this;
   }
 
@@ -1044,8 +1092,9 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public BukkitItemStack lore(final List<String> lore) {
+  public BukkitItemStack lore(final List<Component> lore) {
 
+    applyComponent(new BukkitLoreComponent(lore));
     return this;
   }
 
@@ -1129,6 +1178,25 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack modelData(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
 
+    applyComponent(new BukkitModelDataComponent(colours, floats, flags, strings));
+    return this;
+  }
+
+  /**
+   * Retrieves the model data for a custom item stack.
+   *
+   * @param customModelData the custom model data to retrieve
+   *
+   * @return an AbstractItemStack with the specified custom model data
+   *
+   * @see ModelDataOldComponent
+   * @since 0.2.0.0
+   * @deprecated Since MC 1.21.3 Use {@link ItemModelComponent} and {@link ModelDataComponent}.
+   */
+  @Override
+  public AbstractItemStack<ItemStack> modelDataOld(final int customModelData) {
+
+    applyComponent(new BukkitModelDataOldComponent(customModelData));
     return this;
   }
 
@@ -1225,6 +1293,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack profile(final SkullProfile profile) {
 
+    applyComponent(new BukkitProfileComponent(profile));
     return this;
   }
 

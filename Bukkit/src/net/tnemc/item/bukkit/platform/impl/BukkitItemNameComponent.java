@@ -18,6 +18,7 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.CustomNameComponent;
@@ -34,6 +35,15 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class BukkitItemNameComponent extends ItemNameComponent<BukkitItemStack, ItemStack> {
+
+  public BukkitItemNameComponent() {
+
+  }
+
+  public BukkitItemNameComponent(final Component itemName) {
+
+    super(itemName);
+  }
 
   /**
    * @param version the version being used when this check is called.

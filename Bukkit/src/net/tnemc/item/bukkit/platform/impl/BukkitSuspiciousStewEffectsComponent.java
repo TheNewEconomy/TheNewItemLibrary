@@ -28,6 +28,7 @@ import org.bukkit.inventory.meta.SuspiciousStewMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -37,6 +38,20 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsComponent<BukkitItemStack, ItemStack> {
+
+  public BukkitSuspiciousStewEffectsComponent(final EffectInstance... effects) {
+
+    super(effects);
+  }
+
+  public BukkitSuspiciousStewEffectsComponent(final List<EffectInstance> effects) {
+
+    super(effects);
+  }
+
+  public BukkitSuspiciousStewEffectsComponent() {
+
+  }
 
   /**
    * @param version the version being used when this check is called.

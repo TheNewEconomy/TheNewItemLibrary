@@ -18,6 +18,7 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.providers.VersionUtil;
@@ -29,6 +30,7 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.CrossbowMeta;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -38,6 +40,15 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class BukkitChargedProjectilesComponent extends ContainerComponent<BukkitItemStack, ItemStack> {
+
+  public BukkitChargedProjectilesComponent() {
+
+  }
+
+  public BukkitChargedProjectilesComponent(final Map<Integer, AbstractItemStack<ItemStack>> items) {
+
+    super(items);
+  }
 
   /**
    * @param version the version being used when this check is called.

@@ -42,6 +42,15 @@ import java.util.Optional;
  */
 public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, ItemStack> {
 
+  public PaperModelDataComponent() {
+
+  }
+
+  public PaperModelDataComponent(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
+
+    super(colours, floats, flags, strings);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

@@ -37,6 +37,15 @@ import java.util.Optional;
  */
 public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack, ItemStack> {
 
+  public PaperCustomNameComponent() {
+
+  }
+
+  public PaperCustomNameComponent(final Component customName) {
+
+    super(customName);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

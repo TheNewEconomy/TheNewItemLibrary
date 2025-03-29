@@ -34,6 +34,15 @@ import java.util.Optional;
  */
 public class PaperOldModelDataLegacyComponent extends ModelDataOldComponent<PaperItemStack, ItemStack> {
 
+  public PaperOldModelDataLegacyComponent() {
+
+  }
+
+  public PaperOldModelDataLegacyComponent(final int modelData) {
+
+    super(modelData);
+  }
+
   /**
    * Checks if this component applies to the specified item.
    *

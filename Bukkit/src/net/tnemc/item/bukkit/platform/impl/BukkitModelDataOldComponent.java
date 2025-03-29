@@ -39,6 +39,15 @@ import java.util.Optional;
  */
 public class BukkitModelDataOldComponent extends ModelDataOldComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitModelDataOldComponent() {
+
+  }
+
+  public BukkitModelDataOldComponent(final int modelData) {
+
+    super(modelData);
+  }
+
   /**
    * Checks if this component applies to the specified item.
    *

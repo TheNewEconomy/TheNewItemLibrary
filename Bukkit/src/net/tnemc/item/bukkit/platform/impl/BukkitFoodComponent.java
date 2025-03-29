@@ -33,6 +33,25 @@ import java.util.Optional;
  */
 public class BukkitFoodComponent extends FoodComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitFoodComponent() {
+
+  }
+
+  public BukkitFoodComponent(final boolean canAlwaysEat) {
+
+    super(canAlwaysEat);
+  }
+
+  public BukkitFoodComponent(final boolean canAlwaysEat, final float saturation) {
+
+    super(canAlwaysEat, saturation);
+  }
+
+  public BukkitFoodComponent(final boolean canAlwaysEat, final float saturation, final int nutrition) {
+
+    super(canAlwaysEat, saturation, nutrition);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

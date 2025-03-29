@@ -36,6 +36,15 @@ import java.util.Optional;
  */
 public class BukkitStoredEnchantmentsComponent extends StoredEnchantmentsComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitStoredEnchantmentsComponent() {
+
+  }
+
+  public BukkitStoredEnchantmentsComponent(final Map<String, Integer> levels) {
+
+    super(levels);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

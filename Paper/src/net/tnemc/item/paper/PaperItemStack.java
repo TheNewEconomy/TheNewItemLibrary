@@ -70,6 +70,7 @@ import net.tnemc.item.component.impl.MapIDComponent;
 import net.tnemc.item.component.impl.MaxDamageComponent;
 import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.component.impl.ModelDataComponent;
+import net.tnemc.item.component.impl.ModelDataOldComponent;
 import net.tnemc.item.component.impl.NoteBlockSoundComponent;
 import net.tnemc.item.component.impl.OminousBottleAmplifierComponent;
 import net.tnemc.item.component.impl.PotDecorationsComponent;
@@ -93,6 +94,18 @@ import net.tnemc.item.component.impl.WeaponComponent;
 import net.tnemc.item.component.impl.WritableBookContentComponent;
 import net.tnemc.item.component.impl.WrittenBookContentComponent;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
+import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperContainerComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperCustomNameComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperDamageComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperDyedColorComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperItemModelComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperItemNameComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperLoreComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperModelDataComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperProfileComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.SkullProfile;
 import org.bukkit.Material;
@@ -597,8 +610,9 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack bundle(final Map<Integer, AbstractItemStack<?>> items) {
+  public PaperItemStack bundle(final Map<Integer, AbstractItemStack<ItemStack>> items) {
 
+    applyComponent(new PaperBundleComponent(items));
     return this;
   }
 
@@ -666,8 +680,9 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack container(final Map<Integer, AbstractItemStack<?>> items) {
+  public PaperItemStack container(final Map<Integer, AbstractItemStack<ItemStack>> items) {
 
+    applyComponent(new PaperContainerComponent(items));
     return this;
   }
 
@@ -682,8 +697,9 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack customName(final String customName) {
+  public PaperItemStack customName(final Component customName) {
 
+    applyComponent(new PaperCustomNameComponent(customName));
     return this;
   }
 
@@ -700,6 +716,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack damage(final int damage) {
 
+    applyComponent(new PaperDamageComponent(damage));
     return this;
   }
 
@@ -748,6 +765,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack dyedColor(final int rgb) {
 
+    applyComponent(new PaperDyedColorComponent(rgb));
     return this;
   }
 
@@ -796,6 +814,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack enchantments(final Map<String, Integer> levels) {
 
+    applyComponent(new PaperEnchantmentsComponent(levels));
     return this;
   }
 
@@ -978,6 +997,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack itemModel(final String model) {
 
+    applyComponent(new PaperItemModelComponent(model));
     return this;
   }
 
@@ -992,8 +1012,9 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack itemName(final String itemName) {
+  public PaperItemStack itemName(final Component itemName) {
 
+    applyComponent(new PaperItemNameComponent(itemName));
     return this;
   }
 
@@ -1044,8 +1065,9 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack lore(final List<String> lore) {
+  public PaperItemStack lore(final List<Component> lore) {
 
+    applyComponent(new PaperLoreComponent(lore));
     return this;
   }
 
@@ -1129,6 +1151,25 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack modelData(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
 
+    applyComponent(new PaperModelDataComponent(colours, floats, flags, strings));
+    return this;
+  }
+
+  /**
+   * Retrieves the model data for a custom item stack.
+   *
+   * @param customModelData the custom model data to retrieve
+   *
+   * @return an AbstractItemStack with the specified custom model data
+   *
+   * @see ModelDataOldComponent
+   * @since 0.2.0.0
+   * @deprecated Since MC 1.21.3 Use {@link ItemModelComponent} and {@link ModelDataComponent}.
+   */
+  @Override
+  public AbstractItemStack<ItemStack> modelDataOld(final int customModelData) {
+
+    applyComponent(new PaperOldModelDataLegacyComponent(customModelData));
     return this;
   }
 
@@ -1225,6 +1266,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack profile(final SkullProfile profile) {
 
+    applyComponent(new PaperProfileComponent(profile));
     return this;
   }
 

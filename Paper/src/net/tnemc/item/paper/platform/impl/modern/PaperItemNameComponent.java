@@ -37,6 +37,15 @@ import java.util.Optional;
  */
 public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, ItemStack> {
 
+  public PaperItemNameComponent() {
+
+  }
+
+  public PaperItemNameComponent(final Component itemName) {
+
+    super(itemName);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

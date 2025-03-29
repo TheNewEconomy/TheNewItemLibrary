@@ -38,6 +38,15 @@ import java.util.Optional;
  */
 public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitItemModelComponent() {
+
+  }
+
+  public BukkitItemModelComponent(final String model) {
+
+    super(model);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

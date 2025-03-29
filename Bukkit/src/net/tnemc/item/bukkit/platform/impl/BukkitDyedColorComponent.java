@@ -34,6 +34,20 @@ import java.util.Optional;
  */
 public class BukkitDyedColorComponent extends DyedColorComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitDyedColorComponent() {
+
+  }
+
+  public BukkitDyedColorComponent(final int rgb) {
+
+    super(rgb);
+  }
+
+  public BukkitDyedColorComponent(final int red, final int green, final int blue) {
+
+    super(red, green, blue);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

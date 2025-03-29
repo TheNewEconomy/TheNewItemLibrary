@@ -38,6 +38,15 @@ import java.util.Optional;
  */
 public class BukkitTrimComponent extends TrimComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitTrimComponent() {
+
+  }
+
+  public BukkitTrimComponent(final String pattern, final String material) {
+
+    super(pattern, material);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

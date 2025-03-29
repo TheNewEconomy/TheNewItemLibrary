@@ -18,6 +18,7 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ContainerComponent;
 import org.bukkit.Material;
@@ -26,6 +27,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -35,6 +37,15 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class BukkitContainerComponent extends ContainerComponent<BukkitItemStack, ItemStack> {
+
+  public BukkitContainerComponent() {
+
+  }
+
+  public BukkitContainerComponent(final Map<Integer, AbstractItemStack<ItemStack>> items) {
+
+    super(items);
+  }
 
   /**
    * @param version the version being used when this check is called.

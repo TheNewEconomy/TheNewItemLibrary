@@ -34,6 +34,15 @@ import java.util.Optional;
  */
 public class BukkitEnchantableComponent extends EnchantableComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitEnchantableComponent() {
+
+  }
+
+  public BukkitEnchantableComponent(final int value) {
+
+    super(value);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

@@ -34,6 +34,10 @@ import java.util.Optional;
  */
 public class BukkitGliderComponent extends GliderComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitGliderComponent() {
+
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

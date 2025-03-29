@@ -30,6 +30,20 @@ import org.bukkit.inventory.ItemStack;
  */
 public class PaperShulkerColorComponent extends PaperDyedColorComponent {
 
+  public PaperShulkerColorComponent() {
+
+  }
+
+  public PaperShulkerColorComponent(final int red, final int green, final int blue) {
+
+    super(red, green, blue);
+  }
+
+  public PaperShulkerColorComponent(final int rgb) {
+
+    super(rgb);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

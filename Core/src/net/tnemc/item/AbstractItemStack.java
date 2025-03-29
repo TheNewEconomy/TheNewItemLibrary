@@ -71,6 +71,7 @@ import net.tnemc.item.component.impl.MapIDComponent;
 import net.tnemc.item.component.impl.MaxDamageComponent;
 import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.component.impl.ModelDataComponent;
+import net.tnemc.item.component.impl.ModelDataOldComponent;
 import net.tnemc.item.component.impl.NoteBlockSoundComponent;
 import net.tnemc.item.component.impl.OminousBottleAmplifierComponent;
 import net.tnemc.item.component.impl.PotDecorationsComponent;
@@ -675,7 +676,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @author creatorfromhell
    * @see BundleComponent
    */
-  AbstractItemStack<T> bundle(final Map<Integer, AbstractItemStack<?>> items);
+  AbstractItemStack<T> bundle(final Map<Integer, AbstractItemStack<T>> items);
 
   /**
    * Retrieves the CanBreakComponent of the item stack if present.
@@ -772,7 +773,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @author creatorfromhell
    * @see ContainerComponent
    */
-  AbstractItemStack<T> container(final Map<Integer, AbstractItemStack<?>> items);
+  AbstractItemStack<T> container(final Map<Integer, AbstractItemStack<T>> items);
 
   /**
    * Retrieves the CustomNameComponent of the item stack if present.
@@ -795,7 +796,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @author creatorfromhell
    * @see CustomNameComponent
    */
-  AbstractItemStack<T> customName(String customName);
+  AbstractItemStack<T> customName(Component customName);
 
   /**
    * Retrieves the DamageComponent of the item stack if present.
@@ -1245,7 +1246,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @author creatorfromhell
    * @see ItemNameComponent
    */
-  AbstractItemStack<T> itemName(String itemName);
+  AbstractItemStack<T> itemName(Component itemName);
 
   /**
    * Retrieves the JukeBoxComponent of the item stack if present.
@@ -1318,7 +1319,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @author creatorfromhell
    * @see LoreComponent
    */
-  AbstractItemStack<T> lore(List<String> lore);
+  AbstractItemStack<T> lore(List<Component> lore);
 
   /**
    * Retrieves the MapColorComponent of the item stack if present.
@@ -1437,6 +1438,31 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @see ModelDataComponent
    */
   AbstractItemStack<T> modelData(List<String> colours, List<Float> floats, List<Boolean> flags, List<String> strings);
+
+  /**
+   * Retrieves the ModelDataOldComponent of the item stack if present.
+   *
+   * @return an Optional containing the ModelDataOldComponent if it exists
+   * @deprecated Since MC 1.21.3 Use {@link ItemModelComponent} and {@link ModelDataComponent}.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see ModelDataComponent
+   */
+  default Optional<ModelDataOldComponent<AbstractItemStack<T>, T>> modelDataOld() {
+    return Optional.ofNullable((ModelDataOldComponent<AbstractItemStack<T>, T>) components().get("model-data-old"));
+  }
+
+  /**
+   * Retrieves the model data for a custom item stack.
+   *
+   * @param customModelData the custom model data to retrieve
+   * @return an AbstractItemStack with the specified custom model data
+   * @deprecated Since MC 1.21.3 Use {@link ItemModelComponent} and {@link ModelDataComponent}.
+   * @since 0.2.0.0
+   * @author creatorfromhell
+   * @see ModelDataOldComponent
+   */
+  AbstractItemStack<T> modelDataOld(int customModelData);
 
   /**
    * Retrieves the NoteBlockSoundComponent of the item stack if present.

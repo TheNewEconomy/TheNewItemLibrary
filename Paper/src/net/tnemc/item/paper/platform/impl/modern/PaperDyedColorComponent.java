@@ -38,6 +38,20 @@ import java.util.Optional;
  */
 public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, ItemStack> {
 
+  public PaperDyedColorComponent() {
+
+  }
+
+  public PaperDyedColorComponent(final int red, final int green, final int blue) {
+
+    super(red, green, blue);
+  }
+
+  public PaperDyedColorComponent(final int rgb) {
+
+    super(rgb);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

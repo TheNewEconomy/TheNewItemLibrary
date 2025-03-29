@@ -34,6 +34,15 @@ import java.util.Optional;
  */
 public class BukkitRepairCostComponent extends RepairCostComponent<BukkitItemStack, ItemStack> {
 
+  public BukkitRepairCostComponent() {
+
+  }
+
+  public BukkitRepairCostComponent(final int repairCost) {
+
+    super(repairCost);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

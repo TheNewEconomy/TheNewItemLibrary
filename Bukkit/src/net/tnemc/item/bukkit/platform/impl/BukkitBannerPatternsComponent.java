@@ -29,6 +29,7 @@ import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -38,6 +39,23 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class BukkitBannerPatternsComponent extends BannerPatternsComponent<BukkitItemStack, ItemStack> {
+
+  /**
+   * Represents a component that handles banner patterns for an object.
+   */
+  public BukkitBannerPatternsComponent() {
+
+  }
+
+  /**
+   * Creates a new BannerPatternsComponent with the provided list of PatternData objects.
+   *
+   * @param patterns The list of PatternData objects to initialize the component with.
+   */
+  public BukkitBannerPatternsComponent(final List<PatternData> patterns) {
+
+    super(patterns);
+  }
 
   /**
    * @param version the version being used when this check is called.

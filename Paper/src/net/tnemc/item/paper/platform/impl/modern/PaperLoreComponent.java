@@ -32,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -42,6 +43,20 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class PaperLoreComponent extends LoreComponent<PaperItemStack, ItemStack> {
+
+  public PaperLoreComponent() {
+
+  }
+
+  public PaperLoreComponent(final List<Component> lore) {
+
+    super(lore);
+  }
+
+  public PaperLoreComponent(final Component... lore) {
+
+    super(lore);
+  }
 
   /**
    * @param version the version being used when this check is called.

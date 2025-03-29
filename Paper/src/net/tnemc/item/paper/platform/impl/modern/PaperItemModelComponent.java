@@ -38,6 +38,15 @@ import java.util.Optional;
  */
 public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, ItemStack> {
 
+  public PaperItemModelComponent() {
+
+  }
+
+  public PaperItemModelComponent(final String model) {
+
+    super(model);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

@@ -21,6 +21,7 @@ package net.tnemc.item.paper.platform.impl.modern;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BundleContents;
 import io.papermc.paper.datacomponent.item.ItemContainerContents;
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
@@ -30,6 +31,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -39,6 +41,15 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class PaperContainerComponent extends ContainerComponent<PaperItemStack, ItemStack> {
+
+  public PaperContainerComponent() {
+
+  }
+
+  public PaperContainerComponent(final Map<Integer, AbstractItemStack<ItemStack>> items) {
+
+    super(items);
+  }
 
   /**
    * @param version the version being used when this check is called.
