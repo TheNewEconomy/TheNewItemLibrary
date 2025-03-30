@@ -5,7 +5,7 @@
     <parent>
         <artifactId>TNIL</artifactId>
         <groupId>net.tnemc</groupId>
-        <version>0.1.7.6-Pre-12</version>
+        <version>0.1.2.0-SNAPSHOT-1</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -33,6 +33,7 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <release>17</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -105,7 +106,7 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-Core</artifactId>
-            <version>0.1.7.6-Pre-12</version>
+            <version>0.1.2.0-SNAPSHOT-1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
