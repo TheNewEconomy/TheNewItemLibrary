@@ -20,7 +20,6 @@ package net.tnemc.item.component.impl;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
@@ -70,9 +69,9 @@ public abstract class WeaponComponent<I extends AbstractItemStack<T>, T> impleme
   }
 
   /**
-   * Converts the {@link SerialItemData} to a JSON object.
+   * Converts the {@link SerialComponent} to a JSON object.
    *
-   * @return The JSONObject representing this {@link SerialItemData}.
+   * @return The JSONObject representing this {@link SerialComponent}.
    */
   @Override
   public JSONObject toJSON() {

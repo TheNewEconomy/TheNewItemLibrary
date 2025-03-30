@@ -18,7 +18,6 @@ package net.tnemc.item.bukkit.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.impl.BukkitBundleComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitContainerComponent;
@@ -34,7 +33,6 @@ import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -420,92 +418,5 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     } catch(final ParseException e) {
       return Optional.empty();
     }
-  }
-
-  @Override
-  public Optional<SerialItemData<ItemStack>> parseMeta(final ItemStack stack) {
-
-    final String currentVersion = Bukkit.getServer().getBukkitVersion().split("-")[0];
-
-    if(stack.hasItemMeta()) {
-      /*final ItemMeta meta = stack.getItemMeta();
-
-      if(VersionUtil.isOneTwentyOne(currentVersion)) {
-        if(meta instanceof WritableBookMeta) {
-          return Optional.of(new BukkitWritableBookData());
-        } else if(meta instanceof OminousBottleMeta) {
-
-          return Optional.of(new BukkitOminousBottleData());
-
-        }
-      }
-
-      if(VersionUtil.isOneTwenty(currentVersion)) {
-
-        if(meta instanceof MusicInstrumentMeta) {
-
-          return Optional.of(new BukkitInstrumentData());
-
-        }
-      }
-
-      if(meta instanceof BookMeta) {
-
-        return Optional.of(new BukkitBookData());
-
-      } else if(meta instanceof FireworkEffectMeta) {
-
-        return Optional.of(new BukkitFireworkEffectData());
-
-      } else if(meta instanceof FireworkMeta) {
-
-        return Optional.of(new BukkitFireworkData());
-
-      } else if(meta instanceof MapMeta) {
-
-        return Optional.of(new BukkitMapData());
-
-      } else if(meta instanceof PotionMeta) {
-
-        return Optional.of(new BukkitPotionData());
-
-      } else if(meta instanceof SkullMeta) {
-
-        return Optional.of(new BukkitSkullData());
-
-      }
-
-      if(VersionUtil.isOneEleven(currentVersion)) {
-        if(meta instanceof SpawnEggMeta) {
-
-          return Optional.of(new BukkitSpawnEggData());
-        }
-      }
-
-      if(VersionUtil.isOneTwelve(currentVersion)) {
-        if(meta instanceof KnowledgeBookMeta) {
-
-          return Optional.of(new BukkitKnowledgeBookData());
-        }
-      }
-
-      if(VersionUtil.isOneThirteen(currentVersion)) {
-        if(meta instanceof TropicalFishBucketMeta) {
-
-          return Optional.of(new BukkitTropicalFishData());
-        }
-      }
-
-      if(VersionUtil.isOneSeventeen(currentVersion)) {
-        if(meta instanceof AxolotlBucketMeta) {
-
-          return Optional.of(new BukkitAxolotlData());
-        }  else if(meta instanceof CompassMeta) {
-
-          return Optional.of(new BukkitCompassData());
-        }
-      }*/
-    }
-    return Optional.empty();
   }
 }

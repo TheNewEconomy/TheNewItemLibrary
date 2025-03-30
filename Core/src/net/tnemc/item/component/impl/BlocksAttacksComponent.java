@@ -20,7 +20,6 @@ package net.tnemc.item.component.impl;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.DamageReduction;
 import net.tnemc.item.component.helper.ItemDamage;
@@ -76,9 +75,9 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
   }
 
   /**
-   * Converts the {@link SerialItemData} to a JSON object.
+   * Converts the {@link SerialComponent} to a JSON object.
    *
-   * @return The JSONObject representing this {@link SerialItemData}.
+   * @return The JSONObject representing this {@link SerialComponent}.
    */
   @Override
   public JSONObject toJSON() {
@@ -128,7 +127,7 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
   }
 
   /**
-   * Reads JSON data and converts it back to a {@link SerialItemData} object.
+   * Reads JSON data and converts it back to a {@link SerialComponent} object.
    *
    * @param json The JSONHelper instance of the json data.
    */

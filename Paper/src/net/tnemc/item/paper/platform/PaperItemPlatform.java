@@ -20,13 +20,11 @@ package net.tnemc.item.paper.platform;
 
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -418,141 +416,5 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     } catch(final ParseException e) {
       return Optional.empty();
     }
-  }
-
-  @Override
-  public Optional<SerialItemData<ItemStack>> parseMeta(final ItemStack stack) {
-
-    final String currentVersion = Bukkit.getServer().getBukkitVersion().split("-")[0];
-
-    if(stack.hasItemMeta()) {
-      /*final ItemMeta meta = stack.getItemMeta();
-
-      if(VersionUtil.isOneTwentyOne(currentVersion)) {
-        if(meta instanceof WritableBookMeta) {
-          return Optional.of(new BukkitWritableBookData());
-        } else if(meta instanceof BannerMeta) {
-          return Optional.of(new PaperBannerModernData());
-        } else if(meta instanceof OminousBottleMeta) {
-
-          return Optional.of(new BukkitOminousBottleData());
-
-        }
-      }
-
-      if(meta instanceof BannerMeta && !VersionUtil.isOneTwentyOne(currentVersion)) {
-
-        return Optional.of(new BukkitBannerData());
-
-      } else if(meta instanceof BookMeta) {
-
-        return Optional.of(new BukkitBookData());
-
-      } else if(meta instanceof EnchantmentStorageMeta) {
-
-        return Optional.of(new BukkitEnchantData());
-
-      } else if(meta instanceof FireworkEffectMeta) {
-
-        return Optional.of(new BukkitFireworkEffectData());
-
-      } else if(meta instanceof FireworkMeta) {
-
-        return Optional.of(new BukkitFireworkData());
-
-      } else if(meta instanceof LeatherArmorMeta) {
-
-        return Optional.of(new BukkitLeatherData());
-
-      } else if(meta instanceof MapMeta) {
-
-        return Optional.of(new BukkitMapData());
-
-      } else if(meta instanceof PotionMeta) {
-
-        return Optional.of(new BukkitPotionData());
-
-      } else if(meta instanceof SkullMeta) {
-
-        return Optional.of(new BukkitSkullData());
-
-      } else if(meta instanceof BlockStateMeta) {
-        if(VersionUtil.isOneEleven(currentVersion) && ((BlockStateMeta)meta).getBlockState() instanceof ShulkerBox) {
-
-          return Optional.of(new PaperShulkerData());
-        }
-      }
-
-      if(VersionUtil.isOneEleven(currentVersion)) {
-        if(meta instanceof SpawnEggMeta) {
-
-          return Optional.of(new BukkitSpawnEggData());
-        }
-      }
-
-      if(VersionUtil.isOneTwelve(currentVersion)) {
-        if(meta instanceof KnowledgeBookMeta) {
-
-          return Optional.of(new BukkitKnowledgeBookData());
-        }
-      }
-
-      if(VersionUtil.isOneThirteen(currentVersion)) {
-        if(meta instanceof Damageable) {
-
-          return Optional.of(new BukkitDamageData());
-        } else if(meta instanceof Repairable) {
-
-          return Optional.of(new BukkitRepairableData());
-        } else if(meta instanceof TropicalFishBucketMeta) {
-
-          return Optional.of(new BukkitTropicalFishData());
-        }
-      }
-
-      if(VersionUtil.isOneFourteen(currentVersion)) {
-        if(meta instanceof CrossbowMeta) {
-
-          return Optional.of(new PaperCrossbowData());
-        }
-      }
-
-      if(VersionUtil.isOneFifteen(currentVersion)) {
-        if(meta instanceof SuspiciousStewMeta) {
-
-          return Optional.of(new BukkitSuspiciousStewData());
-        }
-      }
-
-      if(VersionUtil.isOneSeventeen(currentVersion)) {
-        if(meta instanceof AxolotlBucketMeta) {
-
-          return Optional.of(new BukkitAxolotlData());
-        } else if(meta instanceof BundleMeta) {
-
-          return Optional.of(new PaperBundleData());
-        } else if(meta instanceof CompassMeta) {
-
-          return Optional.of(new BukkitCompassData());
-        }
-      }
-
-      if(VersionUtil.isOneTwenty(currentVersion)) {
-
-        if(meta instanceof ColorableArmorMeta) {
-
-          return Optional.of(new PaperColourArmourData());
-
-        } else if(meta instanceof MusicInstrumentMeta) {
-
-          return Optional.of(new PaperInstrumentData());
-
-        } else if(meta instanceof ArmorMeta) {
-
-          return Optional.of(new PaperArmourData());
-        }
-      }*/
-    }
-    return Optional.empty();
   }
 }

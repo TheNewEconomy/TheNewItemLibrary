@@ -21,7 +21,6 @@ package net.tnemc.item.platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.SerialItemData;
 import net.tnemc.item.component.helper.effect.ApplyEffectsComponentEffect;
 import net.tnemc.item.component.helper.effect.ComponentEffect;
 import net.tnemc.item.component.helper.effect.PlaySoundComponentEffect;
@@ -432,14 +431,6 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @return an initialized AbstractItemStack object
    */
   public abstract Optional<I> initSerialized(final JSONObject object);
-
-  /**
-   * Parses the meta of the given stack and returns an Optional containing the SerialItemData.
-   *
-   * @param stack The stack to parse the meta from.
-   * @return Optional containing the SerialItemData, empty if the meta parsing failed.
-   */
-  public abstract Optional<SerialItemData<T>> parseMeta(final T stack);
 
   public static String componentString(@NotNull final Component component) {
 
