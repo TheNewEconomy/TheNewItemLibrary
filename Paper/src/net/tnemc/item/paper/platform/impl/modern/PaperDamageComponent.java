@@ -21,10 +21,8 @@ package net.tnemc.item.paper.platform.impl.modern;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 
 import java.util.Optional;
 

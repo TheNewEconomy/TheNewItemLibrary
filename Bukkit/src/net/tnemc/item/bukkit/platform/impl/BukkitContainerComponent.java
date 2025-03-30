@@ -73,7 +73,7 @@ public class BukkitContainerComponent extends ContainerComponent<BukkitItemStack
       if(item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
          && meta.hasBlockState() && meta.getBlockState() instanceof final Container container) {
 
-        componentOptional.get().items.forEach((slot, stack)->container.getInventory().setItem(slot, stack.locale()));
+        componentOptional.get().items.forEach((slot, stack)->container.getInventory().setItem(slot, stack.provider().locale(stack)));
         container.update(true);
         meta.setBlockState(container);
 
@@ -100,6 +100,7 @@ public class BukkitContainerComponent extends ContainerComponent<BukkitItemStack
 
         final ItemStack stack = inventory.getItem(i);
 
+        //TODO: Serialize this with the itemprovider to ensure that we are able to capture properly.
         if(stack != null && !stack.getType().equals(Material.AIR)) {
 
           items.put(i, new BukkitItemStack().of(stack));

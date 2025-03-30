@@ -20,23 +20,24 @@ package net.tnemc.item.bukkit;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.InventoryType;
-import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.providers.CalculationsProvider;
 import net.tnemc.item.providers.ItemProvider;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Container;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,22 +50,32 @@ import java.util.UUID;
 public class BukkitCalculationsProvider implements CalculationsProvider<BukkitItemStack, ItemStack, Inventory> {
 
   /**
-   * Used to drop items near a player.
+   * Removes items from a collection based on certain criteria.
    *
-   * @param left   A Collection containing the items to drop.
-   * @param player The UUID of the player to drop the items near.
+   * @param left      The collection of items from which to remove items.
+   * @param player    The UUID of the player associated with the removal operation.
+   * @param setOwner  Indicates whether to set the owner of the removed items.(supports spigot/paper 1.16.5+)
    *
-   * @return True if the items were successfully dropped, otherwise false.
+   * @return True if the removal operation was successful, false otherwise.
    */
   @Override
-  public boolean drop(final Collection<BukkitItemStack> left, final UUID player) {
+  public boolean drop(final Collection<BukkitItemStack> left, final UUID player, final boolean setOwner) {
 
     final Player playerObj = Bukkit.getPlayer(player);
+    if(playerObj == null) {
+      return false;
+    }
 
-    if(playerObj != null) {
-      for(final BukkitItemStack stack : left) {
-        Objects.requireNonNull(playerObj.getWorld()).dropItemNaturally(playerObj.getLocation(), stack.locale());
+    for(final BukkitItemStack stack : left) {
+
+      if(setOwner && VersionUtil.isOneSixteen(BukkitItemPlatform.PLATFORM.version())) {
+
+        final Item it = playerObj.getWorld().dropItemNaturally(playerObj.getLocation(), stack.provider().locale(stack));
+        it.setOwner(player);
+        continue;
       }
+
+      playerObj.getWorld().dropItemNaturally(playerObj.getLocation(), stack.provider().locale(stack));
     }
     return false;
   }
@@ -78,42 +89,46 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
   @Override
   public int removeAll(final BukkitItemStack stack, final Inventory inventory) {
 
-    final ItemStack compare = stack.locale().clone();
+    final ItemStack compare = stack.provider().locale(stack).clone();
     compare.setAmount(1);
 
     int amount = 0;
     final BukkitItemStack comp = new BukkitItemStack().of(compare);
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
+
       final ItemStack item = inventory.getItem(i);
-      if(item != null) {
+      if(item == null) {
+        continue;
+      }
 
-        final BukkitItemStack locale = new BukkitItemStack().of(item);
-        final boolean equal = itemsEqual(comp, locale);
+      if(itemsEqual(comp, item)) {
+        amount += item.getAmount();
+        inventory.setItem(i, null);
+        continue;
+      }
 
-        if(equal) {
+      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final Container container) {
 
-          amount += item.getAmount();
-          inventory.setItem(i, null);
-        } else {
+        final Inventory containerInventory = container.getInventory();
+        for(int ci = 0; ci < containerInventory.getSize(); ci++) {
 
-          final Optional<ContainerComponent<AbstractItemStack<ItemStack>, ItemStack>> containerComponent = locale.container();
-          if(containerComponent.isPresent()) {
+          final ItemStack containerStack = inventory.getItem(ci);
+          if(containerStack == null) {
 
-            final Iterator<Map.Entry<Integer, AbstractItemStack<ItemStack>>> it = containerComponent.get().items().entrySet().iterator();
-            while(it.hasNext()) {
+            continue;
+          }
 
-              final Map.Entry<Integer, AbstractItemStack<ItemStack>> entry = it.next();
-              if(itemsEqual(comp, (BukkitItemStack)entry.getValue())) {
+          if(itemsEqual(comp, containerStack)) {
 
-                amount += entry.getValue().amount();
-                it.remove();
-                locale.markDirty();
-              }
-            }
-            inventory.setItem(i, locale.locale());
+            amount += item.getAmount();
+            inventory.setItem(ci, null);
           }
         }
+        container.update(true);
+        meta.setBlockState(container);
+        item.setItemMeta(meta);
+        inventory.setItem(i, item);
       }
     }
     return amount;
@@ -130,32 +145,44 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
   @Override
   public int count(final BukkitItemStack stack, final Inventory inventory) {
 
-    final ItemStack compare = stack.locale().clone();
+    final ItemStack compare = stack.provider().locale(stack).clone();
     compare.setAmount(1);
 
+    //TODO: make this more efficient
     final BukkitItemStack comp = new BukkitItemStack().of(compare);
     int amount = 0;
 
-    for(final ItemStack itemStack : inventory.getStorageContents()) {
-      if(itemStack != null) {
-        final BukkitItemStack locale = new BukkitItemStack().of(itemStack);
-        final boolean equal = itemsEqual(comp, locale);
+    for(final ItemStack item : inventory.getStorageContents()) {
 
-        final Optional<ContainerComponent<AbstractItemStack<ItemStack>, ItemStack>> containerComponent = locale.container();
+      if(item == null) {
+        continue;
+      }
 
-        if(containerComponent.isPresent()) {
+      if(itemsEqual(comp, item)) {
 
-          for(final Map.Entry<Integer, AbstractItemStack<ItemStack>> obj : containerComponent.get().items().entrySet()) {
+        amount += item.getAmount();
+      }
 
-            if(itemsEqual(comp, (BukkitItemStack)obj.getValue())) {
+      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final Container container) {
 
-              amount += obj.getValue().amount();
-            }
-          }
+        final Inventory containerInventory = container.getInventory();
+        if(containerInventory.isEmpty()) {
+
+          continue;
         }
 
-        if(equal) {
-          amount += itemStack.getAmount();
+        for(int ci = 0; ci < containerInventory.getSize(); ci++) {
+
+          final ItemStack containerStack = containerInventory.getItem(ci);
+          if(containerStack == null) {
+
+            continue;
+          }
+
+          if(itemsEqual(comp, containerStack)) {
+
+            amount += containerStack.getAmount();
+          }
         }
       }
     }
@@ -168,6 +195,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
    * @param items     The collection of items to remove.
    * @param inventory The inventory to remove the items from.
    */
+  @Override
   public void takeItems(final Collection<BukkitItemStack> items, final Inventory inventory) {
 
     items.forEach(itemStack->removeItem(itemStack, inventory));
@@ -180,23 +208,26 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
    * @param items     The collection of items to add to the inventory.
    * @param inventory The inventory to add the collection of items to.
    */
+  @Override
   public Collection<BukkitItemStack> giveItems(final Collection<BukkitItemStack> items, final Inventory inventory) {
 
     final Collection<BukkitItemStack> leftOver = new ArrayList<>();
 
     for(final BukkitItemStack item : items) {
-      final Map<Integer, ItemStack> left = inventory.addItem(item.locale());
 
-      if(!left.isEmpty()) {
+      final Map<Integer, ItemStack> left = inventory.addItem(item.provider().locale(item));
+      if(left.isEmpty()) {
+        continue;
+      }
 
-        for(final Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
-          final ItemStack i = entry.getValue();
+      for(final Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
+        final ItemStack i = entry.getValue();
 
-          if(i == null || i.getType() == Material.AIR) {
-            continue;
-          }
-          leftOver.add(new BukkitItemStack().of(i));
+        if(i == null || i.getType() == Material.AIR) {
+          continue;
         }
+
+        leftOver.add(new BukkitItemStack().of(i));
       }
     }
     return leftOver;
@@ -213,15 +244,15 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
   @Override
   public int removeItem(final BukkitItemStack stack, final Inventory inventory) {
 
-    int left = stack.locale().clone().getAmount();
+    int left = stack.provider().locale(stack).clone().getAmount();
 
-    final ItemStack compare = stack.locale().clone();
+    final ItemStack compare = stack.provider().locale(stack).clone();
     compare.setAmount(1);
 
     //TODO: improve this
 
     final BukkitItemStack comp = new BukkitItemStack().of(compare);
-    final ItemProvider<ItemStack> provider = stack.itemProviderObject();
+    final ItemProvider<ItemStack> provider = stack.provider();
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
       if(left <= 0) break;
@@ -229,8 +260,6 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
       final ItemStack item = inventory.getItem(i);
 
       if(item == null) continue;
-
-      final BukkitItemStack itemLocale = new BukkitItemStack().of(item);
 
       if(provider.similar(stack, item)) {
 
@@ -249,43 +278,46 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
         left -= item.getAmount();
         inventory.setItem(i, null);
+      }
 
-      } else {
+      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final Container container) {
 
-        final Optional<ContainerComponent<AbstractItemStack<ItemStack>, ItemStack>> containerComponent = itemLocale.container();
-        if(containerComponent.isPresent()) {
+        final Inventory containerInventory = container.getInventory();
+        for(int ci = 0; ci < containerInventory.getSize(); ci++) {
 
-          final Iterator<Map.Entry<Integer, AbstractItemStack<ItemStack>>> it = containerComponent.get().items().entrySet().iterator();
-          while(it.hasNext()) {
+          if(left <= 0) break;
 
-            if(left <= 0) break;
+          final ItemStack containerStack = inventory.getItem(ci);
+          if(containerStack == null) {
 
-            final Map.Entry<Integer, AbstractItemStack<ItemStack>> entry = it.next();
-            if(itemsEqual(comp, (BukkitItemStack)entry.getValue())) {
-
-
-              if(item.getAmount() > left) {
-
-                entry.getValue().amount(entry.getValue().amount() - left);
-                itemLocale.markDirty();
-                left = 0;
-                break;
-              }
-
-              if(item.getAmount() == left) {
-                it.remove();
-                itemLocale.markDirty();
-                left = 0;
-                break;
-              }
-
-              left -= item.getAmount();
-              it.remove();
-              itemLocale.markDirty();
-            }
+            continue;
           }
-          inventory.setItem(i, itemLocale.locale());
+
+          if(!itemsEqual(comp, containerStack)) {
+            continue;
+          }
+
+          if(item.getAmount() > left) {
+
+            item.setAmount(item.getAmount() - left);
+            containerInventory.setItem(ci, item);
+            left = 0;
+            break;
+          }
+
+          if(item.getAmount() == left) {
+            containerInventory.setItem(ci, null);
+            left = 0;
+            break;
+          }
+
+          left -= item.getAmount();
+          containerInventory.setItem(ci, null);
         }
+        container.update(true);
+        meta.setBlockState(container);
+        item.setItemMeta(meta);
+        inventory.setItem(i, item);
       }
     }
     return left;
@@ -300,7 +332,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
    * @return An optional containing the inventory if it works, otherwise false.
    */
   @Override
-  public Optional<Inventory> getInventory(final UUID identifier, final InventoryType type) {
+  public Optional<Inventory> inventory(final UUID identifier, final InventoryType type) {
 
     final OfflinePlayer player = Bukkit.getOfflinePlayer(identifier);
     if(player.isOnline() && player.getPlayer() != null) {

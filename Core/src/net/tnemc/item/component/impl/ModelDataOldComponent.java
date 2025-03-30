@@ -24,9 +24,6 @@ import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.platform.ItemPlatform;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 /**

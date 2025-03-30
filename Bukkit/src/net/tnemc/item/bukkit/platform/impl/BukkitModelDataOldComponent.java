@@ -19,16 +19,11 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.component.impl.ModelDataComponent;
 import net.tnemc.item.component.impl.ModelDataOldComponent;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**

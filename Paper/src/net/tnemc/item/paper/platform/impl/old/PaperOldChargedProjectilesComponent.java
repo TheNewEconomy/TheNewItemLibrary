@@ -61,7 +61,7 @@ public class PaperOldChargedProjectilesComponent extends ContainerComponent<Pape
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final CrossbowMeta meta) {
 
-        componentOptional.get().items.forEach((slot, stack)->meta.addChargedProjectile(stack.locale()));
+        componentOptional.get().items.forEach((slot, stack)->meta.addChargedProjectile(stack.provider().locale(serialized)));
 
         item.setItemMeta(meta);
       }

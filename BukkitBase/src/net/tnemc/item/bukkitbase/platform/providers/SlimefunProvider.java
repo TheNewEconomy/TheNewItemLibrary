@@ -18,8 +18,6 @@ package net.tnemc.item.bukkitbase.platform.providers;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import com.nexomc.nexo.api.NexoItems;
-import com.nexomc.nexo.items.ItemBuilder;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.providers.ItemProvider;

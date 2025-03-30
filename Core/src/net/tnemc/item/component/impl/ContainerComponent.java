@@ -89,7 +89,7 @@ public abstract class ContainerComponent<I extends AbstractItemStack<T>, T> impl
 
         if(entry.getValue().amount() != item.amount()) return false;
 
-        if(!entry.getValue().itemProviderObject().similar(entry.getValue(), item)) return false;
+        if(!entry.getValue().provider().similar(entry.getValue(), item)) return false;
       }
       return true;
     }

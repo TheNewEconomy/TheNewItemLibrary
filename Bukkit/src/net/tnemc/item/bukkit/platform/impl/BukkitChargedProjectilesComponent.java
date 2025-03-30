@@ -23,10 +23,7 @@ import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Material;
-import org.bukkit.block.Container;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.CrossbowMeta;
 
 import java.util.List;
@@ -75,7 +72,7 @@ public class BukkitChargedProjectilesComponent extends ContainerComponent<Bukkit
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final CrossbowMeta meta) {
 
-        componentOptional.get().items.forEach((slot, stack)->meta.addChargedProjectile(stack.locale()));
+        componentOptional.get().items.forEach((slot, stack)->meta.addChargedProjectile(stack.provider().locale(serialized)));
 
         item.setItemMeta(meta);
       }

@@ -21,7 +21,6 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.component.impl.ItemNameComponent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

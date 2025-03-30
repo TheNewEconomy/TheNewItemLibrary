@@ -40,14 +40,15 @@ import java.util.UUID;
 public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
 
   /**
-   * Used to drop items near a player.
+   * Removes items from a collection based on certain criteria.
    *
-   * @param left   A Collection containing the items to drop.
-   * @param player The UUID of the player to drop the items near.
+   * @param left      The collection of items from which to remove items.
+   * @param player    The UUID of the player associated with the removal operation.
+   * @param setOwner  Indicates whether to set the owner of the removed items.(supports spigot/paper 1.16.5+)
    *
-   * @return True if the items were successfully dropped, otherwise false.
+   * @return True if the removal operation was successful, false otherwise.
    */
-  boolean drop(Collection<I> left, UUID player);
+  boolean drop(Collection<I> left, UUID player, final boolean setOwner);
 
   /**
    * Removes all items that are equal to the stack from an inventory.
@@ -69,7 +70,7 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    */
   default int removeAll(final I stack, final UUID identifier) {
 
-    final Optional<U> inventory = getInventory(identifier, InventoryType.PLAYER);
+    final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
     return inventory.map(u->removeAll(stack, u)).orElse(0);
   }
 
@@ -93,7 +94,7 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    */
   default int count(final I stack, final UUID identifier) {
 
-    final Optional<U> inventory = getInventory(identifier, InventoryType.PLAYER);
+    final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
     return inventory.map(u->count(stack, u)).orElse(0);
   }
 
@@ -113,7 +114,7 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    */
   default void takeItems(final Collection<I> items, final UUID identifier) {
 
-    final Optional<U> inventory = getInventory(identifier, InventoryType.PLAYER);
+    final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
     inventory.ifPresent(u->takeItems(items, u));
   }
 
@@ -139,7 +140,7 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    */
   default Collection<I> giveItems(final Collection<I> items, final UUID identifier) {
 
-    final Optional<U> inventory = getInventory(identifier, InventoryType.PLAYER);
+    final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
     return inventory.map(u->giveItems(items, u)).orElse(items);
   }
 
@@ -163,7 +164,7 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    */
   default int removeItem(final I stack, final UUID identifier) {
 
-    final Optional<U> inventory = getInventory(identifier, InventoryType.PLAYER);
+    final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
     return inventory.map(u->removeItem(stack, u)).orElseGet(stack::amount);
   }
 
@@ -175,7 +176,7 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    *
    * @return An optional containing the inventory if it works, otherwise false.
    */
-  Optional<U> getInventory(UUID identifier, InventoryType type);
+  Optional<U> inventory(UUID identifier, InventoryType type);
 
   /**
    * Checks to see if two net.tnemc.item stacks are equal.
@@ -187,11 +188,11 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    */
   default boolean itemsEqual(final I original, final S compare) {
 
-    if(!original.itemProviderObject().similar(original, compare)) {
+    if(!original.provider().similar(original, compare)) {
       return false;
     }
 
-    return original.itemProviderObject().componentsEqual(original, compare);
+    return original.provider().componentsEqual(original, compare);
   }
 
   /**
@@ -204,10 +205,10 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    */
   default boolean itemsEqual(final I original, final I compare) {
 
-    if(!original.itemProviderObject().similar(original, compare)) {
+    if(!original.provider().similar(original, compare)) {
       return false;
     }
 
-    return original.itemProviderObject().componentsEqual(original, compare);
+    return original.provider().componentsEqual(original, compare);
   }
 }

@@ -24,6 +24,7 @@ import net.tnemc.item.SerialItemData;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.platform.ItemPlatform;
+import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -39,6 +40,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -77,6 +79,17 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     //bukkit base implementation.
 
     //Paper-specific
+  }
+
+  /**
+   * Retrieves the default provider for the item stack comparison.
+   *
+   * @return the default provider for the item stack comparison.
+   */
+  @Override
+  public @NotNull ItemProvider<ItemStack> defaultProvider() {
+
+    return null;
   }
 
   private void registerConversions() {

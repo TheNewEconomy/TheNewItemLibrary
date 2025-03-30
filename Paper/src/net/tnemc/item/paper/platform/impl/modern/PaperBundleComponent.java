@@ -25,7 +25,6 @@ import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BundleMeta;
 
 import java.util.Map;
 import java.util.Optional;
@@ -74,7 +73,7 @@ public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemSt
 
     final BundleContents.Builder builder = BundleContents.bundleContents();
 
-    componentOptional.get().items.forEach((slot, stack)->builder.add(stack.locale()));
+    componentOptional.get().items.forEach((slot, stack)->builder.add(stack.provider().locale(serialized)));
     item.setData(DataComponentTypes.BUNDLE_CONTENTS, builder);
 
     return item;

@@ -62,7 +62,7 @@ public class PaperOldContainerComponent extends ContainerComponent<PaperItemStac
       if(item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
          && meta.hasBlockState() && meta.getBlockState() instanceof final Container container) {
 
-        componentOptional.get().items.forEach((slot, stack)->container.getInventory().setItem(slot, stack.locale()));
+        componentOptional.get().items.forEach((slot, stack)->container.getInventory().setItem(slot, stack.provider().locale(serialized)));
         container.update(true);
         meta.setBlockState(container);
 

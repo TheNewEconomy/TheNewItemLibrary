@@ -19,17 +19,12 @@ package net.tnemc.item.paper.platform.impl.modern;
  */
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import io.papermc.paper.datacomponent.item.BundleContents;
 import io.papermc.paper.datacomponent.item.ItemContainerContents;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.Material;
-import org.bukkit.block.Container;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
 
 import java.util.Map;
 import java.util.Optional;
@@ -78,7 +73,7 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
 
     final ItemContainerContents.Builder builder = ItemContainerContents.containerContents();
 
-    componentOptional.get().items().forEach((slot, stack)->builder.add(stack.locale()));
+    componentOptional.get().items().forEach((slot, stack)->builder.add(stack.provider().locale(serialized)));
     item.setData(DataComponentTypes.CONTAINER, builder);
 
     return item;

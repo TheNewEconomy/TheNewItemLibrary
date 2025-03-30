@@ -422,7 +422,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @return ItemProvider object representing the item provider.
    */
-  ItemProvider<T> itemProviderObject();
+  ItemProvider<T> provider();
 
   /**
    * Converts the object to a JSONObject representation.

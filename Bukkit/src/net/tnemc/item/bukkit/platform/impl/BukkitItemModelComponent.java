@@ -19,13 +19,10 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
-import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;

@@ -107,10 +107,8 @@ import net.tnemc.item.paper.platform.impl.modern.PaperModelDataComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperProfileComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
+import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.SkullProfile;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -140,6 +138,10 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   private String material;
   private int amount;
   private boolean debug = false;
+
+  //item providers
+  private String itemProvider = "vanilla";
+  private String providerItemID = material;
 
   //our locale stack
   private boolean dirty = false;
@@ -442,64 +444,59 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   }
 
   /**
-   * Returns true if the provided item is similar to this. An item is similar if the basic
-   * information is the same, except for the amount. What this includes: - material - display -
-   * modelData - flags - lore - attributes - enchantments
+   * This method returns a String representing the item provider.
    *
-   * What this does not include: - Item Data.
+   * @return the item provider as a String
    *
-   * @param compare The stack to compare.
-   *
-   * @return True if the two are similar, otherwise false.
+   * @see ItemProvider
    */
   @Override
-  public boolean similar(final AbstractItemStack<? extends ItemStack> compare) {
+  public String itemProvider() {
 
-    return false;
+    return this.itemProvider;
   }
 
   /**
-   * Compares the components of two item stacks to check if they are equal.
+   * Sets the item provider to be used for retrieving items.
    *
-   * @param compare the item stack to compare components with
-   *
-   * @return true if the components of the two item stacks are equal, false otherwise
+   * @param itemProvider the string representing the item provider to be set
    */
   @Override
-  public boolean componentsEqual(final AbstractItemStack<? extends ItemStack> compare) {
-
-    return false;
+  public void setItemProvider(final String itemProvider) {
+    this.itemProvider = itemProvider;
   }
 
   /**
-   * @return An instance of the implementation's locale version of PaperItemStack.
+   * Retrieves the provider item ID associated with the current object.
+   *
+   * @return The provider item ID of the object.
    */
   @Override
-  public ItemStack locale() {
+  public String providerItemID() {
 
-    if(localeStack == null || dirty) {
+    return this.providerItemID;
+  }
 
-      Material material = null;
-      try {
-        final NamespacedKey key = NamespacedKey.fromString(this.material);
-        if(key != null) {
-          material = Registry.MATERIAL.get(key);
-        }
-      } catch(final Exception ignore) {
-        material = Material.matchMaterial(this.material);
-      }
+  /**
+   * Sets the provider's item ID for the current item.
+   *
+   * @param providerItemID the unique ID assigned by the provider for the item
+   */
+  @Override
+  public void setProviderItemID(final String providerItemID) {
 
-      if(material != null) {
+    this.providerItemID = providerItemID;
+  }
 
-        localeStack = new ItemStack(material, amount);
+  /**
+   * This method is used to return an ItemProvider object.
+   *
+   * @return ItemProvider object representing the item provider.
+   */
+  @Override
+  public ItemProvider<ItemStack> provider() {
 
-        localeStack = PaperItemPlatform.PLATFORM.apply(this, localeStack);
-
-        this.dirty = false;
-      }
-    }
-
-    return localeStack;
+    return PaperItemPlatform.PLATFORM.provider(itemProvider);
   }
 
   /**

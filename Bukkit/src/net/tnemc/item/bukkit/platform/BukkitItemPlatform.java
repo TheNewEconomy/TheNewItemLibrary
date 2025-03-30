@@ -32,6 +32,7 @@ import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitShulkerColorComponent;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.platform.ItemPlatform;
+import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -47,6 +48,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -94,6 +96,17 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     addMulti(new BukkitProfileComponent());
     addMulti(new BukkitShulkerColorComponent());
 
+  }
+
+  /**
+   * Retrieves the default provider for the item stack comparison.
+   *
+   * @return the default provider for the item stack comparison.
+   */
+  @Override
+  public @NotNull ItemProvider<ItemStack> defaultProvider() {
+
+    return null;
   }
 
   @SuppressWarnings({"deprecation", "UnstableApiUsage" })
