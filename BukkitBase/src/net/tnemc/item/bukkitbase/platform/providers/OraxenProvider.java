@@ -33,6 +33,28 @@ import org.bukkit.inventory.ItemStack;
 public class OraxenProvider implements ItemProvider<ItemStack> {
 
   /**
+   * Checks if the given serialized item stack applies to the specified item.
+   *
+   * @param serialized The serialized item stack to check against the item.
+   * @param item       The item to check against.
+   *
+   * @return True if the serialized item stack applies to the item, false otherwise.
+   */
+  @Override
+  public boolean appliesTo(final AbstractItemStack<? extends ItemStack> serialized, final ItemStack item) {
+
+    final String id = OraxenItems.getIdByItem(item);
+    if(id == null) {
+      return false;
+    }
+
+    serialized.setItemProvider(identifier());
+    serialized.setProviderItemID(id);
+
+    return true;
+  }
+
+  /**
    * Checks if the provided item stack is similar to the original item stack.
    *
    * @param original The original item stack to compare against.

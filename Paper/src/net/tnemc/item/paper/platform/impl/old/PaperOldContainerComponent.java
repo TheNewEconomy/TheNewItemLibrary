@@ -20,6 +20,7 @@ package net.tnemc.item.paper.platform.impl.old;
 
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import org.bukkit.Material;
 import org.bukkit.block.Container;
 import org.bukkit.inventory.Inventory;
@@ -88,11 +89,17 @@ public class PaperOldContainerComponent extends ContainerComponent<PaperItemStac
       for(int i = 0; i < inventory.getSize(); i++) {
 
         final ItemStack stack = inventory.getItem(i);
-
-        if(stack != null && !stack.getType().equals(Material.AIR)) {
-
-          items.put(i, new PaperItemStack().of(stack));
+        if(stack == null) {
+          continue;
         }
+
+        if(stack.getType().equals(Material.AIR)) {
+          continue;
+        }
+
+        final PaperItemStack containerSerial = new PaperItemStack().of(stack);
+        PaperItemPlatform.PLATFORM.providerApplies(containerSerial, stack);
+        items.put(i, containerSerial);
       }
     }
 

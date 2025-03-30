@@ -32,6 +32,15 @@ import net.tnemc.item.platform.Identifiable;
 public interface ItemProvider<T> extends Identifiable {
 
   /**
+   * Checks if the given serialized item stack applies to the specified item.
+   *
+   * @param serialized The serialized item stack to check against the item.
+   * @param item The item to check against.
+   * @return True if the serialized item stack applies to the item, false otherwise.
+   */
+  boolean appliesTo(final AbstractItemStack<? extends T> serialized, final T item);
+
+  /**
    * Checks if the provided item stack is similar to the original item stack.
    *
    * @param original The original item stack to compare against.

@@ -19,6 +19,7 @@ package net.tnemc.item.bukkitbase.platform.providers;
  */
 
 import net.Indyuce.mmoitems.MMOItems;
+import net.Indyuce.mmoitems.api.Type;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.providers.ItemProvider;
 import org.bukkit.inventory.ItemStack;
@@ -30,6 +31,33 @@ import org.bukkit.inventory.ItemStack;
  * @since 0.2.0.0
  */
 public class MMOItemProvider implements ItemProvider<ItemStack> {
+
+  /**
+   * Checks if the given serialized item stack applies to the specified item.
+   *
+   * @param serialized The serialized item stack to check against the item.
+   * @param item       The item to check against.
+   *
+   * @return True if the serialized item stack applies to the item, false otherwise.
+   */
+  @Override
+  public boolean appliesTo(final AbstractItemStack<? extends ItemStack> serialized, final ItemStack item) {
+
+    final Type type = MMOItems.getType(item);
+    if(type == null) {
+      return false;
+    }
+
+    final String id = MMOItems.getID(item);
+    if(id == null) {
+      return false;
+    }
+
+    serialized.setItemProvider(identifier());
+    serialized.setProviderItemID(type.getId() + ":" + id);
+
+    return true;
+  }
 
   /**
    * Checks if the provided item stack is similar to the original item stack.

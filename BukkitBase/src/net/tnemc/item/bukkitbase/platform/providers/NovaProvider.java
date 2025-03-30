@@ -23,6 +23,7 @@ import net.tnemc.item.providers.ItemProvider;
 import org.bukkit.inventory.ItemStack;
 import xyz.xenondevs.nova.api.Nova;
 import xyz.xenondevs.nova.api.item.NovaItem;
+import xyz.xenondevs.nova.api.item.NovaItemRegistry;
 
 /**
  * NovaProvider
@@ -31,6 +32,28 @@ import xyz.xenondevs.nova.api.item.NovaItem;
  * @since 0.2.0.0
  */
 public class NovaProvider implements ItemProvider<ItemStack> {
+
+  /**
+   * Checks if the given serialized item stack applies to the specified item.
+   *
+   * @param serialized The serialized item stack to check against the item.
+   * @param item       The item to check against.
+   *
+   * @return True if the serialized item stack applies to the item, false otherwise.
+   */
+  @Override
+  public boolean appliesTo(final AbstractItemStack<? extends ItemStack> serialized, final ItemStack item) {
+
+    final NovaItem stack = Nova.getNova().getItemRegistry().getOrNull(item);
+    if(stack == null) {
+      return false;
+    }
+
+    serialized.setItemProvider(identifier());
+    serialized.setProviderItemID(stack.getId().toString());
+
+    return true;
+  }
 
   /**
    * Checks if the provided item stack is similar to the original item stack.
@@ -43,7 +66,11 @@ public class NovaProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
 
-    final NovaItem compareStack = Nova.getNova().getItemRegistry().get(compare);
+    final NovaItem compareStack = Nova.getNova().getItemRegistry().getOrNull(compare);
+    if(compareStack == null) {
+
+      return false;
+    }
 
     return compareStack.getId().toString().equals(original.providerItemID());
   }
@@ -59,7 +86,11 @@ public class NovaProvider implements ItemProvider<ItemStack> {
   @Override
   public ItemStack locale(final AbstractItemStack<? extends ItemStack> original, final int amount) {
 
-    final NovaItem originalStack = Nova.getNova().getItemRegistry().get(original.providerItemID());
+    final NovaItem originalStack = Nova.getNova().getItemRegistry().getOrNull(original.providerItemID());
+    if(originalStack == null) {
+
+      return null;
+    }
 
     return originalStack.createItemStack(amount);
   }

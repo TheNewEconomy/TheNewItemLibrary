@@ -125,6 +125,35 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   public abstract @NotNull ItemProvider<T> defaultProvider();
 
   /**
+   * Retrieves the identifier of the default provider for the item stack comparison.
+   *
+   * @return The identifier of the default provider for the item stack comparison.
+   */
+  public abstract @NotNull String defaultProviderIdentifier();
+
+  /**
+   * Checks if any of the registered item providers are applicable to the given serialized item and item.
+   *
+   * @param serialized The serialized item stack to check against.
+   * @param item The item to check for applicability.
+   * @return True if an item provider is found that applies to the serialized item and item, otherwise false.
+   */
+  public boolean providerApplies(final AbstractItemStack<? extends T> serialized, final T item) {
+
+    for(final ItemProvider<T> provider : itemProviders.values()) {
+
+      if(provider.identifier().equalsIgnoreCase(defaultProvider().identifier())) {
+        continue;
+      }
+
+      if(provider.appliesTo(serialized, item)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Retrieves the item provider for the given itemProvider name, or returns the default provider if not found.
    *
    * @param itemProvider The name of the ItemProvider to retrieve.

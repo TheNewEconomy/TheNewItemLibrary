@@ -32,6 +32,28 @@ import org.bukkit.inventory.ItemStack;
 public class ItemAdderProvider implements ItemProvider<ItemStack> {
 
   /**
+   * Checks if the given serialized item stack applies to the specified item.
+   *
+   * @param serialized The serialized item stack to check against the item.
+   * @param item       The item to check against.
+   *
+   * @return True if the serialized item stack applies to the item, false otherwise.
+   */
+  @Override
+  public boolean appliesTo(final AbstractItemStack<? extends ItemStack> serialized, final ItemStack item) {
+
+    final CustomStack customStack = CustomStack.byItemStack(item);
+    if(customStack == null) {
+      return false;
+    }
+
+    serialized.setItemProvider(identifier());
+    serialized.setProviderItemID(customStack.getId());
+
+    return true;
+  }
+
+  /**
    * Checks if the provided item stack is similar to the original item stack.
    *
    * @param original The original item stack to compare against.

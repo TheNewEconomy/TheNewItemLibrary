@@ -20,7 +20,9 @@ package net.tnemc.item.paper.platform.impl.old;
 
 import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BundleMeta;
 
@@ -80,8 +82,17 @@ public class PaperOldBundleComponent extends BundleComponent<PaperItemStack, Ite
 
       int i = 0;
       for(final ItemStack stack : meta.getItems()) {
+        if(stack == null) {
+          continue;
+        }
 
-        items.put(i, new PaperItemStack().of(stack));
+        if(stack.getType().equals(Material.AIR)) {
+          continue;
+        }
+
+        final PaperItemStack containerSerial = new PaperItemStack().of(stack);
+        PaperItemPlatform.PLATFORM.providerApplies(containerSerial, stack);
+        items.put(i, containerSerial);
         i++;
       }
     }

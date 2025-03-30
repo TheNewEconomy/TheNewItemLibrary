@@ -92,6 +92,17 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     return null;
   }
 
+  /**
+   * Retrieves the identifier of the default provider for the item stack comparison.
+   *
+   * @return The identifier of the default provider for the item stack comparison.
+   */
+  @Override
+  public @NotNull String defaultProviderIdentifier() {
+
+    return "";
+  }
+
   private void registerConversions() {
 
     //RegisterConversion for EquipmentSlot

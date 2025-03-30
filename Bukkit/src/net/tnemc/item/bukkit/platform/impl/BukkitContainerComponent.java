@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.ContainerComponent;
 import org.bukkit.Material;
 import org.bukkit.block.Container;
@@ -99,12 +100,17 @@ public class BukkitContainerComponent extends ContainerComponent<BukkitItemStack
       for(int i = 0; i < inventory.getSize(); i++) {
 
         final ItemStack stack = inventory.getItem(i);
-
-        //TODO: Serialize this with the itemprovider to ensure that we are able to capture properly.
-        if(stack != null && !stack.getType().equals(Material.AIR)) {
-
-          items.put(i, new BukkitItemStack().of(stack));
+        if(stack == null) {
+          continue;
         }
+
+        if(stack.getType().equals(Material.AIR)) {
+          continue;
+        }
+
+        final BukkitItemStack containerSerial = new BukkitItemStack().of(stack);
+        BukkitItemPlatform.PLATFORM.providerApplies(containerSerial, stack);
+        items.put(i, containerSerial);
       }
     }
 

@@ -20,8 +20,10 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BundleMeta;
 
@@ -92,7 +94,17 @@ public class BukkitBundleComponent extends BundleComponent<BukkitItemStack, Item
       int i = 0;
       for(final ItemStack stack : meta.getItems()) {
 
-        items.put(i, new BukkitItemStack().of(stack));
+        if(stack == null) {
+          continue;
+        }
+
+        if(stack.getType().equals(Material.AIR)) {
+          continue;
+        }
+
+        final BukkitItemStack containerSerial = new BukkitItemStack().of(stack);
+        BukkitItemPlatform.PLATFORM.providerApplies(containerSerial, stack);
+        items.put(i, containerSerial);
         i++;
       }
     }

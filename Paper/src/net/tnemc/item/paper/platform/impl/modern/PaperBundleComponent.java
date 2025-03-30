@@ -23,7 +23,9 @@ import io.papermc.paper.datacomponent.item.BundleContents;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
@@ -96,7 +98,13 @@ public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemSt
     int i = 0;
     for(final ItemStack stack : contents.contents()) {
 
-      items.put(i, new PaperItemStack().of(stack));
+      if(stack.getType().equals(Material.AIR)) {
+        continue;
+      }
+
+      final PaperItemStack containerSerial = new PaperItemStack().of(stack);
+      PaperItemPlatform.PLATFORM.providerApplies(containerSerial, stack);
+      items.put(i, containerSerial);
       i++;
     }
 
