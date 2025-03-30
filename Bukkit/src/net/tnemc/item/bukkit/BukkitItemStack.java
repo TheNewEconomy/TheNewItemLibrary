@@ -449,6 +449,15 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   /**
+   * Resets the dirty flag, indicating that the object's state has been synchronized with the
+   * database.
+   */
+  @Override
+  public void resetDirty() {
+    this.dirty = false;
+  }
+
+  /**
    * Marks the item stack as dirty, indicating changes have been made.
    */
   @Override

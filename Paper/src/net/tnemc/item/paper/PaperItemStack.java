@@ -375,6 +375,16 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  public ItemStack cacheLocale() {
+
+    return this.localeStack;
+  }
+
+  public void updateCache(final ItemStack localeStack) {
+
+    this.localeStack = localeStack;
+  }
+
   /**
    * Replaces the persistent data holder for the item stack.
    *
@@ -432,6 +442,15 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   public PersistentDataHolder persistentHolder() {
 
     return holder;
+  }
+
+  /**
+   * Resets the dirty flag, indicating that the object's state has been synchronized with the
+   * database.
+   */
+  @Override
+  public void resetDirty() {
+    this.dirty = false;
   }
 
   /**
