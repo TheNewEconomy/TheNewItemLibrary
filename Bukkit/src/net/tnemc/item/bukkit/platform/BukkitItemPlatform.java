@@ -19,20 +19,25 @@ package net.tnemc.item.bukkit.platform;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.bukkit.VanillaProvider;
 import net.tnemc.item.bukkit.platform.impl.BukkitBundleComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitContainerComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitCustomNameComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitDamageComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitEnchantmentsComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemModelComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitItemNameComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitLoreComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitMaxStackSizeComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitModelDataComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitModelDataOldComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitShulkerColorComponent;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -62,6 +67,9 @@ import java.util.Optional;
 public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack> {
 
   public static final BukkitItemPlatform PLATFORM = new BukkitItemPlatform();
+  //TODO: make this an actual singleton setup
+
+  protected final VanillaProvider defaultProvider = new VanillaProvider();
 
   private BukkitItemPlatform() {
 
@@ -73,8 +81,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
    */
   @Override
   public String version() {
-
-    return ParsingUtil.version();
+    return Bukkit.getServer().getBukkitVersion().split("-")[0];
   }
 
   @Override
@@ -89,8 +96,11 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     addMulti(new BukkitDamageComponent());
     addMulti(new BukkitEnchantmentsComponent());
     addMulti(new BukkitItemModelComponent());
+    addMulti(new BukkitItemNameComponent());
     addMulti(new BukkitLoreComponent());
     addMulti(new BukkitMaxStackSizeComponent());
+    addMulti(new BukkitModelDataComponent());
+    addMulti(new BukkitModelDataOldComponent());
     addMulti(new BukkitProfileComponent());
     addMulti(new BukkitShulkerColorComponent());
 
@@ -104,7 +114,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
   @Override
   public @NotNull ItemProvider<ItemStack> defaultProvider() {
 
-    return null;
+    return defaultProvider;
   }
 
   /**
@@ -115,7 +125,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
   @Override
   public @NotNull String defaultProviderIdentifier() {
 
-    return "";
+    return defaultProvider.identifier();
   }
 
   @SuppressWarnings({"deprecation", "UnstableApiUsage" })

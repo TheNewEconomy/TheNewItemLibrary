@@ -140,7 +140,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   private boolean debug = false;
 
   //item providers
-  private String itemProvider = "vanilla";
+  private String itemProvider = BukkitItemPlatform.PLATFORM.defaultProviderIdentifier();
   private String providerItemID = material;
 
   //our locale stack
@@ -379,6 +379,16 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  public ItemStack cacheLocale() {
+
+    return this.localeStack;
+  }
+
+  public void updateCache(final ItemStack localeStack) {
+
+    this.localeStack = localeStack;
+  }
+
   /**
    * Replaces the persistent data holder for the item stack.
    *
@@ -448,6 +458,17 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   }
 
   /**
+   * Checks whether the object is dirty or has unsaved changes.
+   *
+   * @return true if the object is dirty, false otherwise
+   */
+  @Override
+  public boolean isDirty() {
+
+    return this.dirty;
+  }
+
+  /**
    * This method returns a String representing the item provider.
    *
    * @return the item provider as a String
@@ -468,6 +489,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public void setItemProvider(final String itemProvider) {
     this.itemProvider = itemProvider;
+    this.dirty = true;
   }
 
   /**
@@ -490,6 +512,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public void setProviderItemID(final String providerItemID) {
 
     this.providerItemID = providerItemID;
+    this.dirty = true;
   }
 
   /**
@@ -636,6 +659,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack bundle(final Map<Integer, AbstractItemStack<ItemStack>> items) {
 
     applyComponent(new BukkitBundleComponent(items));
+    this.dirty = true;
     return this;
   }
 
@@ -706,6 +730,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack container(final Map<Integer, AbstractItemStack<ItemStack>> items) {
 
     applyComponent(new BukkitContainerComponent(items));
+    this.dirty = true;
     return this;
   }
 
@@ -723,6 +748,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack customName(final Component customName) {
 
     applyComponent(new BukkitCustomNameComponent(customName));
+    this.dirty = true;
     return this;
   }
 
@@ -740,6 +766,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack damage(final int damage) {
 
     applyComponent(new BukkitDamageComponent(damage));
+    this.dirty = true;
     return this;
   }
 
@@ -789,6 +816,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack dyedColor(final int rgb) {
 
     applyComponent(new BukkitDyedColorComponent(rgb));
+    this.dirty = true;
     return this;
   }
 
@@ -838,6 +866,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack enchantments(final Map<String, Integer> levels) {
 
     applyComponent(new BukkitEnchantmentsComponent(levels));
+    this.dirty = true;
     return this;
   }
 
@@ -877,7 +906,9 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public BukkitItemStack equip(final String cameraKey, final String equipSound, final String modelKey, final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable, final boolean swappable, final boolean equipOnInteract, final List<String> entities) {
+  public BukkitItemStack equip(final String cameraKey, final String equipSound, final String modelKey,
+                               final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable,
+                               final boolean swappable, final boolean equipOnInteract, final List<String> entities) {
 
     return this;
   }
@@ -1021,6 +1052,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack itemModel(final String model) {
 
     applyComponent(new BukkitItemModelComponent(model));
+    this.dirty = true;
     return this;
   }
 
@@ -1038,6 +1070,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack itemName(final Component itemName) {
 
     applyComponent(new BukkitItemNameComponent(itemName));
+    this.dirty = true;
     return this;
   }
 
@@ -1091,6 +1124,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack lore(final List<Component> lore) {
 
     applyComponent(new BukkitLoreComponent(lore));
+    this.dirty = true;
     return this;
   }
 
@@ -1175,6 +1209,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack modelData(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
 
     applyComponent(new BukkitModelDataComponent(colours, floats, flags, strings));
+    this.dirty = true;
     return this;
   }
 
@@ -1193,6 +1228,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public AbstractItemStack<ItemStack> modelDataOld(final int customModelData) {
 
     applyComponent(new BukkitModelDataOldComponent(customModelData));
+    this.dirty = true;
     return this;
   }
 
@@ -1290,6 +1326,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack profile(final SkullProfile profile) {
 
     applyComponent(new BukkitProfileComponent(profile));
+    this.dirty = true;
     return this;
   }
 

@@ -22,9 +22,34 @@ import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperContainerComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperCustomNameComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperDamageComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperItemModelComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperItemNameComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperLoreComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperModelDataComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperProfileComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperShulkerColorComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldBundleComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldContainerComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldCustomNameComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldDamageComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldItemModelComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldItemNameComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldLoreComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldMaxStackSizeComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldProfileComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldShulkerColorComponent;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -65,8 +90,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
    */
   @Override
   public String version() {
-
-    return ParsingUtil.version();
+    return Bukkit.getServer().getBukkitVersion().split("-")[0];
   }
 
   @Override
@@ -75,8 +99,37 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     registerConversions();
 
     //bukkit base implementation.
+    if(VersionUtil.isLessThan(version(), "1.21.4")) {
+      addMulti(new PaperOldBundleComponent());
+      addMulti(new PaperOldContainerComponent());
+      addMulti(new PaperOldCustomNameComponent());
+      addMulti(new PaperOldDamageComponent());
+      addMulti(new PaperOldEnchantmentsComponent());
+      addMulti(new PaperOldItemModelComponent());
+      addMulti(new PaperOldItemNameComponent());
+      addMulti(new PaperOldLoreComponent());
+      addMulti(new PaperOldMaxStackSizeComponent());
+      addMulti(new PaperOldModelDataComponent());
+      addMulti(new PaperOldModelDataLegacyComponent());
+      addMulti(new PaperOldProfileComponent());
+      addMulti(new PaperOldShulkerColorComponent());
+    }
 
     //Paper-specific
+    if(VersionUtil.isOneTwentyOneFour(version())) {
+      addMulti(new PaperBundleComponent());
+      addMulti(new PaperContainerComponent());
+      addMulti(new PaperCustomNameComponent());
+      addMulti(new PaperDamageComponent());
+      addMulti(new PaperEnchantmentsComponent());
+      addMulti(new PaperItemModelComponent());
+      addMulti(new PaperItemNameComponent());
+      addMulti(new PaperLoreComponent());
+      addMulti(new PaperModelDataComponent());
+      addMulti(new PaperOldModelDataLegacyComponent());
+      addMulti(new PaperProfileComponent());
+      addMulti(new PaperShulkerColorComponent());
+    }
   }
 
   /**
