@@ -16,6 +16,7 @@ public class SpongeCrossbowMeta extends CrossBowMeta<ItemStack> {
    */
   @Override
   public void of(ItemStack stack) {
+
   }
 
   /**
@@ -31,6 +32,7 @@ public class SpongeCrossbowMeta extends CrossBowMeta<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

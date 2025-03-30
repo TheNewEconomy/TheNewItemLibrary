@@ -1,0 +1,65 @@
+- [X] attribute_modifiers
+- [X] banner_patterns
+- [X] base_color
+- [ ] bees
+- [ ] block_entity_data
+- [ ] block_state
+- [X] bucket_entity_data
+- [ ] bundle_contents
+- [X] can_break
+- [X] can_place_on
+- [X] charged_projectiles
+- [X] consumable
+- [X] container
+- [ ] container_loot
+- [ ] custom_data
+- [X] custom_model_data
+- [X] custom_name
+- [X] damage
+- [X] damage_resistant
+- [ ] debug_stick_state
+- [X] death_protection
+- [X] dyed_color
+- [X] enchantable
+- [X] enchantment_glint_override
+- [X] enchantments
+- [ ] entity_data
+- [X] equippable
+- [X] firework_explosion
+- [X] fireworks
+- [X] food
+- [X] glider
+- [X] hide_additional_tooltip
+- [X] hide_tooltip
+- [X] instrument
+- [X] intangible_projectile
+- [X] item_model
+- [X] item_name
+- [X] jukebox_playable
+- [ ] lock
+- [X] lodestone_tracker
+- [X] lore
+- [X] map_color
+- [ ] map_decorations
+- [X] map_id
+- [X] max_damage
+- [X] max_stack_size
+- [X] note_block_sound
+- [X] ominous_bottle_amplifier
+- [X] pot_decorations
+- [X] potion_contents
+- [X] profile
+- [X] rarity
+- [X] recipes
+- [X] repairable
+- [X] repair_cost
+- [X] stored_enchantments
+- [X] suspicious_stew_effects
+- [X] tool
+- [X] tooltip_style
+- [X] trim
+- [X] unbreakable
+- [X] use_cooldown
+- [ ] use_remainder
+- [X] writable_book_content
+- [X] written_book_content

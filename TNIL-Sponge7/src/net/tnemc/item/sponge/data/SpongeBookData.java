@@ -3,7 +3,7 @@ package net.tnemc.item.sponge.data;
 /*
  * The New Item Library Minecraft Server Plugin
  *
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -52,13 +52,13 @@ public class SpongeBookData extends BookData<ItemStack> {
     }
 
     final Optional<Component> author = stack.get(Keys.AUTHOR);
-    author.ifPresent(component ->{
+    author.ifPresent(component->{
       this.author = component.toString();
       applies = true;
     });
 
     final Optional<Integer> generation = stack.get(Keys.GENERATION);
-    generation.ifPresent(integer ->{
+    generation.ifPresent(integer->{
       this.generation = String.valueOf(integer);
       applies = true;
     });
@@ -91,6 +91,7 @@ public class SpongeBookData extends BookData<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

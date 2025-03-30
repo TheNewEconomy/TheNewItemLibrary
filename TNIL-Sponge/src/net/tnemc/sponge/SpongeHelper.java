@@ -3,7 +3,7 @@ package net.tnemc.sponge;
 /*
  * The New Item Library Minecraft Server Plugin
  *
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,14 +33,15 @@ import java.util.LinkedList;
  * @since 0.1.7.5-Pre-5
  */
 public class SpongeHelper implements HelperMethods {
+
   final LinkedList<String> materialKeys = new LinkedList<>();
   final LinkedList<String> enchantmentKeys = new LinkedList<>();
   final LinkedList<String> itemFlagKeys = new LinkedList<>();
 
   public SpongeHelper() {
 
-    Sponge.game().registry(RegistryTypes.ITEM_TYPE).stream().forEach(itemType ->materialKeys.add(Sponge.game().registry(RegistryTypes.ITEM_TYPE).valueKey(itemType).asString()));
-    Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).stream().forEach(enchantment ->enchantmentKeys.add(Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).valueKey(enchantment).asString()));
+    Sponge.game().registry(RegistryTypes.ITEM_TYPE).stream().forEach(itemType->materialKeys.add(Sponge.game().registry(RegistryTypes.ITEM_TYPE).valueKey(itemType).asString()));
+    Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).stream().forEach(enchantment->enchantmentKeys.add(Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).valueKey(enchantment).asString()));
 
     itemFlagKeys.add("HIDE_ATTRIBUTES");
     itemFlagKeys.add("HIDE_DESTROYS");
@@ -52,16 +53,19 @@ public class SpongeHelper implements HelperMethods {
 
   @Override
   public LinkedList<String> materials() {
+
     return materialKeys;
   }
 
   @Override
   public LinkedList<String> enchantments() {
+
     return enchantmentKeys;
   }
 
   @Override
   public LinkedList<String> flags() {
+
     return itemFlagKeys;
   }
 }

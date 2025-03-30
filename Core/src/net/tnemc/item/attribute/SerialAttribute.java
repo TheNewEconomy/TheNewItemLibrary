@@ -2,7 +2,7 @@ package net.tnemc.item.attribute;
 /*
  * The New Item Library Minecraft Server Plugin
  *
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,8 @@ package net.tnemc.item.attribute;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.helper.EquipSlot;
+
 import java.util.UUID;
 
 public class SerialAttribute {
@@ -26,18 +28,21 @@ public class SerialAttribute {
   private UUID identifier;
   private String name;
   private double amount;
-  private SerialAttributeSlot slot = null;
+  private EquipSlot slot = null;
   private SerialAttributeOperation operation;
 
-  public SerialAttribute(String name, double amount, SerialAttributeOperation operation) {
+  public SerialAttribute(final String name, final double amount, final SerialAttributeOperation operation) {
+
     this(UUID.randomUUID(), name, amount, operation);
   }
 
-  public SerialAttribute(UUID identifier, String name, double amount, SerialAttributeOperation operation) {
+  public SerialAttribute(final UUID identifier, final String name, final double amount, final SerialAttributeOperation operation) {
+
     this(identifier, name, amount, operation, null);
   }
 
-  public SerialAttribute(UUID identifier, String name, double amount, SerialAttributeOperation operation, SerialAttributeSlot slot) {
+  public SerialAttribute(final UUID identifier, final String name, final double amount, final SerialAttributeOperation operation, final EquipSlot slot) {
+
     this.identifier = identifier;
     this.name = name;
     this.amount = amount;
@@ -48,42 +53,52 @@ public class SerialAttribute {
   }
 
   public UUID getIdentifier() {
+
     return identifier;
   }
 
-  public void setIdentifier(UUID identifier) {
+  public void setIdentifier(final UUID identifier) {
+
     this.identifier = identifier;
   }
 
   public String getName() {
+
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(final String name) {
+
     this.name = name;
   }
 
   public double getAmount() {
+
     return amount;
   }
 
-  public void setAmount(double amount) {
+  public void setAmount(final double amount) {
+
     this.amount = amount;
   }
 
-  public SerialAttributeSlot getSlot() {
+  public EquipSlot getSlot() {
+
     return slot;
   }
 
-  public void setSlot(SerialAttributeSlot slot) {
+  public void setSlot(final EquipSlot slot) {
+
     this.slot = slot;
   }
 
   public SerialAttributeOperation getOperation() {
+
     return operation;
   }
 
-  public void setOperation(SerialAttributeOperation operation) {
+  public void setOperation(final SerialAttributeOperation operation) {
+
     this.operation = operation;
   }
 }

@@ -3,7 +3,7 @@ package net.tnemc.item;
 /*
  * The New Item Library Minecraft Server Plugin
  *
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@ package net.tnemc.item;
 
 /**
  * Represents an inventory type.
- *
+ * TODO: Other inventories? Entities?
  * @author creatorfromhell
  * @since 0.1.5.0
  */

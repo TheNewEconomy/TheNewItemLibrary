@@ -3,7 +3,7 @@ package net.tnemc.item.sponge.data;
 /*
  * The New Item Library Minecraft Server Plugin
  *
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -63,9 +63,10 @@ public class SpongeCompassData extends CompassData<ItemStack> {
    */
   @Override
   public ItemStack apply(ItemStack stack) {
+
     if(tracked) {
       final Optional<ResourceKey> key = Sponge.server().worldManager().worldKey(world);
-      key.ifPresent(resourceKey -> stack.offer(Keys.LODESTONE, ServerLocation.of(resourceKey, new Vector3d(x, y, z))));
+      key.ifPresent(resourceKey->stack.offer(Keys.LODESTONE, ServerLocation.of(resourceKey, new Vector3d(x, y, z))));
     }
 
     return stack;
@@ -73,6 +74,7 @@ public class SpongeCompassData extends CompassData<ItemStack> {
 
   @Override
   public boolean applies() {
+
     return applies;
   }
 }

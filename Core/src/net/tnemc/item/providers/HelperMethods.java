@@ -3,7 +3,7 @@ package net.tnemc.item.providers;
 /*
  * The New Item Library Minecraft Server Plugin
  *
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -50,4 +50,12 @@ public interface HelperMethods {
    * @return a collection of flags
    */
   LinkedList<String> flags();
+
+  /*ItemType.PLAYER_HEAD.createItemStack(s -> {
+    final PlayerProfile profileExact = Bukkit.createProfileExact(uuid, name);
+    profileExact.setProperties(List.of(
+            new ProfileProperty("textures", "val", "signature")
+                                      ));
+    s.setPlayerProfile(profileExact);
+  });*/
 }

@@ -3,7 +3,7 @@ package net.tnemc.sponge;
 /*
  * The New Item Library Minecraft Server Plugin
  *
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,127 +41,134 @@ import java.util.UUID;
 
 public class SpongeItemCalculationsProvider implements CalculationsProvider<SpongeItemStack, ItemStack, Inventory> {
 
-    @Override
-    public boolean drop(Collection<SpongeItemStack> left, UUID identifier) {
-        final Optional<ServerPlayer> player = Sponge.game().server().player(identifier);
+  @Override
+  public boolean drop(final Collection<SpongeItemStack> left, final UUID identifier) {
 
-        if(player.isPresent()) {
-            for(SpongeItemStack stack : left) {
-                final Location<?, ?> location = player.get().location();
-                final Item item = location.world().createEntity(EntityTypes.ITEM, player.get().position());
+    final Optional<ServerPlayer> player = Sponge.game().server().player(identifier);
 
-                item.offer(Keys.ITEM_STACK_SNAPSHOT, stack.locale().createSnapshot());
-                location.world().spawnEntity(item);
-            }
+    if(player.isPresent()) {
+      for(final SpongeItemStack stack : left) {
+        final Location<?, ?> location = player.get().location();
+        final Item item = location.world().createEntity(EntityTypes.ITEM, player.get().position());
+
+        item.offer(Keys.ITEM_STACK_SNAPSHOT, stack.locale().createSnapshot());
+        location.world().spawnEntity(item);
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public int removeAll(final SpongeItemStack stack, final Inventory inventory) {
+
+    final ItemStack compare = stack.locale().copy();
+    compare.setQuantity(1);
+
+    int amount = 0;
+    for(final Inventory slot : inventory.slots()) {
+      final ItemStack slotItem = slot.peek();
+
+      if(slotItem != null) {
+
+        final ItemStack compareI = slotItem.copy();
+        compareI.setQuantity(1);
+        if(compareI.equalTo(stack.locale())) {
+          amount += slotItem.quantity();
+          slot.clear();
         }
-        return false;
+      }
     }
+    return amount;
+  }
 
-    @Override
-    public int removeAll(SpongeItemStack stack, Inventory inventory) {
-        final ItemStack compare = stack.locale().copy();
-        compare.setQuantity(1);
+  @Override
+  public int count(final SpongeItemStack stack, final Inventory inventory) {
 
-        int amount = 0;
-        for (Inventory slot : inventory.slots()) {
-            final ItemStack slotItem = slot.peek();
+    final ItemStack compare = stack.locale().copy();
+    compare.setQuantity(1);
+    int count = 0;
 
-            if (slotItem != null) {
+    for(final Inventory slot : inventory.slots()) {
+      final ItemStack slotItem = slot.peek();
 
-                final ItemStack compareI = slotItem.copy();
-                compareI.setQuantity(1);
-                if(compareI.equalTo(stack.locale())) {
-                    amount += slotItem.quantity();
-                    slot.clear();
-                }
-            }
+      if(slotItem != null) {
+
+        final ItemStack compareI = slotItem.copy();
+        compareI.setQuantity(1);
+        if(compareI.equalTo(stack.locale())) {
+          count += slot.totalQuantity();
         }
-        return amount;
+      }
     }
+    return count;
+  }
 
-    @Override
-    public int count(SpongeItemStack stack, Inventory inventory) {
-        final ItemStack compare = stack.locale().copy();
-        compare.setQuantity(1);
-        int count = 0;
+  @Override
+  public void takeItems(final Collection<SpongeItemStack> items, final Inventory inventory) {
 
-        for (Inventory slot : inventory.slots()) {
-            final ItemStack slotItem = slot.peek();
+    items.forEach(itemStack->removeItem(itemStack, inventory));
+  }
 
-            if (slotItem != null) {
+  @Override
+  public Collection<SpongeItemStack> giveItems(final Collection<SpongeItemStack> items, final Inventory inventory) {
 
-                final ItemStack compareI = slotItem.copy();
-                compareI.setQuantity(1);
-                if(compareI.equalTo(stack.locale())) {
-                    count += slot.totalQuantity();
-                }
-            }
+    final Collection<SpongeItemStack> leftOver = new ArrayList<>();
+
+    for(final SpongeItemStack stack : items) {
+      final InventoryTransactionResult result = inventory.offer(stack.locale());
+      final List<ItemStackSnapshot> rejected = result.rejectedItems();
+      if(rejected.size() > 0) {
+        rejected.forEach(snapshot->leftOver.add(new SpongeItemStack().of(snapshot.createStack())));
+      }
+    }
+    return leftOver;
+  }
+
+  @Override
+  public int removeItem(final SpongeItemStack stack, final Inventory inventory) {
+
+    int left = stack.locale().copy().quantity();
+
+    final ItemStack compare = stack.locale().copy();
+    compare.setQuantity(1);
+    for(final Inventory slot : inventory.slots()) {
+      if(left <= 0) break;
+
+      final ItemStack slotItem = slot.peek();
+      if(slotItem != null) {
+
+
+        final ItemStack compare1 = slotItem.copy();
+        compare1.setQuantity(1);
+        if(compare.equalTo(compare1)) {
+          final int quantity = slotItem.quantity();
+
+          if(quantity > left) {
+            slotItem.setQuantity(quantity - left);
+            slot.set(0, slotItem);
+            left = 0;
+          } else {
+            left -= quantity;
+            slot.clear();
+          }
         }
-        return count;
+      }
     }
+    return left;
+  }
 
-    @Override
-    public void takeItems(Collection<SpongeItemStack> items, Inventory inventory) {
-        items.forEach(itemStack -> removeItem(itemStack, inventory));
+  @Override
+  public Optional<Inventory> getInventory(final UUID identifier, final InventoryType type) {
+
+    final Optional<ServerPlayer> player = Sponge.game().server().player(identifier);
+    if(player.isPresent() && player.get().isOnline()) {
+
+      if(type.equals(InventoryType.ENDER_CHEST)) {
+        return Optional.of(player.get().enderChestInventory());
+      } else {
+        return Optional.of(player.get().inventory());
+      }
     }
-
-    @Override
-    public Collection<SpongeItemStack> giveItems(Collection<SpongeItemStack> items, Inventory inventory) {
-        final Collection<SpongeItemStack> leftOver = new ArrayList<>();
-
-        for(SpongeItemStack stack : items) {
-            final InventoryTransactionResult result = inventory.offer(stack.locale());
-            final List<ItemStackSnapshot> rejected = result.rejectedItems();
-            if(rejected.size() > 0) {
-                rejected.forEach(snapshot->leftOver.add(new SpongeItemStack().of(snapshot.createStack())));
-            }
-        }
-        return leftOver;
-    }
-
-    @Override
-    public int removeItem(SpongeItemStack stack, Inventory inventory) {
-        int left = stack.locale().copy().quantity();
-
-        final ItemStack compare = stack.locale().copy();
-        compare.setQuantity(1);
-        for (Inventory slot : inventory.slots()) {
-            if(left <= 0) break;
-
-            final ItemStack slotItem = slot.peek();
-            if (slotItem != null) {
-
-
-                final ItemStack compare1 = slotItem.copy();
-                compare1.setQuantity(1);
-                if(compare.equalTo(compare1)) {
-                    final int quantity = slotItem.quantity();
-
-                    if (quantity > left) {
-                        slotItem.setQuantity(quantity - left);
-                        slot.set(0, slotItem);
-                        left = 0;
-                    } else {
-                        left -= quantity;
-                        slot.clear();
-                    }
-                }
-            }
-        }
-        return left;
-    }
-
-    @Override
-    public Optional<Inventory> getInventory(UUID identifier, InventoryType type) {
-        final Optional<ServerPlayer> player = Sponge.game().server().player(identifier);
-        if(player.isPresent() && player.get().isOnline()) {
-
-            if(type.equals(InventoryType.ENDER_CHEST)) {
-                return Optional.of(player.get().enderChestInventory());
-            } else {
-                return Optional.of(player.get().inventory());
-            }
-        }
-        return Optional.empty();
-    }
+    return Optional.empty();
+  }
 }

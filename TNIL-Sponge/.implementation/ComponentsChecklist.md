@@ -1,0 +1,64 @@
+- [ ] attribute_modifiers
+- [ ] banner_patterns
+- [ ] base_color
+- [ ] blocks_attack
+- [ ] break_sound
+- [ ] bucket_entity_data
+- [ ] bundle_contents
+- [ ] can_break(not in spigot as of 1.21.4)
+- [ ] can_place_on(not in spigot as of 1.21.4)
+- [ ] charged_projectiles
+- [ ] consumable
+- [ ] container
+- [ ] custom_model_data
+- [ ] custom_name
+- [ ] damage
+- [ ] damage_resistant
+- [ ] death_protection
+- [ ] dyed_color
+- [ ] enchantable
+- [ ] enchantment_glint_override
+- [ ] enchantments
+- [ ] entity_variant
+- [ ] equippable
+- [ ] firework_explosion
+- [ ] fireworks
+- [ ] food
+- [ ] glider
+- [ ] hide_additional_tooltip(not in spigot as of 1.21.4)
+- [ ] hide_tooltip
+- [ ] instrument
+- [ ] intangible_projectile
+- [ ] item_model
+- [ ] item_name
+- [ ] jukebox_playable
+- [ ] lodestone_tracker
+- [ ] lore
+- [ ] map_color
+- [ ] map_decorations
+- [ ] map_id
+- [ ] max_damage
+- [ ] max_stack_size
+- [ ] note_block_sound
+- [ ] ominous_bottle_amplifier
+- [ ] pot_decorations
+- [ ] potion_contents
+- [ ] potion_duration_scale(not in spigot as of 1.21.4)
+- [ ] profile
+- [ ] provides_banner_patterns
+- [ ] provides_trim_patterns
+- [ ] rarity
+- [ ] recipes
+- [ ] repairable(not in spigot as of 1.21.4)
+- [ ] repair_cost
+- [ ] stored_enchantments
+- [ ] suspicious_stew_effects
+- [ ] tool
+- [ ] tooltip_style
+- [ ] trim
+- [ ] unbreakable
+- [ ] use_cooldown
+- [ ] use_remainder
+- [ ] weapon(not in spigot as of 1.21.4)
+- [ ] writable_book_content
+- [ ] written_book_content

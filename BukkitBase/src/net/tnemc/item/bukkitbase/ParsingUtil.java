@@ -3,7 +3,7 @@ package net.tnemc.item.bukkitbase;
 /*
  * The New Item Library Minecraft Server Plugin
  *
- * Copyright (C) 2022 - 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,55 +21,47 @@ package net.tnemc.item.bukkitbase;
  */
 
 import net.tnemc.item.attribute.SerialAttributeOperation;
-import net.tnemc.item.attribute.SerialAttributeSlot;
-import net.tnemc.item.data.firework.SerialFireworkEffect;
+import net.tnemc.item.component.helper.EquipSlot;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
+import static net.tnemc.item.component.helper.EquipSlot.HAND;
 
 public class ParsingUtil {
 
-  public static ItemMeta buildFor(ItemStack stack, Class<? extends ItemMeta> type) {
-    ItemMeta meta;
+  public static ItemMeta buildFor(final ItemStack stack, final Class<? extends ItemMeta> type) {
 
-    if(stack.hasItemMeta() && type.isInstance(stack.getItemMeta())) {
-      meta = stack.getItemMeta();
-    } else {
-      meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
-    }
-    return meta;
+    return stack.getItemMeta();
   }
 
-  public static FireworkEffect fromSerial(final SerialFireworkEffect effect) {
+  /*public static FireworkEffect fromSerial(final SerialFireworkEffect effect) {
+
     final List<Color> colors = new ArrayList<>();
-    for(Integer i : effect.getColors()) {
+    for(final Integer i : effect.getColors()) {
       colors.add(Color.fromRGB(i));
     }
 
     final List<Color> faded = new ArrayList<>();
-    for(Integer i : effect.getFadeColors()) {
+    for(final Integer i : effect.getFadeColors()) {
       faded.add(Color.fromRGB(i));
     }
 
     return FireworkEffect.builder().flicker(effect.hasFlicker()).trail(effect.hasTrail())
-        .withColor(colors).withFade(faded).build();
+            .withColor(colors).withFade(faded).build();
   }
 
   public static SerialFireworkEffect fromEffect(final FireworkEffect eff) {
+
     final SerialFireworkEffect effect = new SerialFireworkEffect();
 
-    for(Color color : eff.getColors()) {
+    for(final Color color : eff.getColors()) {
       effect.getColors().add(color.asRGB());
     }
 
-    for(Color color : eff.getFadeColors()) {
+    for(final Color color : eff.getFadeColors()) {
       effect.getFadeColors().add(color.asRGB());
     }
 
@@ -78,61 +70,40 @@ public class ParsingUtil {
     effect.setFlicker(eff.hasFlicker());
 
     return effect;
-  }
+  }*/
 
-  public static SerialAttributeSlot attributeSlot(final EquipmentSlot slot) {
+  public static EquipSlot attributeSlot(final EquipmentSlot slot) {
+
     if(slot == null) return null;
 
-    switch(slot) {
-
-      case OFF_HAND:
-        return SerialAttributeSlot.OFF_HAND;
-
-      case HEAD:
-        return SerialAttributeSlot.HEAD;
-
-      case CHEST:
-        return SerialAttributeSlot.CHEST;
-
-      case LEGS:
-        return SerialAttributeSlot.LEGS;
-
-      case FEET:
-        return SerialAttributeSlot.FEET;
-
-      case HAND:
-      default:
-        return SerialAttributeSlot.MAIN_HAND;
-    }
+    return switch(slot) {
+      case BODY -> EquipSlot.BODY;
+      case HEAD -> EquipSlot.HEAD;
+      case CHEST -> EquipSlot.CHEST;
+      case LEGS -> EquipSlot.LEGS;
+      case FEET -> EquipSlot.FEET;
+      case OFF_HAND -> EquipSlot.OFF_HAND;
+      default -> HAND;
+    };
   }
 
-  public static EquipmentSlot attributeSlot(final SerialAttributeSlot slot) {
+  public static EquipmentSlot attributeSlot(final EquipSlot slot) {
+
     if(slot == null) return null;
 
-    switch(slot) {
-
-      case OFF_HAND:
-        return EquipmentSlot.OFF_HAND;
-
-      case HEAD:
-        return EquipmentSlot.HEAD;
-
-      case CHEST:
-        return EquipmentSlot.CHEST;
-
-      case LEGS:
-        return EquipmentSlot.LEGS;
-
-      case FEET:
-        return EquipmentSlot.FEET;
-
-      case MAIN_HAND:
-      default:
-        return EquipmentSlot.HAND;
-    }
+    return switch(slot) {
+      case BODY -> EquipmentSlot.BODY;
+      case HEAD -> EquipmentSlot.HEAD;
+      case CHEST -> EquipmentSlot.CHEST;
+      case LEGS -> EquipmentSlot.LEGS;
+      case FEET -> EquipmentSlot.FEET;
+      case OFF_HAND -> EquipmentSlot.OFF_HAND;
+      default -> EquipmentSlot.HAND;
+    };
   }
 
   public static SerialAttributeOperation attributeOperation(final AttributeModifier.Operation operation) {
+
     switch(operation) {
 
       case ADD_SCALAR:
@@ -148,6 +119,7 @@ public class ParsingUtil {
   }
 
   public static AttributeModifier.Operation attributeOperation(final SerialAttributeOperation operation) {
+
     switch(operation) {
 
       case MULTIPLY_BASE:
@@ -163,6 +135,7 @@ public class ParsingUtil {
   }
 
   public static String version() {
+
     return Bukkit.getServer().getBukkitVersion().split("-")[0];
   }
 }
