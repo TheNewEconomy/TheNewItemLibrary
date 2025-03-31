@@ -71,6 +71,18 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
   boolean equals(SerialComponent<I, T> component);
 
   /**
+   * Checks if this component applies to the specified item stack.
+   *
+   * @param original the original item stack
+   * @param check the item stack to check against
+   * @return true if the check passes, false otherwise
+   */
+  default boolean applies(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+
+    return original.components().containsKey(identifier()) || check.components().containsKey(identifier());
+  }
+
+  /**
    * @param original the original stack
    * @param check    the stack to use for the check
    *

@@ -49,6 +49,15 @@ public interface ItemCheck<T> extends Identifiable {
   boolean enabled(final String version);
 
   /**
+   * Determines if a given check should be applied to an original item stack for a specific version.
+   *
+   * @param original the original item stack to check against
+   * @param check the item stack to use for the check
+   * @return true if the check applies, false otherwise
+   */
+  boolean applies(final AbstractItemStack<T> original, final AbstractItemStack<T> check);
+
+  /**
    * @param original the original stack
    * @param check    the stack to use for the check
    *
