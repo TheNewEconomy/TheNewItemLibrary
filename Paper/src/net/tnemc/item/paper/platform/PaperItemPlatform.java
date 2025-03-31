@@ -20,7 +20,7 @@ package net.tnemc.item.paper.platform;
 
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import net.tnemc.item.bukkitbase.ParsingUtil;
+import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.VanillaProvider;
 import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;

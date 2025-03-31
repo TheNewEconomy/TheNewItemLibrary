@@ -23,7 +23,6 @@ import net.tnemc.item.providers.ItemProvider;
 import org.bukkit.inventory.ItemStack;
 import xyz.xenondevs.nova.api.Nova;
 import xyz.xenondevs.nova.api.item.NovaItem;
-import xyz.xenondevs.nova.api.item.NovaItemRegistry;
 
 /**
  * NovaProvider
