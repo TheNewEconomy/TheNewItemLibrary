@@ -157,6 +157,19 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     return defaultProvider.identifier();
   }
 
+  /**
+   * Converts the given locale stack to an instance of {@link AbstractItemStack}
+   *
+   * @param locale the locale to convert
+   *
+   * @return the converted locale of type I
+   */
+  @Override
+  public PaperItemStack locale(final ItemStack locale) {
+
+    return new PaperItemStack().of(locale);
+  }
+
   private void registerConversions() {
 
     //RegisterConversion for EquipmentSlot

@@ -128,6 +128,19 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     return defaultProvider.identifier();
   }
 
+  /**
+   * Converts the given locale stack to an instance of {@link AbstractItemStack}
+   *
+   * @param locale the locale to convert
+   *
+   * @return the converted locale of type I
+   */
+  @Override
+  public BukkitItemStack locale(final ItemStack locale) {
+
+    return new BukkitItemStack().of(locale);
+  }
+
   @SuppressWarnings({"deprecation", "UnstableApiUsage" })
   private void registerConversions() {
 
