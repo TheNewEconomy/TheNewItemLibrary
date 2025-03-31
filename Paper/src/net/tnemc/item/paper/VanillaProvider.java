@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkit;
+package net.tnemc.item.paper;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -19,7 +19,7 @@ package net.tnemc.item.bukkit;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.ItemProvider;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -59,7 +59,7 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
 
-    return BukkitItemPlatform.PLATFORM.check((BukkitItemStack)original, new BukkitItemStack().of(compare));
+    return PaperItemPlatform.PLATFORM.check((PaperItemStack)original, new PaperItemStack().of(compare));
   }
 
   /**
@@ -73,7 +73,7 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
   @Override
   public ItemStack locale(final AbstractItemStack<? extends ItemStack> original, final int amount) {
 
-    if(original instanceof final BukkitItemStack bukkit) {
+    if(original instanceof final PaperItemStack bukkit) {
 
       if(!bukkit.isDirty()) {
         return bukkit.cacheLocale();
@@ -97,7 +97,7 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
       }
       ItemStack stack = new ItemStack(material, amount);
 
-      stack = BukkitItemPlatform.PLATFORM.apply(bukkit, stack);
+      stack = PaperItemPlatform.PLATFORM.apply(bukkit, stack);
 
       bukkit.updateCache(stack);
       bukkit.resetDirty();

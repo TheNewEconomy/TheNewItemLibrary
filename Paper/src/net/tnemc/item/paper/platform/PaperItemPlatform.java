@@ -22,6 +22,7 @@ import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import net.tnemc.item.bukkitbase.ParsingUtil;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.VanillaProvider;
 import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperContainerComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperCustomNameComponent;
@@ -79,6 +80,8 @@ import java.util.Optional;
 public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
 
   public static final PaperItemPlatform PLATFORM = new PaperItemPlatform();
+
+  protected final VanillaProvider defaultProvider = new VanillaProvider();
 
   private PaperItemPlatform() {
 
@@ -140,7 +143,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
   @Override
   public @NotNull ItemProvider<ItemStack> defaultProvider() {
 
-    return null;
+    return defaultProvider;
   }
 
   /**
@@ -151,7 +154,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
   @Override
   public @NotNull String defaultProviderIdentifier() {
 
-    return "";
+    return defaultProvider.identifier();
   }
 
   private void registerConversions() {

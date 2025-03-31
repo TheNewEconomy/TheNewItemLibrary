@@ -23,7 +23,10 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.platform.Identifiable;
 
 /**
- * ItemCheck
+ * Represents a check to be performed on an item. Implementations should provide logic to determine if the check applies for a specific version,
+ * as well as perform the actual check on the item stack.
+ *
+ * @param <T> the type of item stack being checked
  *
  * @author creatorfromhell
  * @since 0.2.0.0

@@ -213,32 +213,32 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
       }
     }
 
-    if(object instanceof final ItemApplicator<?, ?> check) {
+    if(object instanceof final ItemApplicator<?, ?> applicator) {
 
       try {
 
-        if(!check.enabled(version())) {
+        if(!applicator.enabled(version())) {
 
           return;
         }
 
-        applicators.put(check.identifier(), (ItemApplicator<I, T>)check);
+        applicators.put(applicator.identifier(), (ItemApplicator<I, T>)applicator);
       } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
       }
     }
 
-    if(object instanceof final ItemSerializer<?, ?> check) {
+    if(object instanceof final ItemSerializer<?, ?> serializer) {
 
       try {
 
-        if(!check.enabled(version())) {
+        if(!serializer.enabled(version())) {
 
           return;
         }
 
-        serializers.put(check.identifier(), (ItemSerializer<I, T>)check);
+        serializers.put(serializer.identifier(), (ItemSerializer<I, T>)serializer);
       } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
@@ -398,7 +398,9 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   public T apply(@NotNull final I serialized, @NotNull T item) {
 
     for(final ItemApplicator<I, T> applicator : applicators.values()) {
+
       if(applicator.enabled(version())) {
+
         item = applicator.apply(serialized, item);
       }
     }

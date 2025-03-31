@@ -21,7 +21,7 @@ package net.tnemc.item.platform.check;
 import net.tnemc.item.AbstractItemStack;
 
 /**
- * LocaleItemCheck
+ * LocaleItemCheck is used to check the locale item specifically, and is the priority check in platform checks.
  *
  * @author creatorfromhell
  * @since 0.2.0.0
