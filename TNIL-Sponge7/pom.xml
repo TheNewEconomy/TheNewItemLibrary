@@ -5,7 +5,7 @@
     <parent>
         <artifactId>TNIL</artifactId>
         <groupId>net.tnemc</groupId>
-        <version>0.1.2.0-SNAPSHOT-1</version>
+        <version>0.1.2.0-SNAPSHOT-2</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -34,6 +34,23 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.2</version>
+                <configuration>
+                    <show>public</show>
+                    <windowtitle>The New Item Library</windowtitle>
+                    <verbose>false</verbose>
+                    <author>true</author>
+                    <version>true</version>
+                    <linksource>true</linksource>
+                    <notimestamp>true</notimestamp>
+                    <failOnError>false</failOnError>
+                    <failOnWarnings>false</failOnWarnings>
+                    <bottom><![CDATA[<b>TheNewEconomy, 2025</b>]]></bottom>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -56,7 +73,7 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-Core</artifactId>
-            <version>0.1.2.0-SNAPSHOT-1</version>
+            <version>0.1.2.0-SNAPSHOT-2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -29,9 +29,6 @@ import java.util.function.Supplier;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-
-/**
- */
 public class SupplierRegistryHandler extends RegistryHandler {
 
   protected final Supplier<LinkedList<String>> keysSupplier;

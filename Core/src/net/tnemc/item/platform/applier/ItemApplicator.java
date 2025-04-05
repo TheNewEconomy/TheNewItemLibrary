@@ -23,7 +23,10 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.platform.Identifiable;
 
 /**
- * ItemApplier
+ * The ItemApplicator interface represents an applicator that can be used to apply changes to an item.
+ *
+ * @param <I> the type of AbstractItemStack that this applicator can work with
+ * @param <T> the type of item that this applicator can modify
  *
  * @author creatorfromhell
  * @since 0.2.0.0

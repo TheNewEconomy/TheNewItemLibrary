@@ -384,9 +384,21 @@ public interface AbstractItemStack<T> extends Cloneable {
   PersistentDataHolder persistentHolder();
 
   /**
+   * Resets the dirty flag, indicating that the object's state has been synchronized with the database.
+   */
+  void resetDirty();
+
+  /**
    * Marks the item stack as dirty, indicating changes have been made.
    */
   void markDirty();
+
+  /**
+   * Checks whether the object is dirty or has unsaved changes.
+   *
+   * @return true if the object is dirty, false otherwise
+   */
+  boolean isDirty();
 
   /**
    * This method returns a String representing the item provider.

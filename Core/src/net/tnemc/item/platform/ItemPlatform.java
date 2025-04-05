@@ -67,6 +67,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   private final Map<String, ItemProvider<T>> itemProviders = new ConcurrentHashMap<>();
 
   protected final Map<String, ItemCheck<T>> checks = new HashMap<>();
+  protected final Map<String, LocaleItemCheck<T>> localeChecks = new HashMap<>();
   protected final Map<String, ItemApplicator<I, T>> applicators = new HashMap<>();
   protected final Map<String, ItemSerializer<I, T>> serializers = new HashMap<>();
 
@@ -206,45 +207,59 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
           return;
         }
 
-        checks.put(check.identifier(), (ItemCheck<T>)check);
+        if(check instanceof final LocaleItemCheck<?> localeItemCheck) {
+
+          localeChecks.put(localeItemCheck.identifier(), (LocaleItemCheck<T>)localeItemCheck);
+        } else {
+
+          checks.put(check.identifier(), (ItemCheck<T>)check);
+        }
       } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
       }
     }
 
-    if(object instanceof final ItemApplicator<?, ?> check) {
+    if(object instanceof final ItemApplicator<?, ?> applicator) {
 
       try {
 
-        if(!check.enabled(version())) {
+        if(!applicator.enabled(version())) {
 
           return;
         }
 
-        applicators.put(check.identifier(), (ItemApplicator<I, T>)check);
+        applicators.put(applicator.identifier(), (ItemApplicator<I, T>)applicator);
       } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
       }
     }
 
-    if(object instanceof final ItemSerializer<?, ?> check) {
+    if(object instanceof final ItemSerializer<?, ?> serializer) {
 
       try {
 
-        if(!check.enabled(version())) {
+        if(!serializer.enabled(version())) {
 
           return;
         }
 
-        serializers.put(check.identifier(), (ItemSerializer<I, T>)check);
+        serializers.put(serializer.identifier(), (ItemSerializer<I, T>)serializer);
       } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
       }
     }
   }
+
+  /**
+   * Converts the given locale stack to an instance of {@link AbstractItemStack}
+   *
+   * @param locale the locale to convert
+   * @return the converted locale of type I
+   */
+  public abstract I locale(final T locale);
 
   /**
    * @param check the {@link ItemCheck check} to add.
@@ -283,6 +298,8 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
   /**
    * Used to check if two locale stacks are comparable.
+   * How they are performed:
+   * - if a locale check applies, the check result is returned, true is the default return.
    *
    * @param original       the original stack
    * @param check          the stack to use for the check
@@ -294,18 +311,21 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   public boolean check(@NotNull final T original, @NotNull final T check, @NotNull final String... disabledChecks) {
 
     final List<String> disabled = Arrays.asList(disabledChecks);
-    for(final ItemCheck<T> checkItem : checks.values()) {
 
-      if(disabled.contains(checkItem.identifier())) {
+    for(final LocaleItemCheck<T> localeCheck : localeChecks.values()) {
+
+      if(disabled.contains(localeCheck.identifier())) {
         continue;
       }
 
-      if(checkItem instanceof final LocaleItemCheck<T> locale) {
-
-        if(locale.enabled(version()) && locale.applies(original, check)) {
-          return locale.check(original, check);
-        }
+      if(!localeCheck.enabled(version())) {
+        continue;
       }
+
+      if(!localeCheck.applies(original, check)) {
+        continue;
+      }
+      return localeCheck.check(original, check);
     }
     return true;
   }
@@ -322,41 +342,21 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   public boolean checkOrder(@NotNull final T original, @NotNull final T check, @NotNull final String... order) {
 
     for(final String id : order) {
-      if(checks.containsKey(id)) {
 
-        final ItemCheck<T> checkItem = checks.get(id);
-        if(checkItem instanceof final LocaleItemCheck<T> locale) {
-
-          if(checkItem.enabled(version())) {
-            return locale.check(original, check);
-          }
-        }
+      if(!checks.containsKey(id)) {
+        continue;
       }
-    }
-    return true;
-  }
 
-  /**
-   * Used to check if two serialized stacks are comparable based on a specific order of checks.
-   *
-   * @param original the original stack
-   * @param check    the stack to use for the check
-   * @param order    the order of the checks to run for the comparison
-   *
-   * @return True if the check passes, otherwise false.
-   */
-  public boolean checkOrder(@NotNull final I original, @NotNull final I check, @NotNull final String... order) {
 
-    for(final String id : order) {
-      if(checks.containsKey(id)) {
-
-        final ItemCheck<T> checkItem = checks.get(id);
-        if(checkItem.enabled(version())) {
-
-          return checkItem.check(original, check);
-        }
-
+      final LocaleItemCheck<T> localeCheck = localeChecks.get(id);
+      if(!localeCheck.enabled(version())) {
+        continue;
       }
+
+      if(!localeCheck.applies(original, check)) {
+        continue;
+      }
+      return localeCheck.check(original, check);
     }
     return true;
   }
@@ -380,7 +380,49 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
         continue;
       }
 
-      if(checkItem.enabled(version()) && !checkItem.check(original, check)) {
+      if(!checkItem.enabled(version())) {
+        continue;
+      }
+
+      if(!checkItem.applies(original, check)) {
+        continue;
+      }
+
+      if(!checkItem.check(original, check)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Used to check if two serialized stacks are comparable based on a specific order of checks.
+   *
+   * @param original the original stack
+   * @param check    the stack to use for the check
+   * @param order    the order of the checks to run for the comparison
+   *
+   * @return True if the check passes, otherwise false.
+   */
+  public boolean checkOrder(@NotNull final I original, @NotNull final I check, @NotNull final String... order) {
+
+    for(final String id : order) {
+
+      if(!checks.containsKey(id)) {
+        continue;
+      }
+
+      final ItemCheck<T> checkItem = checks.get(id);
+
+      if(!checkItem.enabled(version())) {
+        continue;
+      }
+
+      if(!checkItem.applies(original, check)) {
+        continue;
+      }
+
+      if(!checkItem.check(original, check)) {
         return false;
       }
     }
@@ -398,7 +440,9 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   public T apply(@NotNull final I serialized, @NotNull T item) {
 
     for(final ItemApplicator<I, T> applicator : applicators.values()) {
+
       if(applicator.enabled(version())) {
+
         item = applicator.apply(serialized, item);
       }
     }

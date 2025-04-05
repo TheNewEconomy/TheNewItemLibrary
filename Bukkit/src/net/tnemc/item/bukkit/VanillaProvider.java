@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkitbase.platform.providers;
+package net.tnemc.item.bukkit;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -19,18 +19,20 @@ package net.tnemc.item.bukkitbase.platform.providers;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.providers.ItemProvider;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.inventory.ItemStack;
-import xyz.xenondevs.nova.api.Nova;
-import xyz.xenondevs.nova.api.item.NovaItem;
 
 /**
- * NovaProvider
+ * VanillaProvider
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class NovaProvider implements ItemProvider<ItemStack> {
+public class VanillaProvider implements ItemProvider<ItemStack> {
 
   /**
    * Checks if the given serialized item stack applies to the specified item.
@@ -42,14 +44,6 @@ public class NovaProvider implements ItemProvider<ItemStack> {
    */
   @Override
   public boolean appliesTo(final AbstractItemStack<? extends ItemStack> serialized, final ItemStack item) {
-
-    final NovaItem stack = Nova.getNova().getItemRegistry().getOrNull(item);
-    if(stack == null) {
-      return false;
-    }
-
-    serialized.setItemProvider(identifier());
-    serialized.setProviderItemID(stack.getId().toString());
 
     return true;
   }
@@ -65,13 +59,7 @@ public class NovaProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
 
-    final NovaItem compareStack = Nova.getNova().getItemRegistry().getOrNull(compare);
-    if(compareStack == null) {
-
-      return false;
-    }
-
-    return compareStack.getId().toString().equals(original.providerItemID());
+    return BukkitItemPlatform.PLATFORM.check((BukkitItemStack)original, new BukkitItemStack().of(compare));
   }
 
   /**
@@ -85,13 +73,38 @@ public class NovaProvider implements ItemProvider<ItemStack> {
   @Override
   public ItemStack locale(final AbstractItemStack<? extends ItemStack> original, final int amount) {
 
-    final NovaItem originalStack = Nova.getNova().getItemRegistry().getOrNull(original.providerItemID());
-    if(originalStack == null) {
+    if(original instanceof final BukkitItemStack bukkit) {
 
-      return null;
+      if(!bukkit.isDirty()) {
+        return bukkit.cacheLocale();
+      }
+
+      Material material = null;
+
+      try {
+        final NamespacedKey key = NamespacedKey.fromString(bukkit.material());
+        if(key != null) {
+
+          material = Registry.MATERIAL.get(key);
+        }
+      } catch(final Exception ignore) {
+        material = Material.matchMaterial(bukkit.material());
+      }
+
+      if(material == null) {
+
+        return null;
+      }
+      ItemStack stack = new ItemStack(material, amount);
+
+      stack = BukkitItemPlatform.PLATFORM.apply(bukkit, stack);
+
+      bukkit.updateCache(stack);
+      bukkit.resetDirty();
+
+      return stack;
     }
-
-    return originalStack.createItemStack(amount);
+    return null;
   }
 
   /**
@@ -100,6 +113,6 @@ public class NovaProvider implements ItemProvider<ItemStack> {
   @Override
   public String identifier() {
 
-    return "nova";
+    return "vanilla";
   }
 }
