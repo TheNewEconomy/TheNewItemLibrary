@@ -35,7 +35,7 @@ jobs:
       run: mvn -e -B package --file pom.xml
     - uses: actions/upload-artifact@v4
       with:
-        name: tne-snapshots
+        name: TNIL
         path: |
             **/target/*.jar 
 
