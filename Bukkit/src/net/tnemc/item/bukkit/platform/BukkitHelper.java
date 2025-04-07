@@ -51,7 +51,7 @@ public class BukkitHelper extends BaseHelper {
     registerHandler("enchantments", new SupplierRegistryHandler(() -> {
 
       final LinkedList<String> keys = new LinkedList<>();
-      if(VersionUtil.isVersion(BukkitItemPlatform.PLATFORM.version(), "1.20.3")) {
+      if(VersionUtil.isVersion(BukkitItemPlatform.instance().version(), "1.20.3")) {
 
         Registry.ENCHANTMENT.forEach((enchantment) -> {
           if(enchantment != null) {

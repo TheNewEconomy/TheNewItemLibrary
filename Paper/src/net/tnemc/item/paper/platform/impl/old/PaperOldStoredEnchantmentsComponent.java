@@ -65,7 +65,7 @@ public class PaperOldStoredEnchantmentsComponent extends StoredEnchantmentsCompo
 
           try {
 
-            final Enchantment enchant = PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), Enchantment.class);
+            final Enchantment enchant = PaperItemPlatform.instance().converter().convert(entry.getKey(), Enchantment.class);
             if(enchant != null) {
 
               meta.addStoredEnchant(enchant, entry.getValue(), true);
@@ -92,7 +92,7 @@ public class PaperOldStoredEnchantmentsComponent extends StoredEnchantmentsCompo
 
       for(final Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
 
-        levels.put(PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), String.class), entry.getValue());
+        levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
       }
     }
 

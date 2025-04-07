@@ -11,6 +11,7 @@
         <module>BukkitBase</module>
         <module>Paper</module>
         <module>Bukkit</module>
+        <module>Example</module>
         <!--<module>TNIL-Sponge</module>-->
     </modules>
 

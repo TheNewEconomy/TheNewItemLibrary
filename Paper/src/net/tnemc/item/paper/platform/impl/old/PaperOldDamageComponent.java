@@ -58,7 +58,7 @@ public class PaperOldDamageComponent extends DamageComponent<PaperItemStack, Ite
     final Optional<PaperOldDamageComponent> componentOptional = serialized.component(identifier());
 
     if(componentOptional.isPresent()) {
-      if(VersionUtil.isOneThirteen(PaperItemPlatform.PLATFORM.version())) {
+      if(VersionUtil.isOneThirteen(PaperItemPlatform.instance().version())) {
 
         if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
 
@@ -82,7 +82,7 @@ public class PaperOldDamageComponent extends DamageComponent<PaperItemStack, Ite
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    if(VersionUtil.isOneThirteen(PaperItemPlatform.PLATFORM.version())) {
+    if(VersionUtil.isOneThirteen(PaperItemPlatform.instance().version())) {
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
         this.damage = meta.getDamage();

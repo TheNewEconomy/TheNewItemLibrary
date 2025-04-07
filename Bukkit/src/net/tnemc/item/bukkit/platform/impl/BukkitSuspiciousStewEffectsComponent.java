@@ -82,7 +82,7 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
 
           try {
 
-            final PotionEffectType effectType = BukkitItemPlatform.PLATFORM.converter().convert(effect.id(), PotionEffectType.class);
+            final PotionEffectType effectType = BukkitItemPlatform.instance().converter().convert(effect.id(), PotionEffectType.class);
             if(effectType != null) {
 
               meta.addCustomEffect(new PotionEffect(effectType,
@@ -115,7 +115,7 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
       for(final PotionEffect effect : meta.getCustomEffects()) {
 
         try {
-          final String id = BukkitItemPlatform.PLATFORM.converter().convert(effect.getType(), String.class);
+          final String id = BukkitItemPlatform.instance().converter().convert(effect.getType(), String.class);
           if(id != null) {
 
             effects.add(new EffectInstance(id,

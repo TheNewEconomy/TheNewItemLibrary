@@ -62,7 +62,7 @@ public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperIt
 
         try {
 
-          final Enchantment enchant = PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), Enchantment.class);
+          final Enchantment enchant = PaperItemPlatform.instance().converter().convert(entry.getKey(), Enchantment.class);
           if(enchant != null) {
 
             item.addUnsafeEnchantment(enchant, entry.getValue());
@@ -86,7 +86,7 @@ public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperIt
 
     for(final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
 
-      levels.put(PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), String.class), entry.getValue());
+      levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
     }
 
     serialized.applyComponent(this);

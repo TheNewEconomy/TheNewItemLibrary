@@ -67,7 +67,7 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
 
           try {
 
-            final PotionEffectType effectType = PaperItemPlatform.PLATFORM.converter().convert(effect.id(), PotionEffectType.class);
+            final PotionEffectType effectType = PaperItemPlatform.instance().converter().convert(effect.id(), PotionEffectType.class);
             if(effectType != null) {
 
               meta.addCustomEffect(new PotionEffect(effectType,
@@ -100,7 +100,7 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
       for(final PotionEffect effect : meta.getCustomEffects()) {
 
         try {
-          final String id = PaperItemPlatform.PLATFORM.converter().convert(effect.getType(), String.class);
+          final String id = PaperItemPlatform.instance().converter().convert(effect.getType(), String.class);
           if(id != null) {
 
             effects.add(new EffectInstance(id,

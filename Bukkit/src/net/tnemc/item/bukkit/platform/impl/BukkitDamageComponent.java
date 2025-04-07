@@ -76,7 +76,7 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
     final Optional<BukkitDamageComponent> componentOptional = serialized.component(identifier());
 
     if(componentOptional.isPresent()) {
-      if(VersionUtil.isOneThirteen(BukkitItemPlatform.PLATFORM.version())) {
+      if(VersionUtil.isOneThirteen(BukkitItemPlatform.instance().version())) {
 
         if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
 
@@ -100,7 +100,7 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    if(VersionUtil.isOneThirteen(BukkitItemPlatform.PLATFORM.version())) {
+    if(VersionUtil.isOneThirteen(BukkitItemPlatform.instance().version())) {
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
         this.damage = meta.getDamage();

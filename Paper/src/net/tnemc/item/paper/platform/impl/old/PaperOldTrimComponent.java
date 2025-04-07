@@ -65,8 +65,8 @@ public class PaperOldTrimComponent extends TrimComponent<PaperItemStack, ItemSta
 
         try {
 
-          final TrimMaterial material = PaperItemPlatform.PLATFORM.converter().convert(componentOptional.get().material, TrimMaterial.class);
-          final TrimPattern pattern = PaperItemPlatform.PLATFORM.converter().convert(componentOptional.get().pattern, TrimPattern.class);
+          final TrimMaterial material = PaperItemPlatform.instance().converter().convert(componentOptional.get().material, TrimMaterial.class);
+          final TrimPattern pattern = PaperItemPlatform.instance().converter().convert(componentOptional.get().pattern, TrimPattern.class);
           if(material != null && pattern != null) {
 
             meta.setTrim(new ArmorTrim(material, pattern));
@@ -96,8 +96,8 @@ public class PaperOldTrimComponent extends TrimComponent<PaperItemStack, ItemSta
 
       try {
 
-        final String material = PaperItemPlatform.PLATFORM.converter().convert(meta.getTrim().getMaterial(), String.class);
-        final String pattern = PaperItemPlatform.PLATFORM.converter().convert(meta.getTrim().getPattern(), String.class);
+        final String material = PaperItemPlatform.instance().converter().convert(meta.getTrim().getMaterial(), String.class);
+        final String pattern = PaperItemPlatform.instance().converter().convert(meta.getTrim().getPattern(), String.class);
         if(material != null && pattern != null) {
 
           this.material = material;

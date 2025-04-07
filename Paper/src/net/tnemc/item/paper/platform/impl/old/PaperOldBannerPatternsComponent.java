@@ -72,7 +72,7 @@ public class PaperOldBannerPatternsComponent extends BannerPatternsComponent<Pap
 
             try {
 
-              meta.addPattern(new Pattern(color, PaperItemPlatform.PLATFORM.converter().convert(pattern.getPattern(), PatternType.class)));
+              meta.addPattern(new Pattern(color, PaperItemPlatform.instance().converter().convert(pattern.getPattern(), PatternType.class)));
             } catch(final Exception ignore) {
 
               //pattern type doesn't exist.
@@ -100,7 +100,7 @@ public class PaperOldBannerPatternsComponent extends BannerPatternsComponent<Pap
 
         try {
           patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                       PaperItemPlatform.PLATFORM.converter().convert(pattern.getPattern(), String.class)));
+                                       PaperItemPlatform.instance().converter().convert(pattern.getPattern(), String.class)));
         } catch(final Exception ignore) {
 
           //key isn't found

@@ -98,7 +98,7 @@ public class PaperOldContainerComponent extends ContainerComponent<PaperItemStac
         }
 
         final PaperItemStack containerSerial = new PaperItemStack().of(stack);
-        PaperItemPlatform.PLATFORM.providerApplies(containerSerial, stack);
+        PaperItemPlatform.instance().providerApplies(containerSerial, stack);
         items.put(i, containerSerial);
       }
     }

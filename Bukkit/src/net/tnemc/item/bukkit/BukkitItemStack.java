@@ -140,7 +140,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   private boolean debug = false;
 
   //item providers
-  private String itemProvider = BukkitItemPlatform.PLATFORM.defaultProviderIdentifier();
+  private String itemProvider = BukkitItemPlatform.instance().defaultProviderIdentifier();
   private String providerItemID = material;
 
   //our locale stack
@@ -189,7 +189,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
       }
     }
 
-    return BukkitItemPlatform.PLATFORM.serializer(this.localeStack, this);
+    return BukkitItemPlatform.instance().serializer(this.localeStack, this);
   }
 
   /**
@@ -532,7 +532,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public ItemProvider<ItemStack> provider() {
 
-    return BukkitItemPlatform.PLATFORM.provider(itemProvider);
+    return BukkitItemPlatform.instance().provider(itemProvider);
   }
 
   /**

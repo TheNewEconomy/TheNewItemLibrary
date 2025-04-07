@@ -59,7 +59,7 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
 
-    return PaperItemPlatform.PLATFORM.check((PaperItemStack)original, new PaperItemStack().of(compare));
+    return PaperItemPlatform.instance().check((PaperItemStack)original, new PaperItemStack().of(compare));
   }
 
   /**
@@ -97,7 +97,7 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
       }
       ItemStack stack = new ItemStack(material, amount);
 
-      stack = PaperItemPlatform.PLATFORM.apply(bukkit, stack);
+      stack = PaperItemPlatform.instance().apply(bukkit, stack);
 
       bukkit.updateCache(stack);
       bukkit.resetDirty();

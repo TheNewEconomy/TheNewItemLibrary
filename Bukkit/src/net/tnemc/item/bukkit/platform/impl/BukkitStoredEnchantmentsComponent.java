@@ -74,7 +74,7 @@ public class BukkitStoredEnchantmentsComponent extends StoredEnchantmentsCompone
 
           try {
 
-            final Enchantment enchant = BukkitItemPlatform.PLATFORM.converter().convert(entry.getKey(), Enchantment.class);
+            final Enchantment enchant = BukkitItemPlatform.instance().converter().convert(entry.getKey(), Enchantment.class);
             if(enchant != null) {
 
               meta.addStoredEnchant(enchant, entry.getValue(), true);
@@ -101,7 +101,7 @@ public class BukkitStoredEnchantmentsComponent extends StoredEnchantmentsCompone
 
       for(final Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
 
-        levels.put(BukkitItemPlatform.PLATFORM.converter().convert(entry.getKey(), String.class), entry.getValue());
+        levels.put(BukkitItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
       }
     }
 

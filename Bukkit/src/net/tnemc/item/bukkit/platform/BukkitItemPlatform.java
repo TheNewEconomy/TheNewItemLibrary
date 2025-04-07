@@ -66,7 +66,8 @@ import java.util.Optional;
  */
 public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack> {
 
-  public static final BukkitItemPlatform PLATFORM = new BukkitItemPlatform();
+  private static volatile BukkitItemPlatform instance;
+  //public static final BukkitItemPlatform PLATFORM = new BukkitItemPlatform();
   //TODO: make this an actual singleton setup
 
   protected final VanillaProvider defaultProvider = new VanillaProvider();
@@ -74,6 +75,23 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
   private BukkitItemPlatform() {
 
     super();
+  }
+
+  public static BukkitItemPlatform instance() {
+
+    final BukkitItemPlatform result = instance;
+    if(result != null) {
+      return result;
+    }
+
+    synchronized(BukkitItemPlatform.class) {
+
+      if(instance == null) {
+
+        instance = new BukkitItemPlatform();
+      }
+      return instance;
+    }
   }
 
   /**

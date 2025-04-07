@@ -68,7 +68,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
 
     for(final PaperItemStack stack : left) {
 
-      if(setOwner && VersionUtil.isOneSixteen(PaperItemPlatform.PLATFORM.version())) {
+      if(setOwner && VersionUtil.isOneSixteen(PaperItemPlatform.instance().version())) {
 
         final Item it = playerObj.getWorld().dropItemNaturally(playerObj.getLocation(), stack.provider().locale(stack));
         it.setOwner(player);

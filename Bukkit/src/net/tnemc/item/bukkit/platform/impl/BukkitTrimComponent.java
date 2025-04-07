@@ -74,8 +74,8 @@ public class BukkitTrimComponent extends TrimComponent<BukkitItemStack, ItemStac
 
         try {
 
-          final TrimMaterial material = BukkitItemPlatform.PLATFORM.converter().convert(componentOptional.get().material, TrimMaterial.class);
-          final TrimPattern pattern = BukkitItemPlatform.PLATFORM.converter().convert(componentOptional.get().pattern, TrimPattern.class);
+          final TrimMaterial material = BukkitItemPlatform.instance().converter().convert(componentOptional.get().material, TrimMaterial.class);
+          final TrimPattern pattern = BukkitItemPlatform.instance().converter().convert(componentOptional.get().pattern, TrimPattern.class);
           if(material != null && pattern != null) {
 
             meta.setTrim(new ArmorTrim(material, pattern));
@@ -105,8 +105,8 @@ public class BukkitTrimComponent extends TrimComponent<BukkitItemStack, ItemStac
 
       try {
 
-        final String material = BukkitItemPlatform.PLATFORM.converter().convert(meta.getTrim().getMaterial(), String.class);
-        final String pattern = BukkitItemPlatform.PLATFORM.converter().convert(meta.getTrim().getPattern(), String.class);
+        final String material = BukkitItemPlatform.instance().converter().convert(meta.getTrim().getMaterial(), String.class);
+        final String pattern = BukkitItemPlatform.instance().converter().convert(meta.getTrim().getPattern(), String.class);
         if(material != null && pattern != null) {
 
           this.material = material;

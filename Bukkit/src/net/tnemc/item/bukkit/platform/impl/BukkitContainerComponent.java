@@ -109,7 +109,7 @@ public class BukkitContainerComponent extends ContainerComponent<BukkitItemStack
         }
 
         final BukkitItemStack containerSerial = new BukkitItemStack().of(stack);
-        BukkitItemPlatform.PLATFORM.providerApplies(containerSerial, stack);
+        BukkitItemPlatform.instance().providerApplies(containerSerial, stack);
         items.put(i, containerSerial);
       }
     }

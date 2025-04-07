@@ -1,0 +1,6 @@
+name: TNIL Example
+version: '0.1.2.0'
+main: net.tnemc.item.example.Example
+api-version: '1.20'
+authors: [creatorfromhell]
+website: https://tnemc.net

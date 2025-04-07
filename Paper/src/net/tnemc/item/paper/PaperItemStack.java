@@ -140,7 +140,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   private boolean debug = false;
 
   //item providers
-  private String itemProvider = PaperItemPlatform.PLATFORM.defaultProviderIdentifier();
+  private String itemProvider = PaperItemPlatform.instance().defaultProviderIdentifier();
   private String providerItemID = material;
 
   //our locale stack
@@ -186,7 +186,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
       }
     }
 
-    return PaperItemPlatform.PLATFORM.serializer(this.localeStack, this);
+    return PaperItemPlatform.instance().serializer(this.localeStack, this);
   }
 
   /**
@@ -528,7 +528,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public ItemProvider<ItemStack> provider() {
 
-    return PaperItemPlatform.PLATFORM.provider(itemProvider);
+    return PaperItemPlatform.instance().provider(itemProvider);
   }
 
   /**

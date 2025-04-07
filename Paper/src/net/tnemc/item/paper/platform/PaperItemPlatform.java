@@ -79,13 +79,32 @@ import java.util.Optional;
  */
 public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
 
-  public static final PaperItemPlatform PLATFORM = new PaperItemPlatform();
+  private static volatile PaperItemPlatform instance;
+
+  //public static final PaperItemPlatform PLATFORM = new PaperItemPlatform();
 
   protected final VanillaProvider defaultProvider = new VanillaProvider();
 
   private PaperItemPlatform() {
 
     super();
+  }
+
+  public static PaperItemPlatform instance() {
+
+    final PaperItemPlatform result = instance;
+    if(result != null) {
+      return result;
+    }
+
+    synchronized(PaperItemPlatform.class) {
+
+      if(instance == null) {
+
+        instance = new PaperItemPlatform();
+      }
+      return instance;
+    }
   }
 
   /**

@@ -65,8 +65,8 @@ public class PaperOldAttributeModifiersComponent extends AttributeModifiersCompo
 
       for(final net.tnemc.item.component.helper.AttributeModifier attribute : componentOptional.get().modifiers()) {
 
-        final AttributeModifier.Operation operation = PaperItemPlatform.PLATFORM.converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);
-        final EquipmentSlotGroup slot = PaperItemPlatform.PLATFORM.converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);
+        final AttributeModifier.Operation operation = PaperItemPlatform.instance().converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);
+        final EquipmentSlotGroup slot = PaperItemPlatform.instance().converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);
         final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType()),
                                                              attribute.getAmount(),
                                                              operation,

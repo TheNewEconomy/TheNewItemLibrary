@@ -90,7 +90,7 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
 
             try {
 
-              meta.addPattern(new Pattern(color, BukkitItemPlatform.PLATFORM.converter().convert(pattern.getPattern(), PatternType.class)));
+              meta.addPattern(new Pattern(color, BukkitItemPlatform.instance().converter().convert(pattern.getPattern(), PatternType.class)));
             } catch(final Exception ignore) {
 
               //pattern type doesn't exist.
@@ -118,7 +118,7 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
 
         try {
           patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                       BukkitItemPlatform.PLATFORM.converter().convert(pattern.getPattern(), String.class)));
+                                       BukkitItemPlatform.instance().converter().convert(pattern.getPattern(), String.class)));
         } catch(final Exception ignore) {
 
           //key isn't found

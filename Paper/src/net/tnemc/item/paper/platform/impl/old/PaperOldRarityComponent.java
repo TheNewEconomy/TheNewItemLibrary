@@ -64,7 +64,7 @@ public class PaperOldRarityComponent extends RarityComponent<PaperItemStack, Ite
       final ItemMeta meta = item.getItemMeta();
       if(meta != null) {
 
-        meta.setRarity(PaperItemPlatform.PLATFORM.converter().convert(componentOptional.get().rarity,
+        meta.setRarity(PaperItemPlatform.instance().converter().convert(componentOptional.get().rarity,
                                                                        ItemRarity.class));
         item.setItemMeta(meta);
       }
@@ -84,7 +84,7 @@ public class PaperOldRarityComponent extends RarityComponent<PaperItemStack, Ite
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasRarity()) {
 
-      rarity = PaperItemPlatform.PLATFORM.converter().convert(meta.getRarity(), String.class);
+      rarity = PaperItemPlatform.instance().converter().convert(meta.getRarity(), String.class);
     }
     serialized.applyComponent(this);
     return serialized;

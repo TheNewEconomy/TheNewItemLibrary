@@ -71,7 +71,7 @@ public class BukkitEnchantmentsComponent extends EnchantmentsComponent<BukkitIte
 
         try {
 
-          final Enchantment enchant = BukkitItemPlatform.PLATFORM.converter().convert(entry.getKey(), Enchantment.class);
+          final Enchantment enchant = BukkitItemPlatform.instance().converter().convert(entry.getKey(), Enchantment.class);
           if(enchant != null) {
 
             item.addUnsafeEnchantment(enchant, entry.getValue());
@@ -95,7 +95,7 @@ public class BukkitEnchantmentsComponent extends EnchantmentsComponent<BukkitIte
 
     for(final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
 
-      levels.put(BukkitItemPlatform.PLATFORM.converter().convert(entry.getKey(), String.class), entry.getValue());
+      levels.put(BukkitItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
     }
 
     serialized.applyComponent(this);

@@ -103,7 +103,7 @@ public class BukkitBundleComponent extends BundleComponent<BukkitItemStack, Item
         }
 
         final BukkitItemStack containerSerial = new BukkitItemStack().of(stack);
-        BukkitItemPlatform.PLATFORM.providerApplies(containerSerial, stack);
+        BukkitItemPlatform.instance().providerApplies(containerSerial, stack);
         items.put(i, containerSerial);
         i++;
       }

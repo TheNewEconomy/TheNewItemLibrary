@@ -62,7 +62,7 @@ public class PaperOldBaseColorComponent extends BaseColorComponent<PaperItemStac
       if(item.hasItemMeta() && item.getItemMeta() instanceof final ShieldMeta meta) {
 
         try {
-          final DyeColor dyeColor = PaperItemPlatform.PLATFORM.converter().convert(componentOptional.get().color, DyeColor.class);
+          final DyeColor dyeColor = PaperItemPlatform.instance().converter().convert(componentOptional.get().color, DyeColor.class);
           meta.setBaseColor(dyeColor);
         } catch(final IllegalArgumentException ignore) {
           meta.setBaseColor(null);
@@ -87,7 +87,7 @@ public class PaperOldBaseColorComponent extends BaseColorComponent<PaperItemStac
 
       if(meta.getBaseColor() != null) {
 
-        this.color = PaperItemPlatform.PLATFORM.converter().convert(meta.getBaseColor(), String.class);
+        this.color = PaperItemPlatform.instance().converter().convert(meta.getBaseColor(), String.class);
       }
     }
 

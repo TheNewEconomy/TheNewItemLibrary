@@ -68,7 +68,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     for(final BukkitItemStack stack : left) {
 
-      if(setOwner && VersionUtil.isOneSixteen(BukkitItemPlatform.PLATFORM.version())) {
+      if(setOwner && VersionUtil.isOneSixteen(BukkitItemPlatform.instance().version())) {
 
         final Item it = playerObj.getWorld().dropItemNaturally(playerObj.getLocation(), stack.provider().locale(stack));
         it.setOwner(player);

@@ -73,7 +73,7 @@ public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, Item
       final ItemMeta meta = item.getItemMeta();
       if(meta != null) {
 
-        meta.setRarity(BukkitItemPlatform.PLATFORM.converter().convert(componentOptional.get().rarity,
+        meta.setRarity(BukkitItemPlatform.instance().converter().convert(componentOptional.get().rarity,
                                                                        ItemRarity.class));
         item.setItemMeta(meta);
       }
@@ -93,7 +93,7 @@ public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, Item
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasRarity()) {
 
-      rarity = BukkitItemPlatform.PLATFORM.converter().convert(meta.getRarity(), String.class);
+      rarity = BukkitItemPlatform.instance().converter().convert(meta.getRarity(), String.class);
     }
     serialized.applyComponent(this);
     return serialized;

@@ -55,7 +55,7 @@ public class PaperHelper implements HelperMethods {
       }
     });
 
-    if(VersionUtil.isVersion(PaperItemPlatform.PLATFORM.version(), "1.21")) {
+    if(VersionUtil.isVersion(PaperItemPlatform.instance().version(), "1.21")) {
 
       RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).forEach((enchantment)->{
         if(enchantment != null) {
