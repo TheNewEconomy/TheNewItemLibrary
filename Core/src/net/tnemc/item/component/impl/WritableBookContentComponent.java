@@ -71,7 +71,7 @@ public abstract class WritableBookContentComponent<I extends AbstractItemStack<T
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     pages.clear();
     pages.addAll(json.getStringList("pages"));
   }

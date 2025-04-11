@@ -62,7 +62,7 @@ public abstract class RarityComponent<I extends AbstractItemStack<T>, T> impleme
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     rarity = json.getString("rarity");
   }
 

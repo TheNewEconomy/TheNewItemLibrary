@@ -1,4 +1,5 @@
-name: TNIL Example
+name: TNIL-Example
+description: 'An example usage of the revamped TNIL platform.'
 version: '0.1.2.0'
 main: net.tnemc.item.example.Example
 api-version: '1.20'

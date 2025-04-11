@@ -47,6 +47,7 @@ public abstract class ModelDataOldComponent<I extends AbstractItemStack<T>, T> i
 
   /**
    * @return the type of component this is.
+   * @since 0.2.0.0
    */
   @Override
   public String identifier() {
@@ -57,6 +58,7 @@ public abstract class ModelDataOldComponent<I extends AbstractItemStack<T>, T> i
    * Converts this component's data to a JSON object.
    *
    * @return The JSONObject representing this component's data.
+   * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
@@ -70,9 +72,10 @@ public abstract class ModelDataOldComponent<I extends AbstractItemStack<T>, T> i
    *
    * @param json      The JSONHelper instance of the json data.
    * @param platform  The ItemPlatform instance.
+   * @since 0.2.0.0
    */
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     this.modelData = json.getInteger("modelData");
   }
 
@@ -82,6 +85,7 @@ public abstract class ModelDataOldComponent<I extends AbstractItemStack<T>, T> i
    *
    * @param component The component to compare.
    * @return True if similar, otherwise false.
+   * @since 0.2.0.0
    */
   @Override
   public boolean equals(final SerialComponent<I, T> component) {

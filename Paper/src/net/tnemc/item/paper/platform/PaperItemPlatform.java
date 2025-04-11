@@ -90,6 +90,11 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
     super();
   }
 
+  @Override
+  public PaperItemStack createStack() {
+    return new PaperItemStack();
+  }
+
   public static PaperItemPlatform instance() {
 
     final PaperItemPlatform result = instance;
@@ -109,6 +114,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
 
   /**
    * @return the version that is being used currently
+   * @since 0.2.0.0
    */
   @Override
   public String version() {
@@ -158,6 +164,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
    * Retrieves the default provider for the item stack comparison.
    *
    * @return the default provider for the item stack comparison.
+   * @since 0.2.0.0
    */
   @Override
   public @NotNull ItemProvider<ItemStack> defaultProvider() {
@@ -169,6 +176,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
    * Retrieves the identifier of the default provider for the item stack comparison.
    *
    * @return The identifier of the default provider for the item stack comparison.
+   * @since 0.2.0.0
    */
   @Override
   public @NotNull String defaultProviderIdentifier() {
@@ -182,6 +190,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
    * @param locale the locale to convert
    *
    * @return the converted locale of type I
+   * @since 0.2.0.0
    */
   @Override
   public PaperItemStack locale(final ItemStack locale) {
@@ -495,6 +504,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
    * @param object the JSON object to deserialize
    *
    * @return an initialized AbstractItemStack object
+   * @since 0.2.0.0
    */
   @Override
   public Optional<PaperItemStack> initSerialized(final JSONObject object) {

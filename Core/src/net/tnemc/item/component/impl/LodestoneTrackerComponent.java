@@ -87,7 +87,7 @@ public abstract class LodestoneTrackerComponent<I extends AbstractItemStack<T>, 
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     if (json.has("target")) target = json.getString("target");
     if (json.has("pos")) pos = json.getIntArray("pos");
     if (json.has("dimension")) dimension = json.getString("dimension");

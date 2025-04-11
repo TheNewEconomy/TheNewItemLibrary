@@ -56,7 +56,7 @@ public abstract class HideAdditionalTooltipComponent<I extends AbstractItemStack
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     // No data to read since this component has no fields
   }
 

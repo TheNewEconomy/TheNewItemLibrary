@@ -50,7 +50,7 @@ public abstract class UnbreakableComponent<I extends AbstractItemStack<T>, T> im
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
   }
 
   @Override

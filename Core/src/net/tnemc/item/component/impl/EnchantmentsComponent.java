@@ -72,7 +72,7 @@ public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> i
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     levels.clear();
 
     final JSONArray enchantmentsArray = (JSONArray) json.getObject().get("enchantments");

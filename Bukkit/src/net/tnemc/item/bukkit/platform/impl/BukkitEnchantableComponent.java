@@ -47,6 +47,7 @@ public class BukkitEnchantableComponent extends EnchantableComponent<BukkitItemS
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
@@ -59,6 +60,7 @@ public class BukkitEnchantableComponent extends EnchantableComponent<BukkitItemS
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
@@ -82,6 +84,7 @@ public class BukkitEnchantableComponent extends EnchantableComponent<BukkitItemS
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   * @since 0.2.0.0
    */
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
@@ -102,6 +105,7 @@ public class BukkitEnchantableComponent extends EnchantableComponent<BukkitItemS
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {

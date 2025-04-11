@@ -57,19 +57,23 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * ItemPlatform
  *
+ * @param <I> The implementation's instance of {@link AbstractItemStack}
+ * @param <S> The implementation's instance of item stacks.
+ * @param <U> The implementation's instace of inventories.
+ *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
+public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
   private final Map<String, Class<? extends PersistentDataType<?>>> classes = new ConcurrentHashMap<>();
 
-  private final Map<String, ItemProvider<T>> itemProviders = new ConcurrentHashMap<>();
+  private final Map<String, ItemProvider<S>> itemProviders = new ConcurrentHashMap<>();
 
-  protected final Map<String, ItemCheck<T>> checks = new HashMap<>();
-  protected final Map<String, LocaleItemCheck<T>> localeChecks = new HashMap<>();
-  protected final Map<String, ItemApplicator<I, T>> applicators = new HashMap<>();
-  protected final Map<String, ItemSerializer<I, T>> serializers = new HashMap<>();
+  protected final Map<String, ItemCheck<S>> checks = new HashMap<>();
+  protected final Map<String, LocaleItemCheck<S>> localeChecks = new HashMap<>();
+  protected final Map<String, ItemApplicator<I, S>> applicators = new HashMap<>();
+  protected final Map<String, ItemSerializer<I, S>> serializers = new HashMap<>();
 
   protected final Map<String, Class<? extends ComponentEffect>> effects = new HashMap<>();
 
@@ -103,15 +107,31 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
   }
 
   /**
+   * Creates and returns an instance of an item stack.
+   *
+   * @return An instance of the item stack represented by the generic type I.
+   * @since 0.2.0.0
+   */
+  public abstract I createStack();
+
+  /**
    * @return the version that is being used currently
+   * @since 0.2.0.0
    */
   public abstract String version();
 
   /**
    * Adds default configurations or settings to be used by the implementing class.
+   * @since 0.2.0.0
    */
   public abstract void addDefaults();
 
+  /**
+   * Retrieves the platform converter associated with the current item platform.
+   *
+   * @return The {@link PlatformConverter} instance used by the item platform.
+   * @since 0.2.0.0
+   */
   public PlatformConverter converter() {
 
     return converter;
@@ -121,15 +141,25 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * Retrieves the default provider for the item stack comparison.
    *
    * @return the default provider for the item stack comparison.
+   * @since 0.2.0.0
    */
-  public abstract @NotNull ItemProvider<T> defaultProvider();
+  public abstract @NotNull ItemProvider<S> defaultProvider();
 
   /**
    * Retrieves the identifier of the default provider for the item stack comparison.
    *
    * @return The identifier of the default provider for the item stack comparison.
+   * @since 0.2.0.0
    */
   public abstract @NotNull String defaultProviderIdentifier();
+
+  /**
+   * Gets the platform's {@link net.tnemc.item.providers.CalculationsProvider}.
+   *
+   * @return The platform's calcuations provider, represented by the generic type U.
+   * @since 0.2.0.0
+   */
+  public abstract U calculations();
 
   /**
    * Checks if any of the registered item providers are applicable to the given serialized item and item.
@@ -137,10 +167,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @param serialized The serialized item stack to check against.
    * @param item The item to check for applicability.
    * @return True if an item provider is found that applies to the serialized item and item, otherwise false.
+   * @since 0.2.0.0
    */
-  public boolean providerApplies(final AbstractItemStack<? extends T> serialized, final T item) {
+  public boolean providerApplies(final AbstractItemStack<? extends S> serialized, final S item) {
 
-    for(final ItemProvider<T> provider : itemProviders.values()) {
+    for(final ItemProvider<S> provider : itemProviders.values()) {
 
       if(provider.identifier().equalsIgnoreCase(defaultProvider().identifier())) {
         continue;
@@ -158,8 +189,9 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    *
    * @param itemProvider The name of the ItemProvider to retrieve.
    * @return The ItemProvider associated with the itemProvider name, or the default provider if not found.
+   * @since 0.2.0.0
    */
-  public ItemProvider<T> provider(final String itemProvider) {
+  public ItemProvider<S> provider(final String itemProvider) {
 
     return itemProviders.getOrDefault(itemProvider, defaultProvider());
   }
@@ -168,8 +200,9 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * Adds an ItemProvider to the ItemPlatform.
    *
    * @param provider The ItemProvider to add to the platform
+   * @since 0.2.0.0
    */
-  public void addItemProvider(final ItemProvider<T> provider) {
+  public void addItemProvider(final ItemProvider<S> provider) {
 
     itemProviders.put(provider.identifier(), provider);
   }
@@ -179,6 +212,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    *
    * @param identifier The identifier for the persistent data type.
    * @param type       The class representing the persistent data type.
+   * @since 0.2.0.0
    */
   public void addPersistentDataType(final String identifier, @NotNull final Class<? extends PersistentDataType<?>> type) {
 
@@ -195,6 +229,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * deserializer.
    *
    * @param object the object to add.
+   * @since 0.2.0.0
    */
   public void addMulti(@NotNull final Object object) {
 
@@ -209,10 +244,10 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
 
         if(check instanceof final LocaleItemCheck<?> localeItemCheck) {
 
-          localeChecks.put(localeItemCheck.identifier(), (LocaleItemCheck<T>)localeItemCheck);
+          localeChecks.put(localeItemCheck.identifier(), (LocaleItemCheck<S>)localeItemCheck);
         } else {
 
-          checks.put(check.identifier(), (ItemCheck<T>)check);
+          checks.put(check.identifier(), (ItemCheck<S>)check);
         }
       } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
@@ -229,7 +264,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
           return;
         }
 
-        applicators.put(applicator.identifier(), (ItemApplicator<I, T>)applicator);
+        applicators.put(applicator.identifier(), (ItemApplicator<I, S>)applicator);
       } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
@@ -245,7 +280,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
           return;
         }
 
-        serializers.put(serializer.identifier(), (ItemSerializer<I, T>)serializer);
+        serializers.put(serializer.identifier(), (ItemSerializer<I, S>)serializer);
       } catch(final Exception ignore) {
         //Just in case it passes the instance check, but the Generic is
         //incorrect for w.e reason, we want to fail safely.
@@ -258,29 +293,33 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    *
    * @param locale the locale to convert
    * @return the converted locale of type I
+   * @since 0.2.0.0
    */
-  public abstract I locale(final T locale);
+  public abstract I locale(final S locale);
 
   /**
    * @param check the {@link ItemCheck check} to add.
+   * @since 0.2.0.0
    */
-  public void addCheck(@NotNull final ItemCheck<T> check) {
+  public void addCheck(@NotNull final ItemCheck<S> check) {
 
     checks.put(check.identifier(), check);
   }
 
   /**
    * @param applicator the applicator to add
+   * @since 0.2.0.0
    */
-  public void addApplicator(@NotNull final ItemApplicator<I, T> applicator) {
+  public void addApplicator(@NotNull final ItemApplicator<I, S> applicator) {
 
     applicators.put(applicator.identifier(), applicator);
   }
 
   /**
    * @param serializer the deserializer to add
+   * @since 0.2.0.0
    */
-  public void addSerializer(@NotNull final ItemSerializer<I, T> serializer) {
+  public void addSerializer(@NotNull final ItemSerializer<I, S> serializer) {
 
     serializers.put(serializer.identifier(), serializer);
   }
@@ -289,6 +328,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * Adds a ReviveEffect to the reviveEffects map.
    *
    * @param effect The ReviveEffect instance to add. Must not be null.
+   * @since 0.2.0.0
    */
   public void addEffect(@NotNull final ComponentEffect effect) {
 
@@ -307,12 +347,13 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    *                       disabled for the check.
    *
    * @return True if the check passes, otherwise false.
+   * @since 0.2.0.0
    */
-  public boolean check(@NotNull final T original, @NotNull final T check, @NotNull final String... disabledChecks) {
+  public boolean check(@NotNull final S original, @NotNull final S check, @NotNull final String... disabledChecks) {
 
     final List<String> disabled = Arrays.asList(disabledChecks);
 
-    for(final LocaleItemCheck<T> localeCheck : localeChecks.values()) {
+    for(final LocaleItemCheck<S> localeCheck : localeChecks.values()) {
 
       if(disabled.contains(localeCheck.identifier())) {
         continue;
@@ -338,8 +379,9 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @param order    the order of the checks to run for the comparison
    *
    * @return True if the check passes, otherwise false.
+   * @since 0.2.0.0
    */
-  public boolean checkOrder(@NotNull final T original, @NotNull final T check, @NotNull final String... order) {
+  public boolean checkOrder(@NotNull final S original, @NotNull final S check, @NotNull final String... order) {
 
     for(final String id : order) {
 
@@ -348,7 +390,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
       }
 
 
-      final LocaleItemCheck<T> localeCheck = localeChecks.get(id);
+      final LocaleItemCheck<S> localeCheck = localeChecks.get(id);
       if(!localeCheck.enabled(version())) {
         continue;
       }
@@ -370,11 +412,12 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    *                       disabled for the check.
    *
    * @return True if the check passes, otherwise false.
+   * @since 0.2.0.0
    */
   public boolean check(@NotNull final I original, @NotNull final I check, final String... disabledChecks) {
 
     final List<String> disabled = Arrays.asList(disabledChecks);
-    for(final ItemCheck<T> checkItem : checks.values()) {
+    for(final ItemCheck<S> checkItem : checks.values()) {
 
       if(disabled.contains(checkItem.identifier())) {
         continue;
@@ -403,6 +446,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @param order    the order of the checks to run for the comparison
    *
    * @return True if the check passes, otherwise false.
+   * @since 0.2.0.0
    */
   public boolean checkOrder(@NotNull final I original, @NotNull final I check, @NotNull final String... order) {
 
@@ -412,7 +456,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
         continue;
       }
 
-      final ItemCheck<T> checkItem = checks.get(id);
+      final ItemCheck<S> checkItem = checks.get(id);
 
       if(!checkItem.enabled(version())) {
         continue;
@@ -436,10 +480,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @param item       the locale itemstack object to apply the applications to
    *
    * @return the updated item stack after applying the applicators
+   * @since 0.2.0.0
    */
-  public T apply(@NotNull final I serialized, @NotNull T item) {
+  public S apply(@NotNull final I serialized, @NotNull S item) {
 
-    for(final ItemApplicator<I, T> applicator : applicators.values()) {
+    for(final ItemApplicator<I, S> applicator : applicators.values()) {
 
       if(applicator.enabled(version())) {
 
@@ -456,10 +501,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @param serialized the serialized item stack we should use to apply this serializer to
    *
    * @return the updated serialized item.
+   * @since 0.2.0.0
    */
-  public I serializer(@NotNull final T item, @NotNull I serialized) {
+  public I serializer(@NotNull final S item, @NotNull I serialized) {
 
-    for(final ItemSerializer<I, T> serializer : serializers.values()) {
+    for(final ItemSerializer<I, S> serializer : serializers.values()) {
       if(serializer.enabled(version())) {
         serialized = serializer.serialize(item, serialized);
       }
@@ -473,6 +519,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<T>, T> {
    * @param object the JSON object to deserialize
    *
    * @return an initialized AbstractItemStack object
+   * @since 0.2.0.0
    */
   public abstract Optional<I> initSerialized(final JSONObject object);
 

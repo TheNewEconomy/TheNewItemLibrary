@@ -67,7 +67,7 @@ public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> impl
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     rgb = json.getInteger("rgb");
   }
 

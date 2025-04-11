@@ -77,6 +77,11 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     super();
   }
 
+  @Override
+  public BukkitItemStack createStack() {
+    return new BukkitItemStack();
+  }
+
   public static BukkitItemPlatform instance() {
 
     final BukkitItemPlatform result = instance;
@@ -96,6 +101,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
 
   /**
    * @return the version that is being used currently
+   * @since 0.2.0.0
    */
   @Override
   public String version() {
@@ -128,6 +134,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
    * Retrieves the default provider for the item stack comparison.
    *
    * @return the default provider for the item stack comparison.
+   * @since 0.2.0.0
    */
   @Override
   public @NotNull ItemProvider<ItemStack> defaultProvider() {
@@ -139,6 +146,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
    * Retrieves the identifier of the default provider for the item stack comparison.
    *
    * @return The identifier of the default provider for the item stack comparison.
+   * @since 0.2.0.0
    */
   @Override
   public @NotNull String defaultProviderIdentifier() {
@@ -152,6 +160,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
    * @param locale the locale to convert
    *
    * @return the converted locale of type I
+   * @since 0.2.0.0
    */
   @Override
   public BukkitItemStack locale(final ItemStack locale) {
@@ -450,6 +459,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
    * @param object the JSON object to deserialize
    *
    * @return an initialized AbstractItemStack object
+   * @since 0.2.0.0
    */
   @Override
   public Optional<BukkitItemStack> initSerialized(final JSONObject object) {

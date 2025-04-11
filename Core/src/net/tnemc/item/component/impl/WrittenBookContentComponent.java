@@ -106,7 +106,7 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     pages.clear();
     pages.addAll(json.getStringList("pages"));
     if (json.has("title")) title = json.getString("title");

@@ -78,7 +78,7 @@ public abstract class FireworksComponent<I extends AbstractItemStack<T>, T> impl
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     explosions.clear();
 
     final JSONArray explosionsArray = (JSONArray) json.getObject().get("explosions");

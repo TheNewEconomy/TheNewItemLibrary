@@ -76,7 +76,7 @@ public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
 
     effects.clear();
     final JSONArray effectsArray = (JSONArray) json.getObject().get("custom_effects");

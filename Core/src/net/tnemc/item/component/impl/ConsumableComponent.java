@@ -113,7 +113,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     consumeSeconds = json.getFloat("consume_seconds");
     animation = json.getString("animation");
     sound = json.getString("sound");

@@ -61,7 +61,7 @@ public abstract class RepairCostComponent<I extends AbstractItemStack<T>, T> imp
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     repairCost = json.getInteger("repair_cost");
   }
 

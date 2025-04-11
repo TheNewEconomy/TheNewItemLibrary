@@ -61,7 +61,7 @@ public abstract class MaxStackSizeComponent<I extends AbstractItemStack<T>, T> i
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     maxStackSize = json.getInteger("max_stack_size");
   }
 

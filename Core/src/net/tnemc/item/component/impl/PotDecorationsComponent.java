@@ -71,7 +71,7 @@ public abstract class PotDecorationsComponent<I extends AbstractItemStack<T>, T>
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     decorations.clear();
     decorations.addAll(json.getStringList("decorations"));
   }

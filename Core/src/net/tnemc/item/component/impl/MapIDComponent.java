@@ -60,7 +60,7 @@ public abstract class MapIDComponent<I extends AbstractItemStack<T>, T> implemen
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     mapId = json.getInteger("map_id");
   }
 

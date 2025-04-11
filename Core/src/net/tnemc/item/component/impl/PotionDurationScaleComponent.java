@@ -49,6 +49,7 @@ public abstract class PotionDurationScaleComponent<I extends AbstractItemStack<T
 
   /**
    * @return the type of component this is.
+   * @since 0.2.0.0
    */
   @Override
   public String identifier() {
@@ -60,6 +61,7 @@ public abstract class PotionDurationScaleComponent<I extends AbstractItemStack<T
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
+   * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
@@ -69,7 +71,7 @@ public abstract class PotionDurationScaleComponent<I extends AbstractItemStack<T
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     potionDuration = json.getFloat("potion_duration");
   }
 

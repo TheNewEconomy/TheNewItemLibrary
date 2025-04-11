@@ -60,7 +60,7 @@ public abstract class MapColorComponent<I extends AbstractItemStack<T>, T> imple
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     mapColor = json.getInteger("map_color");
   }
 

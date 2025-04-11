@@ -60,7 +60,7 @@ public abstract class OminousBottleAmplifierComponent<I extends AbstractItemStac
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     amplifier = json.getInteger("amplifier");
   }
 

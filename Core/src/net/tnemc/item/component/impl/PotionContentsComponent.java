@@ -108,7 +108,7 @@ public abstract class PotionContentsComponent<I extends AbstractItemStack<T>, T>
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     potionId = json.getString("potion");
     customColor = json.getInteger("custom_color");
     customName = json.getString("custom_name");

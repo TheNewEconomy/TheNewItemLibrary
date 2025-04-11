@@ -67,7 +67,7 @@ public abstract class FireworkExplosionComponent<I extends AbstractItemStack<T>,
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     if (json.has("explosion")) {
       explosion.readJSON(json.getHelper("explosion"));
     }

@@ -60,7 +60,7 @@ public abstract class ItemModelComponent<I extends AbstractItemStack<T>, T> impl
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     model = json.getString("model");
   }
 

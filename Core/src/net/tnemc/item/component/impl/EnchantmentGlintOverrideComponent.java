@@ -60,7 +60,7 @@ public abstract class EnchantmentGlintOverrideComponent<I extends AbstractItemSt
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     glintOverride = json.getBoolean("enchantment_glint_override");
   }
 

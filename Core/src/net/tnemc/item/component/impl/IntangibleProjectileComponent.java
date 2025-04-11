@@ -51,7 +51,7 @@ public abstract class IntangibleProjectileComponent<I extends AbstractItemStack<
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     // Nothing to read since the component does not contain additional data
   }
 

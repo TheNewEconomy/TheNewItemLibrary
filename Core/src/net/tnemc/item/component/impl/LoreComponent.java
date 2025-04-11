@@ -77,7 +77,7 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     lore.clear();
 
     for(final String str : json.getStringList("lore")) {

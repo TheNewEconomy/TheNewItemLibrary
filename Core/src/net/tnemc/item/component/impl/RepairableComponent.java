@@ -71,7 +71,7 @@ public abstract class RepairableComponent<I extends AbstractItemStack<T>, T> imp
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     repairItems.clear();
     repairItems.addAll(json.getStringList("items"));
   }

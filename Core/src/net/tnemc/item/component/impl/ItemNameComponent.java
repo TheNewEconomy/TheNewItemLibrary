@@ -62,7 +62,7 @@ public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> imple
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     itemName = LegacyComponentSerializer.legacySection().deserialize(json.getString("item_name"));
   }
 

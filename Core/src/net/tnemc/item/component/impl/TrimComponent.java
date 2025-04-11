@@ -63,7 +63,7 @@ public abstract class TrimComponent<I extends AbstractItemStack<T>, T> implement
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     pattern = json.getString("pattern");
     material = json.getString("material");
   }

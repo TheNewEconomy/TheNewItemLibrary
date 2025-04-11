@@ -61,7 +61,7 @@ public abstract class TooltipStyleComponent<I extends AbstractItemStack<T>, T> i
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     style = json.getString("style");
   }
 

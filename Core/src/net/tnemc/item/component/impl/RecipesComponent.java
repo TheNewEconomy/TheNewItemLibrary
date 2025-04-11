@@ -71,7 +71,7 @@ public abstract class RecipesComponent<I extends AbstractItemStack<T>, T> implem
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     recipes.clear();
     recipes.addAll(json.getStringList("recipes"));
   }

@@ -69,7 +69,7 @@ public abstract class UseCooldownComponent<I extends AbstractItemStack<T>, T> im
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     seconds = json.getFloat("seconds");
     cooldownGroup = json.getString("cooldown_group");
   }

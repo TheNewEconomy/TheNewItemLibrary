@@ -104,7 +104,7 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     noAI = json.getBoolean("NoAI");
     silent = json.getBoolean("Silent");
     noGravity = json.getBoolean("NoGravity");

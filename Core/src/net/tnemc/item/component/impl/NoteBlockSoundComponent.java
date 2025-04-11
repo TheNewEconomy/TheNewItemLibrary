@@ -60,7 +60,7 @@ public abstract class NoteBlockSoundComponent<I extends AbstractItemStack<T>, T>
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     soundId = json.getString("note_block_sound");
   }
 

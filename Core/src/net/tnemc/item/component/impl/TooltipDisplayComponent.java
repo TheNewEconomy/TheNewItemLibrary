@@ -85,7 +85,7 @@ public abstract class TooltipDisplayComponent<I extends AbstractItemStack<T>, T>
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     hideTooltip = json.getBoolean("hideTooltip");
 
     hiddenComponents.clear();
