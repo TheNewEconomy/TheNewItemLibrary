@@ -8,14 +8,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Example extends JavaPlugin {
 
-  ItemPlatform<?, ?> platform;
+  ItemPlatform<?, ?, ?> platform;
   AbstractItemStack<?> item;
 
   @Override
   public void onEnable() {
 
     this.platform = BukkitItemPlatform.instance();
-    this.platform.ca
     this.item = this.build();
   }
 

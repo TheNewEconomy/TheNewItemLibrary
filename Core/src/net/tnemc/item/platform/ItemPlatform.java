@@ -43,6 +43,7 @@ import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.check.LocaleItemCheck;
 import net.tnemc.item.platform.conversion.PlatformConverter;
 import net.tnemc.item.platform.serialize.ItemSerializer;
+import net.tnemc.item.providers.CalculationsProvider;
 import net.tnemc.item.providers.ItemProvider;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
@@ -154,12 +155,12 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   public abstract @NotNull String defaultProviderIdentifier();
 
   /**
-   * Gets the platform's {@link net.tnemc.item.providers.CalculationsProvider}.
+   * Provides access to the calculations provider for performing various platform-specific operations.
    *
-   * @return The platform's calcuations provider, represented by the generic type U.
+   * @return An instance of {@link CalculationsProvider} that handles calculations related to the item platform.
    * @since 0.2.0.0
    */
-  public abstract U calculations();
+  public abstract CalculationsProvider<I, S, U> calculations();
 
   /**
    * Checks if any of the registered item providers are applicable to the given serialized item and item.

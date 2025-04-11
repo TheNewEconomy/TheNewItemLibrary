@@ -21,6 +21,7 @@ package net.tnemc.item.paper.platform;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.paper.PaperCalculationsProvider;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.VanillaProvider;
 import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;
@@ -48,6 +49,7 @@ import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldProfileComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldShulkerColorComponent;
 import net.tnemc.item.platform.ItemPlatform;
+import net.tnemc.item.providers.CalculationsProvider;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -57,10 +59,7 @@ import org.bukkit.Registry;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.EquipmentSlotGroup;
-import org.bukkit.inventory.ItemRarity;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
@@ -77,13 +76,14 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
+public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, Inventory> {
 
   private static volatile PaperItemPlatform instance;
 
   //public static final PaperItemPlatform PLATFORM = new PaperItemPlatform();
 
   protected final VanillaProvider defaultProvider = new VanillaProvider();
+  protected final PaperCalculationsProvider calculationsProvider = new PaperCalculationsProvider();
 
   private PaperItemPlatform() {
 
@@ -182,6 +182,11 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
   public @NotNull String defaultProviderIdentifier() {
 
     return defaultProvider.identifier();
+  }
+
+  @Override
+  public PaperCalculationsProvider calculations() {
+    return calculationsProvider;
   }
 
   /**

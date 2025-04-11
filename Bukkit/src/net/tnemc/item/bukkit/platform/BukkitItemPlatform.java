@@ -19,6 +19,7 @@ package net.tnemc.item.bukkit.platform;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.bukkit.BukkitCalculationsProvider;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.VanillaProvider;
 import net.tnemc.item.bukkit.platform.impl.BukkitBundleComponent;
@@ -35,6 +36,7 @@ import net.tnemc.item.bukkit.platform.impl.BukkitModelDataOldComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitShulkerColorComponent;
 import net.tnemc.item.platform.ItemPlatform;
+import net.tnemc.item.providers.CalculationsProvider;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -44,10 +46,7 @@ import org.bukkit.Registry;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.EquipmentSlotGroup;
-import org.bukkit.inventory.ItemRarity;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
@@ -64,13 +63,14 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack> {
+public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack, Inventory> {
 
   private static volatile BukkitItemPlatform instance;
   //public static final BukkitItemPlatform PLATFORM = new BukkitItemPlatform();
   //TODO: make this an actual singleton setup
 
   protected final VanillaProvider defaultProvider = new VanillaProvider();
+  protected final BukkitCalculationsProvider calculationsProvider = new BukkitCalculationsProvider();
 
   private BukkitItemPlatform() {
 
@@ -152,6 +152,11 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
   public @NotNull String defaultProviderIdentifier() {
 
     return defaultProvider.identifier();
+  }
+
+  @Override
+  public CalculationsProvider<BukkitItemStack, ItemStack, Inventory> calculations() {
+    return calculationsProvider;
   }
 
   /**
