@@ -140,7 +140,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   private int slot = 0;
   private String material;
-  private int amount;
+  private int amount = 1;
   private boolean debug = false;
 
   //item providers
@@ -500,9 +500,10 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    * @param itemProvider the string representing the item provider to be set
    */
   @Override
-  public void setItemProvider(final String itemProvider) {
+  public BukkitItemStack setItemProvider(final String itemProvider) {
     this.itemProvider = itemProvider;
     this.dirty = true;
+    return this;
   }
 
   /**
@@ -522,10 +523,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    * @param providerItemID the unique ID assigned by the provider for the item
    */
   @Override
-  public void setProviderItemID(final String providerItemID) {
+  public BukkitItemStack setProviderItemID(final String providerItemID) {
 
     this.providerItemID = providerItemID;
     this.dirty = true;
+    return this;
   }
 
   /**

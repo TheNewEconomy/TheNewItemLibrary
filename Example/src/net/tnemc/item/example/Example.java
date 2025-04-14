@@ -34,7 +34,7 @@ public class Example extends JavaPlugin {
 
   private BukkitItemStack build() {
     return this.platform.createStack().material("gold_ingot")
-            .amount(1)
+            .amount(10)
             .itemName(MiniMessage.miniMessage().deserialize("<gold>Test"))
             .lore(Arrays.asList(
                     MiniMessage.miniMessage().deserialize("<gradient:#5e4fa2:#f79459>This is a test item from the new TNIL library"),

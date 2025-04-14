@@ -413,7 +413,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param itemProvider the string representing the item provider to be set
    */
-  void setItemProvider(final String itemProvider);
+  AbstractItemStack<T> setItemProvider(final String itemProvider);
 
   /**
    * Retrieves the provider item ID associated with the current object.
@@ -427,7 +427,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    *
    * @param providerItemID the unique ID assigned by the provider for the item
    */
-  void setProviderItemID(final String providerItemID);
+  AbstractItemStack<T> setProviderItemID(final String providerItemID);
 
   /**
    * This method is used to return an ItemProvider object.
