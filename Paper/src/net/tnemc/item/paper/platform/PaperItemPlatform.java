@@ -113,6 +113,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       if(instance == null) {
 
         instance = new PaperItemPlatform();
+        instance.addDefaults();
       }
       return instance;
     }

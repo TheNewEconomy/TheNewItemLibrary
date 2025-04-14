@@ -71,6 +71,7 @@ public class BukkitItemNameComponent extends ItemNameComponent<BukkitItemStack, 
     if(meta != null && componentOptional.isPresent()) {
 
       meta.setItemName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().itemName()));
+      item.setItemMeta(meta);
     }
     return item;
   }

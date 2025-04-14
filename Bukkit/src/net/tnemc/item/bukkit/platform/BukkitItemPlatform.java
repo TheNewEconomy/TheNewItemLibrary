@@ -98,6 +98,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
       if(instance == null) {
 
         instance = new BukkitItemPlatform();
+        instance.addDefaults();
       }
       return instance;
     }
@@ -139,6 +140,8 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
     addItemProvider(new OraxenProvider());
     addItemProvider(new SlimefunProvider());
     addItemProvider(defaultProvider);
+
+    System.out.println("Item Providers: " + itemProviders.size());
 
   }
 

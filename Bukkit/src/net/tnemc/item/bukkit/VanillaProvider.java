@@ -76,17 +76,23 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
   @Override
   public ItemStack locale(final AbstractItemStack<? extends ItemStack> original, final int amount) {
 
+    System.out.println("instanceof: " + (original instanceof BukkitItemStack));
+
     if(original instanceof final BukkitItemStack bukkit) {
 
       if(!bukkit.isDirty()) {
         return bukkit.cacheLocale();
       }
 
+      System.out.println("Material: " + bukkit.material());
+
       Material material = null;
 
       try {
         final NamespacedKey key = NamespacedKey.fromString(bukkit.material());
         if(key != null) {
+
+          System.out.println("Key is not null");
 
           material = Registry.MATERIAL.get(key);
         }
@@ -96,6 +102,7 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
 
       if(material == null) {
 
+        System.out.println("Material is null");
         return null;
       }
       ItemStack stack = new ItemStack(material, amount);

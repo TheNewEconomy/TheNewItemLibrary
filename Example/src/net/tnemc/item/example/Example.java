@@ -1,11 +1,14 @@
 package net.tnemc.item.example;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.tnemc.item.example.listeners.PlayerJoinListener;
+
+import java.util.Arrays;
 
 public class Example extends JavaPlugin {
 
@@ -30,7 +33,14 @@ public class Example extends JavaPlugin {
   }
 
   private BukkitItemStack build() {
-    return this.platform.createStack().material("GOLD_INGOT").amount(1).itemName(LegacyComponentSerializer.builder().build().deserialize(""));
+    return this.platform.createStack().material("gold_ingot")
+            .amount(1)
+            .itemName(MiniMessage.miniMessage().deserialize("<gold>Test"))
+            .lore(Arrays.asList(
+                    MiniMessage.miniMessage().deserialize("<gradient:#5e4fa2:#f79459>This is a test item from the new TNIL library"),
+                    MiniMessage.miniMessage().deserialize("<gradient:#5e4fa2:#f79459>This currency item can only be stacked to 10")
+                               ))
+            .maxStackSize(10);
   }
 
   public BukkitItemPlatform getPlatform() {

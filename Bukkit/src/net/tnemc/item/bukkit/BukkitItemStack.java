@@ -26,13 +26,17 @@ import net.tnemc.item.bukkit.platform.impl.BukkitContainerComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitCustomNameComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitDamageComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitDyedColorComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitEnchantableComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitEnchantmentsComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemModelComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemNameComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitLoreComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitMaxDamageComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitMaxStackSizeComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitModelDataComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitModelDataOldComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitTooltipStyleComponent;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.BlockPredicate;
@@ -842,6 +846,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchantable(final int value) {
 
+    applyComponent(new BukkitEnchantableComponent(value));
     return this;
   }
 
@@ -857,7 +862,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public BukkitItemStack enchantmentGlintOverride(final boolean glintOverride) {
-
     return this;
   }
 
@@ -1182,6 +1186,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack maxDamage(final int maxDamage) {
 
+    applyComponent(new BukkitMaxDamageComponent(maxDamage));
     return this;
   }
 
@@ -1198,6 +1203,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack maxStackSize(final int maxStackSize) {
 
+    applyComponent(new BukkitMaxStackSizeComponent(maxStackSize));
     return this;
   }
 
@@ -1535,6 +1541,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack tooltipStyle(final String style) {
 
+    applyComponent(new BukkitTooltipStyleComponent(style));
     return this;
   }
 

@@ -67,9 +67,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
-  private final Map<String, Class<? extends PersistentDataType<?>>> classes = new ConcurrentHashMap<>();
+  protected final Map<String, Class<? extends PersistentDataType<?>>> classes = new ConcurrentHashMap<>();
 
-  private final Map<String, ItemProvider<S>> itemProviders = new ConcurrentHashMap<>();
+  protected final Map<String, ItemProvider<S>> itemProviders = new ConcurrentHashMap<>();
 
   protected final Map<String, ItemCheck<S>> checks = new HashMap<>();
   protected final Map<String, LocaleItemCheck<S>> localeChecks = new HashMap<>();
@@ -487,7 +487,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
     for(final ItemApplicator<I, S> applicator : applicators.values()) {
 
+      System.out.println("Try applicator: " + applicator.identifier());
+
       if(applicator.enabled(version())) {
+
+        System.out.println("Applicator ready to apply");
 
         item = applicator.apply(serialized, item);
       }
