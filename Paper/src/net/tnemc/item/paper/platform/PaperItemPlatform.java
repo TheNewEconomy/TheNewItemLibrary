@@ -21,6 +21,12 @@ package net.tnemc.item.paper.platform;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.bukkitbase.platform.providers.ItemAdderProvider;
+import net.tnemc.item.bukkitbase.platform.providers.MMOItemProvider;
+import net.tnemc.item.bukkitbase.platform.providers.NexoProvider;
+import net.tnemc.item.bukkitbase.platform.providers.NovaProvider;
+import net.tnemc.item.bukkitbase.platform.providers.OraxenProvider;
+import net.tnemc.item.bukkitbase.platform.providers.SlimefunProvider;
 import net.tnemc.item.paper.PaperCalculationsProvider;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.VanillaProvider;
@@ -158,6 +164,14 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       addMulti(new PaperProfileComponent());
       addMulti(new PaperShulkerColorComponent());
     }
+
+    addItemProvider(new ItemAdderProvider());
+    addItemProvider(new MMOItemProvider());
+    addItemProvider(new NexoProvider());
+    addItemProvider(new NovaProvider());
+    addItemProvider(new OraxenProvider());
+    addItemProvider(new SlimefunProvider());
+    addItemProvider(defaultProvider);
   }
 
   /**

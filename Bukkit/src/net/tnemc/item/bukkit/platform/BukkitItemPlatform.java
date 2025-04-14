@@ -35,6 +35,12 @@ import net.tnemc.item.bukkit.platform.impl.BukkitModelDataComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitModelDataOldComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitShulkerColorComponent;
+import net.tnemc.item.bukkitbase.platform.providers.ItemAdderProvider;
+import net.tnemc.item.bukkitbase.platform.providers.MMOItemProvider;
+import net.tnemc.item.bukkitbase.platform.providers.NexoProvider;
+import net.tnemc.item.bukkitbase.platform.providers.NovaProvider;
+import net.tnemc.item.bukkitbase.platform.providers.OraxenProvider;
+import net.tnemc.item.bukkitbase.platform.providers.SlimefunProvider;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.CalculationsProvider;
 import net.tnemc.item.providers.ItemProvider;
@@ -66,8 +72,6 @@ import java.util.Optional;
 public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack, Inventory> {
 
   private static volatile BukkitItemPlatform instance;
-  //public static final BukkitItemPlatform PLATFORM = new BukkitItemPlatform();
-  //TODO: make this an actual singleton setup
 
   protected final VanillaProvider defaultProvider = new VanillaProvider();
   protected final BukkitCalculationsProvider calculationsProvider = new BukkitCalculationsProvider();
@@ -128,6 +132,14 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
     addMulti(new BukkitProfileComponent());
     addMulti(new BukkitShulkerColorComponent());
 
+    addItemProvider(new ItemAdderProvider());
+    addItemProvider(new MMOItemProvider());
+    addItemProvider(new NexoProvider());
+    addItemProvider(new NovaProvider());
+    addItemProvider(new OraxenProvider());
+    addItemProvider(new SlimefunProvider());
+    addItemProvider(defaultProvider);
+
   }
 
   /**
@@ -155,7 +167,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
   }
 
   @Override
-  public CalculationsProvider<BukkitItemStack, ItemStack, Inventory> calculations() {
+  public BukkitCalculationsProvider calculations() {
     return calculationsProvider;
   }
 

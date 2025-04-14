@@ -215,6 +215,8 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     for(final BukkitItemStack item : items) {
 
+      System.out.println("Item Provider: " + item.provider().identifier());
+
       final Map<Integer, ItemStack> left = inventory.addItem(item.provider().locale(item));
       if(left.isEmpty()) {
         continue;
