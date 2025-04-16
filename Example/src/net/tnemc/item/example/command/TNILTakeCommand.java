@@ -17,12 +17,15 @@ package net.tnemc.item.example.command;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import net.tnemc.item.example.Example;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Collections;
 
 /**
  * TNILTakeCommand
@@ -52,6 +55,12 @@ public class TNILTakeCommand implements CommandExecutor {
       sender.sendMessage(ChatColor.RED + "Invalid number.");
       return true;
     }
+
+    Example.instance().getPlatform().calculations().takeItems(Collections.singletonList(Example.instance().getItem().amount(2)), target.getInventory());
+    Example.instance().getPlatform().calculations().takeItems(Collections.singletonList(Example.instance().getItem().amount(2)), target.getEnderChest());
+
+    Example.instance().getPlatform().calculations().takeItems(Collections.singletonList(Example.instance().getNexoItem().amount(2)), target.getInventory());
+    Example.instance().getPlatform().calculations().takeItems(Collections.singletonList(Example.instance().getNexoItem().amount(2)), target.getEnderChest());
     return true;
   }
 }

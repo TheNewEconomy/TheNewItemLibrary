@@ -63,11 +63,11 @@ public class TNILGiveCommand implements CommandExecutor {
 
 
 
-    Example.instance().getPlatform().calculations().giveItems(Collections.singletonList(Example.instance().getItem()), target.getInventory());
-    Example.instance().getPlatform().calculations().giveItems(Collections.singletonList(Example.instance().getItem()), target.getEnderChest());
+    Example.instance().getPlatform().calculations().giveItems(Collections.singletonList(Example.instance().getItem().amount(10)), target.getInventory());
+    Example.instance().getPlatform().calculations().giveItems(Collections.singletonList(Example.instance().getItem().amount(10)), target.getEnderChest());
 
-    Example.instance().getPlatform().calculations().giveItems(Collections.singletonList(Example.instance().getNexoItem()), target.getInventory());
-    Example.instance().getPlatform().calculations().giveItems(Collections.singletonList(Example.instance().getNexoItem()), target.getEnderChest());
+    Example.instance().getPlatform().calculations().giveItems(Collections.singletonList(Example.instance().getNexoItem().amount(10)), target.getInventory());
+    Example.instance().getPlatform().calculations().giveItems(Collections.singletonList(Example.instance().getNexoItem().amount(10)), target.getEnderChest());
 
     sender.sendMessage(ChatColor.GREEN + "Gave " + amount + " TNIL tokens to " + target.getName() + ".");
     return true;

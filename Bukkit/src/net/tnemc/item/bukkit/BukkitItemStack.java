@@ -112,7 +112,9 @@ import net.tnemc.item.component.impl.WrittenBookContentComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.SkullProfile;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -179,9 +181,18 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack of(final ItemStack locale) {
 
     this.localeStack = locale;
-    final NamespacedKey key = locale.getType().getKeyOrNull();
-    if(key != null) {
-      this.material = key.toString();
+
+    try {
+
+      final NamespacedKey key = locale.getType().getKeyOrNull();
+      if(key != null) {
+
+        System.out.println("Key is not null");
+
+        material = key.toString();
+      }
+    } catch(final NoSuchMethodError ignore) {
+      material = locale.getType().getKey().toString();
     }
 
     this.amount = locale.getAmount();
@@ -581,7 +592,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     //Item Provider
     copy.itemProvider = this.itemProvider;
     copy.providerItemID = this.providerItemID;
-
 
     //Mark the clone as dirty
     copy.dirty = true;

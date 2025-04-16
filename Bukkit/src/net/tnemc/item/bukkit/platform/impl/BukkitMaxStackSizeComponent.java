@@ -91,7 +91,7 @@ public class BukkitMaxStackSizeComponent extends MaxStackSizeComponent<BukkitIte
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null) {
+    if(meta != null && item.getItemMeta().hasMaxStackSize()) {
 
       this.maxStackSize = meta.getMaxStackSize();
     }
@@ -111,6 +111,6 @@ public class BukkitMaxStackSizeComponent extends MaxStackSizeComponent<BukkitIte
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.getItemMeta() != null;
+    return item.getItemMeta() != null && item.getItemMeta().hasMaxStackSize();
   }
 }

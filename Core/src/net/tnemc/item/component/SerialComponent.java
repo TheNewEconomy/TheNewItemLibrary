@@ -109,5 +109,5 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    *
    * @return A new {@link SerialComponent} object that is a clone of the current component.
    */
-  SerialComponent<I, T> cloneComponent();
+  //SerialComponent<I, T> cloneComponent();
 }

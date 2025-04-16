@@ -129,16 +129,4 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
 
     return true;
   }
-
-  /**
-   * Clones the current {@link SerialComponent} object. This method creates a deep copy of the
-   * current component, including all its properties and components.
-   *
-   * @return A new {@link SerialComponent} object that is a clone of the current component.
-   */
-  @Override
-  public SerialComponent<BukkitItemStack, ItemStack> cloneComponent() {
-
-    return new BukkitAttributeModifiersComponent(this.modifiers);
-  }
 }
