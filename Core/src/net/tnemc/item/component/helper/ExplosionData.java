@@ -174,4 +174,16 @@ public class ExplosionData {
 
     this.hasTwinkle = hasTwinkle;
   }
+
+  @Override
+  public ExplosionData clone() throws CloneNotSupportedException {
+
+    return new ExplosionData(
+            this.shape,
+            this.hasTrail,
+            this.hasTwinkle,
+            new ArrayList<>(this.colors),
+            new ArrayList<>(this.fadeColors)
+    );
+  }
 }

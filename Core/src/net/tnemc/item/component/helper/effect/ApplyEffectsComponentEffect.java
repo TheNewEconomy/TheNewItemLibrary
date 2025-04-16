@@ -86,4 +86,23 @@ public class ApplyEffectsComponentEffect extends ComponentEffect {
   public int hashCode() {
     return Objects.hash(super.hashCode(), effects);
   }
+
+  @Override
+  public ApplyEffectsComponentEffect clone() {
+
+    final ApplyEffectsComponentEffect copy = new ApplyEffectsComponentEffect();
+    copy.probability(this.probability);
+
+    for(final EffectInstance effect : this.effects) {
+      copy.getEffects().add(new EffectInstance(
+              effect.id(),
+              effect.amplifier(),
+              effect.duration(),
+              effect.showParticles(),
+              effect.ambient(),
+              effect.showIcon()
+      ));
+    }
+    return copy;
+  }
 }

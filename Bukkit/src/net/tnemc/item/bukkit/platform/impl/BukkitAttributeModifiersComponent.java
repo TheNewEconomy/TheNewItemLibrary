@@ -21,6 +21,7 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
+import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.impl.AttributeModifiersComponent;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -127,5 +128,17 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
   public boolean appliesTo(final ItemStack item) {
 
     return true;
+  }
+
+  /**
+   * Clones the current {@link SerialComponent} object. This method creates a deep copy of the
+   * current component, including all its properties and components.
+   *
+   * @return A new {@link SerialComponent} object that is a clone of the current component.
+   */
+  @Override
+  public SerialComponent<BukkitItemStack, ItemStack> cloneComponent() {
+
+    return new BukkitAttributeModifiersComponent(this.modifiers);
   }
 }

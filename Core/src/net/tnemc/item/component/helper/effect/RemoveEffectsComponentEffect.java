@@ -79,4 +79,12 @@ public class RemoveEffectsComponentEffect extends ComponentEffect {
   public int hashCode() {
     return Objects.hash(super.hashCode(), effectIds);
   }
+
+  @Override
+  public RemoveEffectsComponentEffect clone() {
+    final RemoveEffectsComponentEffect copy = new RemoveEffectsComponentEffect();
+    copy.probability(this.probability);
+    copy.getEffectIds().addAll(this.effectIds);
+    return copy;
+  }
 }

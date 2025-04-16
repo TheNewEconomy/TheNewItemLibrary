@@ -131,6 +131,6 @@ public interface ItemProvider<T> extends Identifiable {
    */
   default T locale(final AbstractItemStack<? extends T> original) {
 
-    return locale(original, 1);
+    return locale(original, original.amount());
   }
 }

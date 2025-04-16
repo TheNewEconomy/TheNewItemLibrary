@@ -18,6 +18,8 @@ package net.tnemc.item.component.helper;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import java.util.ArrayList;
+
 /**
  * DamageReduction - Controls how much damage should be blocked in a given attack
  *
@@ -62,5 +64,16 @@ public class DamageReduction {
   public float horizontalBlockingAngle() {
 
     return horizontalBlockingAngle;
+  }
+
+  @Override
+  public DamageReduction clone() throws CloneNotSupportedException {
+
+    return new DamageReduction(
+            this.type,
+            this.base,
+            this.factor,
+            this.horizontalBlockingAngle
+    );
   }
 }

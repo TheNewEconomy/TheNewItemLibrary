@@ -215,12 +215,13 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     for(final BukkitItemStack item : items) {
 
-      System.out.println("Item Provider: " + item.provider().identifier());
+      if(item == null) {
+        continue;
+      }
 
       final Map<Integer, ItemStack> left = inventory.addItem(item.provider().locale(item, item.amount()));
       if(left.isEmpty()) {
 
-        System.out.println("Left is empty");
         continue;
       }
 
@@ -228,7 +229,6 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
         final ItemStack i = entry.getValue();
 
         if(i == null || i.getType() == Material.AIR) {
-          System.out.println("i is null or air");
           continue;
         }
 

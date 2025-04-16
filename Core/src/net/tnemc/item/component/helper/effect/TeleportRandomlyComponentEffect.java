@@ -73,4 +73,12 @@ public class TeleportRandomlyComponentEffect extends ComponentEffect {
   public int hashCode() {
     return Objects.hash(super.hashCode(), diameter);
   }
+
+  @Override
+  public TeleportRandomlyComponentEffect clone() {
+    final TeleportRandomlyComponentEffect copy = new TeleportRandomlyComponentEffect();
+    copy.probability(this.probability);
+    copy.setDiameter(this.getDiameter());
+    return copy;
+  }
 }

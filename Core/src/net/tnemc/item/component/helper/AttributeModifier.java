@@ -88,4 +88,13 @@ public class AttributeModifier {
 
     this.operation = operation;
   }
+
+  @Override
+  public AttributeModifier clone() throws CloneNotSupportedException {
+
+    final AttributeModifier copy = new AttributeModifier(this.type, this.id, this.operation);
+    copy.setAmount(this.amount);
+    copy.setSlot(this.slot);
+    return copy;
+  }
 }

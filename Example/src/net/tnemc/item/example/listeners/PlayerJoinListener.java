@@ -20,11 +20,4 @@ public class PlayerJoinListener implements Listener {
                                                                                                 .setProviderItemID("forest_axe")
                                                                                                 .setItemProvider("nexo")), event.getPlayer().getUniqueId());
   }
-
-  @EventHandler
-  public void onClick(final PlayerInteractEvent event) {
-    Example.instance().getPlatform().calculations().giveItems(Collections.singletonList(Example.instance().getPlatform().createStack().material("paper")
-                                                                                                .setProviderItemID("forest_axe")
-                                                                                                .setItemProvider("nexo")), event.getPlayer().getUniqueId());
-  }
 }

@@ -87,4 +87,13 @@ public class BlockPredicate {
   public int hashCode() {
     return blocks.hashCode() + state.hashCode();
   }
+
+  @Override
+  public BlockPredicate clone() throws CloneNotSupportedException {
+
+    final BlockPredicate copy = new BlockPredicate();
+    copy.blocks.addAll(this.blocks);
+    copy.state.putAll(this.state);
+    return copy;
+  }
 }

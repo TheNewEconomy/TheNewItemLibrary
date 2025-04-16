@@ -115,9 +115,15 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
     final Collection<SpongeItemStack> leftOver = new ArrayList<>();
 
     for(final SpongeItemStack stack : items) {
+
+      if(stack == null) {
+        continue;
+      }
+
       final InventoryTransactionResult result = inventory.offer(stack.locale());
       final List<ItemStackSnapshot> rejected = result.rejectedItems();
-      if(rejected.size() > 0) {
+      if(!rejected.isEmpty()) {
+
         rejected.forEach(snapshot->leftOver.add(new SpongeItemStack().of(snapshot.createStack())));
       }
     }

@@ -552,6 +552,43 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return null;
   }
 
+  @Override
+  public BukkitItemStack clone() {
+    final BukkitItemStack copy = new BukkitItemStack();
+
+    //Basics
+    copy.material = this.material;
+    copy.amount = this.amount;
+    copy.slot = this.slot;
+    copy.debug = this.debug;
+
+    //Flags
+    copy.flags.addAll(this.flags);
+
+    //Components
+    for(final Map.Entry<String, SerialComponent<AbstractItemStack<ItemStack>, ItemStack>> entry : this.components.entrySet()) {
+
+      //TODO: clone components
+      //final SerialComponent<AbstractItemStack<ItemStack>, ItemStack> clonedComponent = entry.getValue().cloneComponent();
+      //copy.components.put(entry.getKey(), clonedComponent);
+    }
+
+    //PersistentData
+    final PersistentDataHolder clonedHolder = new PersistentDataHolder();
+    clonedHolder.getData().putAll(this.holder.getData());
+    copy.applyPersistentHolder(clonedHolder, true);
+
+    //Item Provider
+    copy.itemProvider = this.itemProvider;
+    copy.providerItemID = this.providerItemID;
+
+
+    //Mark the clone as dirty
+    copy.dirty = true;
+
+    return copy;
+  }
+
   /**
    * Updates the attribute modifiers of the item stack.
    *

@@ -102,4 +102,12 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
 
     return !original.components().containsKey(identifier()) && !check.components().containsKey(identifier());
   }
+
+  /**
+   * Clones the current {@link SerialComponent} object.
+   * This method creates a deep copy of the current component, including all its properties and components.
+   *
+   * @return A new {@link SerialComponent} object that is a clone of the current component.
+   */
+  SerialComponent<I, T> cloneComponent();
 }
