@@ -37,13 +37,13 @@ public class TNILTakeCommand implements CommandExecutor {
 
   @Override
   public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
-    if (args.length != 2) {
+    if(args.length != 2) {
       sender.sendMessage(ChatColor.RED + "Usage: /tniltake <player> <amount>");
       return true;
     }
 
     final Player target = Bukkit.getPlayerExact(args[0]);
-    if (target == null) {
+    if(target == null) {
       sender.sendMessage(ChatColor.RED + "Player not found.");
       return true;
     }

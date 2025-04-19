@@ -114,7 +114,7 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
    */
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final ModelDataComponent<?, ?> other)) return false;
+    if(!(component instanceof final ModelDataComponent<?, ?> other)) return false;
     return Objects.equals(this.colours, other.colours) &&
            Objects.equals(this.floats, other.floats) &&
            Objects.equals(this.flags, other.flags) &&

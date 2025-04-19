@@ -75,14 +75,21 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
-    if (json.has("damage")) {
+    if(json.has("damage")) {
       damage = json.getInteger("damage");
     }
   }
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final DamageComponent<?, ?> other)) return false;
+    if(!(component instanceof final DamageComponent<?, ?> other)) {
+
+      System.out.println("mismatch damage component");
+      return false;
+    }
+
+    System.out.println("This damage: " + this.damage);
+    System.out.println("other damage: " + other.damage);
 
     return this.damage == other.damage;
   }

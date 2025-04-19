@@ -78,7 +78,7 @@ public abstract class RepairableComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final RepairableComponent<?, ?> other)) return false;
+    if(!(component instanceof final RepairableComponent<?, ?> other)) return false;
     return Objects.equals(this.repairItems, other.repairItems);
   }
 

@@ -59,7 +59,7 @@ public class RemoveEffectsComponentEffect extends ComponentEffect {
     probability = json.getFloat("probability");
 
     effectIds.clear();
-    if (json.has("effects")) {
+    if(json.has("effects")) {
       effectIds.addAll(json.getStringList("effects"));
     }
   }
@@ -70,7 +70,7 @@ public class RemoveEffectsComponentEffect extends ComponentEffect {
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final RemoveEffectsComponentEffect other)) return false;
+    if(!(obj instanceof final RemoveEffectsComponentEffect other)) return false;
 
     return super.equals(obj) && Objects.equals(this.effectIds, other.effectIds);
   }

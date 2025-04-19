@@ -95,11 +95,23 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    */
   @Override
   default boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
+
+    System.out.println("Checking " + identifier());
+
+    System.out.println("Original contains: " + original.components().containsKey(identifier()));
+    System.out.println("check contains: " + check.components().containsKey(identifier()));
+
     if(original.components().containsKey(identifier()) && check.components().containsKey(identifier())) {
+      System.out.println("Both stacks contain the check, doing equals");
+
+      final SerialComponent<?, ?> originalComponent = original.components().get(identifier());
+      final SerialComponent<?, ?> checkComponent = check.components().get(identifier());
+      //return originalComponent.equals(checkComponent);
 
       return original.components().get(identifier()).equals(check.components().get(identifier()));
     }
 
+    System.out.println("Both components do not contain the check, doing check to make sure neither have it.");
     return !original.components().containsKey(identifier()) && !check.components().containsKey(identifier());
   }
 

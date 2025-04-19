@@ -78,7 +78,7 @@ public abstract class RecipesComponent<I extends AbstractItemStack<T>, T> implem
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final RecipesComponent<?, ?> other)) return false;
+    if(!(component instanceof final RecipesComponent<?, ?> other)) return false;
     return Objects.equals(this.recipes, other.recipes);
   }
 

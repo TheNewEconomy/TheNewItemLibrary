@@ -90,7 +90,7 @@ public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final SuspiciousStewEffectsComponent<?, ?> other)) return false;
+    if(!(component instanceof final SuspiciousStewEffectsComponent<?, ?> other)) return false;
     return Objects.equals(this.effects, other.effects);
   }
 

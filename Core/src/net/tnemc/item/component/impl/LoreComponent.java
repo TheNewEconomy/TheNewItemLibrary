@@ -87,7 +87,7 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final LoreComponent<?, ?> other)) return false;
+    if(!(component instanceof final LoreComponent<?, ?> other)) return false;
     return Objects.equals(this.lore, other.lore);
   }
 

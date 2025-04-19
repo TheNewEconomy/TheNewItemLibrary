@@ -69,7 +69,7 @@ public class BlockPredicate {
 
     state.clear();
     final JSONObject stateJson = json.getJSON("state");
-    if (stateJson != null) {
+    if(stateJson != null) {
       for (final Object key : stateJson.keySet()) {
         state.put(key.toString(), stateJson.get(key).toString());
       }
@@ -78,7 +78,7 @@ public class BlockPredicate {
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final BlockPredicate other)) return false;
+    if(!(obj instanceof final BlockPredicate other)) return false;
 
     return blocks.equals(other.blocks) && state.equals(other.state);
   }

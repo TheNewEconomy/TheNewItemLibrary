@@ -66,7 +66,7 @@ public abstract class OminousBottleAmplifierComponent<I extends AbstractItemStac
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final OminousBottleAmplifierComponent<?, ?> other)) return false;
+    if(!(component instanceof final OminousBottleAmplifierComponent<?, ?> other)) return false;
     return this.amplifier == other.amplifier;
   }
 

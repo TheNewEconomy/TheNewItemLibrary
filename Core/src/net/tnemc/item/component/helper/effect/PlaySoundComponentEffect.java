@@ -66,7 +66,7 @@ public class PlaySoundComponentEffect extends ComponentEffect {
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final PlaySoundComponentEffect other)) return false;
+    if(!(obj instanceof final PlaySoundComponentEffect other)) return false;
 
     return super.equals(obj) && Objects.equals(this.sound, other.sound);
   }

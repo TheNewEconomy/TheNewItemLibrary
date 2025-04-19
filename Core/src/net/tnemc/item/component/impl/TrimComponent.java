@@ -70,7 +70,7 @@ public abstract class TrimComponent<I extends AbstractItemStack<T>, T> implement
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final TrimComponent<?, ?> other)) return false;
+    if(!(component instanceof final TrimComponent<?, ?> other)) return false;
     return Objects.equals(this.pattern, other.pattern) &&
            Objects.equals(this.material, other.material);
   }

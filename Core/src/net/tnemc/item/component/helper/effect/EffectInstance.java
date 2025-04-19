@@ -81,7 +81,7 @@ public class EffectInstance {
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final EffectInstance other)) return false;
+    if(!(obj instanceof final EffectInstance other)) return false;
 
     return Objects.equals(this.id, other.id) &&
            this.amplifier == other.amplifier &&

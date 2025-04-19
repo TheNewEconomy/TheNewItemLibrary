@@ -66,7 +66,7 @@ public abstract class MapColorComponent<I extends AbstractItemStack<T>, T> imple
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final MapColorComponent<?, ?> other)) return false;
+    if(!(component instanceof final MapColorComponent<?, ?> other)) return false;
     return this.mapColor == other.mapColor;
   }
 

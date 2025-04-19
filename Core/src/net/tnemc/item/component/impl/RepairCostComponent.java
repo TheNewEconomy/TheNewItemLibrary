@@ -67,7 +67,7 @@ public abstract class RepairCostComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final RepairCostComponent<?, ?> other)) return false;
+    if(!(component instanceof final RepairCostComponent<?, ?> other)) return false;
     return this.repairCost == other.repairCost;
   }
 

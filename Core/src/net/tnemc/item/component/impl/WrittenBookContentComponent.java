@@ -109,15 +109,15 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     pages.clear();
     pages.addAll(json.getStringList("pages"));
-    if (json.has("title")) title = json.getString("title");
-    if (json.has("author")) author = json.getString("author");
-    if (json.has("generation")) generation = json.getInteger("generation");
-    if (json.has("resolved")) resolved = json.getBoolean("resolved");
+    if(json.has("title")) title = json.getString("title");
+    if(json.has("author")) author = json.getString("author");
+    if(json.has("generation")) generation = json.getInteger("generation");
+    if(json.has("resolved")) resolved = json.getBoolean("resolved");
   }
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final WrittenBookContentComponent<?, ?> other)) return false;
+    if(!(component instanceof final WrittenBookContentComponent<?, ?> other)) return false;
     return Objects.equals(this.pages, other.pages) &&
            Objects.equals(this.title, other.title) &&
            Objects.equals(this.author, other.author) &&

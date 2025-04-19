@@ -254,6 +254,8 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     final ItemStack compare = stack.provider().locale(stack).clone();
     compare.setAmount(1);
 
+    System.out.println("Calc removeItem: Left: " + left);
+
     //TODO: improve this
 
     final BukkitItemStack comp = new BukkitItemStack().of(compare);

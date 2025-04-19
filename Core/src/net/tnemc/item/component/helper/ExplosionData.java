@@ -97,7 +97,7 @@ public class ExplosionData {
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final ExplosionData other)) return false;
+    if(!(obj instanceof final ExplosionData other)) return false;
 
     return Objects.equals(this.shape, other.shape) &&
            Objects.equals(this.colors, other.colors) &&

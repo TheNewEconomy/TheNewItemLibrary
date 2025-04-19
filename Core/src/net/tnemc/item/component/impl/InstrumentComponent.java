@@ -85,7 +85,7 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final InstrumentComponent<?, ?> other)) return false;
+    if(!(component instanceof final InstrumentComponent<?, ?> other)) return false;
 
     return Objects.equals(this.soundEvent, other.soundEvent) &&
            this.useDuration == other.useDuration &&

@@ -108,13 +108,21 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
     if(VersionUtil.isOneThirteen(BukkitItemPlatform.instance().version())) {
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
-        this.damage = meta.getDamage();
+
+        if(meta.hasDamage() && meta.getDamage() != 0) {
+
+          this.damage = meta.getDamage();
+
+          System.out.println("Damage: " + meta.getDamage());
+
+          serialized.applyComponent(this);
+        }
       }
     } else {
       this.damage = item.getDurability();
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(this);
+    }
     return serialized;
   }
 

@@ -55,7 +55,7 @@ public abstract class UnbreakableComponent<I extends AbstractItemStack<T>, T> im
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final UnbreakableComponent<?, ?> other)) return false;
+    if(!(component instanceof final UnbreakableComponent<?, ?> other)) return false;
     return true;
   }
 

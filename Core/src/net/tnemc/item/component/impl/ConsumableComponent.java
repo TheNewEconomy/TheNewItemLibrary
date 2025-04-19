@@ -120,7 +120,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
     hasConsumeParticles = json.getBoolean("has_consume_particles");
 
     effects.clear();
-    if (json.has("on_consume_effects")) {
+    if(json.has("on_consume_effects")) {
 
       final JSONArray effectsArray = (JSONArray) json.getObject().get("on_consume_effects");
       for (final Object obj : effectsArray) {
@@ -130,7 +130,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
         // Get the effect class from the platform's reviveEffects map
         final Class<? extends ComponentEffect> effectClass = platform.effects().get(type);
 
-        if (effectClass != null) {
+        if(effectClass != null) {
           try {
             // Instantiate the effect dynamically
             final ComponentEffect effect = effectClass.getDeclaredConstructor().newInstance();
@@ -146,7 +146,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final ConsumableComponent<?, ?> other)) return false;
+    if(!(component instanceof final ConsumableComponent<?, ?> other)) return false;
     return Float.compare(this.consumeSeconds, other.consumeSeconds) == 0 &&
            Objects.equals(this.animation, other.animation) &&
            Objects.equals(this.sound, other.sound) &&

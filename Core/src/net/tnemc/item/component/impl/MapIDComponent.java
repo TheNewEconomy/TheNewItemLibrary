@@ -66,7 +66,7 @@ public abstract class MapIDComponent<I extends AbstractItemStack<T>, T> implemen
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final MapIDComponent<?, ?> other)) return false;
+    if(!(component instanceof final MapIDComponent<?, ?> other)) return false;
     return this.mapId == other.mapId;
   }
 

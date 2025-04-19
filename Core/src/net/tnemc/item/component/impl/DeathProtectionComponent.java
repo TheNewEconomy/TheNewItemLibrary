@@ -64,7 +64,7 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     deathEffects.clear();
 
-    if (json.has("death_effects")) {
+    if(json.has("death_effects")) {
       final JSONArray effectsArray = (JSONArray) json.getObject().get("death_effects");
 
       for (final Object obj : effectsArray) {
@@ -74,7 +74,7 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
         // Get the effect class from the platform's reviveEffects map
         final Class<? extends ComponentEffect> effectClass = platform.effects().get(type);
 
-        if (effectClass != null) {
+        if(effectClass != null) {
           try {
             // Instantiate the effect dynamically
             final ComponentEffect effect = effectClass.getDeclaredConstructor().newInstance();
@@ -90,7 +90,7 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final DeathProtectionComponent<?, ?> other)) return false;
+    if(!(component instanceof final DeathProtectionComponent<?, ?> other)) return false;
 
     return Objects.equals(this.deathEffects, other.deathEffects);
   }

@@ -67,7 +67,7 @@ public abstract class MaxStackSizeComponent<I extends AbstractItemStack<T>, T> i
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final MaxStackSizeComponent<?, ?> other)) return false;
+    if(!(component instanceof final MaxStackSizeComponent<?, ?> other)) return false;
     return this.maxStackSize == other.maxStackSize;
   }
 

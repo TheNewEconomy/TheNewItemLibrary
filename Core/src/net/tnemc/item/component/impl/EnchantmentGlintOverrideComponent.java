@@ -66,7 +66,7 @@ public abstract class EnchantmentGlintOverrideComponent<I extends AbstractItemSt
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final EnchantmentGlintOverrideComponent<?, ?> other)) return false;
+    if(!(component instanceof final EnchantmentGlintOverrideComponent<?, ?> other)) return false;
     return this.glintOverride == other.glintOverride;
   }
 

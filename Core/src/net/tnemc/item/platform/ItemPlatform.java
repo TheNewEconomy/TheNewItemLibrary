@@ -21,6 +21,7 @@ package net.tnemc.item.platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.effect.ApplyEffectsComponentEffect;
 import net.tnemc.item.component.helper.effect.ComponentEffect;
 import net.tnemc.item.component.helper.effect.PlaySoundComponentEffect;
@@ -420,6 +421,8 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
     final List<String> disabled = Arrays.asList(disabledChecks);
     for(final ItemCheck<S> checkItem : checks.values()) {
 
+      System.out.println("Check: " + checkItem.identifier());
+
       if(disabled.contains(checkItem.identifier())) {
         continue;
       }
@@ -433,6 +436,8 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
       }
 
       if(!checkItem.check(original, check)) {
+
+        System.out.println("Failed check: " + checkItem.identifier());
         return false;
       }
     }
@@ -512,6 +517,20 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
     for(final ItemSerializer<I, S> serializer : serializers.values()) {
       if(serializer.enabled(version())) {
+
+        System.out.println("Serializer ready to apply: " + serializer.identifier());
+
+        if(serializer instanceof final SerialComponent<I,S> component) {
+
+          System.out.println("Serializer is component");
+          if(!component.appliesTo(item)) {
+
+            System.out.println("Serializer doesn't apply");
+
+            continue;
+          }
+        }
+
         serialized = serializer.serialize(item, serialized);
       }
     }

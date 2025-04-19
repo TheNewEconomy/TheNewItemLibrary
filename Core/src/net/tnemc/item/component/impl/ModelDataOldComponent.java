@@ -89,7 +89,7 @@ public abstract class ModelDataOldComponent<I extends AbstractItemStack<T>, T> i
    */
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final ModelDataOldComponent<?, ?> other)) return false;
+    if(!(component instanceof final ModelDataOldComponent<?, ?> other)) return false;
     return this.modelData == other.modelData();
   }
 

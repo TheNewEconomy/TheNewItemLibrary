@@ -63,14 +63,14 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
-    if (json.has("custom_name")) {
+    if(json.has("custom_name")) {
       customName = LegacyComponentSerializer.legacySection().deserialize(json.getString("custom_name"));
     }
   }
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final CustomNameComponent<?, ?> other)) return false;
+    if(!(component instanceof final CustomNameComponent<?, ?> other)) return false;
 
     return Objects.equals(this.customName, other.customName);
   }

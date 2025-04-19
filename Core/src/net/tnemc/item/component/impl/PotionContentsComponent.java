@@ -124,7 +124,7 @@ public abstract class PotionContentsComponent<I extends AbstractItemStack<T>, T>
 
   @Override
   public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final PotionContentsComponent<?, ?> other)) return false;
+    if(!(component instanceof final PotionContentsComponent<?, ?> other)) return false;
     return Objects.equals(this.potionId, other.potionId) &&
            this.customColor == other.customColor &&
            Objects.equals(this.customName, other.customName) &&
