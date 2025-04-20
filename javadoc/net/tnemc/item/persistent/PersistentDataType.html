@@ -199,29 +199,33 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="type()">
 <h3>type</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataType.html#line-53">type</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataType.html#line-54">type</a></span>()</div>
 <div class="block">Returns the type of the PersistentDataType.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>The type of the PersistentDataType as a String.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="encode()">
 <h3>encode</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataType.html#line-60">encode</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataType.html#line-62">encode</a></span>()</div>
 <div class="block">Encodes the value of the PersistentDataType into a string representation.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>The encoded string representation of the value</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="decode(java.lang.String)">
 <h3>decode</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="PersistentDataType.html" title="type parameter in PersistentDataType">T</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataType.html#line-71">decode</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encoded)</span>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="PersistentDataType.html" title="type parameter in PersistentDataType">T</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataType.html#line-74">decode</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encoded)</span>
                   throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></span></div>
 <div class="block">Decodes the given encoded string and sets the decoded value.</div>
 <dl class="notes">
@@ -231,24 +235,28 @@ loadScripts(document, 'script');</script>
 <dd>The decoded value of type T</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the encoded string is invalid</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="readJSON(net.tnemc.item.JSONHelper)">
 <h3>readJSON</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataType.html#line-78">readJSON</a></span><wbr><span class="parameters">(<a href="../JSONHelper.html" title="class in net.tnemc.item">JSONHelper</a>&nbsp;json)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataType.html#line-82">readJSON</a></span><wbr><span class="parameters">(<a href="../JSONHelper.html" title="class in net.tnemc.item">JSONHelper</a>&nbsp;json)</span></div>
 <div class="block">Decodes the <a href="../JSONHelper.html" title="class in net.tnemc.item"><code>JSON object</code></a> and sets the values in the current instance.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>json</code> - The <a href="../JSONHelper.html" title="class in net.tnemc.item"><code>JSON object</code></a> to be decoded</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="toJSON()">
 <h3>toJSON</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.json.simple.JSONObject</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataType.html#line-83">toJSON</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.json.simple.JSONObject</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataType.html#line-87">toJSON</a></span>()</div>
 </section>
 </li>
 </ul>

@@ -60,63 +60,67 @@
 <span class="source-line-no">047</span><span id="line-47"></span>
 <span class="source-line-no">048</span><span id="line-48">  /**</span>
 <span class="source-line-no">049</span><span id="line-49">   * @return the type of component this is.</span>
-<span class="source-line-no">050</span><span id="line-50">   */</span>
-<span class="source-line-no">051</span><span id="line-51">  @Override</span>
-<span class="source-line-no">052</span><span id="line-52">  public String identifier() {</span>
-<span class="source-line-no">053</span><span id="line-53">    return "model-data-old";</span>
-<span class="source-line-no">054</span><span id="line-54">  }</span>
-<span class="source-line-no">055</span><span id="line-55"></span>
-<span class="source-line-no">056</span><span id="line-56">  /**</span>
-<span class="source-line-no">057</span><span id="line-57">   * Converts this component's data to a JSON object.</span>
-<span class="source-line-no">058</span><span id="line-58">   *</span>
-<span class="source-line-no">059</span><span id="line-59">   * @return The JSONObject representing this component's data.</span>
-<span class="source-line-no">060</span><span id="line-60">   */</span>
-<span class="source-line-no">061</span><span id="line-61">  @Override</span>
-<span class="source-line-no">062</span><span id="line-62">  public JSONObject toJSON() {</span>
-<span class="source-line-no">063</span><span id="line-63">    final JSONObject json = new JSONObject();</span>
-<span class="source-line-no">064</span><span id="line-64">    json.put("modelData", modelData);</span>
-<span class="source-line-no">065</span><span id="line-65">    return json;</span>
-<span class="source-line-no">066</span><span id="line-66">  }</span>
-<span class="source-line-no">067</span><span id="line-67"></span>
-<span class="source-line-no">068</span><span id="line-68">  /**</span>
-<span class="source-line-no">069</span><span id="line-69">   * Reads JSON data and converts it back to this component's data.</span>
-<span class="source-line-no">070</span><span id="line-70">   *</span>
-<span class="source-line-no">071</span><span id="line-71">   * @param json      The JSONHelper instance of the json data.</span>
-<span class="source-line-no">072</span><span id="line-72">   * @param platform  The ItemPlatform instance.</span>
-<span class="source-line-no">073</span><span id="line-73">   */</span>
-<span class="source-line-no">074</span><span id="line-74">  @Override</span>
-<span class="source-line-no">075</span><span id="line-75">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
-<span class="source-line-no">076</span><span id="line-76">    this.modelData = json.getInteger("modelData");</span>
-<span class="source-line-no">077</span><span id="line-77">  }</span>
-<span class="source-line-no">078</span><span id="line-78"></span>
-<span class="source-line-no">079</span><span id="line-79">  /**</span>
-<span class="source-line-no">080</span><span id="line-80">   * Used to determine if some data is equal to this data. This means that it has to be an exact</span>
-<span class="source-line-no">081</span><span id="line-81">   * copy of this data.</span>
-<span class="source-line-no">082</span><span id="line-82">   *</span>
-<span class="source-line-no">083</span><span id="line-83">   * @param component The component to compare.</span>
-<span class="source-line-no">084</span><span id="line-84">   * @return True if similar, otherwise false.</span>
-<span class="source-line-no">085</span><span id="line-85">   */</span>
-<span class="source-line-no">086</span><span id="line-86">  @Override</span>
-<span class="source-line-no">087</span><span id="line-87">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">088</span><span id="line-88">    if (!(component instanceof final ModelDataOldComponent&lt;?, ?&gt; other)) return false;</span>
-<span class="source-line-no">089</span><span id="line-89">    return this.modelData == other.modelData();</span>
-<span class="source-line-no">090</span><span id="line-90">  }</span>
-<span class="source-line-no">091</span><span id="line-91"></span>
-<span class="source-line-no">092</span><span id="line-92">  @Override</span>
-<span class="source-line-no">093</span><span id="line-93">  public int hashCode() {</span>
-<span class="source-line-no">094</span><span id="line-94">    return Objects.hash(modelData);</span>
-<span class="source-line-no">095</span><span id="line-95">  }</span>
-<span class="source-line-no">096</span><span id="line-96"></span>
-<span class="source-line-no">097</span><span id="line-97">  public int modelData() {</span>
-<span class="source-line-no">098</span><span id="line-98"></span>
-<span class="source-line-no">099</span><span id="line-99">    return modelData;</span>
-<span class="source-line-no">100</span><span id="line-100">  }</span>
-<span class="source-line-no">101</span><span id="line-101"></span>
-<span class="source-line-no">102</span><span id="line-102">  public void modelData(final int modelData) {</span>
-<span class="source-line-no">103</span><span id="line-103"></span>
-<span class="source-line-no">104</span><span id="line-104">    this.modelData = modelData;</span>
-<span class="source-line-no">105</span><span id="line-105">  }</span>
-<span class="source-line-no">106</span><span id="line-106">}</span>
+<span class="source-line-no">050</span><span id="line-50">   * @since 0.2.0.0</span>
+<span class="source-line-no">051</span><span id="line-51">   */</span>
+<span class="source-line-no">052</span><span id="line-52">  @Override</span>
+<span class="source-line-no">053</span><span id="line-53">  public String identifier() {</span>
+<span class="source-line-no">054</span><span id="line-54">    return "model-data-old";</span>
+<span class="source-line-no">055</span><span id="line-55">  }</span>
+<span class="source-line-no">056</span><span id="line-56"></span>
+<span class="source-line-no">057</span><span id="line-57">  /**</span>
+<span class="source-line-no">058</span><span id="line-58">   * Converts this component's data to a JSON object.</span>
+<span class="source-line-no">059</span><span id="line-59">   *</span>
+<span class="source-line-no">060</span><span id="line-60">   * @return The JSONObject representing this component's data.</span>
+<span class="source-line-no">061</span><span id="line-61">   * @since 0.2.0.0</span>
+<span class="source-line-no">062</span><span id="line-62">   */</span>
+<span class="source-line-no">063</span><span id="line-63">  @Override</span>
+<span class="source-line-no">064</span><span id="line-64">  public JSONObject toJSON() {</span>
+<span class="source-line-no">065</span><span id="line-65">    final JSONObject json = new JSONObject();</span>
+<span class="source-line-no">066</span><span id="line-66">    json.put("modelData", modelData);</span>
+<span class="source-line-no">067</span><span id="line-67">    return json;</span>
+<span class="source-line-no">068</span><span id="line-68">  }</span>
+<span class="source-line-no">069</span><span id="line-69"></span>
+<span class="source-line-no">070</span><span id="line-70">  /**</span>
+<span class="source-line-no">071</span><span id="line-71">   * Reads JSON data and converts it back to this component's data.</span>
+<span class="source-line-no">072</span><span id="line-72">   *</span>
+<span class="source-line-no">073</span><span id="line-73">   * @param json      The JSONHelper instance of the json data.</span>
+<span class="source-line-no">074</span><span id="line-74">   * @param platform  The ItemPlatform instance.</span>
+<span class="source-line-no">075</span><span id="line-75">   * @since 0.2.0.0</span>
+<span class="source-line-no">076</span><span id="line-76">   */</span>
+<span class="source-line-no">077</span><span id="line-77">  @Override</span>
+<span class="source-line-no">078</span><span id="line-78">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
+<span class="source-line-no">079</span><span id="line-79">    this.modelData = json.getInteger("modelData");</span>
+<span class="source-line-no">080</span><span id="line-80">  }</span>
+<span class="source-line-no">081</span><span id="line-81"></span>
+<span class="source-line-no">082</span><span id="line-82">  /**</span>
+<span class="source-line-no">083</span><span id="line-83">   * Used to determine if some data is equal to this data. This means that it has to be an exact</span>
+<span class="source-line-no">084</span><span id="line-84">   * copy of this data.</span>
+<span class="source-line-no">085</span><span id="line-85">   *</span>
+<span class="source-line-no">086</span><span id="line-86">   * @param component The component to compare.</span>
+<span class="source-line-no">087</span><span id="line-87">   * @return True if similar, otherwise false.</span>
+<span class="source-line-no">088</span><span id="line-88">   * @since 0.2.0.0</span>
+<span class="source-line-no">089</span><span id="line-89">   */</span>
+<span class="source-line-no">090</span><span id="line-90">  @Override</span>
+<span class="source-line-no">091</span><span id="line-91">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">092</span><span id="line-92">    if(!(component instanceof final ModelDataOldComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">093</span><span id="line-93">    return this.modelData == other.modelData();</span>
+<span class="source-line-no">094</span><span id="line-94">  }</span>
+<span class="source-line-no">095</span><span id="line-95"></span>
+<span class="source-line-no">096</span><span id="line-96">  @Override</span>
+<span class="source-line-no">097</span><span id="line-97">  public int hashCode() {</span>
+<span class="source-line-no">098</span><span id="line-98">    return Objects.hash(modelData);</span>
+<span class="source-line-no">099</span><span id="line-99">  }</span>
+<span class="source-line-no">100</span><span id="line-100"></span>
+<span class="source-line-no">101</span><span id="line-101">  public int modelData() {</span>
+<span class="source-line-no">102</span><span id="line-102"></span>
+<span class="source-line-no">103</span><span id="line-103">    return modelData;</span>
+<span class="source-line-no">104</span><span id="line-104">  }</span>
+<span class="source-line-no">105</span><span id="line-105"></span>
+<span class="source-line-no">106</span><span id="line-106">  public void modelData(final int modelData) {</span>
+<span class="source-line-no">107</span><span id="line-107"></span>
+<span class="source-line-no">108</span><span id="line-108">    this.modelData = modelData;</span>
+<span class="source-line-no">109</span><span id="line-109">  }</span>
+<span class="source-line-no">110</span><span id="line-110">}</span>
 
 
 

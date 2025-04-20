@@ -104,120 +104,124 @@
 <span class="source-line-no">091</span><span id="line-91"></span>
 <span class="source-line-no">092</span><span id="line-92">  /**</span>
 <span class="source-line-no">093</span><span id="line-93">   * @return the type of component this is.</span>
-<span class="source-line-no">094</span><span id="line-94">   */</span>
-<span class="source-line-no">095</span><span id="line-95">  @Override</span>
-<span class="source-line-no">096</span><span id="line-96">  public String identifier() {</span>
-<span class="source-line-no">097</span><span id="line-97"></span>
-<span class="source-line-no">098</span><span id="line-98">    return "tool";</span>
-<span class="source-line-no">099</span><span id="line-99">  }</span>
-<span class="source-line-no">100</span><span id="line-100"></span>
-<span class="source-line-no">101</span><span id="line-101">  /**</span>
-<span class="source-line-no">102</span><span id="line-102">   * Converts the {@link SerialComponent} to a JSON object.</span>
-<span class="source-line-no">103</span><span id="line-103">   *</span>
-<span class="source-line-no">104</span><span id="line-104">   * @return The JSONObject representing this {@link SerialComponent}.</span>
-<span class="source-line-no">105</span><span id="line-105">   */</span>
-<span class="source-line-no">106</span><span id="line-106">  @Override</span>
-<span class="source-line-no">107</span><span id="line-107">  public JSONObject toJSON() {</span>
-<span class="source-line-no">108</span><span id="line-108"></span>
-<span class="source-line-no">109</span><span id="line-109">    final JSONObject tool = new JSONObject();</span>
-<span class="source-line-no">110</span><span id="line-110">    tool.put("name", "tool-component");</span>
-<span class="source-line-no">111</span><span id="line-111">    tool.put("defaultSpeed", defaultSpeed);</span>
-<span class="source-line-no">112</span><span id="line-112">    tool.put("blockDamage", blockDamage);</span>
-<span class="source-line-no">113</span><span id="line-113"></span>
-<span class="source-line-no">114</span><span id="line-114">    if(!rules.isEmpty()) {</span>
-<span class="source-line-no">115</span><span id="line-115">      final JSONObject rulesObj = new JSONObject();</span>
-<span class="source-line-no">116</span><span id="line-116">      for(int it = 0; it &lt; rules.size(); it++) {</span>
-<span class="source-line-no">117</span><span id="line-117">        rulesObj.put(it, rules.get(it).toJSON());</span>
-<span class="source-line-no">118</span><span id="line-118">      }</span>
-<span class="source-line-no">119</span><span id="line-119">      tool.put("rules", rulesObj);</span>
-<span class="source-line-no">120</span><span id="line-120">    }</span>
-<span class="source-line-no">121</span><span id="line-121">    return tool;</span>
-<span class="source-line-no">122</span><span id="line-122">  }</span>
-<span class="source-line-no">123</span><span id="line-123"></span>
-<span class="source-line-no">124</span><span id="line-124">  /**</span>
-<span class="source-line-no">125</span><span id="line-125">   * Reads JSON data and converts it back to a {@link SerialComponent} object.</span>
-<span class="source-line-no">126</span><span id="line-126">   *</span>
-<span class="source-line-no">127</span><span id="line-127">   * @param json The JSONHelper instance of the json data.</span>
-<span class="source-line-no">128</span><span id="line-128">   */</span>
-<span class="source-line-no">129</span><span id="line-129">  @Override</span>
-<span class="source-line-no">130</span><span id="line-130">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
-<span class="source-line-no">131</span><span id="line-131"></span>
-<span class="source-line-no">132</span><span id="line-132">    defaultSpeed = json.getFloat("defaultSpeed");</span>
-<span class="source-line-no">133</span><span id="line-133">    blockDamage = json.getInteger("blockDamage");</span>
+<span class="source-line-no">094</span><span id="line-94">   * @since 0.2.0.0</span>
+<span class="source-line-no">095</span><span id="line-95">   */</span>
+<span class="source-line-no">096</span><span id="line-96">  @Override</span>
+<span class="source-line-no">097</span><span id="line-97">  public String identifier() {</span>
+<span class="source-line-no">098</span><span id="line-98"></span>
+<span class="source-line-no">099</span><span id="line-99">    return "tool";</span>
+<span class="source-line-no">100</span><span id="line-100">  }</span>
+<span class="source-line-no">101</span><span id="line-101"></span>
+<span class="source-line-no">102</span><span id="line-102">  /**</span>
+<span class="source-line-no">103</span><span id="line-103">   * Converts the {@link SerialComponent} to a JSON object.</span>
+<span class="source-line-no">104</span><span id="line-104">   *</span>
+<span class="source-line-no">105</span><span id="line-105">   * @return The JSONObject representing this {@link SerialComponent}.</span>
+<span class="source-line-no">106</span><span id="line-106">   * @since 0.2.0.0</span>
+<span class="source-line-no">107</span><span id="line-107">   */</span>
+<span class="source-line-no">108</span><span id="line-108">  @Override</span>
+<span class="source-line-no">109</span><span id="line-109">  public JSONObject toJSON() {</span>
+<span class="source-line-no">110</span><span id="line-110"></span>
+<span class="source-line-no">111</span><span id="line-111">    final JSONObject tool = new JSONObject();</span>
+<span class="source-line-no">112</span><span id="line-112">    tool.put("name", "tool-component");</span>
+<span class="source-line-no">113</span><span id="line-113">    tool.put("defaultSpeed", defaultSpeed);</span>
+<span class="source-line-no">114</span><span id="line-114">    tool.put("blockDamage", blockDamage);</span>
+<span class="source-line-no">115</span><span id="line-115"></span>
+<span class="source-line-no">116</span><span id="line-116">    if(!rules.isEmpty()) {</span>
+<span class="source-line-no">117</span><span id="line-117">      final JSONObject rulesObj = new JSONObject();</span>
+<span class="source-line-no">118</span><span id="line-118">      for(int it = 0; it &lt; rules.size(); it++) {</span>
+<span class="source-line-no">119</span><span id="line-119">        rulesObj.put(it, rules.get(it).toJSON());</span>
+<span class="source-line-no">120</span><span id="line-120">      }</span>
+<span class="source-line-no">121</span><span id="line-121">      tool.put("rules", rulesObj);</span>
+<span class="source-line-no">122</span><span id="line-122">    }</span>
+<span class="source-line-no">123</span><span id="line-123">    return tool;</span>
+<span class="source-line-no">124</span><span id="line-124">  }</span>
+<span class="source-line-no">125</span><span id="line-125"></span>
+<span class="source-line-no">126</span><span id="line-126">  /**</span>
+<span class="source-line-no">127</span><span id="line-127">   * Reads JSON data and converts it back to a {@link SerialComponent} object.</span>
+<span class="source-line-no">128</span><span id="line-128">   *</span>
+<span class="source-line-no">129</span><span id="line-129">   * @param json The JSONHelper instance of the json data.</span>
+<span class="source-line-no">130</span><span id="line-130">   * @since 0.2.0.0</span>
+<span class="source-line-no">131</span><span id="line-131">   */</span>
+<span class="source-line-no">132</span><span id="line-132">  @Override</span>
+<span class="source-line-no">133</span><span id="line-133">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">134</span><span id="line-134"></span>
-<span class="source-line-no">135</span><span id="line-135">    if(json.has("rules")) {</span>
-<span class="source-line-no">136</span><span id="line-136">      final JSONHelper rulesObj = json.getHelper("rules");</span>
-<span class="source-line-no">137</span><span id="line-137">      rules.clear();</span>
-<span class="source-line-no">138</span><span id="line-138"></span>
-<span class="source-line-no">139</span><span id="line-139">      rulesObj.getObject().forEach((key, value)-&gt;rules.add(ToolRule.readJSON(new JSONHelper((JSONObject)value))));</span>
-<span class="source-line-no">140</span><span id="line-140">    }</span>
-<span class="source-line-no">141</span><span id="line-141">  }</span>
-<span class="source-line-no">142</span><span id="line-142"></span>
-<span class="source-line-no">143</span><span id="line-143">  /**</span>
-<span class="source-line-no">144</span><span id="line-144">   * Used to determine if some data is equal to this data. This means that it has to be an exact</span>
-<span class="source-line-no">145</span><span id="line-145">   * copy of this data. For instance, book copies will return false when compared to the original.</span>
-<span class="source-line-no">146</span><span id="line-146">   *</span>
-<span class="source-line-no">147</span><span id="line-147">   * @param component The component to compare.</span>
-<span class="source-line-no">148</span><span id="line-148">   *</span>
-<span class="source-line-no">149</span><span id="line-149">   * @return True if similar, otherwise false.</span>
-<span class="source-line-no">150</span><span id="line-150">   */</span>
-<span class="source-line-no">151</span><span id="line-151">  @Override</span>
-<span class="source-line-no">152</span><span id="line-152">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">153</span><span id="line-153"></span>
-<span class="source-line-no">154</span><span id="line-154">    if(component instanceof final ToolComponent&lt;?, ?&gt; tool) {</span>
-<span class="source-line-no">155</span><span id="line-155">      return Float.compare(this.defaultSpeed, tool.defaultSpeed) == 0 &amp;&amp;</span>
-<span class="source-line-no">156</span><span id="line-156">             this.blockDamage == tool.blockDamage &amp;&amp;</span>
-<span class="source-line-no">157</span><span id="line-157">             this.canDestroyBlocksCreative == tool.canDestroyBlocksCreative &amp;&amp;</span>
-<span class="source-line-no">158</span><span id="line-158">             Objects.equals(this.rules, tool.rules);</span>
-<span class="source-line-no">159</span><span id="line-159">    }</span>
-<span class="source-line-no">160</span><span id="line-160">    return false;</span>
-<span class="source-line-no">161</span><span id="line-161">  }</span>
-<span class="source-line-no">162</span><span id="line-162"></span>
-<span class="source-line-no">163</span><span id="line-163">  public List&lt;ToolRule&gt; rules() {</span>
-<span class="source-line-no">164</span><span id="line-164"></span>
-<span class="source-line-no">165</span><span id="line-165">    return rules;</span>
-<span class="source-line-no">166</span><span id="line-166">  }</span>
-<span class="source-line-no">167</span><span id="line-167"></span>
-<span class="source-line-no">168</span><span id="line-168">  public void rules(final List&lt;ToolRule&gt; rules) {</span>
-<span class="source-line-no">169</span><span id="line-169">    this.rules.clear();</span>
-<span class="source-line-no">170</span><span id="line-170">    this.rules.addAll(rules);</span>
-<span class="source-line-no">171</span><span id="line-171">  }</span>
-<span class="source-line-no">172</span><span id="line-172"></span>
-<span class="source-line-no">173</span><span id="line-173">  public void rules(final ToolRule... rules) {</span>
-<span class="source-line-no">174</span><span id="line-174">    this.rules.clear();</span>
-<span class="source-line-no">175</span><span id="line-175">    this.rules.addAll(Arrays.asList(rules));</span>
-<span class="source-line-no">176</span><span id="line-176">  }</span>
-<span class="source-line-no">177</span><span id="line-177"></span>
-<span class="source-line-no">178</span><span id="line-178">  public float defaultSpeed() {</span>
-<span class="source-line-no">179</span><span id="line-179"></span>
-<span class="source-line-no">180</span><span id="line-180">    return defaultSpeed;</span>
-<span class="source-line-no">181</span><span id="line-181">  }</span>
-<span class="source-line-no">182</span><span id="line-182"></span>
-<span class="source-line-no">183</span><span id="line-183">  public void defaultSpeed(final float defaultSpeed) {</span>
-<span class="source-line-no">184</span><span id="line-184"></span>
-<span class="source-line-no">185</span><span id="line-185">    this.defaultSpeed = defaultSpeed;</span>
-<span class="source-line-no">186</span><span id="line-186">  }</span>
-<span class="source-line-no">187</span><span id="line-187"></span>
-<span class="source-line-no">188</span><span id="line-188">  public int blockDamage() {</span>
-<span class="source-line-no">189</span><span id="line-189"></span>
-<span class="source-line-no">190</span><span id="line-190">    return blockDamage;</span>
-<span class="source-line-no">191</span><span id="line-191">  }</span>
-<span class="source-line-no">192</span><span id="line-192"></span>
-<span class="source-line-no">193</span><span id="line-193">  public void blockDamage(final int blockDamage) {</span>
-<span class="source-line-no">194</span><span id="line-194"></span>
-<span class="source-line-no">195</span><span id="line-195">    this.blockDamage = blockDamage;</span>
-<span class="source-line-no">196</span><span id="line-196">  }</span>
-<span class="source-line-no">197</span><span id="line-197"></span>
-<span class="source-line-no">198</span><span id="line-198">  public boolean canDestroyBlocksCreative() {</span>
-<span class="source-line-no">199</span><span id="line-199"></span>
-<span class="source-line-no">200</span><span id="line-200">    return canDestroyBlocksCreative;</span>
-<span class="source-line-no">201</span><span id="line-201">  }</span>
-<span class="source-line-no">202</span><span id="line-202"></span>
-<span class="source-line-no">203</span><span id="line-203">  public void canDestroyBlocksCreative(final boolean canDestroyBlocksCreative) {</span>
-<span class="source-line-no">204</span><span id="line-204"></span>
-<span class="source-line-no">205</span><span id="line-205">    this.canDestroyBlocksCreative = canDestroyBlocksCreative;</span>
-<span class="source-line-no">206</span><span id="line-206">  }</span>
-<span class="source-line-no">207</span><span id="line-207">}</span>
+<span class="source-line-no">135</span><span id="line-135">    defaultSpeed = json.getFloat("defaultSpeed");</span>
+<span class="source-line-no">136</span><span id="line-136">    blockDamage = json.getInteger("blockDamage");</span>
+<span class="source-line-no">137</span><span id="line-137"></span>
+<span class="source-line-no">138</span><span id="line-138">    if(json.has("rules")) {</span>
+<span class="source-line-no">139</span><span id="line-139">      final JSONHelper rulesObj = json.getHelper("rules");</span>
+<span class="source-line-no">140</span><span id="line-140">      rules.clear();</span>
+<span class="source-line-no">141</span><span id="line-141"></span>
+<span class="source-line-no">142</span><span id="line-142">      rulesObj.getObject().forEach((key, value)-&gt;rules.add(ToolRule.readJSON(new JSONHelper((JSONObject)value))));</span>
+<span class="source-line-no">143</span><span id="line-143">    }</span>
+<span class="source-line-no">144</span><span id="line-144">  }</span>
+<span class="source-line-no">145</span><span id="line-145"></span>
+<span class="source-line-no">146</span><span id="line-146">  /**</span>
+<span class="source-line-no">147</span><span id="line-147">   * Used to determine if some data is equal to this data. This means that it has to be an exact</span>
+<span class="source-line-no">148</span><span id="line-148">   * copy of this data. For instance, book copies will return false when compared to the original.</span>
+<span class="source-line-no">149</span><span id="line-149">   *</span>
+<span class="source-line-no">150</span><span id="line-150">   * @param component The component to compare.</span>
+<span class="source-line-no">151</span><span id="line-151">   *</span>
+<span class="source-line-no">152</span><span id="line-152">   * @return True if similar, otherwise false.</span>
+<span class="source-line-no">153</span><span id="line-153">   * @since 0.2.0.0</span>
+<span class="source-line-no">154</span><span id="line-154">   */</span>
+<span class="source-line-no">155</span><span id="line-155">  @Override</span>
+<span class="source-line-no">156</span><span id="line-156">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">157</span><span id="line-157"></span>
+<span class="source-line-no">158</span><span id="line-158">    if(component instanceof final ToolComponent&lt;?, ?&gt; tool) {</span>
+<span class="source-line-no">159</span><span id="line-159">      return Float.compare(this.defaultSpeed, tool.defaultSpeed) == 0 &amp;&amp;</span>
+<span class="source-line-no">160</span><span id="line-160">             this.blockDamage == tool.blockDamage &amp;&amp;</span>
+<span class="source-line-no">161</span><span id="line-161">             this.canDestroyBlocksCreative == tool.canDestroyBlocksCreative &amp;&amp;</span>
+<span class="source-line-no">162</span><span id="line-162">             Objects.equals(this.rules, tool.rules);</span>
+<span class="source-line-no">163</span><span id="line-163">    }</span>
+<span class="source-line-no">164</span><span id="line-164">    return false;</span>
+<span class="source-line-no">165</span><span id="line-165">  }</span>
+<span class="source-line-no">166</span><span id="line-166"></span>
+<span class="source-line-no">167</span><span id="line-167">  public List&lt;ToolRule&gt; rules() {</span>
+<span class="source-line-no">168</span><span id="line-168"></span>
+<span class="source-line-no">169</span><span id="line-169">    return rules;</span>
+<span class="source-line-no">170</span><span id="line-170">  }</span>
+<span class="source-line-no">171</span><span id="line-171"></span>
+<span class="source-line-no">172</span><span id="line-172">  public void rules(final List&lt;ToolRule&gt; rules) {</span>
+<span class="source-line-no">173</span><span id="line-173">    this.rules.clear();</span>
+<span class="source-line-no">174</span><span id="line-174">    this.rules.addAll(rules);</span>
+<span class="source-line-no">175</span><span id="line-175">  }</span>
+<span class="source-line-no">176</span><span id="line-176"></span>
+<span class="source-line-no">177</span><span id="line-177">  public void rules(final ToolRule... rules) {</span>
+<span class="source-line-no">178</span><span id="line-178">    this.rules.clear();</span>
+<span class="source-line-no">179</span><span id="line-179">    this.rules.addAll(Arrays.asList(rules));</span>
+<span class="source-line-no">180</span><span id="line-180">  }</span>
+<span class="source-line-no">181</span><span id="line-181"></span>
+<span class="source-line-no">182</span><span id="line-182">  public float defaultSpeed() {</span>
+<span class="source-line-no">183</span><span id="line-183"></span>
+<span class="source-line-no">184</span><span id="line-184">    return defaultSpeed;</span>
+<span class="source-line-no">185</span><span id="line-185">  }</span>
+<span class="source-line-no">186</span><span id="line-186"></span>
+<span class="source-line-no">187</span><span id="line-187">  public void defaultSpeed(final float defaultSpeed) {</span>
+<span class="source-line-no">188</span><span id="line-188"></span>
+<span class="source-line-no">189</span><span id="line-189">    this.defaultSpeed = defaultSpeed;</span>
+<span class="source-line-no">190</span><span id="line-190">  }</span>
+<span class="source-line-no">191</span><span id="line-191"></span>
+<span class="source-line-no">192</span><span id="line-192">  public int blockDamage() {</span>
+<span class="source-line-no">193</span><span id="line-193"></span>
+<span class="source-line-no">194</span><span id="line-194">    return blockDamage;</span>
+<span class="source-line-no">195</span><span id="line-195">  }</span>
+<span class="source-line-no">196</span><span id="line-196"></span>
+<span class="source-line-no">197</span><span id="line-197">  public void blockDamage(final int blockDamage) {</span>
+<span class="source-line-no">198</span><span id="line-198"></span>
+<span class="source-line-no">199</span><span id="line-199">    this.blockDamage = blockDamage;</span>
+<span class="source-line-no">200</span><span id="line-200">  }</span>
+<span class="source-line-no">201</span><span id="line-201"></span>
+<span class="source-line-no">202</span><span id="line-202">  public boolean canDestroyBlocksCreative() {</span>
+<span class="source-line-no">203</span><span id="line-203"></span>
+<span class="source-line-no">204</span><span id="line-204">    return canDestroyBlocksCreative;</span>
+<span class="source-line-no">205</span><span id="line-205">  }</span>
+<span class="source-line-no">206</span><span id="line-206"></span>
+<span class="source-line-no">207</span><span id="line-207">  public void canDestroyBlocksCreative(final boolean canDestroyBlocksCreative) {</span>
+<span class="source-line-no">208</span><span id="line-208"></span>
+<span class="source-line-no">209</span><span id="line-209">    this.canDestroyBlocksCreative = canDestroyBlocksCreative;</span>
+<span class="source-line-no">210</span><span id="line-210">  }</span>
+<span class="source-line-no">211</span><span id="line-211">}</span>
 
 
 

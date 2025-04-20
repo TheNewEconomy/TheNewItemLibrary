@@ -84,14 +84,14 @@
 <span class="source-line-no">071</span><span id="line-71">  }</span>
 <span class="source-line-no">072</span><span id="line-72"></span>
 <span class="source-line-no">073</span><span id="line-73">  @Override</span>
-<span class="source-line-no">074</span><span id="line-74">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
+<span class="source-line-no">074</span><span id="line-74">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">075</span><span id="line-75">    pages.clear();</span>
 <span class="source-line-no">076</span><span id="line-76">    pages.addAll(json.getStringList("pages"));</span>
 <span class="source-line-no">077</span><span id="line-77">  }</span>
 <span class="source-line-no">078</span><span id="line-78"></span>
 <span class="source-line-no">079</span><span id="line-79">  @Override</span>
-<span class="source-line-no">080</span><span id="line-80">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">081</span><span id="line-81">    if (!(component instanceof final WritableBookContentComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">080</span><span id="line-80">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">081</span><span id="line-81">    if(!(component instanceof final WritableBookContentComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">082</span><span id="line-82">    return Objects.equals(this.pages, other.pages);</span>
 <span class="source-line-no">083</span><span id="line-83">  }</span>
 <span class="source-line-no">084</span><span id="line-84"></span>

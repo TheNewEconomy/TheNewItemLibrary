@@ -62,8 +62,8 @@
 <span class="source-line-no">049</span><span id="line-49">  }</span>
 <span class="source-line-no">050</span><span id="line-50"></span>
 <span class="source-line-no">051</span><span id="line-51">  @Override</span>
-<span class="source-line-no">052</span><span id="line-52">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">053</span><span id="line-53">    if (!(component instanceof final StoredEnchantmentsComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">052</span><span id="line-52">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">053</span><span id="line-53">    if(!(component instanceof final StoredEnchantmentsComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">054</span><span id="line-54">    return Objects.equals(this.levels, other.levels);</span>
 <span class="source-line-no">055</span><span id="line-55">  }</span>
 <span class="source-line-no">056</span><span id="line-56"></span>

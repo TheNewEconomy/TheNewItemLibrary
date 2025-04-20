@@ -90,15 +90,15 @@
 <span class="source-line-no">077</span><span id="line-77">  }</span>
 <span class="source-line-no">078</span><span id="line-78"></span>
 <span class="source-line-no">079</span><span id="line-79">  @Override</span>
-<span class="source-line-no">080</span><span id="line-80">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
+<span class="source-line-no">080</span><span id="line-80">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">081</span><span id="line-81">    soundEvent = json.getString("sound_event");</span>
 <span class="source-line-no">082</span><span id="line-82">    useDuration = json.getInteger("use_duration");</span>
 <span class="source-line-no">083</span><span id="line-83">    range = json.getInteger("range");</span>
 <span class="source-line-no">084</span><span id="line-84">  }</span>
 <span class="source-line-no">085</span><span id="line-85"></span>
 <span class="source-line-no">086</span><span id="line-86">  @Override</span>
-<span class="source-line-no">087</span><span id="line-87">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">088</span><span id="line-88">    if (!(component instanceof final InstrumentComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">087</span><span id="line-87">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">088</span><span id="line-88">    if(!(component instanceof final InstrumentComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">089</span><span id="line-89"></span>
 <span class="source-line-no">090</span><span id="line-90">    return Objects.equals(this.soundEvent, other.soundEvent) &amp;&amp;</span>
 <span class="source-line-no">091</span><span id="line-91">           this.useDuration == other.useDuration &amp;&amp;</span>

@@ -55,50 +55,61 @@
 <span class="source-line-no">042</span><span id="line-42">   * Converts this block predicate to a JSON object.</span>
 <span class="source-line-no">043</span><span id="line-43">   *</span>
 <span class="source-line-no">044</span><span id="line-44">   * @return The JSONObject representing this block predicate.</span>
-<span class="source-line-no">045</span><span id="line-45">   */</span>
-<span class="source-line-no">046</span><span id="line-46">  public JSONObject toJSON() {</span>
-<span class="source-line-no">047</span><span id="line-47">    final JSONObject json = new JSONObject();</span>
-<span class="source-line-no">048</span><span id="line-48">    json.put("blocks", blocks);</span>
-<span class="source-line-no">049</span><span id="line-49"></span>
-<span class="source-line-no">050</span><span id="line-50">    final JSONObject stateJson = new JSONObject();</span>
-<span class="source-line-no">051</span><span id="line-51">    for (final Map.Entry&lt;String, String&gt; entry : state.entrySet()) {</span>
-<span class="source-line-no">052</span><span id="line-52">      stateJson.put(entry.getKey(), entry.getValue());</span>
-<span class="source-line-no">053</span><span id="line-53">    }</span>
-<span class="source-line-no">054</span><span id="line-54">    json.put("state", stateJson);</span>
-<span class="source-line-no">055</span><span id="line-55"></span>
-<span class="source-line-no">056</span><span id="line-56">    return json;</span>
-<span class="source-line-no">057</span><span id="line-57">  }</span>
-<span class="source-line-no">058</span><span id="line-58"></span>
-<span class="source-line-no">059</span><span id="line-59">  /**</span>
-<span class="source-line-no">060</span><span id="line-60">   * Reads JSON data and populates this block predicate.</span>
-<span class="source-line-no">061</span><span id="line-61">   *</span>
-<span class="source-line-no">062</span><span id="line-62">   * @param json The JSONHelper instance of the JSON data.</span>
-<span class="source-line-no">063</span><span id="line-63">   */</span>
-<span class="source-line-no">064</span><span id="line-64">  public void readJSON(final JSONHelper json) {</span>
-<span class="source-line-no">065</span><span id="line-65">    blocks.clear();</span>
-<span class="source-line-no">066</span><span id="line-66">    blocks.addAll(json.getStringList("blocks"));</span>
-<span class="source-line-no">067</span><span id="line-67"></span>
-<span class="source-line-no">068</span><span id="line-68">    state.clear();</span>
-<span class="source-line-no">069</span><span id="line-69">    final JSONObject stateJson = json.getJSON("state");</span>
-<span class="source-line-no">070</span><span id="line-70">    if (stateJson != null) {</span>
-<span class="source-line-no">071</span><span id="line-71">      for (final Object key : stateJson.keySet()) {</span>
-<span class="source-line-no">072</span><span id="line-72">        state.put(key.toString(), stateJson.get(key).toString());</span>
-<span class="source-line-no">073</span><span id="line-73">      }</span>
-<span class="source-line-no">074</span><span id="line-74">    }</span>
-<span class="source-line-no">075</span><span id="line-75">  }</span>
-<span class="source-line-no">076</span><span id="line-76"></span>
-<span class="source-line-no">077</span><span id="line-77">  @Override</span>
-<span class="source-line-no">078</span><span id="line-78">  public boolean equals(final Object obj) {</span>
-<span class="source-line-no">079</span><span id="line-79">    if (!(obj instanceof final BlockPredicate other)) return false;</span>
-<span class="source-line-no">080</span><span id="line-80"></span>
-<span class="source-line-no">081</span><span id="line-81">    return blocks.equals(other.blocks) &amp;&amp; state.equals(other.state);</span>
-<span class="source-line-no">082</span><span id="line-82">  }</span>
-<span class="source-line-no">083</span><span id="line-83"></span>
-<span class="source-line-no">084</span><span id="line-84">  @Override</span>
-<span class="source-line-no">085</span><span id="line-85">  public int hashCode() {</span>
-<span class="source-line-no">086</span><span id="line-86">    return blocks.hashCode() + state.hashCode();</span>
-<span class="source-line-no">087</span><span id="line-87">  }</span>
-<span class="source-line-no">088</span><span id="line-88">}</span>
+<span class="source-line-no">045</span><span id="line-45">   * @since 0.2.0.0</span>
+<span class="source-line-no">046</span><span id="line-46">   */</span>
+<span class="source-line-no">047</span><span id="line-47">  public JSONObject toJSON() {</span>
+<span class="source-line-no">048</span><span id="line-48">    final JSONObject json = new JSONObject();</span>
+<span class="source-line-no">049</span><span id="line-49">    json.put("blocks", blocks);</span>
+<span class="source-line-no">050</span><span id="line-50"></span>
+<span class="source-line-no">051</span><span id="line-51">    final JSONObject stateJson = new JSONObject();</span>
+<span class="source-line-no">052</span><span id="line-52">    for (final Map.Entry&lt;String, String&gt; entry : state.entrySet()) {</span>
+<span class="source-line-no">053</span><span id="line-53">      stateJson.put(entry.getKey(), entry.getValue());</span>
+<span class="source-line-no">054</span><span id="line-54">    }</span>
+<span class="source-line-no">055</span><span id="line-55">    json.put("state", stateJson);</span>
+<span class="source-line-no">056</span><span id="line-56"></span>
+<span class="source-line-no">057</span><span id="line-57">    return json;</span>
+<span class="source-line-no">058</span><span id="line-58">  }</span>
+<span class="source-line-no">059</span><span id="line-59"></span>
+<span class="source-line-no">060</span><span id="line-60">  /**</span>
+<span class="source-line-no">061</span><span id="line-61">   * Reads JSON data and populates this block predicate.</span>
+<span class="source-line-no">062</span><span id="line-62">   *</span>
+<span class="source-line-no">063</span><span id="line-63">   * @param json The JSONHelper instance of the JSON data.</span>
+<span class="source-line-no">064</span><span id="line-64">   * @since 0.2.0.0</span>
+<span class="source-line-no">065</span><span id="line-65">   */</span>
+<span class="source-line-no">066</span><span id="line-66">  public void readJSON(final JSONHelper json) {</span>
+<span class="source-line-no">067</span><span id="line-67">    blocks.clear();</span>
+<span class="source-line-no">068</span><span id="line-68">    blocks.addAll(json.getStringList("blocks"));</span>
+<span class="source-line-no">069</span><span id="line-69"></span>
+<span class="source-line-no">070</span><span id="line-70">    state.clear();</span>
+<span class="source-line-no">071</span><span id="line-71">    final JSONObject stateJson = json.getJSON("state");</span>
+<span class="source-line-no">072</span><span id="line-72">    if(stateJson != null) {</span>
+<span class="source-line-no">073</span><span id="line-73">      for (final Object key : stateJson.keySet()) {</span>
+<span class="source-line-no">074</span><span id="line-74">        state.put(key.toString(), stateJson.get(key).toString());</span>
+<span class="source-line-no">075</span><span id="line-75">      }</span>
+<span class="source-line-no">076</span><span id="line-76">    }</span>
+<span class="source-line-no">077</span><span id="line-77">  }</span>
+<span class="source-line-no">078</span><span id="line-78"></span>
+<span class="source-line-no">079</span><span id="line-79">  @Override</span>
+<span class="source-line-no">080</span><span id="line-80">  public boolean equals(final Object obj) {</span>
+<span class="source-line-no">081</span><span id="line-81">    if(!(obj instanceof final BlockPredicate other)) return false;</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83">    return blocks.equals(other.blocks) &amp;&amp; state.equals(other.state);</span>
+<span class="source-line-no">084</span><span id="line-84">  }</span>
+<span class="source-line-no">085</span><span id="line-85"></span>
+<span class="source-line-no">086</span><span id="line-86">  @Override</span>
+<span class="source-line-no">087</span><span id="line-87">  public int hashCode() {</span>
+<span class="source-line-no">088</span><span id="line-88">    return blocks.hashCode() + state.hashCode();</span>
+<span class="source-line-no">089</span><span id="line-89">  }</span>
+<span class="source-line-no">090</span><span id="line-90"></span>
+<span class="source-line-no">091</span><span id="line-91">  @Override</span>
+<span class="source-line-no">092</span><span id="line-92">  public BlockPredicate clone() throws CloneNotSupportedException {</span>
+<span class="source-line-no">093</span><span id="line-93"></span>
+<span class="source-line-no">094</span><span id="line-94">    final BlockPredicate copy = new BlockPredicate();</span>
+<span class="source-line-no">095</span><span id="line-95">    copy.blocks.addAll(this.blocks);</span>
+<span class="source-line-no">096</span><span id="line-96">    copy.state.putAll(this.state);</span>
+<span class="source-line-no">097</span><span id="line-97">    return copy;</span>
+<span class="source-line-no">098</span><span id="line-98">  }</span>
+<span class="source-line-no">099</span><span id="line-99">}</span>
 
 
 

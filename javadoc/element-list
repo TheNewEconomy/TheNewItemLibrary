@@ -9,6 +9,9 @@ net.tnemc.item.component
 net.tnemc.item.component.helper
 net.tnemc.item.component.helper.effect
 net.tnemc.item.component.impl
+net.tnemc.item.example
+net.tnemc.item.example.command
+net.tnemc.item.example.listeners
 net.tnemc.item.paper
 net.tnemc.item.paper.platform
 net.tnemc.item.paper.platform.impl.modern

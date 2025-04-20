@@ -156,188 +156,192 @@
 <span class="source-line-no">143</span><span id="line-143"></span>
 <span class="source-line-no">144</span><span id="line-144">  /**</span>
 <span class="source-line-no">145</span><span id="line-145">   * @return the type of component this is.</span>
-<span class="source-line-no">146</span><span id="line-146">   */</span>
-<span class="source-line-no">147</span><span id="line-147">  @Override</span>
-<span class="source-line-no">148</span><span id="line-148">  public String identifier() {</span>
-<span class="source-line-no">149</span><span id="line-149"></span>
-<span class="source-line-no">150</span><span id="line-150">    return "equip";</span>
-<span class="source-line-no">151</span><span id="line-151">  }</span>
-<span class="source-line-no">152</span><span id="line-152"></span>
-<span class="source-line-no">153</span><span id="line-153">  /**</span>
-<span class="source-line-no">154</span><span id="line-154">   * Converts the {@link SerialComponent} to a JSON object.</span>
-<span class="source-line-no">155</span><span id="line-155">   *</span>
-<span class="source-line-no">156</span><span id="line-156">   * @return The JSONObject representing this {@link SerialComponent}.</span>
-<span class="source-line-no">157</span><span id="line-157">   */</span>
-<span class="source-line-no">158</span><span id="line-158">  @Override</span>
-<span class="source-line-no">159</span><span id="line-159">  public JSONObject toJSON() {</span>
-<span class="source-line-no">160</span><span id="line-160"></span>
-<span class="source-line-no">161</span><span id="line-161">    final JSONObject equip = new JSONObject();</span>
-<span class="source-line-no">162</span><span id="line-162">    equip.put("name", "equip-component");</span>
-<span class="source-line-no">163</span><span id="line-163">    equip.put("cameraKey", cameraKey);</span>
-<span class="source-line-no">164</span><span id="line-164">    equip.put("equipSound", equipSound);</span>
-<span class="source-line-no">165</span><span id="line-165">    equip.put("modelKey", modelKey);</span>
-<span class="source-line-no">166</span><span id="line-166">    equip.put("slot", slot.name());</span>
-<span class="source-line-no">167</span><span id="line-167">    equip.put("damageWithEntity", damageOnHurt);</span>
-<span class="source-line-no">168</span><span id="line-168">    equip.put("dispensable", dispensable);</span>
-<span class="source-line-no">169</span><span id="line-169">    equip.put("swappable", swappable);</span>
-<span class="source-line-no">170</span><span id="line-170">    equip.put("equipOnInteract", equipOnInteract);</span>
-<span class="source-line-no">171</span><span id="line-171"></span>
-<span class="source-line-no">172</span><span id="line-172">    if(!entities.isEmpty()) {</span>
+<span class="source-line-no">146</span><span id="line-146">   * @since 0.2.0.0</span>
+<span class="source-line-no">147</span><span id="line-147">   */</span>
+<span class="source-line-no">148</span><span id="line-148">  @Override</span>
+<span class="source-line-no">149</span><span id="line-149">  public String identifier() {</span>
+<span class="source-line-no">150</span><span id="line-150"></span>
+<span class="source-line-no">151</span><span id="line-151">    return "equip";</span>
+<span class="source-line-no">152</span><span id="line-152">  }</span>
+<span class="source-line-no">153</span><span id="line-153"></span>
+<span class="source-line-no">154</span><span id="line-154">  /**</span>
+<span class="source-line-no">155</span><span id="line-155">   * Converts the {@link SerialComponent} to a JSON object.</span>
+<span class="source-line-no">156</span><span id="line-156">   *</span>
+<span class="source-line-no">157</span><span id="line-157">   * @return The JSONObject representing this {@link SerialComponent}.</span>
+<span class="source-line-no">158</span><span id="line-158">   * @since 0.2.0.0</span>
+<span class="source-line-no">159</span><span id="line-159">   */</span>
+<span class="source-line-no">160</span><span id="line-160">  @Override</span>
+<span class="source-line-no">161</span><span id="line-161">  public JSONObject toJSON() {</span>
+<span class="source-line-no">162</span><span id="line-162"></span>
+<span class="source-line-no">163</span><span id="line-163">    final JSONObject equip = new JSONObject();</span>
+<span class="source-line-no">164</span><span id="line-164">    equip.put("name", "equip-component");</span>
+<span class="source-line-no">165</span><span id="line-165">    equip.put("cameraKey", cameraKey);</span>
+<span class="source-line-no">166</span><span id="line-166">    equip.put("equipSound", equipSound);</span>
+<span class="source-line-no">167</span><span id="line-167">    equip.put("modelKey", modelKey);</span>
+<span class="source-line-no">168</span><span id="line-168">    equip.put("slot", slot.name());</span>
+<span class="source-line-no">169</span><span id="line-169">    equip.put("damageWithEntity", damageOnHurt);</span>
+<span class="source-line-no">170</span><span id="line-170">    equip.put("dispensable", dispensable);</span>
+<span class="source-line-no">171</span><span id="line-171">    equip.put("swappable", swappable);</span>
+<span class="source-line-no">172</span><span id="line-172">    equip.put("equipOnInteract", equipOnInteract);</span>
 <span class="source-line-no">173</span><span id="line-173"></span>
-<span class="source-line-no">174</span><span id="line-174">      final JSONObject entitiesOBJ = new JSONObject();</span>
-<span class="source-line-no">175</span><span id="line-175">      for(int i = 0; i &lt; entities.size(); i++) {</span>
-<span class="source-line-no">176</span><span id="line-176">        entitiesOBJ.put(i, entities.get(i));</span>
-<span class="source-line-no">177</span><span id="line-177">      }</span>
-<span class="source-line-no">178</span><span id="line-178">      equip.put("entities", entitiesOBJ);</span>
-<span class="source-line-no">179</span><span id="line-179">    }</span>
-<span class="source-line-no">180</span><span id="line-180">    return equip;</span>
-<span class="source-line-no">181</span><span id="line-181">  }</span>
-<span class="source-line-no">182</span><span id="line-182"></span>
-<span class="source-line-no">183</span><span id="line-183">  /**</span>
-<span class="source-line-no">184</span><span id="line-184">   * Reads JSON data and converts it back to a {@link SerialComponent} object.</span>
-<span class="source-line-no">185</span><span id="line-185">   *</span>
-<span class="source-line-no">186</span><span id="line-186">   * @param json The JSONHelper instance of the json data.</span>
-<span class="source-line-no">187</span><span id="line-187">   */</span>
-<span class="source-line-no">188</span><span id="line-188">  @Override</span>
-<span class="source-line-no">189</span><span id="line-189">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
-<span class="source-line-no">190</span><span id="line-190"></span>
-<span class="source-line-no">191</span><span id="line-191">    cameraKey = json.getString("cameraKey");</span>
-<span class="source-line-no">192</span><span id="line-192">    equipSound = json.getString("equipSound");</span>
-<span class="source-line-no">193</span><span id="line-193">    modelKey = json.getString("modelKey");</span>
-<span class="source-line-no">194</span><span id="line-194">    slot = EquipSlot.valueOf(json.getString("slot"));</span>
-<span class="source-line-no">195</span><span id="line-195">    damageOnHurt = json.getBoolean("damageWithEntity");</span>
-<span class="source-line-no">196</span><span id="line-196">    dispensable = json.getBoolean("dispensable");</span>
-<span class="source-line-no">197</span><span id="line-197">    swappable = json.getBoolean("swappable");</span>
-<span class="source-line-no">198</span><span id="line-198">    equipOnInteract = json.getBoolean("equipOnInteract");</span>
-<span class="source-line-no">199</span><span id="line-199"></span>
-<span class="source-line-no">200</span><span id="line-200">    entities.clear();</span>
-<span class="source-line-no">201</span><span id="line-201">    entities.addAll(json.getStringList("entities"));</span>
-<span class="source-line-no">202</span><span id="line-202">  }</span>
-<span class="source-line-no">203</span><span id="line-203"></span>
-<span class="source-line-no">204</span><span id="line-204">  /**</span>
-<span class="source-line-no">205</span><span id="line-205">   * Used to determine if some data is equal to this data. This means that it has to be an exact</span>
-<span class="source-line-no">206</span><span id="line-206">   * copy of this data. For instance, book copies will return false when compared to the original.</span>
-<span class="source-line-no">207</span><span id="line-207">   *</span>
-<span class="source-line-no">208</span><span id="line-208">   * @param component The component to compare.</span>
-<span class="source-line-no">209</span><span id="line-209">   *</span>
-<span class="source-line-no">210</span><span id="line-210">   * @return True if similar, otherwise false.</span>
-<span class="source-line-no">211</span><span id="line-211">   */</span>
-<span class="source-line-no">212</span><span id="line-212">  @Override</span>
-<span class="source-line-no">213</span><span id="line-213">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">214</span><span id="line-214"></span>
-<span class="source-line-no">215</span><span id="line-215">    if(component instanceof final EquipComponent&lt;?, ?&gt; equipComponent) {</span>
-<span class="source-line-no">216</span><span id="line-216"></span>
-<span class="source-line-no">217</span><span id="line-217">      return Objects.equals(this.cameraKey, equipComponent.cameraKey) &amp;&amp;</span>
-<span class="source-line-no">218</span><span id="line-218">             Objects.equals(this.equipSound, equipComponent.equipSound) &amp;&amp;</span>
-<span class="source-line-no">219</span><span id="line-219">             Objects.equals(this.modelKey, equipComponent.modelKey) &amp;&amp;</span>
-<span class="source-line-no">220</span><span id="line-220">             Objects.equals(this.slot.name(), equipComponent.slot.name()) &amp;&amp;</span>
-<span class="source-line-no">221</span><span id="line-221">             this.damageOnHurt == equipComponent.damageOnHurt &amp;&amp;</span>
-<span class="source-line-no">222</span><span id="line-222">             this.dispensable == equipComponent.dispensable &amp;&amp;</span>
-<span class="source-line-no">223</span><span id="line-223">             this.swappable == equipComponent.swappable &amp;&amp;</span>
-<span class="source-line-no">224</span><span id="line-224">             this.equipOnInteract == equipComponent.equipOnInteract &amp;&amp;</span>
-<span class="source-line-no">225</span><span id="line-225">             this.entities.equals(equipComponent.entities);</span>
-<span class="source-line-no">226</span><span id="line-226"></span>
-<span class="source-line-no">227</span><span id="line-227">    }</span>
-<span class="source-line-no">228</span><span id="line-228">    return false;</span>
-<span class="source-line-no">229</span><span id="line-229">  }</span>
+<span class="source-line-no">174</span><span id="line-174">    if(!entities.isEmpty()) {</span>
+<span class="source-line-no">175</span><span id="line-175"></span>
+<span class="source-line-no">176</span><span id="line-176">      final JSONObject entitiesOBJ = new JSONObject();</span>
+<span class="source-line-no">177</span><span id="line-177">      for(int i = 0; i &lt; entities.size(); i++) {</span>
+<span class="source-line-no">178</span><span id="line-178">        entitiesOBJ.put(i, entities.get(i));</span>
+<span class="source-line-no">179</span><span id="line-179">      }</span>
+<span class="source-line-no">180</span><span id="line-180">      equip.put("entities", entitiesOBJ);</span>
+<span class="source-line-no">181</span><span id="line-181">    }</span>
+<span class="source-line-no">182</span><span id="line-182">    return equip;</span>
+<span class="source-line-no">183</span><span id="line-183">  }</span>
+<span class="source-line-no">184</span><span id="line-184"></span>
+<span class="source-line-no">185</span><span id="line-185">  /**</span>
+<span class="source-line-no">186</span><span id="line-186">   * Reads JSON data and converts it back to a {@link SerialComponent} object.</span>
+<span class="source-line-no">187</span><span id="line-187">   *</span>
+<span class="source-line-no">188</span><span id="line-188">   * @param json The JSONHelper instance of the json data.</span>
+<span class="source-line-no">189</span><span id="line-189">   * @since 0.2.0.0</span>
+<span class="source-line-no">190</span><span id="line-190">   */</span>
+<span class="source-line-no">191</span><span id="line-191">  @Override</span>
+<span class="source-line-no">192</span><span id="line-192">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
+<span class="source-line-no">193</span><span id="line-193"></span>
+<span class="source-line-no">194</span><span id="line-194">    cameraKey = json.getString("cameraKey");</span>
+<span class="source-line-no">195</span><span id="line-195">    equipSound = json.getString("equipSound");</span>
+<span class="source-line-no">196</span><span id="line-196">    modelKey = json.getString("modelKey");</span>
+<span class="source-line-no">197</span><span id="line-197">    slot = EquipSlot.valueOf(json.getString("slot"));</span>
+<span class="source-line-no">198</span><span id="line-198">    damageOnHurt = json.getBoolean("damageWithEntity");</span>
+<span class="source-line-no">199</span><span id="line-199">    dispensable = json.getBoolean("dispensable");</span>
+<span class="source-line-no">200</span><span id="line-200">    swappable = json.getBoolean("swappable");</span>
+<span class="source-line-no">201</span><span id="line-201">    equipOnInteract = json.getBoolean("equipOnInteract");</span>
+<span class="source-line-no">202</span><span id="line-202"></span>
+<span class="source-line-no">203</span><span id="line-203">    entities.clear();</span>
+<span class="source-line-no">204</span><span id="line-204">    entities.addAll(json.getStringList("entities"));</span>
+<span class="source-line-no">205</span><span id="line-205">  }</span>
+<span class="source-line-no">206</span><span id="line-206"></span>
+<span class="source-line-no">207</span><span id="line-207">  /**</span>
+<span class="source-line-no">208</span><span id="line-208">   * Used to determine if some data is equal to this data. This means that it has to be an exact</span>
+<span class="source-line-no">209</span><span id="line-209">   * copy of this data. For instance, book copies will return false when compared to the original.</span>
+<span class="source-line-no">210</span><span id="line-210">   *</span>
+<span class="source-line-no">211</span><span id="line-211">   * @param component The component to compare.</span>
+<span class="source-line-no">212</span><span id="line-212">   *</span>
+<span class="source-line-no">213</span><span id="line-213">   * @return True if similar, otherwise false.</span>
+<span class="source-line-no">214</span><span id="line-214">   * @since 0.2.0.0</span>
+<span class="source-line-no">215</span><span id="line-215">   */</span>
+<span class="source-line-no">216</span><span id="line-216">  @Override</span>
+<span class="source-line-no">217</span><span id="line-217">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">218</span><span id="line-218"></span>
+<span class="source-line-no">219</span><span id="line-219">    if(component instanceof final EquipComponent&lt;?, ?&gt; equipComponent) {</span>
+<span class="source-line-no">220</span><span id="line-220"></span>
+<span class="source-line-no">221</span><span id="line-221">      return Objects.equals(this.cameraKey, equipComponent.cameraKey) &amp;&amp;</span>
+<span class="source-line-no">222</span><span id="line-222">             Objects.equals(this.equipSound, equipComponent.equipSound) &amp;&amp;</span>
+<span class="source-line-no">223</span><span id="line-223">             Objects.equals(this.modelKey, equipComponent.modelKey) &amp;&amp;</span>
+<span class="source-line-no">224</span><span id="line-224">             Objects.equals(this.slot.name(), equipComponent.slot.name()) &amp;&amp;</span>
+<span class="source-line-no">225</span><span id="line-225">             this.damageOnHurt == equipComponent.damageOnHurt &amp;&amp;</span>
+<span class="source-line-no">226</span><span id="line-226">             this.dispensable == equipComponent.dispensable &amp;&amp;</span>
+<span class="source-line-no">227</span><span id="line-227">             this.swappable == equipComponent.swappable &amp;&amp;</span>
+<span class="source-line-no">228</span><span id="line-228">             this.equipOnInteract == equipComponent.equipOnInteract &amp;&amp;</span>
+<span class="source-line-no">229</span><span id="line-229">             this.entities.equals(equipComponent.entities);</span>
 <span class="source-line-no">230</span><span id="line-230"></span>
-<span class="source-line-no">231</span><span id="line-231">  public List&lt;String&gt; entities() {</span>
-<span class="source-line-no">232</span><span id="line-232"></span>
-<span class="source-line-no">233</span><span id="line-233">    return entities;</span>
-<span class="source-line-no">234</span><span id="line-234">  }</span>
-<span class="source-line-no">235</span><span id="line-235"></span>
-<span class="source-line-no">236</span><span id="line-236">  public void entities(final List&lt;String&gt; entities) {</span>
-<span class="source-line-no">237</span><span id="line-237"></span>
-<span class="source-line-no">238</span><span id="line-238">    this.entities.clear();</span>
-<span class="source-line-no">239</span><span id="line-239">    this.entities.addAll(entities);</span>
-<span class="source-line-no">240</span><span id="line-240">  }</span>
+<span class="source-line-no">231</span><span id="line-231">    }</span>
+<span class="source-line-no">232</span><span id="line-232">    return false;</span>
+<span class="source-line-no">233</span><span id="line-233">  }</span>
+<span class="source-line-no">234</span><span id="line-234"></span>
+<span class="source-line-no">235</span><span id="line-235">  public List&lt;String&gt; entities() {</span>
+<span class="source-line-no">236</span><span id="line-236"></span>
+<span class="source-line-no">237</span><span id="line-237">    return entities;</span>
+<span class="source-line-no">238</span><span id="line-238">  }</span>
+<span class="source-line-no">239</span><span id="line-239"></span>
+<span class="source-line-no">240</span><span id="line-240">  public void entities(final List&lt;String&gt; entities) {</span>
 <span class="source-line-no">241</span><span id="line-241"></span>
-<span class="source-line-no">242</span><span id="line-242">  public void entities(final String... entities) {</span>
-<span class="source-line-no">243</span><span id="line-243"></span>
-<span class="source-line-no">244</span><span id="line-244">    this.entities.clear();</span>
-<span class="source-line-no">245</span><span id="line-245">    this.entities.addAll(Arrays.asList(entities));</span>
-<span class="source-line-no">246</span><span id="line-246">  }</span>
+<span class="source-line-no">242</span><span id="line-242">    this.entities.clear();</span>
+<span class="source-line-no">243</span><span id="line-243">    this.entities.addAll(entities);</span>
+<span class="source-line-no">244</span><span id="line-244">  }</span>
+<span class="source-line-no">245</span><span id="line-245"></span>
+<span class="source-line-no">246</span><span id="line-246">  public void entities(final String... entities) {</span>
 <span class="source-line-no">247</span><span id="line-247"></span>
-<span class="source-line-no">248</span><span id="line-248">  public String cameraKey() {</span>
-<span class="source-line-no">249</span><span id="line-249"></span>
-<span class="source-line-no">250</span><span id="line-250">    return cameraKey;</span>
-<span class="source-line-no">251</span><span id="line-251">  }</span>
-<span class="source-line-no">252</span><span id="line-252"></span>
-<span class="source-line-no">253</span><span id="line-253">  public void cameraKey(final String cameraKey) {</span>
-<span class="source-line-no">254</span><span id="line-254"></span>
-<span class="source-line-no">255</span><span id="line-255">    this.cameraKey = cameraKey;</span>
-<span class="source-line-no">256</span><span id="line-256">  }</span>
-<span class="source-line-no">257</span><span id="line-257"></span>
-<span class="source-line-no">258</span><span id="line-258">  public String equipSound() {</span>
-<span class="source-line-no">259</span><span id="line-259"></span>
-<span class="source-line-no">260</span><span id="line-260">    return equipSound;</span>
-<span class="source-line-no">261</span><span id="line-261">  }</span>
-<span class="source-line-no">262</span><span id="line-262"></span>
-<span class="source-line-no">263</span><span id="line-263">  public void equipSound(final String equipSound) {</span>
-<span class="source-line-no">264</span><span id="line-264"></span>
-<span class="source-line-no">265</span><span id="line-265">    this.equipSound = equipSound;</span>
-<span class="source-line-no">266</span><span id="line-266">  }</span>
-<span class="source-line-no">267</span><span id="line-267"></span>
-<span class="source-line-no">268</span><span id="line-268">  public String modelKey() {</span>
-<span class="source-line-no">269</span><span id="line-269"></span>
-<span class="source-line-no">270</span><span id="line-270">    return modelKey;</span>
-<span class="source-line-no">271</span><span id="line-271">  }</span>
-<span class="source-line-no">272</span><span id="line-272"></span>
-<span class="source-line-no">273</span><span id="line-273">  public void modelKey(final String modelKey) {</span>
-<span class="source-line-no">274</span><span id="line-274"></span>
-<span class="source-line-no">275</span><span id="line-275">    this.modelKey = modelKey;</span>
-<span class="source-line-no">276</span><span id="line-276">  }</span>
-<span class="source-line-no">277</span><span id="line-277"></span>
-<span class="source-line-no">278</span><span id="line-278">  public EquipSlot slot() {</span>
-<span class="source-line-no">279</span><span id="line-279"></span>
-<span class="source-line-no">280</span><span id="line-280">    return slot;</span>
-<span class="source-line-no">281</span><span id="line-281">  }</span>
-<span class="source-line-no">282</span><span id="line-282"></span>
-<span class="source-line-no">283</span><span id="line-283">  public void slot(final EquipSlot slot) {</span>
-<span class="source-line-no">284</span><span id="line-284"></span>
-<span class="source-line-no">285</span><span id="line-285">    this.slot = slot;</span>
-<span class="source-line-no">286</span><span id="line-286">  }</span>
-<span class="source-line-no">287</span><span id="line-287"></span>
-<span class="source-line-no">288</span><span id="line-288">  public boolean damageOnHurt() {</span>
-<span class="source-line-no">289</span><span id="line-289"></span>
-<span class="source-line-no">290</span><span id="line-290">    return damageOnHurt;</span>
-<span class="source-line-no">291</span><span id="line-291">  }</span>
-<span class="source-line-no">292</span><span id="line-292"></span>
-<span class="source-line-no">293</span><span id="line-293">  public void damageOnHurt(final boolean damageOnHurt) {</span>
-<span class="source-line-no">294</span><span id="line-294"></span>
-<span class="source-line-no">295</span><span id="line-295">    this.damageOnHurt = damageOnHurt;</span>
-<span class="source-line-no">296</span><span id="line-296">  }</span>
-<span class="source-line-no">297</span><span id="line-297"></span>
-<span class="source-line-no">298</span><span id="line-298">  public boolean dispensable() {</span>
-<span class="source-line-no">299</span><span id="line-299"></span>
-<span class="source-line-no">300</span><span id="line-300">    return dispensable;</span>
-<span class="source-line-no">301</span><span id="line-301">  }</span>
-<span class="source-line-no">302</span><span id="line-302"></span>
-<span class="source-line-no">303</span><span id="line-303">  public void dispensable(final boolean dispensable) {</span>
-<span class="source-line-no">304</span><span id="line-304"></span>
-<span class="source-line-no">305</span><span id="line-305">    this.dispensable = dispensable;</span>
-<span class="source-line-no">306</span><span id="line-306">  }</span>
-<span class="source-line-no">307</span><span id="line-307"></span>
-<span class="source-line-no">308</span><span id="line-308">  public boolean swappable() {</span>
-<span class="source-line-no">309</span><span id="line-309"></span>
-<span class="source-line-no">310</span><span id="line-310">    return swappable;</span>
-<span class="source-line-no">311</span><span id="line-311">  }</span>
-<span class="source-line-no">312</span><span id="line-312"></span>
-<span class="source-line-no">313</span><span id="line-313">  public void swappable(final boolean swappable) {</span>
-<span class="source-line-no">314</span><span id="line-314"></span>
-<span class="source-line-no">315</span><span id="line-315">    this.swappable = swappable;</span>
-<span class="source-line-no">316</span><span id="line-316">  }</span>
-<span class="source-line-no">317</span><span id="line-317"></span>
-<span class="source-line-no">318</span><span id="line-318">  public boolean equipOnInteract() {</span>
-<span class="source-line-no">319</span><span id="line-319"></span>
-<span class="source-line-no">320</span><span id="line-320">    return equipOnInteract;</span>
-<span class="source-line-no">321</span><span id="line-321">  }</span>
-<span class="source-line-no">322</span><span id="line-322"></span>
-<span class="source-line-no">323</span><span id="line-323">  public void equipOnInteract(final boolean equipOnInteract) {</span>
-<span class="source-line-no">324</span><span id="line-324"></span>
-<span class="source-line-no">325</span><span id="line-325">    this.equipOnInteract = equipOnInteract;</span>
-<span class="source-line-no">326</span><span id="line-326">  }</span>
-<span class="source-line-no">327</span><span id="line-327">}</span>
+<span class="source-line-no">248</span><span id="line-248">    this.entities.clear();</span>
+<span class="source-line-no">249</span><span id="line-249">    this.entities.addAll(Arrays.asList(entities));</span>
+<span class="source-line-no">250</span><span id="line-250">  }</span>
+<span class="source-line-no">251</span><span id="line-251"></span>
+<span class="source-line-no">252</span><span id="line-252">  public String cameraKey() {</span>
+<span class="source-line-no">253</span><span id="line-253"></span>
+<span class="source-line-no">254</span><span id="line-254">    return cameraKey;</span>
+<span class="source-line-no">255</span><span id="line-255">  }</span>
+<span class="source-line-no">256</span><span id="line-256"></span>
+<span class="source-line-no">257</span><span id="line-257">  public void cameraKey(final String cameraKey) {</span>
+<span class="source-line-no">258</span><span id="line-258"></span>
+<span class="source-line-no">259</span><span id="line-259">    this.cameraKey = cameraKey;</span>
+<span class="source-line-no">260</span><span id="line-260">  }</span>
+<span class="source-line-no">261</span><span id="line-261"></span>
+<span class="source-line-no">262</span><span id="line-262">  public String equipSound() {</span>
+<span class="source-line-no">263</span><span id="line-263"></span>
+<span class="source-line-no">264</span><span id="line-264">    return equipSound;</span>
+<span class="source-line-no">265</span><span id="line-265">  }</span>
+<span class="source-line-no">266</span><span id="line-266"></span>
+<span class="source-line-no">267</span><span id="line-267">  public void equipSound(final String equipSound) {</span>
+<span class="source-line-no">268</span><span id="line-268"></span>
+<span class="source-line-no">269</span><span id="line-269">    this.equipSound = equipSound;</span>
+<span class="source-line-no">270</span><span id="line-270">  }</span>
+<span class="source-line-no">271</span><span id="line-271"></span>
+<span class="source-line-no">272</span><span id="line-272">  public String modelKey() {</span>
+<span class="source-line-no">273</span><span id="line-273"></span>
+<span class="source-line-no">274</span><span id="line-274">    return modelKey;</span>
+<span class="source-line-no">275</span><span id="line-275">  }</span>
+<span class="source-line-no">276</span><span id="line-276"></span>
+<span class="source-line-no">277</span><span id="line-277">  public void modelKey(final String modelKey) {</span>
+<span class="source-line-no">278</span><span id="line-278"></span>
+<span class="source-line-no">279</span><span id="line-279">    this.modelKey = modelKey;</span>
+<span class="source-line-no">280</span><span id="line-280">  }</span>
+<span class="source-line-no">281</span><span id="line-281"></span>
+<span class="source-line-no">282</span><span id="line-282">  public EquipSlot slot() {</span>
+<span class="source-line-no">283</span><span id="line-283"></span>
+<span class="source-line-no">284</span><span id="line-284">    return slot;</span>
+<span class="source-line-no">285</span><span id="line-285">  }</span>
+<span class="source-line-no">286</span><span id="line-286"></span>
+<span class="source-line-no">287</span><span id="line-287">  public void slot(final EquipSlot slot) {</span>
+<span class="source-line-no">288</span><span id="line-288"></span>
+<span class="source-line-no">289</span><span id="line-289">    this.slot = slot;</span>
+<span class="source-line-no">290</span><span id="line-290">  }</span>
+<span class="source-line-no">291</span><span id="line-291"></span>
+<span class="source-line-no">292</span><span id="line-292">  public boolean damageOnHurt() {</span>
+<span class="source-line-no">293</span><span id="line-293"></span>
+<span class="source-line-no">294</span><span id="line-294">    return damageOnHurt;</span>
+<span class="source-line-no">295</span><span id="line-295">  }</span>
+<span class="source-line-no">296</span><span id="line-296"></span>
+<span class="source-line-no">297</span><span id="line-297">  public void damageOnHurt(final boolean damageOnHurt) {</span>
+<span class="source-line-no">298</span><span id="line-298"></span>
+<span class="source-line-no">299</span><span id="line-299">    this.damageOnHurt = damageOnHurt;</span>
+<span class="source-line-no">300</span><span id="line-300">  }</span>
+<span class="source-line-no">301</span><span id="line-301"></span>
+<span class="source-line-no">302</span><span id="line-302">  public boolean dispensable() {</span>
+<span class="source-line-no">303</span><span id="line-303"></span>
+<span class="source-line-no">304</span><span id="line-304">    return dispensable;</span>
+<span class="source-line-no">305</span><span id="line-305">  }</span>
+<span class="source-line-no">306</span><span id="line-306"></span>
+<span class="source-line-no">307</span><span id="line-307">  public void dispensable(final boolean dispensable) {</span>
+<span class="source-line-no">308</span><span id="line-308"></span>
+<span class="source-line-no">309</span><span id="line-309">    this.dispensable = dispensable;</span>
+<span class="source-line-no">310</span><span id="line-310">  }</span>
+<span class="source-line-no">311</span><span id="line-311"></span>
+<span class="source-line-no">312</span><span id="line-312">  public boolean swappable() {</span>
+<span class="source-line-no">313</span><span id="line-313"></span>
+<span class="source-line-no">314</span><span id="line-314">    return swappable;</span>
+<span class="source-line-no">315</span><span id="line-315">  }</span>
+<span class="source-line-no">316</span><span id="line-316"></span>
+<span class="source-line-no">317</span><span id="line-317">  public void swappable(final boolean swappable) {</span>
+<span class="source-line-no">318</span><span id="line-318"></span>
+<span class="source-line-no">319</span><span id="line-319">    this.swappable = swappable;</span>
+<span class="source-line-no">320</span><span id="line-320">  }</span>
+<span class="source-line-no">321</span><span id="line-321"></span>
+<span class="source-line-no">322</span><span id="line-322">  public boolean equipOnInteract() {</span>
+<span class="source-line-no">323</span><span id="line-323"></span>
+<span class="source-line-no">324</span><span id="line-324">    return equipOnInteract;</span>
+<span class="source-line-no">325</span><span id="line-325">  }</span>
+<span class="source-line-no">326</span><span id="line-326"></span>
+<span class="source-line-no">327</span><span id="line-327">  public void equipOnInteract(final boolean equipOnInteract) {</span>
+<span class="source-line-no">328</span><span id="line-328"></span>
+<span class="source-line-no">329</span><span id="line-329">    this.equipOnInteract = equipOnInteract;</span>
+<span class="source-line-no">330</span><span id="line-330">  }</span>
+<span class="source-line-no">331</span><span id="line-331">}</span>
 
 
 

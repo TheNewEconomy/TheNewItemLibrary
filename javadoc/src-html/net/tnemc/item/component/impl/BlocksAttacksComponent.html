@@ -80,231 +80,235 @@
 <span class="source-line-no">067</span><span id="line-67"></span>
 <span class="source-line-no">068</span><span id="line-68">  /**</span>
 <span class="source-line-no">069</span><span id="line-69">   * @return the type of component this is.</span>
-<span class="source-line-no">070</span><span id="line-70">   */</span>
-<span class="source-line-no">071</span><span id="line-71">  @Override</span>
-<span class="source-line-no">072</span><span id="line-72">  public String identifier() {</span>
-<span class="source-line-no">073</span><span id="line-73"></span>
-<span class="source-line-no">074</span><span id="line-74">    return "blocks_attacks";</span>
-<span class="source-line-no">075</span><span id="line-75">  }</span>
-<span class="source-line-no">076</span><span id="line-76"></span>
-<span class="source-line-no">077</span><span id="line-77">  /**</span>
-<span class="source-line-no">078</span><span id="line-78">   * Converts the {@link SerialComponent} to a JSON object.</span>
-<span class="source-line-no">079</span><span id="line-79">   *</span>
-<span class="source-line-no">080</span><span id="line-80">   * @return The JSONObject representing this {@link SerialComponent}.</span>
-<span class="source-line-no">081</span><span id="line-81">   */</span>
-<span class="source-line-no">082</span><span id="line-82">  @Override</span>
-<span class="source-line-no">083</span><span id="line-83">  public JSONObject toJSON() {</span>
-<span class="source-line-no">084</span><span id="line-84"></span>
-<span class="source-line-no">085</span><span id="line-85">    final JSONObject json = new JSONObject();</span>
+<span class="source-line-no">070</span><span id="line-70">   * @since 0.2.0.0</span>
+<span class="source-line-no">071</span><span id="line-71">   */</span>
+<span class="source-line-no">072</span><span id="line-72">  @Override</span>
+<span class="source-line-no">073</span><span id="line-73">  public String identifier() {</span>
+<span class="source-line-no">074</span><span id="line-74"></span>
+<span class="source-line-no">075</span><span id="line-75">    return "blocks_attacks";</span>
+<span class="source-line-no">076</span><span id="line-76">  }</span>
+<span class="source-line-no">077</span><span id="line-77"></span>
+<span class="source-line-no">078</span><span id="line-78">  /**</span>
+<span class="source-line-no">079</span><span id="line-79">   * Converts the {@link SerialComponent} to a JSON object.</span>
+<span class="source-line-no">080</span><span id="line-80">   *</span>
+<span class="source-line-no">081</span><span id="line-81">   * @return The JSONObject representing this {@link SerialComponent}.</span>
+<span class="source-line-no">082</span><span id="line-82">   * @since 0.2.0.0</span>
+<span class="source-line-no">083</span><span id="line-83">   */</span>
+<span class="source-line-no">084</span><span id="line-84">  @Override</span>
+<span class="source-line-no">085</span><span id="line-85">  public JSONObject toJSON() {</span>
 <span class="source-line-no">086</span><span id="line-86"></span>
-<span class="source-line-no">087</span><span id="line-87">    //Serialize DamageReductions</span>
-<span class="source-line-no">088</span><span id="line-88">    final JSONArray reductionsArray = new JSONArray();</span>
-<span class="source-line-no">089</span><span id="line-89">    for(final DamageReduction reduction : reductions) {</span>
-<span class="source-line-no">090</span><span id="line-90"></span>
-<span class="source-line-no">091</span><span id="line-91">      final JSONObject reductionJson = new JSONObject();</span>
-<span class="source-line-no">092</span><span id="line-92">      reductionJson.put("type", reduction.type());</span>
-<span class="source-line-no">093</span><span id="line-93">      reductionJson.put("base", reduction.base());</span>
-<span class="source-line-no">094</span><span id="line-94">      reductionJson.put("factor", reduction.factor());</span>
-<span class="source-line-no">095</span><span id="line-95">      reductionJson.put("horizontalBlockingAngle", reduction.horizontalBlockingAngle());</span>
-<span class="source-line-no">096</span><span id="line-96">      reductionsArray.add(reductionJson);</span>
-<span class="source-line-no">097</span><span id="line-97">    }</span>
-<span class="source-line-no">098</span><span id="line-98">    json.put("reductions", reductionsArray);</span>
-<span class="source-line-no">099</span><span id="line-99"></span>
-<span class="source-line-no">100</span><span id="line-100"></span>
-<span class="source-line-no">101</span><span id="line-101">    //Serialize bypassedBy</span>
-<span class="source-line-no">102</span><span id="line-102">    final JSONArray bypassedByArray = new JSONArray();</span>
-<span class="source-line-no">103</span><span id="line-103">    for(final String bypassedBy : bypassedBy) {</span>
-<span class="source-line-no">104</span><span id="line-104"></span>
-<span class="source-line-no">105</span><span id="line-105">      bypassedByArray.add(bypassedBy);</span>
-<span class="source-line-no">106</span><span id="line-106">    }</span>
-<span class="source-line-no">107</span><span id="line-107">    json.put("bypassedBy", bypassedByArray);</span>
-<span class="source-line-no">108</span><span id="line-108"></span>
-<span class="source-line-no">109</span><span id="line-109">    // Serialize ItemDamage</span>
-<span class="source-line-no">110</span><span id="line-110">    if(itemDamage != null) {</span>
-<span class="source-line-no">111</span><span id="line-111"></span>
-<span class="source-line-no">112</span><span id="line-112">      final JSONObject itemDamageJson = new JSONObject();</span>
+<span class="source-line-no">087</span><span id="line-87">    final JSONObject json = new JSONObject();</span>
+<span class="source-line-no">088</span><span id="line-88"></span>
+<span class="source-line-no">089</span><span id="line-89">    //Serialize DamageReductions</span>
+<span class="source-line-no">090</span><span id="line-90">    final JSONArray reductionsArray = new JSONArray();</span>
+<span class="source-line-no">091</span><span id="line-91">    for(final DamageReduction reduction : reductions) {</span>
+<span class="source-line-no">092</span><span id="line-92"></span>
+<span class="source-line-no">093</span><span id="line-93">      final JSONObject reductionJson = new JSONObject();</span>
+<span class="source-line-no">094</span><span id="line-94">      reductionJson.put("type", reduction.type());</span>
+<span class="source-line-no">095</span><span id="line-95">      reductionJson.put("base", reduction.base());</span>
+<span class="source-line-no">096</span><span id="line-96">      reductionJson.put("factor", reduction.factor());</span>
+<span class="source-line-no">097</span><span id="line-97">      reductionJson.put("horizontalBlockingAngle", reduction.horizontalBlockingAngle());</span>
+<span class="source-line-no">098</span><span id="line-98">      reductionsArray.add(reductionJson);</span>
+<span class="source-line-no">099</span><span id="line-99">    }</span>
+<span class="source-line-no">100</span><span id="line-100">    json.put("reductions", reductionsArray);</span>
+<span class="source-line-no">101</span><span id="line-101"></span>
+<span class="source-line-no">102</span><span id="line-102"></span>
+<span class="source-line-no">103</span><span id="line-103">    //Serialize bypassedBy</span>
+<span class="source-line-no">104</span><span id="line-104">    final JSONArray bypassedByArray = new JSONArray();</span>
+<span class="source-line-no">105</span><span id="line-105">    for(final String bypassedBy : bypassedBy) {</span>
+<span class="source-line-no">106</span><span id="line-106"></span>
+<span class="source-line-no">107</span><span id="line-107">      bypassedByArray.add(bypassedBy);</span>
+<span class="source-line-no">108</span><span id="line-108">    }</span>
+<span class="source-line-no">109</span><span id="line-109">    json.put("bypassedBy", bypassedByArray);</span>
+<span class="source-line-no">110</span><span id="line-110"></span>
+<span class="source-line-no">111</span><span id="line-111">    // Serialize ItemDamage</span>
+<span class="source-line-no">112</span><span id="line-112">    if(itemDamage != null) {</span>
 <span class="source-line-no">113</span><span id="line-113"></span>
-<span class="source-line-no">114</span><span id="line-114">      itemDamageJson.put("threshold", itemDamage.threshold());</span>
-<span class="source-line-no">115</span><span id="line-115">      itemDamageJson.put("base", itemDamage.base());</span>
-<span class="source-line-no">116</span><span id="line-116">      itemDamageJson.put("factor", itemDamage.factor());</span>
-<span class="source-line-no">117</span><span id="line-117">      json.put("item_damage", itemDamageJson);</span>
-<span class="source-line-no">118</span><span id="line-118">    }</span>
-<span class="source-line-no">119</span><span id="line-119"></span>
-<span class="source-line-no">120</span><span id="line-120">    // Serialize other properties</span>
-<span class="source-line-no">121</span><span id="line-121">    json.put("block_delay", blockDelay);</span>
-<span class="source-line-no">122</span><span id="line-122">    json.put("disable_cooldown_scale", disableCooldownScale);</span>
-<span class="source-line-no">123</span><span id="line-123">    json.put("block_sound", blockSound);</span>
-<span class="source-line-no">124</span><span id="line-124">    json.put("disable_sound", disableSound);</span>
-<span class="source-line-no">125</span><span id="line-125"></span>
-<span class="source-line-no">126</span><span id="line-126">    return json;</span>
-<span class="source-line-no">127</span><span id="line-127">  }</span>
-<span class="source-line-no">128</span><span id="line-128"></span>
-<span class="source-line-no">129</span><span id="line-129">  /**</span>
-<span class="source-line-no">130</span><span id="line-130">   * Reads JSON data and converts it back to a {@link SerialComponent} object.</span>
-<span class="source-line-no">131</span><span id="line-131">   *</span>
-<span class="source-line-no">132</span><span id="line-132">   * @param json The JSONHelper instance of the json data.</span>
-<span class="source-line-no">133</span><span id="line-133">   */</span>
-<span class="source-line-no">134</span><span id="line-134">  @Override</span>
-<span class="source-line-no">135</span><span id="line-135">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
-<span class="source-line-no">136</span><span id="line-136"></span>
-<span class="source-line-no">137</span><span id="line-137">    //Deserialize DamageReductions</span>
-<span class="source-line-no">138</span><span id="line-138">    final JSONArray reductionsArray = (JSONArray)json.getObject().get("reductions");</span>
-<span class="source-line-no">139</span><span id="line-139">    reductions.clear();</span>
-<span class="source-line-no">140</span><span id="line-140"></span>
-<span class="source-line-no">141</span><span id="line-141">    if(reductionsArray != null) {</span>
-<span class="source-line-no">142</span><span id="line-142"></span>
-<span class="source-line-no">143</span><span id="line-143">      for(final Object obj : reductionsArray) {</span>
-<span class="source-line-no">144</span><span id="line-144"></span>
-<span class="source-line-no">145</span><span id="line-145">        final JSONObject reductionJson = (JSONObject)obj;</span>
-<span class="source-line-no">146</span><span id="line-146">        final String type = reductionJson.get("type").toString();</span>
-<span class="source-line-no">147</span><span id="line-147">        final float base = Float.parseFloat(reductionJson.get("base").toString());</span>
-<span class="source-line-no">148</span><span id="line-148">        final float factor = Float.parseFloat(reductionJson.get("factor").toString());</span>
-<span class="source-line-no">149</span><span id="line-149">        final float horizontalBlockingAngle = Float.parseFloat(reductionJson.get("horizontalBlockingAngle").toString());</span>
-<span class="source-line-no">150</span><span id="line-150">        reductions.add(new DamageReduction(type, base, factor, horizontalBlockingAngle));</span>
-<span class="source-line-no">151</span><span id="line-151">      }</span>
-<span class="source-line-no">152</span><span id="line-152">    }</span>
-<span class="source-line-no">153</span><span id="line-153"></span>
-<span class="source-line-no">154</span><span id="line-154">    //Deserialize bypassBy</span>
-<span class="source-line-no">155</span><span id="line-155">    final JSONArray bypassByArray = (JSONArray)json.getObject().get("bypassedBy");</span>
-<span class="source-line-no">156</span><span id="line-156">    bypassedBy.clear();</span>
-<span class="source-line-no">157</span><span id="line-157"></span>
-<span class="source-line-no">158</span><span id="line-158">    if(bypassByArray != null) {</span>
-<span class="source-line-no">159</span><span id="line-159"></span>
-<span class="source-line-no">160</span><span id="line-160">      for(final Object obj : bypassByArray) {</span>
-<span class="source-line-no">161</span><span id="line-161"></span>
-<span class="source-line-no">162</span><span id="line-162">        bypassedBy.add(obj.toString());</span>
-<span class="source-line-no">163</span><span id="line-163">      }</span>
-<span class="source-line-no">164</span><span id="line-164">    }</span>
-<span class="source-line-no">165</span><span id="line-165"></span>
-<span class="source-line-no">166</span><span id="line-166">    //Deserialize ItemDamage</span>
-<span class="source-line-no">167</span><span id="line-167">    final JSONObject itemDamageJson = (JSONObject) json.getObject().get("item_damage");</span>
-<span class="source-line-no">168</span><span id="line-168">    if(itemDamageJson != null) {</span>
-<span class="source-line-no">169</span><span id="line-169"></span>
-<span class="source-line-no">170</span><span id="line-170">      final float threshold = Float.parseFloat(itemDamageJson.get("threshold").toString());</span>
-<span class="source-line-no">171</span><span id="line-171">      final float base = Float.parseFloat(itemDamageJson.get("base").toString());</span>
-<span class="source-line-no">172</span><span id="line-172">      final float factor = Float.parseFloat(itemDamageJson.get("factor").toString());</span>
-<span class="source-line-no">173</span><span id="line-173">      itemDamage = new ItemDamage(threshold, base, factor);</span>
-<span class="source-line-no">174</span><span id="line-174">    }</span>
-<span class="source-line-no">175</span><span id="line-175"></span>
-<span class="source-line-no">176</span><span id="line-176">    //Deserialize other properties</span>
-<span class="source-line-no">177</span><span id="line-177">    blockDelay = json.getFloat("block_delay");</span>
-<span class="source-line-no">178</span><span id="line-178">    disableCooldownScale = json.getFloat("disable_cooldown_scale");</span>
-<span class="source-line-no">179</span><span id="line-179">    blockSound = json.getString("block_sound");</span>
-<span class="source-line-no">180</span><span id="line-180">    disableSound = json.getString("disable_sound");</span>
-<span class="source-line-no">181</span><span id="line-181">  }</span>
-<span class="source-line-no">182</span><span id="line-182"></span>
-<span class="source-line-no">183</span><span id="line-183">  /**</span>
-<span class="source-line-no">184</span><span id="line-184">   * Used to determine if some data is equal to this data. This means that it has to be an exact</span>
-<span class="source-line-no">185</span><span id="line-185">   * copy of this data. For instance, book copies will return false when compared to the original.</span>
-<span class="source-line-no">186</span><span id="line-186">   *</span>
-<span class="source-line-no">187</span><span id="line-187">   * @param component The component to compare.</span>
-<span class="source-line-no">188</span><span id="line-188">   *</span>
-<span class="source-line-no">189</span><span id="line-189">   * @return True if similar, otherwise false.</span>
-<span class="source-line-no">190</span><span id="line-190">   */</span>
-<span class="source-line-no">191</span><span id="line-191">  @Override</span>
-<span class="source-line-no">192</span><span id="line-192">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">193</span><span id="line-193"></span>
-<span class="source-line-no">194</span><span id="line-194">    if(!(component instanceof final BlocksAttacksComponent&lt;?, ?&gt; other)) return false;</span>
-<span class="source-line-no">195</span><span id="line-195"></span>
-<span class="source-line-no">196</span><span id="line-196">    return Objects.equals(this.reductions, other.reductions) &amp;&amp;</span>
-<span class="source-line-no">197</span><span id="line-197">           Objects.equals(this.bypassedBy, other.bypassedBy) &amp;&amp;</span>
-<span class="source-line-no">198</span><span id="line-198">           Objects.equals(this.itemDamage, other.itemDamage) &amp;&amp;</span>
-<span class="source-line-no">199</span><span id="line-199">           Float.compare(this.blockDelay, other.blockDelay) == 0 &amp;&amp;</span>
-<span class="source-line-no">200</span><span id="line-200">           Float.compare(this.disableCooldownScale, other.disableCooldownScale) == 0 &amp;&amp;</span>
-<span class="source-line-no">201</span><span id="line-201">           Objects.equals(this.blockSound, other.blockSound) &amp;&amp;</span>
-<span class="source-line-no">202</span><span id="line-202">           Objects.equals(this.disableSound, other.disableSound);</span>
-<span class="source-line-no">203</span><span id="line-203">  }</span>
-<span class="source-line-no">204</span><span id="line-204"></span>
-<span class="source-line-no">205</span><span id="line-205">  @Override</span>
-<span class="source-line-no">206</span><span id="line-206">  public int hashCode() {</span>
-<span class="source-line-no">207</span><span id="line-207"></span>
-<span class="source-line-no">208</span><span id="line-208">    return Objects.hash(reductions, bypassedBy, itemDamage, blockDelay, disableCooldownScale, blockSound, disableSound);</span>
-<span class="source-line-no">209</span><span id="line-209">  }</span>
-<span class="source-line-no">210</span><span id="line-210"></span>
-<span class="source-line-no">211</span><span id="line-211">  public List&lt;DamageReduction&gt; reductions() {</span>
-<span class="source-line-no">212</span><span id="line-212"></span>
-<span class="source-line-no">213</span><span id="line-213">    return reductions;</span>
-<span class="source-line-no">214</span><span id="line-214">  }</span>
-<span class="source-line-no">215</span><span id="line-215"></span>
-<span class="source-line-no">216</span><span id="line-216">  public void reductions(final List&lt;DamageReduction&gt; reductions) {</span>
-<span class="source-line-no">217</span><span id="line-217"></span>
-<span class="source-line-no">218</span><span id="line-218">    this.reductions.clear();</span>
-<span class="source-line-no">219</span><span id="line-219">    this.reductions.addAll(reductions);</span>
-<span class="source-line-no">220</span><span id="line-220">  }</span>
+<span class="source-line-no">114</span><span id="line-114">      final JSONObject itemDamageJson = new JSONObject();</span>
+<span class="source-line-no">115</span><span id="line-115"></span>
+<span class="source-line-no">116</span><span id="line-116">      itemDamageJson.put("threshold", itemDamage.threshold());</span>
+<span class="source-line-no">117</span><span id="line-117">      itemDamageJson.put("base", itemDamage.base());</span>
+<span class="source-line-no">118</span><span id="line-118">      itemDamageJson.put("factor", itemDamage.factor());</span>
+<span class="source-line-no">119</span><span id="line-119">      json.put("item_damage", itemDamageJson);</span>
+<span class="source-line-no">120</span><span id="line-120">    }</span>
+<span class="source-line-no">121</span><span id="line-121"></span>
+<span class="source-line-no">122</span><span id="line-122">    // Serialize other properties</span>
+<span class="source-line-no">123</span><span id="line-123">    json.put("block_delay", blockDelay);</span>
+<span class="source-line-no">124</span><span id="line-124">    json.put("disable_cooldown_scale", disableCooldownScale);</span>
+<span class="source-line-no">125</span><span id="line-125">    json.put("block_sound", blockSound);</span>
+<span class="source-line-no">126</span><span id="line-126">    json.put("disable_sound", disableSound);</span>
+<span class="source-line-no">127</span><span id="line-127"></span>
+<span class="source-line-no">128</span><span id="line-128">    return json;</span>
+<span class="source-line-no">129</span><span id="line-129">  }</span>
+<span class="source-line-no">130</span><span id="line-130"></span>
+<span class="source-line-no">131</span><span id="line-131">  /**</span>
+<span class="source-line-no">132</span><span id="line-132">   * Reads JSON data and converts it back to a {@link SerialComponent} object.</span>
+<span class="source-line-no">133</span><span id="line-133">   *</span>
+<span class="source-line-no">134</span><span id="line-134">   * @param json The JSONHelper instance of the json data.</span>
+<span class="source-line-no">135</span><span id="line-135">   * @since 0.2.0.0</span>
+<span class="source-line-no">136</span><span id="line-136">   */</span>
+<span class="source-line-no">137</span><span id="line-137">  @Override</span>
+<span class="source-line-no">138</span><span id="line-138">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
+<span class="source-line-no">139</span><span id="line-139"></span>
+<span class="source-line-no">140</span><span id="line-140">    //Deserialize DamageReductions</span>
+<span class="source-line-no">141</span><span id="line-141">    final JSONArray reductionsArray = (JSONArray)json.getObject().get("reductions");</span>
+<span class="source-line-no">142</span><span id="line-142">    reductions.clear();</span>
+<span class="source-line-no">143</span><span id="line-143"></span>
+<span class="source-line-no">144</span><span id="line-144">    if(reductionsArray != null) {</span>
+<span class="source-line-no">145</span><span id="line-145"></span>
+<span class="source-line-no">146</span><span id="line-146">      for(final Object obj : reductionsArray) {</span>
+<span class="source-line-no">147</span><span id="line-147"></span>
+<span class="source-line-no">148</span><span id="line-148">        final JSONObject reductionJson = (JSONObject)obj;</span>
+<span class="source-line-no">149</span><span id="line-149">        final String type = reductionJson.get("type").toString();</span>
+<span class="source-line-no">150</span><span id="line-150">        final float base = Float.parseFloat(reductionJson.get("base").toString());</span>
+<span class="source-line-no">151</span><span id="line-151">        final float factor = Float.parseFloat(reductionJson.get("factor").toString());</span>
+<span class="source-line-no">152</span><span id="line-152">        final float horizontalBlockingAngle = Float.parseFloat(reductionJson.get("horizontalBlockingAngle").toString());</span>
+<span class="source-line-no">153</span><span id="line-153">        reductions.add(new DamageReduction(type, base, factor, horizontalBlockingAngle));</span>
+<span class="source-line-no">154</span><span id="line-154">      }</span>
+<span class="source-line-no">155</span><span id="line-155">    }</span>
+<span class="source-line-no">156</span><span id="line-156"></span>
+<span class="source-line-no">157</span><span id="line-157">    //Deserialize bypassBy</span>
+<span class="source-line-no">158</span><span id="line-158">    final JSONArray bypassByArray = (JSONArray)json.getObject().get("bypassedBy");</span>
+<span class="source-line-no">159</span><span id="line-159">    bypassedBy.clear();</span>
+<span class="source-line-no">160</span><span id="line-160"></span>
+<span class="source-line-no">161</span><span id="line-161">    if(bypassByArray != null) {</span>
+<span class="source-line-no">162</span><span id="line-162"></span>
+<span class="source-line-no">163</span><span id="line-163">      for(final Object obj : bypassByArray) {</span>
+<span class="source-line-no">164</span><span id="line-164"></span>
+<span class="source-line-no">165</span><span id="line-165">        bypassedBy.add(obj.toString());</span>
+<span class="source-line-no">166</span><span id="line-166">      }</span>
+<span class="source-line-no">167</span><span id="line-167">    }</span>
+<span class="source-line-no">168</span><span id="line-168"></span>
+<span class="source-line-no">169</span><span id="line-169">    //Deserialize ItemDamage</span>
+<span class="source-line-no">170</span><span id="line-170">    final JSONObject itemDamageJson = (JSONObject) json.getObject().get("item_damage");</span>
+<span class="source-line-no">171</span><span id="line-171">    if(itemDamageJson != null) {</span>
+<span class="source-line-no">172</span><span id="line-172"></span>
+<span class="source-line-no">173</span><span id="line-173">      final float threshold = Float.parseFloat(itemDamageJson.get("threshold").toString());</span>
+<span class="source-line-no">174</span><span id="line-174">      final float base = Float.parseFloat(itemDamageJson.get("base").toString());</span>
+<span class="source-line-no">175</span><span id="line-175">      final float factor = Float.parseFloat(itemDamageJson.get("factor").toString());</span>
+<span class="source-line-no">176</span><span id="line-176">      itemDamage = new ItemDamage(threshold, base, factor);</span>
+<span class="source-line-no">177</span><span id="line-177">    }</span>
+<span class="source-line-no">178</span><span id="line-178"></span>
+<span class="source-line-no">179</span><span id="line-179">    //Deserialize other properties</span>
+<span class="source-line-no">180</span><span id="line-180">    blockDelay = json.getFloat("block_delay");</span>
+<span class="source-line-no">181</span><span id="line-181">    disableCooldownScale = json.getFloat("disable_cooldown_scale");</span>
+<span class="source-line-no">182</span><span id="line-182">    blockSound = json.getString("block_sound");</span>
+<span class="source-line-no">183</span><span id="line-183">    disableSound = json.getString("disable_sound");</span>
+<span class="source-line-no">184</span><span id="line-184">  }</span>
+<span class="source-line-no">185</span><span id="line-185"></span>
+<span class="source-line-no">186</span><span id="line-186">  /**</span>
+<span class="source-line-no">187</span><span id="line-187">   * Used to determine if some data is equal to this data. This means that it has to be an exact</span>
+<span class="source-line-no">188</span><span id="line-188">   * copy of this data. For instance, book copies will return false when compared to the original.</span>
+<span class="source-line-no">189</span><span id="line-189">   *</span>
+<span class="source-line-no">190</span><span id="line-190">   * @param component The component to compare.</span>
+<span class="source-line-no">191</span><span id="line-191">   *</span>
+<span class="source-line-no">192</span><span id="line-192">   * @return True if similar, otherwise false.</span>
+<span class="source-line-no">193</span><span id="line-193">   * @since 0.2.0.0</span>
+<span class="source-line-no">194</span><span id="line-194">   */</span>
+<span class="source-line-no">195</span><span id="line-195">  @Override</span>
+<span class="source-line-no">196</span><span id="line-196">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">197</span><span id="line-197"></span>
+<span class="source-line-no">198</span><span id="line-198">    if(!(component instanceof final BlocksAttacksComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">199</span><span id="line-199"></span>
+<span class="source-line-no">200</span><span id="line-200">    return Objects.equals(this.reductions, other.reductions) &amp;&amp;</span>
+<span class="source-line-no">201</span><span id="line-201">           Objects.equals(this.bypassedBy, other.bypassedBy) &amp;&amp;</span>
+<span class="source-line-no">202</span><span id="line-202">           Objects.equals(this.itemDamage, other.itemDamage) &amp;&amp;</span>
+<span class="source-line-no">203</span><span id="line-203">           Float.compare(this.blockDelay, other.blockDelay) == 0 &amp;&amp;</span>
+<span class="source-line-no">204</span><span id="line-204">           Float.compare(this.disableCooldownScale, other.disableCooldownScale) == 0 &amp;&amp;</span>
+<span class="source-line-no">205</span><span id="line-205">           Objects.equals(this.blockSound, other.blockSound) &amp;&amp;</span>
+<span class="source-line-no">206</span><span id="line-206">           Objects.equals(this.disableSound, other.disableSound);</span>
+<span class="source-line-no">207</span><span id="line-207">  }</span>
+<span class="source-line-no">208</span><span id="line-208"></span>
+<span class="source-line-no">209</span><span id="line-209">  @Override</span>
+<span class="source-line-no">210</span><span id="line-210">  public int hashCode() {</span>
+<span class="source-line-no">211</span><span id="line-211"></span>
+<span class="source-line-no">212</span><span id="line-212">    return Objects.hash(reductions, bypassedBy, itemDamage, blockDelay, disableCooldownScale, blockSound, disableSound);</span>
+<span class="source-line-no">213</span><span id="line-213">  }</span>
+<span class="source-line-no">214</span><span id="line-214"></span>
+<span class="source-line-no">215</span><span id="line-215">  public List&lt;DamageReduction&gt; reductions() {</span>
+<span class="source-line-no">216</span><span id="line-216"></span>
+<span class="source-line-no">217</span><span id="line-217">    return reductions;</span>
+<span class="source-line-no">218</span><span id="line-218">  }</span>
+<span class="source-line-no">219</span><span id="line-219"></span>
+<span class="source-line-no">220</span><span id="line-220">  public void reductions(final List&lt;DamageReduction&gt; reductions) {</span>
 <span class="source-line-no">221</span><span id="line-221"></span>
-<span class="source-line-no">222</span><span id="line-222">  public void reductions(final DamageReduction... reductions) {</span>
-<span class="source-line-no">223</span><span id="line-223"></span>
-<span class="source-line-no">224</span><span id="line-224">    this.reductions.clear();</span>
-<span class="source-line-no">225</span><span id="line-225">    this.reductions.addAll(Arrays.asList(reductions));</span>
-<span class="source-line-no">226</span><span id="line-226">  }</span>
+<span class="source-line-no">222</span><span id="line-222">    this.reductions.clear();</span>
+<span class="source-line-no">223</span><span id="line-223">    this.reductions.addAll(reductions);</span>
+<span class="source-line-no">224</span><span id="line-224">  }</span>
+<span class="source-line-no">225</span><span id="line-225"></span>
+<span class="source-line-no">226</span><span id="line-226">  public void reductions(final DamageReduction... reductions) {</span>
 <span class="source-line-no">227</span><span id="line-227"></span>
-<span class="source-line-no">228</span><span id="line-228">  public List&lt;String&gt; bypassedBy() {</span>
-<span class="source-line-no">229</span><span id="line-229"></span>
-<span class="source-line-no">230</span><span id="line-230">    return bypassedBy;</span>
-<span class="source-line-no">231</span><span id="line-231">  }</span>
-<span class="source-line-no">232</span><span id="line-232"></span>
-<span class="source-line-no">233</span><span id="line-233">  public void bypassedBy(final List&lt;String&gt; bypassedBy) {</span>
-<span class="source-line-no">234</span><span id="line-234"></span>
-<span class="source-line-no">235</span><span id="line-235">    this.bypassedBy.clear();</span>
-<span class="source-line-no">236</span><span id="line-236">    this.bypassedBy.addAll(bypassedBy);</span>
-<span class="source-line-no">237</span><span id="line-237">  }</span>
+<span class="source-line-no">228</span><span id="line-228">    this.reductions.clear();</span>
+<span class="source-line-no">229</span><span id="line-229">    this.reductions.addAll(Arrays.asList(reductions));</span>
+<span class="source-line-no">230</span><span id="line-230">  }</span>
+<span class="source-line-no">231</span><span id="line-231"></span>
+<span class="source-line-no">232</span><span id="line-232">  public List&lt;String&gt; bypassedBy() {</span>
+<span class="source-line-no">233</span><span id="line-233"></span>
+<span class="source-line-no">234</span><span id="line-234">    return bypassedBy;</span>
+<span class="source-line-no">235</span><span id="line-235">  }</span>
+<span class="source-line-no">236</span><span id="line-236"></span>
+<span class="source-line-no">237</span><span id="line-237">  public void bypassedBy(final List&lt;String&gt; bypassedBy) {</span>
 <span class="source-line-no">238</span><span id="line-238"></span>
-<span class="source-line-no">239</span><span id="line-239">  public void bypassedBy(final String... bypassedBy) {</span>
-<span class="source-line-no">240</span><span id="line-240"></span>
-<span class="source-line-no">241</span><span id="line-241">    this.bypassedBy.clear();</span>
-<span class="source-line-no">242</span><span id="line-242">    this.bypassedBy.addAll(Arrays.asList(bypassedBy));</span>
-<span class="source-line-no">243</span><span id="line-243">  }</span>
+<span class="source-line-no">239</span><span id="line-239">    this.bypassedBy.clear();</span>
+<span class="source-line-no">240</span><span id="line-240">    this.bypassedBy.addAll(bypassedBy);</span>
+<span class="source-line-no">241</span><span id="line-241">  }</span>
+<span class="source-line-no">242</span><span id="line-242"></span>
+<span class="source-line-no">243</span><span id="line-243">  public void bypassedBy(final String... bypassedBy) {</span>
 <span class="source-line-no">244</span><span id="line-244"></span>
-<span class="source-line-no">245</span><span id="line-245">  public ItemDamage itemDamage() {</span>
-<span class="source-line-no">246</span><span id="line-246"></span>
-<span class="source-line-no">247</span><span id="line-247">    return itemDamage;</span>
-<span class="source-line-no">248</span><span id="line-248">  }</span>
-<span class="source-line-no">249</span><span id="line-249"></span>
-<span class="source-line-no">250</span><span id="line-250">  public void itemDamage(final ItemDamage itemDamage) {</span>
-<span class="source-line-no">251</span><span id="line-251"></span>
-<span class="source-line-no">252</span><span id="line-252">    this.itemDamage = itemDamage;</span>
-<span class="source-line-no">253</span><span id="line-253">  }</span>
-<span class="source-line-no">254</span><span id="line-254"></span>
-<span class="source-line-no">255</span><span id="line-255">  public float blockDelay() {</span>
-<span class="source-line-no">256</span><span id="line-256"></span>
-<span class="source-line-no">257</span><span id="line-257">    return blockDelay;</span>
-<span class="source-line-no">258</span><span id="line-258">  }</span>
-<span class="source-line-no">259</span><span id="line-259"></span>
-<span class="source-line-no">260</span><span id="line-260">  public void blockDelay(final float blockDelay) {</span>
-<span class="source-line-no">261</span><span id="line-261"></span>
-<span class="source-line-no">262</span><span id="line-262">    this.blockDelay = blockDelay;</span>
-<span class="source-line-no">263</span><span id="line-263">  }</span>
-<span class="source-line-no">264</span><span id="line-264"></span>
-<span class="source-line-no">265</span><span id="line-265">  public float disableCooldownScale() {</span>
-<span class="source-line-no">266</span><span id="line-266"></span>
-<span class="source-line-no">267</span><span id="line-267">    return disableCooldownScale;</span>
-<span class="source-line-no">268</span><span id="line-268">  }</span>
-<span class="source-line-no">269</span><span id="line-269"></span>
-<span class="source-line-no">270</span><span id="line-270">  public void disableCooldownScale(final float disableCooldownScale) {</span>
-<span class="source-line-no">271</span><span id="line-271"></span>
-<span class="source-line-no">272</span><span id="line-272">    this.disableCooldownScale = disableCooldownScale;</span>
-<span class="source-line-no">273</span><span id="line-273">  }</span>
-<span class="source-line-no">274</span><span id="line-274"></span>
-<span class="source-line-no">275</span><span id="line-275">  public String blockSound() {</span>
-<span class="source-line-no">276</span><span id="line-276"></span>
-<span class="source-line-no">277</span><span id="line-277">    return blockSound;</span>
-<span class="source-line-no">278</span><span id="line-278">  }</span>
-<span class="source-line-no">279</span><span id="line-279"></span>
-<span class="source-line-no">280</span><span id="line-280">  public void blockSound(final String blockSound) {</span>
-<span class="source-line-no">281</span><span id="line-281"></span>
-<span class="source-line-no">282</span><span id="line-282">    this.blockSound = blockSound;</span>
-<span class="source-line-no">283</span><span id="line-283">  }</span>
-<span class="source-line-no">284</span><span id="line-284"></span>
-<span class="source-line-no">285</span><span id="line-285">  public String disableSound() {</span>
-<span class="source-line-no">286</span><span id="line-286"></span>
-<span class="source-line-no">287</span><span id="line-287">    return disableSound;</span>
-<span class="source-line-no">288</span><span id="line-288">  }</span>
-<span class="source-line-no">289</span><span id="line-289"></span>
-<span class="source-line-no">290</span><span id="line-290">  public void disableSound(final String disableSound) {</span>
-<span class="source-line-no">291</span><span id="line-291"></span>
-<span class="source-line-no">292</span><span id="line-292">    this.disableSound = disableSound;</span>
-<span class="source-line-no">293</span><span id="line-293">  }</span>
-<span class="source-line-no">294</span><span id="line-294">}</span>
+<span class="source-line-no">245</span><span id="line-245">    this.bypassedBy.clear();</span>
+<span class="source-line-no">246</span><span id="line-246">    this.bypassedBy.addAll(Arrays.asList(bypassedBy));</span>
+<span class="source-line-no">247</span><span id="line-247">  }</span>
+<span class="source-line-no">248</span><span id="line-248"></span>
+<span class="source-line-no">249</span><span id="line-249">  public ItemDamage itemDamage() {</span>
+<span class="source-line-no">250</span><span id="line-250"></span>
+<span class="source-line-no">251</span><span id="line-251">    return itemDamage;</span>
+<span class="source-line-no">252</span><span id="line-252">  }</span>
+<span class="source-line-no">253</span><span id="line-253"></span>
+<span class="source-line-no">254</span><span id="line-254">  public void itemDamage(final ItemDamage itemDamage) {</span>
+<span class="source-line-no">255</span><span id="line-255"></span>
+<span class="source-line-no">256</span><span id="line-256">    this.itemDamage = itemDamage;</span>
+<span class="source-line-no">257</span><span id="line-257">  }</span>
+<span class="source-line-no">258</span><span id="line-258"></span>
+<span class="source-line-no">259</span><span id="line-259">  public float blockDelay() {</span>
+<span class="source-line-no">260</span><span id="line-260"></span>
+<span class="source-line-no">261</span><span id="line-261">    return blockDelay;</span>
+<span class="source-line-no">262</span><span id="line-262">  }</span>
+<span class="source-line-no">263</span><span id="line-263"></span>
+<span class="source-line-no">264</span><span id="line-264">  public void blockDelay(final float blockDelay) {</span>
+<span class="source-line-no">265</span><span id="line-265"></span>
+<span class="source-line-no">266</span><span id="line-266">    this.blockDelay = blockDelay;</span>
+<span class="source-line-no">267</span><span id="line-267">  }</span>
+<span class="source-line-no">268</span><span id="line-268"></span>
+<span class="source-line-no">269</span><span id="line-269">  public float disableCooldownScale() {</span>
+<span class="source-line-no">270</span><span id="line-270"></span>
+<span class="source-line-no">271</span><span id="line-271">    return disableCooldownScale;</span>
+<span class="source-line-no">272</span><span id="line-272">  }</span>
+<span class="source-line-no">273</span><span id="line-273"></span>
+<span class="source-line-no">274</span><span id="line-274">  public void disableCooldownScale(final float disableCooldownScale) {</span>
+<span class="source-line-no">275</span><span id="line-275"></span>
+<span class="source-line-no">276</span><span id="line-276">    this.disableCooldownScale = disableCooldownScale;</span>
+<span class="source-line-no">277</span><span id="line-277">  }</span>
+<span class="source-line-no">278</span><span id="line-278"></span>
+<span class="source-line-no">279</span><span id="line-279">  public String blockSound() {</span>
+<span class="source-line-no">280</span><span id="line-280"></span>
+<span class="source-line-no">281</span><span id="line-281">    return blockSound;</span>
+<span class="source-line-no">282</span><span id="line-282">  }</span>
+<span class="source-line-no">283</span><span id="line-283"></span>
+<span class="source-line-no">284</span><span id="line-284">  public void blockSound(final String blockSound) {</span>
+<span class="source-line-no">285</span><span id="line-285"></span>
+<span class="source-line-no">286</span><span id="line-286">    this.blockSound = blockSound;</span>
+<span class="source-line-no">287</span><span id="line-287">  }</span>
+<span class="source-line-no">288</span><span id="line-288"></span>
+<span class="source-line-no">289</span><span id="line-289">  public String disableSound() {</span>
+<span class="source-line-no">290</span><span id="line-290"></span>
+<span class="source-line-no">291</span><span id="line-291">    return disableSound;</span>
+<span class="source-line-no">292</span><span id="line-292">  }</span>
+<span class="source-line-no">293</span><span id="line-293"></span>
+<span class="source-line-no">294</span><span id="line-294">  public void disableSound(final String disableSound) {</span>
+<span class="source-line-no">295</span><span id="line-295"></span>
+<span class="source-line-no">296</span><span id="line-296">    this.disableSound = disableSound;</span>
+<span class="source-line-no">297</span><span id="line-297">  }</span>
+<span class="source-line-no">298</span><span id="line-298">}</span>
 
 
 

@@ -99,7 +99,7 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../bukkit/platform/impl/BukkitLoreComponent.html" title="class in net.tnemc.item.bukkit.platform.impl">BukkitLoreComponent</a></code>, <code><a href="../../paper/platform/impl/modern/PaperLoreComponent.html" title="class in net.tnemc.item.paper.platform.impl.modern">PaperLoreComponent</a></code>, <code><a href="../../paper/platform/impl/old/PaperOldLoreComponent.html" title="class in net.tnemc.item.paper.platform.impl.old">PaperOldLoreComponent</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-43">LoreComponent</a>&lt;I extends <a href="../../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;T&gt;,<wbr>T&gt;</span>
+<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-44">LoreComponent</a>&lt;I extends <a href="../../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;T&gt;,<wbr>T&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="../SerialComponent.html" title="interface in net.tnemc.item.component">SerialComponent</a>&lt;I,<wbr>T&gt;</span></div>
 <div class="block">LoreComponent</div>
@@ -147,32 +147,30 @@ implements <a href="../SerialComponent.html" title="interface in net.tnemc.item.
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(net.tnemc.item.component.SerialComponent)" class="member-name-link">equals</a><wbr>(<a href="../SerialComponent.html" title="interface in net.tnemc.item.component">SerialComponent</a>&lt;<a href="LoreComponent.html" title="type parameter in LoreComponent">I</a>,<wbr><a href="LoreComponent.html" title="type parameter in LoreComponent">T</a>&gt;&nbsp;component)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Used to determine if some data is equal to this component.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#identifier()" class="member-name-link">identifier</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;net.kyori.adventure.text.Component&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lore()" class="member-name-link">lore</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#identifier()" class="member-name-link">identifier</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lore(java.util.List)" class="member-name-link">lore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;net.kyori.adventure.text.Component&gt;&nbsp;lore)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;net.kyori.adventure.text.Component&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lore()" class="member-name-link">lore</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lore(net.kyori.adventure.text.Component...)" class="member-name-link">lore</a><wbr>(net.kyori.adventure.text.Component...&nbsp;lore)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lore(java.util.List)" class="member-name-link">lore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;net.kyori.adventure.text.Component&gt;&nbsp;lore)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readJSON(net.tnemc.item.JSONHelper,net.tnemc.item.platform.ItemPlatform)" class="member-name-link">readJSON</a><wbr>(<a href="../../JSONHelper.html" title="class in net.tnemc.item">JSONHelper</a>&nbsp;json,
- <a href="../../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;<a href="LoreComponent.html" title="type parameter in LoreComponent">I</a>,<wbr><a href="LoreComponent.html" title="type parameter in LoreComponent">T</a>&gt;&nbsp;platform)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lore(net.kyori.adventure.text.Component...)" class="member-name-link">lore</a><wbr>(net.kyori.adventure.text.Component...&nbsp;lore)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readJSON(net.tnemc.item.JSONHelper,net.tnemc.item.platform.ItemPlatform)" class="member-name-link">readJSON</a><wbr>(<a href="../../JSONHelper.html" title="class in net.tnemc.item">JSONHelper</a>&nbsp;json,
+ <a href="../../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;<a href="LoreComponent.html" title="type parameter in LoreComponent">I</a>,<wbr><a href="LoreComponent.html" title="type parameter in LoreComponent">T</a>,<wbr>?&gt;&nbsp;platform)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Reads JSON data and converts it back to a <a href="../SerialComponent.html" title="interface in net.tnemc.item.component"><code>SerialComponent</code></a> object.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#similar(net.tnemc.item.component.SerialComponent)" class="member-name-link">similar</a><wbr>(<a href="../SerialComponent.html" title="interface in net.tnemc.item.component">SerialComponent</a>&lt;?,<wbr>?&gt;&nbsp;component)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.json.simple.JSONObject</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toJSON()" class="member-name-link">toJSON</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -210,19 +208,19 @@ implements <a href="../SerialComponent.html" title="interface in net.tnemc.item.
 <li>
 <section class="detail" id="&lt;init&gt;()">
 <h3>LoreComponent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-47">LoreComponent</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-48">LoreComponent</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="&lt;init&gt;(java.util.List)">
 <h3>LoreComponent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-51">LoreComponent</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;net.kyori.adventure.text.Component&gt;&nbsp;lore)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-52">LoreComponent</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;net.kyori.adventure.text.Component&gt;&nbsp;lore)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="&lt;init&gt;(net.kyori.adventure.text.Component...)">
 <h3>LoreComponent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-56">LoreComponent</a></span><wbr><span class="parameters">(net.kyori.adventure.text.Component...&nbsp;lore)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-57">LoreComponent</a></span><wbr><span class="parameters">(net.kyori.adventure.text.Component...&nbsp;lore)</span></div>
 </section>
 </li>
 </ul>
@@ -236,7 +234,7 @@ implements <a href="../SerialComponent.html" title="interface in net.tnemc.item.
 <li>
 <section class="detail" id="identifier()">
 <h3>identifier</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-61">identifier</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-62">identifier</a></span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../platform/Identifiable.html#identifier()">identifier</a></code>&nbsp;in interface&nbsp;<code><a href="../../platform/Identifiable.html" title="interface in net.tnemc.item.platform">Identifiable</a></code></dd>
@@ -248,7 +246,7 @@ implements <a href="../SerialComponent.html" title="interface in net.tnemc.item.
 <li>
 <section class="detail" id="toJSON()">
 <h3>toJSON</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.json.simple.JSONObject</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-66">toJSON</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.json.simple.JSONObject</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-67">toJSON</a></span>()</div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="../SerialComponent.html#toJSON()">SerialComponent</a></code></span></div>
 <div class="block">Converts the <a href="../SerialComponent.html" title="interface in net.tnemc.item.component"><code>SerialComponent</code></a> to a JSON object.</div>
 <dl class="notes">
@@ -262,8 +260,8 @@ implements <a href="../SerialComponent.html" title="interface in net.tnemc.item.
 <li>
 <section class="detail" id="readJSON(net.tnemc.item.JSONHelper,net.tnemc.item.platform.ItemPlatform)">
 <h3>readJSON</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-79">readJSON</a></span><wbr><span class="parameters">(<a href="../../JSONHelper.html" title="class in net.tnemc.item">JSONHelper</a>&nbsp;json,
- <a href="../../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;<a href="LoreComponent.html" title="type parameter in LoreComponent">I</a>,<wbr><a href="LoreComponent.html" title="type parameter in LoreComponent">T</a>&gt;&nbsp;platform)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-80">readJSON</a></span><wbr><span class="parameters">(<a href="../../JSONHelper.html" title="class in net.tnemc.item">JSONHelper</a>&nbsp;json,
+ <a href="../../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;<a href="LoreComponent.html" title="type parameter in LoreComponent">I</a>,<wbr><a href="LoreComponent.html" title="type parameter in LoreComponent">T</a>,<wbr>?&gt;&nbsp;platform)</span></div>
 <div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="../SerialComponent.html#readJSON(net.tnemc.item.JSONHelper,net.tnemc.item.platform.ItemPlatform)">SerialComponent</a></code></span></div>
 <div class="block">Reads JSON data and converts it back to a <a href="../SerialComponent.html" title="interface in net.tnemc.item.component"><code>SerialComponent</code></a> object.</div>
 <dl class="notes">
@@ -276,26 +274,23 @@ implements <a href="../SerialComponent.html" title="interface in net.tnemc.item.
 </section>
 </li>
 <li>
-<section class="detail" id="equals(net.tnemc.item.component.SerialComponent)">
-<h3>equals</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-88">equals</a></span><wbr><span class="parameters">(<a href="../SerialComponent.html" title="interface in net.tnemc.item.component">SerialComponent</a>&lt;<a href="LoreComponent.html" title="type parameter in LoreComponent">I</a>,<wbr><a href="LoreComponent.html" title="type parameter in LoreComponent">T</a>&gt;&nbsp;component)</span></div>
-<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="../SerialComponent.html#equals(net.tnemc.item.component.SerialComponent)">SerialComponent</a></code></span></div>
-<div class="block">Used to determine if some data is equal to this component. This means that it has to be an
- exact copy of this component.</div>
+<section class="detail" id="similar(net.tnemc.item.component.SerialComponent)">
+<h3>similar</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-89">similar</a></span><wbr><span class="parameters">(<a href="../SerialComponent.html" title="interface in net.tnemc.item.component">SerialComponent</a>&lt;?,<wbr>?&gt;&nbsp;component)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../SerialComponent.html#equals(net.tnemc.item.component.SerialComponent)">equals</a></code>&nbsp;in interface&nbsp;<code><a href="../SerialComponent.html" title="interface in net.tnemc.item.component">SerialComponent</a>&lt;<a href="LoreComponent.html" title="type parameter in LoreComponent">I</a> extends <a href="../../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;<a href="LoreComponent.html" title="type parameter in LoreComponent">T</a>&gt;,<wbr><a href="LoreComponent.html" title="type parameter in LoreComponent">T</a>&gt;</code></dd>
+<dd><code><a href="../SerialComponent.html#similar(net.tnemc.item.component.SerialComponent)">similar</a></code>&nbsp;in interface&nbsp;<code><a href="../SerialComponent.html" title="interface in net.tnemc.item.component">SerialComponent</a>&lt;<a href="LoreComponent.html" title="type parameter in LoreComponent">I</a> extends <a href="../../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;<a href="LoreComponent.html" title="type parameter in LoreComponent">T</a>&gt;,<wbr><a href="LoreComponent.html" title="type parameter in LoreComponent">T</a>&gt;</code></dd>
 <dt>Parameters:</dt>
-<dd><code>component</code> - The component to compare.</dd>
+<dd><code>component</code> - The SerialComponent to compare for similarity.</dd>
 <dt>Returns:</dt>
-<dd>True if similar, otherwise false.</dd>
+<dd>True if the components are similar, false otherwise.</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="hashCode()">
 <h3>hashCode</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-94">hashCode</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-102">hashCode</a></span>()</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
@@ -305,19 +300,19 @@ implements <a href="../SerialComponent.html" title="interface in net.tnemc.item.
 <li>
 <section class="detail" id="lore()">
 <h3>lore</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;net.kyori.adventure.text.Component&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-99">lore</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;net.kyori.adventure.text.Component&gt;</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-107">lore</a></span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="lore(java.util.List)">
 <h3>lore</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-104">lore</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;net.kyori.adventure.text.Component&gt;&nbsp;lore)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-112">lore</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;net.kyori.adventure.text.Component&gt;&nbsp;lore)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="lore(net.kyori.adventure.text.Component...)">
 <h3>lore</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-110">lore</a></span><wbr><span class="parameters">(net.kyori.adventure.text.Component...&nbsp;lore)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/component/impl/LoreComponent.html#line-118">lore</a></span><wbr><span class="parameters">(net.kyori.adventure.text.Component...&nbsp;lore)</span></div>
 </section>
 </li>
 </ul>

@@ -91,7 +91,7 @@
 <span class="source-line-no">078</span><span id="line-78">  }</span>
 <span class="source-line-no">079</span><span id="line-79"></span>
 <span class="source-line-no">080</span><span id="line-80">  @Override</span>
-<span class="source-line-no">081</span><span id="line-81">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
+<span class="source-line-no">081</span><span id="line-81">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">082</span><span id="line-82">    explosions.clear();</span>
 <span class="source-line-no">083</span><span id="line-83"></span>
 <span class="source-line-no">084</span><span id="line-84">    final JSONArray explosionsArray = (JSONArray) json.getObject().get("explosions");</span>
@@ -110,7 +110,7 @@
 <span class="source-line-no">097</span><span id="line-97">  }</span>
 <span class="source-line-no">098</span><span id="line-98"></span>
 <span class="source-line-no">099</span><span id="line-99">  @Override</span>
-<span class="source-line-no">100</span><span id="line-100">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
+<span class="source-line-no">100</span><span id="line-100">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
 <span class="source-line-no">101</span><span id="line-101">    if(!(component instanceof final FireworksComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">102</span><span id="line-102"></span>
 <span class="source-line-no">103</span><span id="line-103">    return this.flightDuration == other.flightDuration &amp;&amp;</span>

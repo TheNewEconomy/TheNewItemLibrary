@@ -189,7 +189,7 @@ extends <a href="../platform/Identifiable.html" title="interface in net.tnemc.it
 <li>
 <section class="detail" id="appliesTo(net.tnemc.item.AbstractItemStack,T)">
 <h3 id="appliesTo(net.tnemc.item.AbstractItemStack,java.lang.Object)">appliesTo</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-41">appliesTo</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;serialized,
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-42">appliesTo</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;serialized,
  <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&nbsp;item)</span></div>
 <div class="block">Checks if the given serialized item stack applies to the specified item.</div>
 <dl class="notes">
@@ -198,13 +198,15 @@ extends <a href="../platform/Identifiable.html" title="interface in net.tnemc.it
 <dd><code>item</code> - The item to check against.</dd>
 <dt>Returns:</dt>
 <dd>True if the serialized item stack applies to the item, false otherwise.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="similar(net.tnemc.item.AbstractItemStack,T)">
 <h3 id="similar(net.tnemc.item.AbstractItemStack,java.lang.Object)">similar</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-50">similar</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original,
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-52">similar</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original,
  <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&nbsp;compare)</span></div>
 <div class="block">Checks if the provided item stack is similar to the original item stack.</div>
 <dl class="notes">
@@ -213,13 +215,15 @@ extends <a href="../platform/Identifiable.html" title="interface in net.tnemc.it
 <dd><code>compare</code> - The item stack to compare.</dd>
 <dt>Returns:</dt>
 <dd>True if the two item stacks are similar, otherwise false.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="similar(net.tnemc.item.AbstractItemStack,net.tnemc.item.AbstractItemStack)">
 <h3>similar</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-64">similar</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original,
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-67">similar</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original,
  <a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;compare)</span></div>
 <div class="block">Returns true if the provided item is similar to this. An item is similar if the basic
  information is the same, except for the amount. What this includes: - material - display -
@@ -231,14 +235,14 @@ extends <a href="../platform/Identifiable.html" title="interface in net.tnemc.it
 <dt>Returns:</dt>
 <dd>True if the two are similar, otherwise false.</dd>
 <dt>Since:</dt>
-<dd>0.2.0.0</dd>
+<dd>0.2.0.0, 0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="componentsEqual(net.tnemc.item.AbstractItemStack,net.tnemc.item.AbstractItemStack)">
 <h3>componentsEqual</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-77">componentsEqual</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original,
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-81">componentsEqual</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original,
  <a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;compare)</span></div>
 <div class="block">Checks if the components of two items are equal.</div>
 <dl class="notes">
@@ -247,13 +251,15 @@ extends <a href="../platform/Identifiable.html" title="interface in net.tnemc.it
 <dd><code>compare</code> - The item to compare against the original.</dd>
 <dt>Returns:</dt>
 <dd>true if the components of the two items are equal, otherwise false.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="componentsEqual(net.tnemc.item.AbstractItemStack,T)">
 <h3 id="componentsEqual(net.tnemc.item.AbstractItemStack,java.lang.Object)">componentsEqual</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-90">componentsEqual</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original,
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-95">componentsEqual</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original,
  <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&nbsp;compare)</span></div>
 <div class="block">Checks if the components of two items are equal.</div>
 <dl class="notes">
@@ -262,13 +268,15 @@ extends <a href="../platform/Identifiable.html" title="interface in net.tnemc.it
 <dd><code>compare</code> - The item to compare against the original.</dd>
 <dt>Returns:</dt>
 <dd>true if the components of the two items are equal, otherwise false.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="componentsEqual(T,T)">
 <h3 id="componentsEqual(java.lang.Object,java.lang.Object)">componentsEqual</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-103">componentsEqual</a></span><wbr><span class="parameters">(<a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&nbsp;original,
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-109">componentsEqual</a></span><wbr><span class="parameters">(<a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&nbsp;original,
  <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&nbsp;compare)</span></div>
 <div class="block">Checks if the components of two items are equal.</div>
 <dl class="notes">
@@ -277,13 +285,15 @@ extends <a href="../platform/Identifiable.html" title="interface in net.tnemc.it
 <dd><code>compare</code> - The item to compare against the original.</dd>
 <dt>Returns:</dt>
 <dd>true if the components of the two items are equal, otherwise false.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="locale(net.tnemc.item.AbstractItemStack,int)">
 <h3>locale</h3>
-<div class="member-signature"><span class="return-type"><a href="ItemProvider.html" title="type parameter in ItemProvider">T</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-116">locale</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original,
+<div class="member-signature"><span class="return-type"><a href="ItemProvider.html" title="type parameter in ItemProvider">T</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-123">locale</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original,
  int&nbsp;amount)</span></div>
 <div class="block">Creates a copy of the original item stack with a specified amount.</div>
 <dl class="notes">
@@ -292,18 +302,20 @@ extends <a href="../platform/Identifiable.html" title="interface in net.tnemc.it
 <dd><code>amount</code> - The amount for the new item stack.</dd>
 <dt>Returns:</dt>
 <dd>A new item stack with the specified amount.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="locale(net.tnemc.item.AbstractItemStack)">
 <h3>locale</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="ItemProvider.html" title="type parameter in ItemProvider">T</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-123">locale</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="ItemProvider.html" title="type parameter in ItemProvider">T</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/providers/ItemProvider.html#line-132">locale</a></span><wbr><span class="parameters">(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="ItemProvider.html" title="type parameter in ItemProvider">T</a>&gt;&nbsp;original)</span></div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>An instance of the implementation's locale version of AbstractItemStack.</dd>
 <dt>Since:</dt>
-<dd>0.2.0.0</dd>
+<dd>0.2.0.0, 0.2.0.0, 0.2.0.0</dd>
 </dl>
 </section>
 </li>

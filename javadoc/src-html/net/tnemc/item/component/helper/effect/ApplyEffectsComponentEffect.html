@@ -74,7 +74,7 @@
 <span class="source-line-no">061</span><span id="line-61">    probability = json.getFloat("probability");</span>
 <span class="source-line-no">062</span><span id="line-62"></span>
 <span class="source-line-no">063</span><span id="line-63">    effects.clear();</span>
-<span class="source-line-no">064</span><span id="line-64">    if (json.has("effects")) {</span>
+<span class="source-line-no">064</span><span id="line-64">    if(json.has("effects")) {</span>
 <span class="source-line-no">065</span><span id="line-65">      final JSONArray effectsArray = (JSONArray) json.getObject().get("effects");</span>
 <span class="source-line-no">066</span><span id="line-66">      for (final Object obj : effectsArray) {</span>
 <span class="source-line-no">067</span><span id="line-67">        final EffectInstance effect = new EffectInstance();</span>
@@ -90,7 +90,7 @@
 <span class="source-line-no">077</span><span id="line-77"></span>
 <span class="source-line-no">078</span><span id="line-78">  @Override</span>
 <span class="source-line-no">079</span><span id="line-79">  public boolean equals(final Object obj) {</span>
-<span class="source-line-no">080</span><span id="line-80">    if (!(obj instanceof final ApplyEffectsComponentEffect other)) return false;</span>
+<span class="source-line-no">080</span><span id="line-80">    if(!(obj instanceof final ApplyEffectsComponentEffect other)) return false;</span>
 <span class="source-line-no">081</span><span id="line-81"></span>
 <span class="source-line-no">082</span><span id="line-82">    return super.equals(obj) &amp;&amp; Objects.equals(this.effects, other.effects);</span>
 <span class="source-line-no">083</span><span id="line-83">  }</span>
@@ -99,7 +99,26 @@
 <span class="source-line-no">086</span><span id="line-86">  public int hashCode() {</span>
 <span class="source-line-no">087</span><span id="line-87">    return Objects.hash(super.hashCode(), effects);</span>
 <span class="source-line-no">088</span><span id="line-88">  }</span>
-<span class="source-line-no">089</span><span id="line-89">}</span>
+<span class="source-line-no">089</span><span id="line-89"></span>
+<span class="source-line-no">090</span><span id="line-90">  @Override</span>
+<span class="source-line-no">091</span><span id="line-91">  public ApplyEffectsComponentEffect clone() {</span>
+<span class="source-line-no">092</span><span id="line-92"></span>
+<span class="source-line-no">093</span><span id="line-93">    final ApplyEffectsComponentEffect copy = new ApplyEffectsComponentEffect();</span>
+<span class="source-line-no">094</span><span id="line-94">    copy.probability(this.probability);</span>
+<span class="source-line-no">095</span><span id="line-95"></span>
+<span class="source-line-no">096</span><span id="line-96">    for(final EffectInstance effect : this.effects) {</span>
+<span class="source-line-no">097</span><span id="line-97">      copy.getEffects().add(new EffectInstance(</span>
+<span class="source-line-no">098</span><span id="line-98">              effect.id(),</span>
+<span class="source-line-no">099</span><span id="line-99">              effect.amplifier(),</span>
+<span class="source-line-no">100</span><span id="line-100">              effect.duration(),</span>
+<span class="source-line-no">101</span><span id="line-101">              effect.showParticles(),</span>
+<span class="source-line-no">102</span><span id="line-102">              effect.ambient(),</span>
+<span class="source-line-no">103</span><span id="line-103">              effect.showIcon()</span>
+<span class="source-line-no">104</span><span id="line-104">      ));</span>
+<span class="source-line-no">105</span><span id="line-105">    }</span>
+<span class="source-line-no">106</span><span id="line-106">    return copy;</span>
+<span class="source-line-no">107</span><span id="line-107">  }</span>
+<span class="source-line-no">108</span><span id="line-108">}</span>
 
 
 

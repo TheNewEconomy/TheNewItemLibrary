@@ -126,14 +126,14 @@
 <span class="source-line-no">113</span><span id="line-113">  }</span>
 <span class="source-line-no">114</span><span id="line-114"></span>
 <span class="source-line-no">115</span><span id="line-115">  @Override</span>
-<span class="source-line-no">116</span><span id="line-116">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
+<span class="source-line-no">116</span><span id="line-116">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">117</span><span id="line-117">    consumeSeconds = json.getFloat("consume_seconds");</span>
 <span class="source-line-no">118</span><span id="line-118">    animation = json.getString("animation");</span>
 <span class="source-line-no">119</span><span id="line-119">    sound = json.getString("sound");</span>
 <span class="source-line-no">120</span><span id="line-120">    hasConsumeParticles = json.getBoolean("has_consume_particles");</span>
 <span class="source-line-no">121</span><span id="line-121"></span>
 <span class="source-line-no">122</span><span id="line-122">    effects.clear();</span>
-<span class="source-line-no">123</span><span id="line-123">    if (json.has("on_consume_effects")) {</span>
+<span class="source-line-no">123</span><span id="line-123">    if(json.has("on_consume_effects")) {</span>
 <span class="source-line-no">124</span><span id="line-124"></span>
 <span class="source-line-no">125</span><span id="line-125">      final JSONArray effectsArray = (JSONArray) json.getObject().get("on_consume_effects");</span>
 <span class="source-line-no">126</span><span id="line-126">      for (final Object obj : effectsArray) {</span>
@@ -143,7 +143,7 @@
 <span class="source-line-no">130</span><span id="line-130">        // Get the effect class from the platform's reviveEffects map</span>
 <span class="source-line-no">131</span><span id="line-131">        final Class&lt;? extends ComponentEffect&gt; effectClass = platform.effects().get(type);</span>
 <span class="source-line-no">132</span><span id="line-132"></span>
-<span class="source-line-no">133</span><span id="line-133">        if (effectClass != null) {</span>
+<span class="source-line-no">133</span><span id="line-133">        if(effectClass != null) {</span>
 <span class="source-line-no">134</span><span id="line-134">          try {</span>
 <span class="source-line-no">135</span><span id="line-135">            // Instantiate the effect dynamically</span>
 <span class="source-line-no">136</span><span id="line-136">            final ComponentEffect effect = effectClass.getDeclaredConstructor().newInstance();</span>
@@ -158,8 +158,8 @@
 <span class="source-line-no">145</span><span id="line-145">  }</span>
 <span class="source-line-no">146</span><span id="line-146"></span>
 <span class="source-line-no">147</span><span id="line-147">  @Override</span>
-<span class="source-line-no">148</span><span id="line-148">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">149</span><span id="line-149">    if (!(component instanceof final ConsumableComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">148</span><span id="line-148">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">149</span><span id="line-149">    if(!(component instanceof final ConsumableComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">150</span><span id="line-150">    return Float.compare(this.consumeSeconds, other.consumeSeconds) == 0 &amp;&amp;</span>
 <span class="source-line-no">151</span><span id="line-151">           Objects.equals(this.animation, other.animation) &amp;&amp;</span>
 <span class="source-line-no">152</span><span id="line-152">           Objects.equals(this.sound, other.sound) &amp;&amp;</span>

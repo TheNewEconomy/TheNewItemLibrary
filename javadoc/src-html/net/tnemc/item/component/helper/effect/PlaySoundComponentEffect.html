@@ -67,26 +67,37 @@
 <span class="source-line-no">054</span><span id="line-54">    sound = json.getString("sound");</span>
 <span class="source-line-no">055</span><span id="line-55">  }</span>
 <span class="source-line-no">056</span><span id="line-56"></span>
-<span class="source-line-no">057</span><span id="line-57">  public String getSound() {</span>
-<span class="source-line-no">058</span><span id="line-58">    return sound;</span>
-<span class="source-line-no">059</span><span id="line-59">  }</span>
-<span class="source-line-no">060</span><span id="line-60"></span>
-<span class="source-line-no">061</span><span id="line-61">  public void setSound(final String sound) {</span>
-<span class="source-line-no">062</span><span id="line-62">    this.sound = sound;</span>
-<span class="source-line-no">063</span><span id="line-63">  }</span>
-<span class="source-line-no">064</span><span id="line-64"></span>
-<span class="source-line-no">065</span><span id="line-65">  @Override</span>
-<span class="source-line-no">066</span><span id="line-66">  public boolean equals(final Object obj) {</span>
-<span class="source-line-no">067</span><span id="line-67">    if (!(obj instanceof final PlaySoundComponentEffect other)) return false;</span>
-<span class="source-line-no">068</span><span id="line-68"></span>
-<span class="source-line-no">069</span><span id="line-69">    return super.equals(obj) &amp;&amp; Objects.equals(this.sound, other.sound);</span>
-<span class="source-line-no">070</span><span id="line-70">  }</span>
-<span class="source-line-no">071</span><span id="line-71"></span>
-<span class="source-line-no">072</span><span id="line-72">  @Override</span>
-<span class="source-line-no">073</span><span id="line-73">  public int hashCode() {</span>
-<span class="source-line-no">074</span><span id="line-74">    return Objects.hash(super.hashCode(), sound);</span>
-<span class="source-line-no">075</span><span id="line-75">  }</span>
-<span class="source-line-no">076</span><span id="line-76">}</span>
+<span class="source-line-no">057</span><span id="line-57">  public String sound() {</span>
+<span class="source-line-no">058</span><span id="line-58"></span>
+<span class="source-line-no">059</span><span id="line-59">    return sound;</span>
+<span class="source-line-no">060</span><span id="line-60">  }</span>
+<span class="source-line-no">061</span><span id="line-61"></span>
+<span class="source-line-no">062</span><span id="line-62">  public void sound(final String sound) {</span>
+<span class="source-line-no">063</span><span id="line-63"></span>
+<span class="source-line-no">064</span><span id="line-64">    this.sound = sound;</span>
+<span class="source-line-no">065</span><span id="line-65">  }</span>
+<span class="source-line-no">066</span><span id="line-66"></span>
+<span class="source-line-no">067</span><span id="line-67">  @Override</span>
+<span class="source-line-no">068</span><span id="line-68">  public boolean equals(final Object obj) {</span>
+<span class="source-line-no">069</span><span id="line-69">    if(!(obj instanceof final PlaySoundComponentEffect other)) return false;</span>
+<span class="source-line-no">070</span><span id="line-70"></span>
+<span class="source-line-no">071</span><span id="line-71">    return super.equals(obj) &amp;&amp; Objects.equals(this.sound, other.sound);</span>
+<span class="source-line-no">072</span><span id="line-72">  }</span>
+<span class="source-line-no">073</span><span id="line-73"></span>
+<span class="source-line-no">074</span><span id="line-74">  @Override</span>
+<span class="source-line-no">075</span><span id="line-75">  public int hashCode() {</span>
+<span class="source-line-no">076</span><span id="line-76">    return Objects.hash(super.hashCode(), sound);</span>
+<span class="source-line-no">077</span><span id="line-77">  }</span>
+<span class="source-line-no">078</span><span id="line-78"></span>
+<span class="source-line-no">079</span><span id="line-79">  @Override</span>
+<span class="source-line-no">080</span><span id="line-80">  public PlaySoundComponentEffect clone() {</span>
+<span class="source-line-no">081</span><span id="line-81"></span>
+<span class="source-line-no">082</span><span id="line-82">    final PlaySoundComponentEffect copy = new PlaySoundComponentEffect();</span>
+<span class="source-line-no">083</span><span id="line-83">    copy.sound(this.sound);</span>
+<span class="source-line-no">084</span><span id="line-84">    copy.probability(this.probability);</span>
+<span class="source-line-no">085</span><span id="line-85">    return copy;</span>
+<span class="source-line-no">086</span><span id="line-86">  }</span>
+<span class="source-line-no">087</span><span id="line-87">}</span>
 
 
 

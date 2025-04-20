@@ -98,7 +98,7 @@
 <span class="source-line-no">085</span><span id="line-85">  }</span>
 <span class="source-line-no">086</span><span id="line-86"></span>
 <span class="source-line-no">087</span><span id="line-87">  @Override</span>
-<span class="source-line-no">088</span><span id="line-88">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
+<span class="source-line-no">088</span><span id="line-88">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">089</span><span id="line-89">    hideTooltip = json.getBoolean("hideTooltip");</span>
 <span class="source-line-no">090</span><span id="line-90"></span>
 <span class="source-line-no">091</span><span id="line-91">    hiddenComponents.clear();</span>
@@ -109,8 +109,8 @@
 <span class="source-line-no">096</span><span id="line-96">  }</span>
 <span class="source-line-no">097</span><span id="line-97"></span>
 <span class="source-line-no">098</span><span id="line-98">  @Override</span>
-<span class="source-line-no">099</span><span id="line-99">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">100</span><span id="line-100">    if (!(component instanceof final TooltipDisplayComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">099</span><span id="line-99">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">100</span><span id="line-100">    if(!(component instanceof final TooltipDisplayComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">101</span><span id="line-101">    return Objects.equals(this.hiddenComponents, other.hiddenComponents) &amp;&amp; Objects.equals(this.hideTooltip, other.hideTooltip);</span>
 <span class="source-line-no">102</span><span id="line-102">  }</span>
 <span class="source-line-no">103</span><span id="line-103"></span>

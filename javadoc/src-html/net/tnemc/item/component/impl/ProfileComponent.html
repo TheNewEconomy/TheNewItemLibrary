@@ -64,98 +64,102 @@
 <span class="source-line-no">051</span><span id="line-51"></span>
 <span class="source-line-no">052</span><span id="line-52">  /**</span>
 <span class="source-line-no">053</span><span id="line-53">   * @return the type of component this is.</span>
-<span class="source-line-no">054</span><span id="line-54">   */</span>
-<span class="source-line-no">055</span><span id="line-55">  @Override</span>
-<span class="source-line-no">056</span><span id="line-56">  public String identifier() {</span>
-<span class="source-line-no">057</span><span id="line-57"></span>
-<span class="source-line-no">058</span><span id="line-58">    return "profile";</span>
-<span class="source-line-no">059</span><span id="line-59">  }</span>
-<span class="source-line-no">060</span><span id="line-60"></span>
-<span class="source-line-no">061</span><span id="line-61">  /**</span>
-<span class="source-line-no">062</span><span id="line-62">   * Converts the {@link SerialComponent} to a JSON object.</span>
-<span class="source-line-no">063</span><span id="line-63">   *</span>
-<span class="source-line-no">064</span><span id="line-64">   * @return The JSONObject representing this {@link SerialComponent}.</span>
-<span class="source-line-no">065</span><span id="line-65">   */</span>
-<span class="source-line-no">066</span><span id="line-66">  @Override</span>
-<span class="source-line-no">067</span><span id="line-67">  public JSONObject toJSON() {</span>
-<span class="source-line-no">068</span><span id="line-68"></span>
-<span class="source-line-no">069</span><span id="line-69">    final JSONObject json = new JSONObject();</span>
-<span class="source-line-no">070</span><span id="line-70">    if(profile != null) {</span>
-<span class="source-line-no">071</span><span id="line-71">      if(profile.getName() != null) json.put("name", profile.getName());</span>
-<span class="source-line-no">072</span><span id="line-72">      if(profile.getUuid() != null) json.put("uuid", profile.getUuid());</span>
-<span class="source-line-no">073</span><span id="line-73">      if(profile.getTexture() != null) json.put("texture", profile.getTexture());</span>
-<span class="source-line-no">074</span><span id="line-74">    }</span>
-<span class="source-line-no">075</span><span id="line-75">    return json;</span>
-<span class="source-line-no">076</span><span id="line-76">  }</span>
-<span class="source-line-no">077</span><span id="line-77"></span>
-<span class="source-line-no">078</span><span id="line-78">  /**</span>
-<span class="source-line-no">079</span><span id="line-79">   * Reads JSON data and converts it back to a {@link SerialComponent} object.</span>
-<span class="source-line-no">080</span><span id="line-80">   *</span>
-<span class="source-line-no">081</span><span id="line-81">   * @param json The JSONHelper instance of the json data.</span>
-<span class="source-line-no">082</span><span id="line-82">   */</span>
-<span class="source-line-no">083</span><span id="line-83">  @Override</span>
-<span class="source-line-no">084</span><span id="line-84">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
-<span class="source-line-no">085</span><span id="line-85"></span>
-<span class="source-line-no">086</span><span id="line-86">    profile = new SkullProfile();</span>
-<span class="source-line-no">087</span><span id="line-87">    if(json.has("name")) profile.setName(json.getString("name"));</span>
+<span class="source-line-no">054</span><span id="line-54">   * @since 0.2.0.0</span>
+<span class="source-line-no">055</span><span id="line-55">   */</span>
+<span class="source-line-no">056</span><span id="line-56">  @Override</span>
+<span class="source-line-no">057</span><span id="line-57">  public String identifier() {</span>
+<span class="source-line-no">058</span><span id="line-58"></span>
+<span class="source-line-no">059</span><span id="line-59">    return "profile";</span>
+<span class="source-line-no">060</span><span id="line-60">  }</span>
+<span class="source-line-no">061</span><span id="line-61"></span>
+<span class="source-line-no">062</span><span id="line-62">  /**</span>
+<span class="source-line-no">063</span><span id="line-63">   * Converts the {@link SerialComponent} to a JSON object.</span>
+<span class="source-line-no">064</span><span id="line-64">   *</span>
+<span class="source-line-no">065</span><span id="line-65">   * @return The JSONObject representing this {@link SerialComponent}.</span>
+<span class="source-line-no">066</span><span id="line-66">   * @since 0.2.0.0</span>
+<span class="source-line-no">067</span><span id="line-67">   */</span>
+<span class="source-line-no">068</span><span id="line-68">  @Override</span>
+<span class="source-line-no">069</span><span id="line-69">  public JSONObject toJSON() {</span>
+<span class="source-line-no">070</span><span id="line-70"></span>
+<span class="source-line-no">071</span><span id="line-71">    final JSONObject json = new JSONObject();</span>
+<span class="source-line-no">072</span><span id="line-72">    if(profile != null) {</span>
+<span class="source-line-no">073</span><span id="line-73">      if(profile.getName() != null) json.put("name", profile.getName());</span>
+<span class="source-line-no">074</span><span id="line-74">      if(profile.getUuid() != null) json.put("uuid", profile.getUuid());</span>
+<span class="source-line-no">075</span><span id="line-75">      if(profile.getTexture() != null) json.put("texture", profile.getTexture());</span>
+<span class="source-line-no">076</span><span id="line-76">    }</span>
+<span class="source-line-no">077</span><span id="line-77">    return json;</span>
+<span class="source-line-no">078</span><span id="line-78">  }</span>
+<span class="source-line-no">079</span><span id="line-79"></span>
+<span class="source-line-no">080</span><span id="line-80">  /**</span>
+<span class="source-line-no">081</span><span id="line-81">   * Reads JSON data and converts it back to a {@link SerialComponent} object.</span>
+<span class="source-line-no">082</span><span id="line-82">   *</span>
+<span class="source-line-no">083</span><span id="line-83">   * @param json The JSONHelper instance of the json data.</span>
+<span class="source-line-no">084</span><span id="line-84">   * @since 0.2.0.0</span>
+<span class="source-line-no">085</span><span id="line-85">   */</span>
+<span class="source-line-no">086</span><span id="line-86">  @Override</span>
+<span class="source-line-no">087</span><span id="line-87">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">088</span><span id="line-88"></span>
-<span class="source-line-no">089</span><span id="line-89">    try {</span>
-<span class="source-line-no">090</span><span id="line-90"></span>
-<span class="source-line-no">091</span><span id="line-91">      if(json.has("uuid")) profile.setUuid(UUID.fromString(json.getString("uuid")));</span>
-<span class="source-line-no">092</span><span id="line-92"></span>
-<span class="source-line-no">093</span><span id="line-93">    } catch(final Exception ignore) { }</span>
-<span class="source-line-no">094</span><span id="line-94"></span>
-<span class="source-line-no">095</span><span id="line-95">    if(json.has("texture")) profile.setTexture(json.getString("texture"));</span>
-<span class="source-line-no">096</span><span id="line-96">  }</span>
+<span class="source-line-no">089</span><span id="line-89">    profile = new SkullProfile();</span>
+<span class="source-line-no">090</span><span id="line-90">    if(json.has("name")) profile.setName(json.getString("name"));</span>
+<span class="source-line-no">091</span><span id="line-91"></span>
+<span class="source-line-no">092</span><span id="line-92">    try {</span>
+<span class="source-line-no">093</span><span id="line-93"></span>
+<span class="source-line-no">094</span><span id="line-94">      if(json.has("uuid")) profile.setUuid(UUID.fromString(json.getString("uuid")));</span>
+<span class="source-line-no">095</span><span id="line-95"></span>
+<span class="source-line-no">096</span><span id="line-96">    } catch(final Exception ignore) { }</span>
 <span class="source-line-no">097</span><span id="line-97"></span>
-<span class="source-line-no">098</span><span id="line-98">  /**</span>
-<span class="source-line-no">099</span><span id="line-99">   * Used to determine if some data is equal to this data. This means that it has to be an exact</span>
-<span class="source-line-no">100</span><span id="line-100">   * copy of this data. For instance, book copies will return false when compared to the original.</span>
-<span class="source-line-no">101</span><span id="line-101">   *</span>
-<span class="source-line-no">102</span><span id="line-102">   * @param component The component to compare.</span>
-<span class="source-line-no">103</span><span id="line-103">   *</span>
-<span class="source-line-no">104</span><span id="line-104">   * @return True if similar, otherwise false.</span>
-<span class="source-line-no">105</span><span id="line-105">   */</span>
-<span class="source-line-no">106</span><span id="line-106">  @Override</span>
-<span class="source-line-no">107</span><span id="line-107">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">108</span><span id="line-108"></span>
-<span class="source-line-no">109</span><span id="line-109">    if(!(component instanceof final ProfileComponent&lt;?, ?&gt; other)) return false;</span>
-<span class="source-line-no">110</span><span id="line-110">    if(profile != null) {</span>
-<span class="source-line-no">111</span><span id="line-111"></span>
-<span class="source-line-no">112</span><span id="line-112">      if(other.profile == null) return false;</span>
-<span class="source-line-no">113</span><span id="line-113"></span>
-<span class="source-line-no">114</span><span id="line-114">      return profile.equals(other.profile);</span>
-<span class="source-line-no">115</span><span id="line-115">    }</span>
-<span class="source-line-no">116</span><span id="line-116"></span>
-<span class="source-line-no">117</span><span id="line-117">    return other.profile == null;</span>
-<span class="source-line-no">118</span><span id="line-118">  }</span>
-<span class="source-line-no">119</span><span id="line-119"></span>
-<span class="source-line-no">120</span><span id="line-120">  @Override</span>
-<span class="source-line-no">121</span><span id="line-121">  public int hashCode() {</span>
-<span class="source-line-no">122</span><span id="line-122"></span>
-<span class="source-line-no">123</span><span id="line-123">    return Objects.hash(false);</span>
-<span class="source-line-no">124</span><span id="line-124">  }</span>
-<span class="source-line-no">125</span><span id="line-125"></span>
-<span class="source-line-no">126</span><span id="line-126">  public SkullProfile profile() {</span>
-<span class="source-line-no">127</span><span id="line-127"></span>
-<span class="source-line-no">128</span><span id="line-128">    return profile;</span>
-<span class="source-line-no">129</span><span id="line-129">  }</span>
-<span class="source-line-no">130</span><span id="line-130"></span>
-<span class="source-line-no">131</span><span id="line-131">  public void profile(final SkullProfile profile) {</span>
-<span class="source-line-no">132</span><span id="line-132"></span>
-<span class="source-line-no">133</span><span id="line-133">    this.profile = profile;</span>
-<span class="source-line-no">134</span><span id="line-134">  }</span>
-<span class="source-line-no">135</span><span id="line-135"></span>
-<span class="source-line-no">136</span><span id="line-136">  public void profile(final String name, final UUID uuid) {</span>
-<span class="source-line-no">137</span><span id="line-137"></span>
-<span class="source-line-no">138</span><span id="line-138">    this.profile = new SkullProfile(name, uuid);</span>
-<span class="source-line-no">139</span><span id="line-139">  }</span>
-<span class="source-line-no">140</span><span id="line-140"></span>
-<span class="source-line-no">141</span><span id="line-141">  public void profile(final String name, final UUID uuid, final String texture) {</span>
-<span class="source-line-no">142</span><span id="line-142"></span>
-<span class="source-line-no">143</span><span id="line-143">    this.profile = new SkullProfile(name, uuid, texture);</span>
-<span class="source-line-no">144</span><span id="line-144">  }</span>
-<span class="source-line-no">145</span><span id="line-145">}</span>
+<span class="source-line-no">098</span><span id="line-98">    if(json.has("texture")) profile.setTexture(json.getString("texture"));</span>
+<span class="source-line-no">099</span><span id="line-99">  }</span>
+<span class="source-line-no">100</span><span id="line-100"></span>
+<span class="source-line-no">101</span><span id="line-101">  /**</span>
+<span class="source-line-no">102</span><span id="line-102">   * Used to determine if some data is equal to this data. This means that it has to be an exact</span>
+<span class="source-line-no">103</span><span id="line-103">   * copy of this data. For instance, book copies will return false when compared to the original.</span>
+<span class="source-line-no">104</span><span id="line-104">   *</span>
+<span class="source-line-no">105</span><span id="line-105">   * @param component The component to compare.</span>
+<span class="source-line-no">106</span><span id="line-106">   *</span>
+<span class="source-line-no">107</span><span id="line-107">   * @return True if similar, otherwise false.</span>
+<span class="source-line-no">108</span><span id="line-108">   * @since 0.2.0.0</span>
+<span class="source-line-no">109</span><span id="line-109">   */</span>
+<span class="source-line-no">110</span><span id="line-110">  @Override</span>
+<span class="source-line-no">111</span><span id="line-111">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">112</span><span id="line-112"></span>
+<span class="source-line-no">113</span><span id="line-113">    if(!(component instanceof final ProfileComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">114</span><span id="line-114">    if(profile != null) {</span>
+<span class="source-line-no">115</span><span id="line-115"></span>
+<span class="source-line-no">116</span><span id="line-116">      if(other.profile == null) return false;</span>
+<span class="source-line-no">117</span><span id="line-117"></span>
+<span class="source-line-no">118</span><span id="line-118">      return profile.equals(other.profile);</span>
+<span class="source-line-no">119</span><span id="line-119">    }</span>
+<span class="source-line-no">120</span><span id="line-120"></span>
+<span class="source-line-no">121</span><span id="line-121">    return other.profile == null;</span>
+<span class="source-line-no">122</span><span id="line-122">  }</span>
+<span class="source-line-no">123</span><span id="line-123"></span>
+<span class="source-line-no">124</span><span id="line-124">  @Override</span>
+<span class="source-line-no">125</span><span id="line-125">  public int hashCode() {</span>
+<span class="source-line-no">126</span><span id="line-126"></span>
+<span class="source-line-no">127</span><span id="line-127">    return Objects.hash(false);</span>
+<span class="source-line-no">128</span><span id="line-128">  }</span>
+<span class="source-line-no">129</span><span id="line-129"></span>
+<span class="source-line-no">130</span><span id="line-130">  public SkullProfile profile() {</span>
+<span class="source-line-no">131</span><span id="line-131"></span>
+<span class="source-line-no">132</span><span id="line-132">    return profile;</span>
+<span class="source-line-no">133</span><span id="line-133">  }</span>
+<span class="source-line-no">134</span><span id="line-134"></span>
+<span class="source-line-no">135</span><span id="line-135">  public void profile(final SkullProfile profile) {</span>
+<span class="source-line-no">136</span><span id="line-136"></span>
+<span class="source-line-no">137</span><span id="line-137">    this.profile = profile;</span>
+<span class="source-line-no">138</span><span id="line-138">  }</span>
+<span class="source-line-no">139</span><span id="line-139"></span>
+<span class="source-line-no">140</span><span id="line-140">  public void profile(final String name, final UUID uuid) {</span>
+<span class="source-line-no">141</span><span id="line-141"></span>
+<span class="source-line-no">142</span><span id="line-142">    this.profile = new SkullProfile(name, uuid);</span>
+<span class="source-line-no">143</span><span id="line-143">  }</span>
+<span class="source-line-no">144</span><span id="line-144"></span>
+<span class="source-line-no">145</span><span id="line-145">  public void profile(final String name, final UUID uuid, final String texture) {</span>
+<span class="source-line-no">146</span><span id="line-146"></span>
+<span class="source-line-no">147</span><span id="line-147">    this.profile = new SkullProfile(name, uuid, texture);</span>
+<span class="source-line-no">148</span><span id="line-148">  }</span>
+<span class="source-line-no">149</span><span id="line-149">}</span>
 
 
 

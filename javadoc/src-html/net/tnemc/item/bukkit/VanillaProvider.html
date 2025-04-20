@@ -33,102 +33,135 @@
 <span class="source-line-no">020</span><span id="line-20"></span>
 <span class="source-line-no">021</span><span id="line-21">import net.tnemc.item.AbstractItemStack;</span>
 <span class="source-line-no">022</span><span id="line-22">import net.tnemc.item.bukkit.platform.BukkitItemPlatform;</span>
-<span class="source-line-no">023</span><span id="line-23">import net.tnemc.item.providers.ItemProvider;</span>
-<span class="source-line-no">024</span><span id="line-24">import org.bukkit.Material;</span>
-<span class="source-line-no">025</span><span id="line-25">import org.bukkit.NamespacedKey;</span>
-<span class="source-line-no">026</span><span id="line-26">import org.bukkit.Registry;</span>
-<span class="source-line-no">027</span><span id="line-27">import org.bukkit.inventory.ItemStack;</span>
-<span class="source-line-no">028</span><span id="line-28"></span>
-<span class="source-line-no">029</span><span id="line-29">/**</span>
-<span class="source-line-no">030</span><span id="line-30"> * VanillaProvider</span>
-<span class="source-line-no">031</span><span id="line-31"> *</span>
-<span class="source-line-no">032</span><span id="line-32"> * @author creatorfromhell</span>
-<span class="source-line-no">033</span><span id="line-33"> * @since 0.2.0.0</span>
-<span class="source-line-no">034</span><span id="line-34"> */</span>
-<span class="source-line-no">035</span><span id="line-35">public class VanillaProvider implements ItemProvider&lt;ItemStack&gt; {</span>
-<span class="source-line-no">036</span><span id="line-36"></span>
-<span class="source-line-no">037</span><span id="line-37">  /**</span>
-<span class="source-line-no">038</span><span id="line-38">   * Checks if the given serialized item stack applies to the specified item.</span>
-<span class="source-line-no">039</span><span id="line-39">   *</span>
-<span class="source-line-no">040</span><span id="line-40">   * @param serialized The serialized item stack to check against the item.</span>
-<span class="source-line-no">041</span><span id="line-41">   * @param item       The item to check against.</span>
-<span class="source-line-no">042</span><span id="line-42">   *</span>
-<span class="source-line-no">043</span><span id="line-43">   * @return True if the serialized item stack applies to the item, false otherwise.</span>
-<span class="source-line-no">044</span><span id="line-44">   */</span>
-<span class="source-line-no">045</span><span id="line-45">  @Override</span>
-<span class="source-line-no">046</span><span id="line-46">  public boolean appliesTo(final AbstractItemStack&lt;? extends ItemStack&gt; serialized, final ItemStack item) {</span>
-<span class="source-line-no">047</span><span id="line-47"></span>
-<span class="source-line-no">048</span><span id="line-48">    return true;</span>
-<span class="source-line-no">049</span><span id="line-49">  }</span>
-<span class="source-line-no">050</span><span id="line-50"></span>
-<span class="source-line-no">051</span><span id="line-51">  /**</span>
-<span class="source-line-no">052</span><span id="line-52">   * Checks if the provided item stack is similar to the original item stack.</span>
-<span class="source-line-no">053</span><span id="line-53">   *</span>
-<span class="source-line-no">054</span><span id="line-54">   * @param original The original item stack to compare against.</span>
-<span class="source-line-no">055</span><span id="line-55">   * @param compare  The item stack to compare.</span>
-<span class="source-line-no">056</span><span id="line-56">   *</span>
-<span class="source-line-no">057</span><span id="line-57">   * @return True if the two item stacks are similar, otherwise false.</span>
-<span class="source-line-no">058</span><span id="line-58">   */</span>
-<span class="source-line-no">059</span><span id="line-59">  @Override</span>
-<span class="source-line-no">060</span><span id="line-60">  public boolean similar(final AbstractItemStack&lt;? extends ItemStack&gt; original, final ItemStack compare) {</span>
-<span class="source-line-no">061</span><span id="line-61"></span>
-<span class="source-line-no">062</span><span id="line-62">    return BukkitItemPlatform.PLATFORM.check((BukkitItemStack)original, new BukkitItemStack().of(compare));</span>
-<span class="source-line-no">063</span><span id="line-63">  }</span>
+<span class="source-line-no">023</span><span id="line-23">import net.tnemc.item.component.SerialComponent;</span>
+<span class="source-line-no">024</span><span id="line-24">import net.tnemc.item.providers.ItemProvider;</span>
+<span class="source-line-no">025</span><span id="line-25">import org.bukkit.Material;</span>
+<span class="source-line-no">026</span><span id="line-26">import org.bukkit.NamespacedKey;</span>
+<span class="source-line-no">027</span><span id="line-27">import org.bukkit.Registry;</span>
+<span class="source-line-no">028</span><span id="line-28">import org.bukkit.inventory.ItemStack;</span>
+<span class="source-line-no">029</span><span id="line-29"></span>
+<span class="source-line-no">030</span><span id="line-30">/**</span>
+<span class="source-line-no">031</span><span id="line-31"> * VanillaProvider</span>
+<span class="source-line-no">032</span><span id="line-32"> *</span>
+<span class="source-line-no">033</span><span id="line-33"> * @author creatorfromhell</span>
+<span class="source-line-no">034</span><span id="line-34"> * @since 0.2.0.0</span>
+<span class="source-line-no">035</span><span id="line-35"> */</span>
+<span class="source-line-no">036</span><span id="line-36">public class VanillaProvider implements ItemProvider&lt;ItemStack&gt; {</span>
+<span class="source-line-no">037</span><span id="line-37"></span>
+<span class="source-line-no">038</span><span id="line-38">  /**</span>
+<span class="source-line-no">039</span><span id="line-39">   * Checks if the given serialized item stack applies to the specified item.</span>
+<span class="source-line-no">040</span><span id="line-40">   *</span>
+<span class="source-line-no">041</span><span id="line-41">   * @param serialized The serialized item stack to check against the item.</span>
+<span class="source-line-no">042</span><span id="line-42">   * @param item       The item to check against.</span>
+<span class="source-line-no">043</span><span id="line-43">   *</span>
+<span class="source-line-no">044</span><span id="line-44">   * @return True if the serialized item stack applies to the item, false otherwise.</span>
+<span class="source-line-no">045</span><span id="line-45">   * @since 0.2.0.0</span>
+<span class="source-line-no">046</span><span id="line-46">   */</span>
+<span class="source-line-no">047</span><span id="line-47">  @Override</span>
+<span class="source-line-no">048</span><span id="line-48">  public boolean appliesTo(final AbstractItemStack&lt;? extends ItemStack&gt; serialized, final ItemStack item) {</span>
+<span class="source-line-no">049</span><span id="line-49"></span>
+<span class="source-line-no">050</span><span id="line-50">    return true;</span>
+<span class="source-line-no">051</span><span id="line-51">  }</span>
+<span class="source-line-no">052</span><span id="line-52"></span>
+<span class="source-line-no">053</span><span id="line-53">  /**</span>
+<span class="source-line-no">054</span><span id="line-54">   * Checks if the provided item stack is similar to the original item stack.</span>
+<span class="source-line-no">055</span><span id="line-55">   *</span>
+<span class="source-line-no">056</span><span id="line-56">   * @param original The original item stack to compare against.</span>
+<span class="source-line-no">057</span><span id="line-57">   * @param compare  The item stack to compare.</span>
+<span class="source-line-no">058</span><span id="line-58">   *</span>
+<span class="source-line-no">059</span><span id="line-59">   * @return True if the two item stacks are similar, otherwise false.</span>
+<span class="source-line-no">060</span><span id="line-60">   * @since 0.2.0.0</span>
+<span class="source-line-no">061</span><span id="line-61">   */</span>
+<span class="source-line-no">062</span><span id="line-62">  @Override</span>
+<span class="source-line-no">063</span><span id="line-63">  public boolean similar(final AbstractItemStack&lt;? extends ItemStack&gt; original, final ItemStack compare) {</span>
 <span class="source-line-no">064</span><span id="line-64"></span>
-<span class="source-line-no">065</span><span id="line-65">  /**</span>
-<span class="source-line-no">066</span><span id="line-66">   * Creates a copy of the original item stack with a specified amount.</span>
-<span class="source-line-no">067</span><span id="line-67">   *</span>
-<span class="source-line-no">068</span><span id="line-68">   * @param original The original item stack to copy.</span>
-<span class="source-line-no">069</span><span id="line-69">   * @param amount   The amount for the new item stack.</span>
-<span class="source-line-no">070</span><span id="line-70">   *</span>
-<span class="source-line-no">071</span><span id="line-71">   * @return A new item stack with the specified amount.</span>
-<span class="source-line-no">072</span><span id="line-72">   */</span>
-<span class="source-line-no">073</span><span id="line-73">  @Override</span>
-<span class="source-line-no">074</span><span id="line-74">  public ItemStack locale(final AbstractItemStack&lt;? extends ItemStack&gt; original, final int amount) {</span>
+<span class="source-line-no">065</span><span id="line-65">    final BukkitItemStack compareStack = new BukkitItemStack().of(compare);</span>
+<span class="source-line-no">066</span><span id="line-66"></span>
+<span class="source-line-no">067</span><span id="line-67">    System.out.println("==== Similar call ====");</span>
+<span class="source-line-no">068</span><span id="line-68"></span>
+<span class="source-line-no">069</span><span id="line-69">    System.out.println("original Components");</span>
+<span class="source-line-no">070</span><span id="line-70"></span>
+<span class="source-line-no">071</span><span id="line-71">    for(final SerialComponent component : original.components().values()) {</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">      System.out.println("Entry: " + component.identifier());</span>
+<span class="source-line-no">074</span><span id="line-74">    }</span>
 <span class="source-line-no">075</span><span id="line-75"></span>
-<span class="source-line-no">076</span><span id="line-76">    if(original instanceof final BukkitItemStack bukkit) {</span>
+<span class="source-line-no">076</span><span id="line-76">    System.out.println("Compare Components");</span>
 <span class="source-line-no">077</span><span id="line-77"></span>
-<span class="source-line-no">078</span><span id="line-78">      if(!bukkit.isDirty()) {</span>
-<span class="source-line-no">079</span><span id="line-79">        return bukkit.cacheLocale();</span>
-<span class="source-line-no">080</span><span id="line-80">      }</span>
-<span class="source-line-no">081</span><span id="line-81"></span>
-<span class="source-line-no">082</span><span id="line-82">      Material material = null;</span>
-<span class="source-line-no">083</span><span id="line-83"></span>
-<span class="source-line-no">084</span><span id="line-84">      try {</span>
-<span class="source-line-no">085</span><span id="line-85">        final NamespacedKey key = NamespacedKey.fromString(bukkit.material());</span>
-<span class="source-line-no">086</span><span id="line-86">        if(key != null) {</span>
-<span class="source-line-no">087</span><span id="line-87"></span>
-<span class="source-line-no">088</span><span id="line-88">          material = Registry.MATERIAL.get(key);</span>
-<span class="source-line-no">089</span><span id="line-89">        }</span>
-<span class="source-line-no">090</span><span id="line-90">      } catch(final Exception ignore) {</span>
-<span class="source-line-no">091</span><span id="line-91">        material = Material.matchMaterial(bukkit.material());</span>
-<span class="source-line-no">092</span><span id="line-92">      }</span>
-<span class="source-line-no">093</span><span id="line-93"></span>
-<span class="source-line-no">094</span><span id="line-94">      if(material == null) {</span>
-<span class="source-line-no">095</span><span id="line-95"></span>
-<span class="source-line-no">096</span><span id="line-96">        return null;</span>
-<span class="source-line-no">097</span><span id="line-97">      }</span>
-<span class="source-line-no">098</span><span id="line-98">      ItemStack stack = new ItemStack(material, amount);</span>
-<span class="source-line-no">099</span><span id="line-99"></span>
-<span class="source-line-no">100</span><span id="line-100">      stack = BukkitItemPlatform.PLATFORM.apply(bukkit, stack);</span>
-<span class="source-line-no">101</span><span id="line-101"></span>
-<span class="source-line-no">102</span><span id="line-102">      bukkit.updateCache(stack);</span>
-<span class="source-line-no">103</span><span id="line-103">      bukkit.resetDirty();</span>
+<span class="source-line-no">078</span><span id="line-78">    for(final SerialComponent component : compareStack.components().values()) {</span>
+<span class="source-line-no">079</span><span id="line-79"></span>
+<span class="source-line-no">080</span><span id="line-80">      System.out.println("Entry: " + component.identifier());</span>
+<span class="source-line-no">081</span><span id="line-81">    }</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83">    System.out.println("==== Similar end ====");</span>
+<span class="source-line-no">084</span><span id="line-84"></span>
+<span class="source-line-no">085</span><span id="line-85"></span>
+<span class="source-line-no">086</span><span id="line-86">    return BukkitItemPlatform.instance().check((BukkitItemStack)original, compareStack);</span>
+<span class="source-line-no">087</span><span id="line-87">  }</span>
+<span class="source-line-no">088</span><span id="line-88"></span>
+<span class="source-line-no">089</span><span id="line-89">  /**</span>
+<span class="source-line-no">090</span><span id="line-90">   * Creates a copy of the original item stack with a specified amount.</span>
+<span class="source-line-no">091</span><span id="line-91">   *</span>
+<span class="source-line-no">092</span><span id="line-92">   * @param original The original item stack to copy.</span>
+<span class="source-line-no">093</span><span id="line-93">   * @param amount   The amount for the new item stack.</span>
+<span class="source-line-no">094</span><span id="line-94">   *</span>
+<span class="source-line-no">095</span><span id="line-95">   * @return A new item stack with the specified amount.</span>
+<span class="source-line-no">096</span><span id="line-96">   * @since 0.2.0.0</span>
+<span class="source-line-no">097</span><span id="line-97">   */</span>
+<span class="source-line-no">098</span><span id="line-98">  @Override</span>
+<span class="source-line-no">099</span><span id="line-99">  public ItemStack locale(final AbstractItemStack&lt;? extends ItemStack&gt; original, final int amount) {</span>
+<span class="source-line-no">100</span><span id="line-100"></span>
+<span class="source-line-no">101</span><span id="line-101">    System.out.println("instanceof: " + (original instanceof BukkitItemStack));</span>
+<span class="source-line-no">102</span><span id="line-102"></span>
+<span class="source-line-no">103</span><span id="line-103">    if(original instanceof final BukkitItemStack bukkit) {</span>
 <span class="source-line-no">104</span><span id="line-104"></span>
-<span class="source-line-no">105</span><span id="line-105">      return stack;</span>
-<span class="source-line-no">106</span><span id="line-106">    }</span>
-<span class="source-line-no">107</span><span id="line-107">    return null;</span>
-<span class="source-line-no">108</span><span id="line-108">  }</span>
-<span class="source-line-no">109</span><span id="line-109"></span>
-<span class="source-line-no">110</span><span id="line-110">  /**</span>
-<span class="source-line-no">111</span><span id="line-111">   * @return the identifier for this check.</span>
-<span class="source-line-no">112</span><span id="line-112">   */</span>
-<span class="source-line-no">113</span><span id="line-113">  @Override</span>
-<span class="source-line-no">114</span><span id="line-114">  public String identifier() {</span>
-<span class="source-line-no">115</span><span id="line-115"></span>
-<span class="source-line-no">116</span><span id="line-116">    return "vanilla";</span>
-<span class="source-line-no">117</span><span id="line-117">  }</span>
-<span class="source-line-no">118</span><span id="line-118">}</span>
+<span class="source-line-no">105</span><span id="line-105">      if(!bukkit.isDirty()) {</span>
+<span class="source-line-no">106</span><span id="line-106">        return bukkit.cacheLocale();</span>
+<span class="source-line-no">107</span><span id="line-107">      }</span>
+<span class="source-line-no">108</span><span id="line-108"></span>
+<span class="source-line-no">109</span><span id="line-109">      System.out.println("Material: " + bukkit.material());</span>
+<span class="source-line-no">110</span><span id="line-110"></span>
+<span class="source-line-no">111</span><span id="line-111">      Material material = null;</span>
+<span class="source-line-no">112</span><span id="line-112"></span>
+<span class="source-line-no">113</span><span id="line-113">      try {</span>
+<span class="source-line-no">114</span><span id="line-114">        final NamespacedKey key = NamespacedKey.fromString(bukkit.material());</span>
+<span class="source-line-no">115</span><span id="line-115">        if(key != null) {</span>
+<span class="source-line-no">116</span><span id="line-116"></span>
+<span class="source-line-no">117</span><span id="line-117">          System.out.println("Key is not null");</span>
+<span class="source-line-no">118</span><span id="line-118"></span>
+<span class="source-line-no">119</span><span id="line-119">          material = Registry.MATERIAL.get(key);</span>
+<span class="source-line-no">120</span><span id="line-120">        }</span>
+<span class="source-line-no">121</span><span id="line-121">      } catch(final NoSuchMethodError ignore) {</span>
+<span class="source-line-no">122</span><span id="line-122">        material = Material.matchMaterial(bukkit.material());</span>
+<span class="source-line-no">123</span><span id="line-123">      }</span>
+<span class="source-line-no">124</span><span id="line-124"></span>
+<span class="source-line-no">125</span><span id="line-125">      if(material == null) {</span>
+<span class="source-line-no">126</span><span id="line-126"></span>
+<span class="source-line-no">127</span><span id="line-127">        System.out.println("Material is null");</span>
+<span class="source-line-no">128</span><span id="line-128">        return null;</span>
+<span class="source-line-no">129</span><span id="line-129">      }</span>
+<span class="source-line-no">130</span><span id="line-130">      ItemStack stack = new ItemStack(material, amount);</span>
+<span class="source-line-no">131</span><span id="line-131"></span>
+<span class="source-line-no">132</span><span id="line-132">      stack = BukkitItemPlatform.instance().apply(bukkit, stack);</span>
+<span class="source-line-no">133</span><span id="line-133"></span>
+<span class="source-line-no">134</span><span id="line-134">      bukkit.updateCache(stack);</span>
+<span class="source-line-no">135</span><span id="line-135">      bukkit.resetDirty();</span>
+<span class="source-line-no">136</span><span id="line-136"></span>
+<span class="source-line-no">137</span><span id="line-137">      return stack;</span>
+<span class="source-line-no">138</span><span id="line-138">    }</span>
+<span class="source-line-no">139</span><span id="line-139">    return null;</span>
+<span class="source-line-no">140</span><span id="line-140">  }</span>
+<span class="source-line-no">141</span><span id="line-141"></span>
+<span class="source-line-no">142</span><span id="line-142">  /**</span>
+<span class="source-line-no">143</span><span id="line-143">   * @return the identifier for this check.</span>
+<span class="source-line-no">144</span><span id="line-144">   * @since 0.2.0.0</span>
+<span class="source-line-no">145</span><span id="line-145">   */</span>
+<span class="source-line-no">146</span><span id="line-146">  @Override</span>
+<span class="source-line-no">147</span><span id="line-147">  public String identifier() {</span>
+<span class="source-line-no">148</span><span id="line-148"></span>
+<span class="source-line-no">149</span><span id="line-149">    return "vanilla";</span>
+<span class="source-line-no">150</span><span id="line-150">  }</span>
+<span class="source-line-no">151</span><span id="line-151">}</span>
 
 
 

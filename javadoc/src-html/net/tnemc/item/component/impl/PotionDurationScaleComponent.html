@@ -62,51 +62,53 @@
 <span class="source-line-no">049</span><span id="line-49"></span>
 <span class="source-line-no">050</span><span id="line-50">  /**</span>
 <span class="source-line-no">051</span><span id="line-51">   * @return the type of component this is.</span>
-<span class="source-line-no">052</span><span id="line-52">   */</span>
-<span class="source-line-no">053</span><span id="line-53">  @Override</span>
-<span class="source-line-no">054</span><span id="line-54">  public String identifier() {</span>
-<span class="source-line-no">055</span><span id="line-55"></span>
-<span class="source-line-no">056</span><span id="line-56">    return "potion_duration_scale";</span>
-<span class="source-line-no">057</span><span id="line-57">  }</span>
-<span class="source-line-no">058</span><span id="line-58"></span>
-<span class="source-line-no">059</span><span id="line-59">  /**</span>
-<span class="source-line-no">060</span><span id="line-60">   * Converts the {@link SerialComponent} to a JSON object.</span>
-<span class="source-line-no">061</span><span id="line-61">   *</span>
-<span class="source-line-no">062</span><span id="line-62">   * @return The JSONObject representing this {@link SerialComponent}.</span>
-<span class="source-line-no">063</span><span id="line-63">   */</span>
-<span class="source-line-no">064</span><span id="line-64">  @Override</span>
-<span class="source-line-no">065</span><span id="line-65">  public JSONObject toJSON() {</span>
-<span class="source-line-no">066</span><span id="line-66">    final JSONObject json = new JSONObject();</span>
-<span class="source-line-no">067</span><span id="line-67">    json.put("potion_duration", potionDuration);</span>
-<span class="source-line-no">068</span><span id="line-68">    return json;</span>
-<span class="source-line-no">069</span><span id="line-69">  }</span>
-<span class="source-line-no">070</span><span id="line-70"></span>
-<span class="source-line-no">071</span><span id="line-71">  @Override</span>
-<span class="source-line-no">072</span><span id="line-72">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
-<span class="source-line-no">073</span><span id="line-73">    potionDuration = json.getFloat("potion_duration");</span>
-<span class="source-line-no">074</span><span id="line-74">  }</span>
-<span class="source-line-no">075</span><span id="line-75"></span>
-<span class="source-line-no">076</span><span id="line-76">  @Override</span>
-<span class="source-line-no">077</span><span id="line-77">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">078</span><span id="line-78">    if (!(component instanceof final PotionDurationScaleComponent&lt;?, ?&gt; other)) return false;</span>
-<span class="source-line-no">079</span><span id="line-79">    return Float.compare(this.potionDuration, other.potionDuration) == 0;</span>
-<span class="source-line-no">080</span><span id="line-80">  }</span>
-<span class="source-line-no">081</span><span id="line-81"></span>
-<span class="source-line-no">082</span><span id="line-82">  @Override</span>
-<span class="source-line-no">083</span><span id="line-83">  public int hashCode() {</span>
-<span class="source-line-no">084</span><span id="line-84">    return Objects.hash(potionDuration);</span>
-<span class="source-line-no">085</span><span id="line-85">  }</span>
-<span class="source-line-no">086</span><span id="line-86"></span>
-<span class="source-line-no">087</span><span id="line-87">  public float potionDuration() {</span>
+<span class="source-line-no">052</span><span id="line-52">   * @since 0.2.0.0</span>
+<span class="source-line-no">053</span><span id="line-53">   */</span>
+<span class="source-line-no">054</span><span id="line-54">  @Override</span>
+<span class="source-line-no">055</span><span id="line-55">  public String identifier() {</span>
+<span class="source-line-no">056</span><span id="line-56"></span>
+<span class="source-line-no">057</span><span id="line-57">    return "potion_duration_scale";</span>
+<span class="source-line-no">058</span><span id="line-58">  }</span>
+<span class="source-line-no">059</span><span id="line-59"></span>
+<span class="source-line-no">060</span><span id="line-60">  /**</span>
+<span class="source-line-no">061</span><span id="line-61">   * Converts the {@link SerialComponent} to a JSON object.</span>
+<span class="source-line-no">062</span><span id="line-62">   *</span>
+<span class="source-line-no">063</span><span id="line-63">   * @return The JSONObject representing this {@link SerialComponent}.</span>
+<span class="source-line-no">064</span><span id="line-64">   * @since 0.2.0.0</span>
+<span class="source-line-no">065</span><span id="line-65">   */</span>
+<span class="source-line-no">066</span><span id="line-66">  @Override</span>
+<span class="source-line-no">067</span><span id="line-67">  public JSONObject toJSON() {</span>
+<span class="source-line-no">068</span><span id="line-68">    final JSONObject json = new JSONObject();</span>
+<span class="source-line-no">069</span><span id="line-69">    json.put("potion_duration", potionDuration);</span>
+<span class="source-line-no">070</span><span id="line-70">    return json;</span>
+<span class="source-line-no">071</span><span id="line-71">  }</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">  @Override</span>
+<span class="source-line-no">074</span><span id="line-74">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
+<span class="source-line-no">075</span><span id="line-75">    potionDuration = json.getFloat("potion_duration");</span>
+<span class="source-line-no">076</span><span id="line-76">  }</span>
+<span class="source-line-no">077</span><span id="line-77"></span>
+<span class="source-line-no">078</span><span id="line-78">  @Override</span>
+<span class="source-line-no">079</span><span id="line-79">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">080</span><span id="line-80">    if(!(component instanceof final PotionDurationScaleComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">081</span><span id="line-81">    return Float.compare(this.potionDuration, other.potionDuration) == 0;</span>
+<span class="source-line-no">082</span><span id="line-82">  }</span>
+<span class="source-line-no">083</span><span id="line-83"></span>
+<span class="source-line-no">084</span><span id="line-84">  @Override</span>
+<span class="source-line-no">085</span><span id="line-85">  public int hashCode() {</span>
+<span class="source-line-no">086</span><span id="line-86">    return Objects.hash(potionDuration);</span>
+<span class="source-line-no">087</span><span id="line-87">  }</span>
 <span class="source-line-no">088</span><span id="line-88"></span>
-<span class="source-line-no">089</span><span id="line-89">    return potionDuration;</span>
-<span class="source-line-no">090</span><span id="line-90">  }</span>
-<span class="source-line-no">091</span><span id="line-91"></span>
-<span class="source-line-no">092</span><span id="line-92">  public void potionDuration(final float potionDuration) {</span>
+<span class="source-line-no">089</span><span id="line-89">  public float potionDuration() {</span>
+<span class="source-line-no">090</span><span id="line-90"></span>
+<span class="source-line-no">091</span><span id="line-91">    return potionDuration;</span>
+<span class="source-line-no">092</span><span id="line-92">  }</span>
 <span class="source-line-no">093</span><span id="line-93"></span>
-<span class="source-line-no">094</span><span id="line-94">    this.potionDuration = potionDuration;</span>
-<span class="source-line-no">095</span><span id="line-95">  }</span>
-<span class="source-line-no">096</span><span id="line-96">}</span>
+<span class="source-line-no">094</span><span id="line-94">  public void potionDuration(final float potionDuration) {</span>
+<span class="source-line-no">095</span><span id="line-95"></span>
+<span class="source-line-no">096</span><span id="line-96">    this.potionDuration = potionDuration;</span>
+<span class="source-line-no">097</span><span id="line-97">  }</span>
+<span class="source-line-no">098</span><span id="line-98">}</span>
 
 
 

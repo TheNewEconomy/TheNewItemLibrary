@@ -65,79 +65,83 @@
 <span class="source-line-no">052</span><span id="line-52">   * @param version the version being used when this check is called.</span>
 <span class="source-line-no">053</span><span id="line-53">   *</span>
 <span class="source-line-no">054</span><span id="line-54">   * @return true if this check is enabled for the version, otherwise false</span>
-<span class="source-line-no">055</span><span id="line-55">   */</span>
-<span class="source-line-no">056</span><span id="line-56">  @Override</span>
-<span class="source-line-no">057</span><span id="line-57">  public boolean enabled(final String version) {</span>
-<span class="source-line-no">058</span><span id="line-58"></span>
-<span class="source-line-no">059</span><span id="line-59">    return VersionUtil.isOneTwentyOneFour(version);</span>
-<span class="source-line-no">060</span><span id="line-60">  }</span>
-<span class="source-line-no">061</span><span id="line-61"></span>
-<span class="source-line-no">062</span><span id="line-62">  /**</span>
-<span class="source-line-no">063</span><span id="line-63">   * @param serialized the serialized item stack to use</span>
-<span class="source-line-no">064</span><span id="line-64">   * @param item       the item that we should use to apply this applicator to.</span>
-<span class="source-line-no">065</span><span id="line-65">   *</span>
-<span class="source-line-no">066</span><span id="line-66">   * @return the updated item.</span>
-<span class="source-line-no">067</span><span id="line-67">   */</span>
-<span class="source-line-no">068</span><span id="line-68">  @Override</span>
-<span class="source-line-no">069</span><span id="line-69">  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {</span>
-<span class="source-line-no">070</span><span id="line-70"></span>
-<span class="source-line-no">071</span><span id="line-71">    final Optional&lt;PaperBundleComponent&gt; componentOptional = serialized.component(identifier());</span>
-<span class="source-line-no">072</span><span id="line-72">    if(componentOptional.isEmpty()) {</span>
-<span class="source-line-no">073</span><span id="line-73">      return item;</span>
-<span class="source-line-no">074</span><span id="line-74">    }</span>
-<span class="source-line-no">075</span><span id="line-75"></span>
-<span class="source-line-no">076</span><span id="line-76">    final BundleContents.Builder builder = BundleContents.bundleContents();</span>
+<span class="source-line-no">055</span><span id="line-55">   * @since 0.2.0.0</span>
+<span class="source-line-no">056</span><span id="line-56">   */</span>
+<span class="source-line-no">057</span><span id="line-57">  @Override</span>
+<span class="source-line-no">058</span><span id="line-58">  public boolean enabled(final String version) {</span>
+<span class="source-line-no">059</span><span id="line-59"></span>
+<span class="source-line-no">060</span><span id="line-60">    return VersionUtil.isOneTwentyOneFour(version);</span>
+<span class="source-line-no">061</span><span id="line-61">  }</span>
+<span class="source-line-no">062</span><span id="line-62"></span>
+<span class="source-line-no">063</span><span id="line-63">  /**</span>
+<span class="source-line-no">064</span><span id="line-64">   * @param serialized the serialized item stack to use</span>
+<span class="source-line-no">065</span><span id="line-65">   * @param item       the item that we should use to apply this applicator to.</span>
+<span class="source-line-no">066</span><span id="line-66">   *</span>
+<span class="source-line-no">067</span><span id="line-67">   * @return the updated item.</span>
+<span class="source-line-no">068</span><span id="line-68">   * @since 0.2.0.0</span>
+<span class="source-line-no">069</span><span id="line-69">   */</span>
+<span class="source-line-no">070</span><span id="line-70">  @Override</span>
+<span class="source-line-no">071</span><span id="line-71">  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">    final Optional&lt;PaperBundleComponent&gt; componentOptional = serialized.component(identifier());</span>
+<span class="source-line-no">074</span><span id="line-74">    if(componentOptional.isEmpty()) {</span>
+<span class="source-line-no">075</span><span id="line-75">      return item;</span>
+<span class="source-line-no">076</span><span id="line-76">    }</span>
 <span class="source-line-no">077</span><span id="line-77"></span>
-<span class="source-line-no">078</span><span id="line-78">    componentOptional.get().items.forEach((slot, stack)-&gt;builder.add(stack.provider().locale(serialized)));</span>
-<span class="source-line-no">079</span><span id="line-79">    item.setData(DataComponentTypes.BUNDLE_CONTENTS, builder);</span>
-<span class="source-line-no">080</span><span id="line-80"></span>
-<span class="source-line-no">081</span><span id="line-81">    return item;</span>
-<span class="source-line-no">082</span><span id="line-82">  }</span>
-<span class="source-line-no">083</span><span id="line-83"></span>
-<span class="source-line-no">084</span><span id="line-84">  /**</span>
-<span class="source-line-no">085</span><span id="line-85">   * @param item       the item that we should use to deserialize.</span>
-<span class="source-line-no">086</span><span id="line-86">   * @param serialized the serialized item stack we should use to apply this deserializer to</span>
-<span class="source-line-no">087</span><span id="line-87">   *</span>
-<span class="source-line-no">088</span><span id="line-88">   * @return the updated serialized item.</span>
-<span class="source-line-no">089</span><span id="line-89">   */</span>
-<span class="source-line-no">090</span><span id="line-90">  @Override</span>
-<span class="source-line-no">091</span><span id="line-91">  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {</span>
-<span class="source-line-no">092</span><span id="line-92"></span>
-<span class="source-line-no">093</span><span id="line-93">    final BundleContents contents = item.getData(DataComponentTypes.BUNDLE_CONTENTS);</span>
-<span class="source-line-no">094</span><span id="line-94">    if(contents == null) {</span>
-<span class="source-line-no">095</span><span id="line-95">      return serialized;</span>
-<span class="source-line-no">096</span><span id="line-96">    }</span>
-<span class="source-line-no">097</span><span id="line-97"></span>
-<span class="source-line-no">098</span><span id="line-98">    int i = 0;</span>
-<span class="source-line-no">099</span><span id="line-99">    for(final ItemStack stack : contents.contents()) {</span>
+<span class="source-line-no">078</span><span id="line-78">    final BundleContents.Builder builder = BundleContents.bundleContents();</span>
+<span class="source-line-no">079</span><span id="line-79"></span>
+<span class="source-line-no">080</span><span id="line-80">    componentOptional.get().items.forEach((slot, stack)-&gt;builder.add(stack.provider().locale(serialized)));</span>
+<span class="source-line-no">081</span><span id="line-81">    item.setData(DataComponentTypes.BUNDLE_CONTENTS, builder);</span>
+<span class="source-line-no">082</span><span id="line-82"></span>
+<span class="source-line-no">083</span><span id="line-83">    return item;</span>
+<span class="source-line-no">084</span><span id="line-84">  }</span>
+<span class="source-line-no">085</span><span id="line-85"></span>
+<span class="source-line-no">086</span><span id="line-86">  /**</span>
+<span class="source-line-no">087</span><span id="line-87">   * @param item       the item that we should use to deserialize.</span>
+<span class="source-line-no">088</span><span id="line-88">   * @param serialized the serialized item stack we should use to apply this deserializer to</span>
+<span class="source-line-no">089</span><span id="line-89">   *</span>
+<span class="source-line-no">090</span><span id="line-90">   * @return the updated serialized item.</span>
+<span class="source-line-no">091</span><span id="line-91">   * @since 0.2.0.0</span>
+<span class="source-line-no">092</span><span id="line-92">   */</span>
+<span class="source-line-no">093</span><span id="line-93">  @Override</span>
+<span class="source-line-no">094</span><span id="line-94">  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {</span>
+<span class="source-line-no">095</span><span id="line-95"></span>
+<span class="source-line-no">096</span><span id="line-96">    final BundleContents contents = item.getData(DataComponentTypes.BUNDLE_CONTENTS);</span>
+<span class="source-line-no">097</span><span id="line-97">    if(contents == null) {</span>
+<span class="source-line-no">098</span><span id="line-98">      return serialized;</span>
+<span class="source-line-no">099</span><span id="line-99">    }</span>
 <span class="source-line-no">100</span><span id="line-100"></span>
-<span class="source-line-no">101</span><span id="line-101">      if(stack.getType().equals(Material.AIR)) {</span>
-<span class="source-line-no">102</span><span id="line-102">        continue;</span>
-<span class="source-line-no">103</span><span id="line-103">      }</span>
-<span class="source-line-no">104</span><span id="line-104"></span>
-<span class="source-line-no">105</span><span id="line-105">      final PaperItemStack containerSerial = new PaperItemStack().of(stack);</span>
-<span class="source-line-no">106</span><span id="line-106">      PaperItemPlatform.PLATFORM.providerApplies(containerSerial, stack);</span>
-<span class="source-line-no">107</span><span id="line-107">      items.put(i, containerSerial);</span>
-<span class="source-line-no">108</span><span id="line-108">      i++;</span>
-<span class="source-line-no">109</span><span id="line-109">    }</span>
-<span class="source-line-no">110</span><span id="line-110"></span>
-<span class="source-line-no">111</span><span id="line-111">    serialized.applyComponent(this);</span>
-<span class="source-line-no">112</span><span id="line-112">    return serialized;</span>
-<span class="source-line-no">113</span><span id="line-113">  }</span>
-<span class="source-line-no">114</span><span id="line-114"></span>
-<span class="source-line-no">115</span><span id="line-115">  /**</span>
-<span class="source-line-no">116</span><span id="line-116">   * Checks if this component applies to the specified item.</span>
-<span class="source-line-no">117</span><span id="line-117">   *</span>
-<span class="source-line-no">118</span><span id="line-118">   * @param item The item to check against.</span>
-<span class="source-line-no">119</span><span id="line-119">   *</span>
-<span class="source-line-no">120</span><span id="line-120">   * @return True if this component applies to the item, false otherwise.</span>
-<span class="source-line-no">121</span><span id="line-121">   */</span>
-<span class="source-line-no">122</span><span id="line-122">  @Override</span>
-<span class="source-line-no">123</span><span id="line-123">  public boolean appliesTo(final ItemStack item) {</span>
-<span class="source-line-no">124</span><span id="line-124"></span>
-<span class="source-line-no">125</span><span id="line-125">    return true;</span>
-<span class="source-line-no">126</span><span id="line-126">  }</span>
-<span class="source-line-no">127</span><span id="line-127">}</span>
+<span class="source-line-no">101</span><span id="line-101">    int i = 0;</span>
+<span class="source-line-no">102</span><span id="line-102">    for(final ItemStack stack : contents.contents()) {</span>
+<span class="source-line-no">103</span><span id="line-103"></span>
+<span class="source-line-no">104</span><span id="line-104">      if(stack.getType().equals(Material.AIR)) {</span>
+<span class="source-line-no">105</span><span id="line-105">        continue;</span>
+<span class="source-line-no">106</span><span id="line-106">      }</span>
+<span class="source-line-no">107</span><span id="line-107"></span>
+<span class="source-line-no">108</span><span id="line-108">      final PaperItemStack containerSerial = new PaperItemStack().of(stack);</span>
+<span class="source-line-no">109</span><span id="line-109">      PaperItemPlatform.instance().providerApplies(containerSerial, stack);</span>
+<span class="source-line-no">110</span><span id="line-110">      items.put(i, containerSerial);</span>
+<span class="source-line-no">111</span><span id="line-111">      i++;</span>
+<span class="source-line-no">112</span><span id="line-112">    }</span>
+<span class="source-line-no">113</span><span id="line-113"></span>
+<span class="source-line-no">114</span><span id="line-114">    serialized.applyComponent(this);</span>
+<span class="source-line-no">115</span><span id="line-115">    return serialized;</span>
+<span class="source-line-no">116</span><span id="line-116">  }</span>
+<span class="source-line-no">117</span><span id="line-117"></span>
+<span class="source-line-no">118</span><span id="line-118">  /**</span>
+<span class="source-line-no">119</span><span id="line-119">   * Checks if this component applies to the specified item.</span>
+<span class="source-line-no">120</span><span id="line-120">   *</span>
+<span class="source-line-no">121</span><span id="line-121">   * @param item The item to check against.</span>
+<span class="source-line-no">122</span><span id="line-122">   *</span>
+<span class="source-line-no">123</span><span id="line-123">   * @return True if this component applies to the item, false otherwise.</span>
+<span class="source-line-no">124</span><span id="line-124">   * @since 0.2.0.0</span>
+<span class="source-line-no">125</span><span id="line-125">   */</span>
+<span class="source-line-no">126</span><span id="line-126">  @Override</span>
+<span class="source-line-no">127</span><span id="line-127">  public boolean appliesTo(final ItemStack item) {</span>
+<span class="source-line-no">128</span><span id="line-128"></span>
+<span class="source-line-no">129</span><span id="line-129">    return true;</span>
+<span class="source-line-no">130</span><span id="line-130">  }</span>
+<span class="source-line-no">131</span><span id="line-131">}</span>
 
 
 

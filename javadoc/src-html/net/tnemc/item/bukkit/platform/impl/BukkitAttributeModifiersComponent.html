@@ -34,108 +34,115 @@
 <span class="source-line-no">021</span><span id="line-21">import net.tnemc.item.AbstractItemStack;</span>
 <span class="source-line-no">022</span><span id="line-22">import net.tnemc.item.bukkit.BukkitItemStack;</span>
 <span class="source-line-no">023</span><span id="line-23">import net.tnemc.item.bukkit.platform.BukkitItemPlatform;</span>
-<span class="source-line-no">024</span><span id="line-24">import net.tnemc.item.component.impl.AttributeModifiersComponent;</span>
-<span class="source-line-no">025</span><span id="line-25">import org.bukkit.NamespacedKey;</span>
-<span class="source-line-no">026</span><span id="line-26">import org.bukkit.attribute.Attribute;</span>
-<span class="source-line-no">027</span><span id="line-27">import org.bukkit.attribute.AttributeModifier;</span>
-<span class="source-line-no">028</span><span id="line-28">import org.bukkit.inventory.EquipmentSlotGroup;</span>
-<span class="source-line-no">029</span><span id="line-29">import org.bukkit.inventory.ItemStack;</span>
-<span class="source-line-no">030</span><span id="line-30">import org.bukkit.inventory.meta.ItemMeta;</span>
-<span class="source-line-no">031</span><span id="line-31"></span>
-<span class="source-line-no">032</span><span id="line-32">import java.util.List;</span>
-<span class="source-line-no">033</span><span id="line-33">import java.util.Optional;</span>
-<span class="source-line-no">034</span><span id="line-34"></span>
-<span class="source-line-no">035</span><span id="line-35">/**</span>
-<span class="source-line-no">036</span><span id="line-36"> * BukkitAttributeModifiersComponent</span>
-<span class="source-line-no">037</span><span id="line-37"> *</span>
-<span class="source-line-no">038</span><span id="line-38"> * @author creatorfromhell</span>
-<span class="source-line-no">039</span><span id="line-39"> * @since 0.2.0.0</span>
-<span class="source-line-no">040</span><span id="line-40"> */</span>
-<span class="source-line-no">041</span><span id="line-41">public class BukkitAttributeModifiersComponent extends AttributeModifiersComponent&lt;BukkitItemStack, ItemStack&gt; {</span>
-<span class="source-line-no">042</span><span id="line-42"></span>
-<span class="source-line-no">043</span><span id="line-43">  /**</span>
-<span class="source-line-no">044</span><span id="line-44">   * Constructor for AttributeModifiersComponent. Initializes an empty list of AttributeModifiers.</span>
-<span class="source-line-no">045</span><span id="line-45">   */</span>
-<span class="source-line-no">046</span><span id="line-46">  public BukkitAttributeModifiersComponent() {</span>
-<span class="source-line-no">047</span><span id="line-47"></span>
-<span class="source-line-no">048</span><span id="line-48">  }</span>
+<span class="source-line-no">024</span><span id="line-24">import net.tnemc.item.component.SerialComponent;</span>
+<span class="source-line-no">025</span><span id="line-25">import net.tnemc.item.component.impl.AttributeModifiersComponent;</span>
+<span class="source-line-no">026</span><span id="line-26">import org.bukkit.NamespacedKey;</span>
+<span class="source-line-no">027</span><span id="line-27">import org.bukkit.attribute.Attribute;</span>
+<span class="source-line-no">028</span><span id="line-28">import org.bukkit.attribute.AttributeModifier;</span>
+<span class="source-line-no">029</span><span id="line-29">import org.bukkit.inventory.EquipmentSlotGroup;</span>
+<span class="source-line-no">030</span><span id="line-30">import org.bukkit.inventory.ItemStack;</span>
+<span class="source-line-no">031</span><span id="line-31">import org.bukkit.inventory.meta.ItemMeta;</span>
+<span class="source-line-no">032</span><span id="line-32"></span>
+<span class="source-line-no">033</span><span id="line-33">import java.util.List;</span>
+<span class="source-line-no">034</span><span id="line-34">import java.util.Optional;</span>
+<span class="source-line-no">035</span><span id="line-35"></span>
+<span class="source-line-no">036</span><span id="line-36">/**</span>
+<span class="source-line-no">037</span><span id="line-37"> * BukkitAttributeModifiersComponent</span>
+<span class="source-line-no">038</span><span id="line-38"> *</span>
+<span class="source-line-no">039</span><span id="line-39"> * @author creatorfromhell</span>
+<span class="source-line-no">040</span><span id="line-40"> * @since 0.2.0.0</span>
+<span class="source-line-no">041</span><span id="line-41"> */</span>
+<span class="source-line-no">042</span><span id="line-42">public class BukkitAttributeModifiersComponent extends AttributeModifiersComponent&lt;BukkitItemStack, ItemStack&gt; {</span>
+<span class="source-line-no">043</span><span id="line-43"></span>
+<span class="source-line-no">044</span><span id="line-44">  /**</span>
+<span class="source-line-no">045</span><span id="line-45">   * Constructor for AttributeModifiersComponent. Initializes an empty list of AttributeModifiers.</span>
+<span class="source-line-no">046</span><span id="line-46">   * @since 0.2.0.0</span>
+<span class="source-line-no">047</span><span id="line-47">   */</span>
+<span class="source-line-no">048</span><span id="line-48">  public BukkitAttributeModifiersComponent() {</span>
 <span class="source-line-no">049</span><span id="line-49"></span>
-<span class="source-line-no">050</span><span id="line-50">  /**</span>
-<span class="source-line-no">051</span><span id="line-51">   * Constructor for AttributeModifiersComponent. Initializes the component with a list of</span>
-<span class="source-line-no">052</span><span id="line-52">   * AttributeModifiers and a boolean flag to show in tooltip.</span>
-<span class="source-line-no">053</span><span id="line-53">   *</span>
-<span class="source-line-no">054</span><span id="line-54">   * @param modifiers The list of AttributeModifiers to associate with this component.</span>
-<span class="source-line-no">055</span><span id="line-55">   */</span>
-<span class="source-line-no">056</span><span id="line-56">  public BukkitAttributeModifiersComponent(final List&lt;net.tnemc.item.component.helper.AttributeModifier&gt; modifiers) {</span>
-<span class="source-line-no">057</span><span id="line-57"></span>
-<span class="source-line-no">058</span><span id="line-58">    super(modifiers);</span>
-<span class="source-line-no">059</span><span id="line-59">  }</span>
+<span class="source-line-no">050</span><span id="line-50">  }</span>
+<span class="source-line-no">051</span><span id="line-51"></span>
+<span class="source-line-no">052</span><span id="line-52">  /**</span>
+<span class="source-line-no">053</span><span id="line-53">   * Constructor for AttributeModifiersComponent. Initializes the component with a list of</span>
+<span class="source-line-no">054</span><span id="line-54">   * AttributeModifiers and a boolean flag to show in tooltip.</span>
+<span class="source-line-no">055</span><span id="line-55">   *</span>
+<span class="source-line-no">056</span><span id="line-56">   * @param modifiers The list of AttributeModifiers to associate with this component.</span>
+<span class="source-line-no">057</span><span id="line-57">   * @since 0.2.0.0</span>
+<span class="source-line-no">058</span><span id="line-58">   */</span>
+<span class="source-line-no">059</span><span id="line-59">  public BukkitAttributeModifiersComponent(final List&lt;net.tnemc.item.component.helper.AttributeModifier&gt; modifiers) {</span>
 <span class="source-line-no">060</span><span id="line-60"></span>
-<span class="source-line-no">061</span><span id="line-61">  /**</span>
-<span class="source-line-no">062</span><span id="line-62">   * @param version the version being used when this check is called.</span>
-<span class="source-line-no">063</span><span id="line-63">   *</span>
-<span class="source-line-no">064</span><span id="line-64">   * @return true if this check is enabled for the version, otherwise false</span>
-<span class="source-line-no">065</span><span id="line-65">   */</span>
-<span class="source-line-no">066</span><span id="line-66">  @Override</span>
-<span class="source-line-no">067</span><span id="line-67">  public boolean enabled(final String version) {</span>
-<span class="source-line-no">068</span><span id="line-68"></span>
-<span class="source-line-no">069</span><span id="line-69">    return true;</span>
-<span class="source-line-no">070</span><span id="line-70">  }</span>
-<span class="source-line-no">071</span><span id="line-71"></span>
-<span class="source-line-no">072</span><span id="line-72">  /**</span>
-<span class="source-line-no">073</span><span id="line-73">   * @param serialized the serialized item stack to use</span>
-<span class="source-line-no">074</span><span id="line-74">   * @param item       the item that we should use to apply this applicator to.</span>
-<span class="source-line-no">075</span><span id="line-75">   *</span>
-<span class="source-line-no">076</span><span id="line-76">   * @return the updated item.</span>
-<span class="source-line-no">077</span><span id="line-77">   */</span>
-<span class="source-line-no">078</span><span id="line-78">  @Override</span>
-<span class="source-line-no">079</span><span id="line-79">  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {</span>
-<span class="source-line-no">080</span><span id="line-80"></span>
-<span class="source-line-no">081</span><span id="line-81">    final ItemMeta meta = item.getItemMeta();</span>
-<span class="source-line-no">082</span><span id="line-82">    final Optional&lt;AttributeModifiersComponent&lt;AbstractItemStack&lt;ItemStack&gt;, ItemStack&gt;&gt; componentOptional = serialized.attributeModifiers();</span>
-<span class="source-line-no">083</span><span id="line-83">    if(meta != null &amp;&amp; componentOptional.isPresent()) {</span>
-<span class="source-line-no">084</span><span id="line-84"></span>
-<span class="source-line-no">085</span><span id="line-85">      for(final net.tnemc.item.component.helper.AttributeModifier attribute : componentOptional.get().modifiers()) {</span>
-<span class="source-line-no">086</span><span id="line-86"></span>
-<span class="source-line-no">087</span><span id="line-87">        final AttributeModifier.Operation operation = BukkitItemPlatform.PLATFORM.converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);</span>
-<span class="source-line-no">088</span><span id="line-88">        final EquipmentSlotGroup slot = BukkitItemPlatform.PLATFORM.converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);</span>
-<span class="source-line-no">089</span><span id="line-89">        final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType()),</span>
-<span class="source-line-no">090</span><span id="line-90">                                                             attribute.getAmount(),</span>
-<span class="source-line-no">091</span><span id="line-91">                                                             operation,</span>
-<span class="source-line-no">092</span><span id="line-92">                                                             slot);</span>
-<span class="source-line-no">093</span><span id="line-93"></span>
-<span class="source-line-no">094</span><span id="line-94">        meta.addAttributeModifier(Attribute.valueOf(attribute.getId()), attr);</span>
-<span class="source-line-no">095</span><span id="line-95">      }</span>
-<span class="source-line-no">096</span><span id="line-96">    }</span>
-<span class="source-line-no">097</span><span id="line-97"></span>
-<span class="source-line-no">098</span><span id="line-98">    return item;</span>
-<span class="source-line-no">099</span><span id="line-99">  }</span>
-<span class="source-line-no">100</span><span id="line-100"></span>
-<span class="source-line-no">101</span><span id="line-101">  /**</span>
-<span class="source-line-no">102</span><span id="line-102">   * @param item       the item that we should use to deserialize.</span>
-<span class="source-line-no">103</span><span id="line-103">   * @param serialized the serialized item stack we should use to apply this deserializer to</span>
-<span class="source-line-no">104</span><span id="line-104">   *</span>
-<span class="source-line-no">105</span><span id="line-105">   * @return the updated serialized item.</span>
-<span class="source-line-no">106</span><span id="line-106">   */</span>
-<span class="source-line-no">107</span><span id="line-107">  @Override</span>
-<span class="source-line-no">108</span><span id="line-108">  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {</span>
-<span class="source-line-no">109</span><span id="line-109"></span>
-<span class="source-line-no">110</span><span id="line-110">    return null;</span>
-<span class="source-line-no">111</span><span id="line-111">  }</span>
-<span class="source-line-no">112</span><span id="line-112"></span>
-<span class="source-line-no">113</span><span id="line-113">  /**</span>
-<span class="source-line-no">114</span><span id="line-114">   * Checks if this component applies to the specified item.</span>
-<span class="source-line-no">115</span><span id="line-115">   *</span>
-<span class="source-line-no">116</span><span id="line-116">   * @param item The item to check against.</span>
-<span class="source-line-no">117</span><span id="line-117">   *</span>
-<span class="source-line-no">118</span><span id="line-118">   * @return True if this component applies to the item, false otherwise.</span>
-<span class="source-line-no">119</span><span id="line-119">   */</span>
-<span class="source-line-no">120</span><span id="line-120">  @Override</span>
-<span class="source-line-no">121</span><span id="line-121">  public boolean appliesTo(final ItemStack item) {</span>
-<span class="source-line-no">122</span><span id="line-122"></span>
-<span class="source-line-no">123</span><span id="line-123">    return true;</span>
-<span class="source-line-no">124</span><span id="line-124">  }</span>
-<span class="source-line-no">125</span><span id="line-125">}</span>
+<span class="source-line-no">061</span><span id="line-61">    super(modifiers);</span>
+<span class="source-line-no">062</span><span id="line-62">  }</span>
+<span class="source-line-no">063</span><span id="line-63"></span>
+<span class="source-line-no">064</span><span id="line-64">  /**</span>
+<span class="source-line-no">065</span><span id="line-65">   * @param version the version being used when this check is called.</span>
+<span class="source-line-no">066</span><span id="line-66">   *</span>
+<span class="source-line-no">067</span><span id="line-67">   * @return true if this check is enabled for the version, otherwise false</span>
+<span class="source-line-no">068</span><span id="line-68">   * @since 0.2.0.0</span>
+<span class="source-line-no">069</span><span id="line-69">   */</span>
+<span class="source-line-no">070</span><span id="line-70">  @Override</span>
+<span class="source-line-no">071</span><span id="line-71">  public boolean enabled(final String version) {</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">    return true;</span>
+<span class="source-line-no">074</span><span id="line-74">  }</span>
+<span class="source-line-no">075</span><span id="line-75"></span>
+<span class="source-line-no">076</span><span id="line-76">  /**</span>
+<span class="source-line-no">077</span><span id="line-77">   * @param serialized the serialized item stack to use</span>
+<span class="source-line-no">078</span><span id="line-78">   * @param item       the item that we should use to apply this applicator to.</span>
+<span class="source-line-no">079</span><span id="line-79">   *</span>
+<span class="source-line-no">080</span><span id="line-80">   * @return the updated item.</span>
+<span class="source-line-no">081</span><span id="line-81">   * @since 0.2.0.0</span>
+<span class="source-line-no">082</span><span id="line-82">   */</span>
+<span class="source-line-no">083</span><span id="line-83">  @Override</span>
+<span class="source-line-no">084</span><span id="line-84">  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {</span>
+<span class="source-line-no">085</span><span id="line-85"></span>
+<span class="source-line-no">086</span><span id="line-86">    final ItemMeta meta = item.getItemMeta();</span>
+<span class="source-line-no">087</span><span id="line-87">    final Optional&lt;AttributeModifiersComponent&lt;AbstractItemStack&lt;ItemStack&gt;, ItemStack&gt;&gt; componentOptional = serialized.attributeModifiers();</span>
+<span class="source-line-no">088</span><span id="line-88">    if(meta != null &amp;&amp; componentOptional.isPresent()) {</span>
+<span class="source-line-no">089</span><span id="line-89"></span>
+<span class="source-line-no">090</span><span id="line-90">      for(final net.tnemc.item.component.helper.AttributeModifier attribute : componentOptional.get().modifiers()) {</span>
+<span class="source-line-no">091</span><span id="line-91"></span>
+<span class="source-line-no">092</span><span id="line-92">        final AttributeModifier.Operation operation = BukkitItemPlatform.instance().converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);</span>
+<span class="source-line-no">093</span><span id="line-93">        final EquipmentSlotGroup slot = BukkitItemPlatform.instance().converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);</span>
+<span class="source-line-no">094</span><span id="line-94">        final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType()),</span>
+<span class="source-line-no">095</span><span id="line-95">                                                             attribute.getAmount(),</span>
+<span class="source-line-no">096</span><span id="line-96">                                                             operation,</span>
+<span class="source-line-no">097</span><span id="line-97">                                                             slot);</span>
+<span class="source-line-no">098</span><span id="line-98"></span>
+<span class="source-line-no">099</span><span id="line-99">        meta.addAttributeModifier(Attribute.valueOf(attribute.getId()), attr);</span>
+<span class="source-line-no">100</span><span id="line-100">      }</span>
+<span class="source-line-no">101</span><span id="line-101">    }</span>
+<span class="source-line-no">102</span><span id="line-102"></span>
+<span class="source-line-no">103</span><span id="line-103">    return item;</span>
+<span class="source-line-no">104</span><span id="line-104">  }</span>
+<span class="source-line-no">105</span><span id="line-105"></span>
+<span class="source-line-no">106</span><span id="line-106">  /**</span>
+<span class="source-line-no">107</span><span id="line-107">   * @param item       the item that we should use to deserialize.</span>
+<span class="source-line-no">108</span><span id="line-108">   * @param serialized the serialized item stack we should use to apply this deserializer to</span>
+<span class="source-line-no">109</span><span id="line-109">   *</span>
+<span class="source-line-no">110</span><span id="line-110">   * @return the updated serialized item.</span>
+<span class="source-line-no">111</span><span id="line-111">   * @since 0.2.0.0</span>
+<span class="source-line-no">112</span><span id="line-112">   */</span>
+<span class="source-line-no">113</span><span id="line-113">  @Override</span>
+<span class="source-line-no">114</span><span id="line-114">  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {</span>
+<span class="source-line-no">115</span><span id="line-115"></span>
+<span class="source-line-no">116</span><span id="line-116">    return null;</span>
+<span class="source-line-no">117</span><span id="line-117">  }</span>
+<span class="source-line-no">118</span><span id="line-118"></span>
+<span class="source-line-no">119</span><span id="line-119">  /**</span>
+<span class="source-line-no">120</span><span id="line-120">   * Checks if this component applies to the specified item.</span>
+<span class="source-line-no">121</span><span id="line-121">   *</span>
+<span class="source-line-no">122</span><span id="line-122">   * @param item The item to check against.</span>
+<span class="source-line-no">123</span><span id="line-123">   *</span>
+<span class="source-line-no">124</span><span id="line-124">   * @return True if this component applies to the item, false otherwise.</span>
+<span class="source-line-no">125</span><span id="line-125">   * @since 0.2.0.0</span>
+<span class="source-line-no">126</span><span id="line-126">   */</span>
+<span class="source-line-no">127</span><span id="line-127">  @Override</span>
+<span class="source-line-no">128</span><span id="line-128">  public boolean appliesTo(final ItemStack item) {</span>
+<span class="source-line-no">129</span><span id="line-129"></span>
+<span class="source-line-no">130</span><span id="line-130">    return true;</span>
+<span class="source-line-no">131</span><span id="line-131">  }</span>
+<span class="source-line-no">132</span><span id="line-132">}</span>
 
 
 

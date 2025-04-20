@@ -51,66 +51,70 @@
 <span class="source-line-no">038</span><span id="line-38">   * @param version the version being used when this check is called.</span>
 <span class="source-line-no">039</span><span id="line-39">   *</span>
 <span class="source-line-no">040</span><span id="line-40">   * @return true if this check is enabled for the version, otherwise false</span>
-<span class="source-line-no">041</span><span id="line-41">   */</span>
-<span class="source-line-no">042</span><span id="line-42">  @Override</span>
-<span class="source-line-no">043</span><span id="line-43">  public boolean enabled(final String version) {</span>
-<span class="source-line-no">044</span><span id="line-44"></span>
-<span class="source-line-no">045</span><span id="line-45">    return VersionUtil.isOneTwentyOneTwo(version);</span>
-<span class="source-line-no">046</span><span id="line-46">  }</span>
-<span class="source-line-no">047</span><span id="line-47"></span>
-<span class="source-line-no">048</span><span id="line-48">  /**</span>
-<span class="source-line-no">049</span><span id="line-49">   * @param serialized the serialized item stack to use</span>
-<span class="source-line-no">050</span><span id="line-50">   * @param item       the item that we should use to apply this applicator to.</span>
-<span class="source-line-no">051</span><span id="line-51">   *</span>
-<span class="source-line-no">052</span><span id="line-52">   * @return the updated item.</span>
-<span class="source-line-no">053</span><span id="line-53">   */</span>
-<span class="source-line-no">054</span><span id="line-54">  @Override</span>
-<span class="source-line-no">055</span><span id="line-55">  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {</span>
-<span class="source-line-no">056</span><span id="line-56"></span>
-<span class="source-line-no">057</span><span id="line-57">    final Optional&lt;PaperOldGliderComponent&gt; componentOptional = serialized.component(identifier());</span>
+<span class="source-line-no">041</span><span id="line-41">   * @since 0.2.0.0</span>
+<span class="source-line-no">042</span><span id="line-42">   */</span>
+<span class="source-line-no">043</span><span id="line-43">  @Override</span>
+<span class="source-line-no">044</span><span id="line-44">  public boolean enabled(final String version) {</span>
+<span class="source-line-no">045</span><span id="line-45"></span>
+<span class="source-line-no">046</span><span id="line-46">    return VersionUtil.isOneTwentyOneTwo(version);</span>
+<span class="source-line-no">047</span><span id="line-47">  }</span>
+<span class="source-line-no">048</span><span id="line-48"></span>
+<span class="source-line-no">049</span><span id="line-49">  /**</span>
+<span class="source-line-no">050</span><span id="line-50">   * @param serialized the serialized item stack to use</span>
+<span class="source-line-no">051</span><span id="line-51">   * @param item       the item that we should use to apply this applicator to.</span>
+<span class="source-line-no">052</span><span id="line-52">   *</span>
+<span class="source-line-no">053</span><span id="line-53">   * @return the updated item.</span>
+<span class="source-line-no">054</span><span id="line-54">   * @since 0.2.0.0</span>
+<span class="source-line-no">055</span><span id="line-55">   */</span>
+<span class="source-line-no">056</span><span id="line-56">  @Override</span>
+<span class="source-line-no">057</span><span id="line-57">  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {</span>
 <span class="source-line-no">058</span><span id="line-58"></span>
-<span class="source-line-no">059</span><span id="line-59">    if(componentOptional.isPresent()) {</span>
+<span class="source-line-no">059</span><span id="line-59">    final Optional&lt;PaperOldGliderComponent&gt; componentOptional = serialized.component(identifier());</span>
 <span class="source-line-no">060</span><span id="line-60"></span>
-<span class="source-line-no">061</span><span id="line-61">      final ItemMeta meta = item.getItemMeta();</span>
-<span class="source-line-no">062</span><span id="line-62">      if(meta != null) {</span>
-<span class="source-line-no">063</span><span id="line-63"></span>
-<span class="source-line-no">064</span><span id="line-64">        meta.setGlider(true);</span>
-<span class="source-line-no">065</span><span id="line-65">        item.setItemMeta(meta);</span>
-<span class="source-line-no">066</span><span id="line-66">      }</span>
-<span class="source-line-no">067</span><span id="line-67">    }</span>
-<span class="source-line-no">068</span><span id="line-68">    return item;</span>
-<span class="source-line-no">069</span><span id="line-69">  }</span>
-<span class="source-line-no">070</span><span id="line-70"></span>
-<span class="source-line-no">071</span><span id="line-71">  /**</span>
-<span class="source-line-no">072</span><span id="line-72">   * @param item       the item that we should use to deserialize.</span>
-<span class="source-line-no">073</span><span id="line-73">   * @param serialized the serialized item stack we should use to apply this deserializer to</span>
-<span class="source-line-no">074</span><span id="line-74">   *</span>
-<span class="source-line-no">075</span><span id="line-75">   * @return the updated serialized item.</span>
-<span class="source-line-no">076</span><span id="line-76">   */</span>
-<span class="source-line-no">077</span><span id="line-77">  @Override</span>
-<span class="source-line-no">078</span><span id="line-78">  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {</span>
-<span class="source-line-no">079</span><span id="line-79"></span>
-<span class="source-line-no">080</span><span id="line-80">    final ItemMeta meta = item.getItemMeta();</span>
-<span class="source-line-no">081</span><span id="line-81">    if(meta != null &amp;&amp; meta.isGlider()) {</span>
+<span class="source-line-no">061</span><span id="line-61">    if(componentOptional.isPresent()) {</span>
+<span class="source-line-no">062</span><span id="line-62"></span>
+<span class="source-line-no">063</span><span id="line-63">      final ItemMeta meta = item.getItemMeta();</span>
+<span class="source-line-no">064</span><span id="line-64">      if(meta != null) {</span>
+<span class="source-line-no">065</span><span id="line-65"></span>
+<span class="source-line-no">066</span><span id="line-66">        meta.setGlider(true);</span>
+<span class="source-line-no">067</span><span id="line-67">        item.setItemMeta(meta);</span>
+<span class="source-line-no">068</span><span id="line-68">      }</span>
+<span class="source-line-no">069</span><span id="line-69">    }</span>
+<span class="source-line-no">070</span><span id="line-70">    return item;</span>
+<span class="source-line-no">071</span><span id="line-71">  }</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">  /**</span>
+<span class="source-line-no">074</span><span id="line-74">   * @param item       the item that we should use to deserialize.</span>
+<span class="source-line-no">075</span><span id="line-75">   * @param serialized the serialized item stack we should use to apply this deserializer to</span>
+<span class="source-line-no">076</span><span id="line-76">   *</span>
+<span class="source-line-no">077</span><span id="line-77">   * @return the updated serialized item.</span>
+<span class="source-line-no">078</span><span id="line-78">   * @since 0.2.0.0</span>
+<span class="source-line-no">079</span><span id="line-79">   */</span>
+<span class="source-line-no">080</span><span id="line-80">  @Override</span>
+<span class="source-line-no">081</span><span id="line-81">  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {</span>
 <span class="source-line-no">082</span><span id="line-82"></span>
-<span class="source-line-no">083</span><span id="line-83">      serialized.applyComponent(this);</span>
-<span class="source-line-no">084</span><span id="line-84">    }</span>
-<span class="source-line-no">085</span><span id="line-85">    return serialized;</span>
-<span class="source-line-no">086</span><span id="line-86">  }</span>
-<span class="source-line-no">087</span><span id="line-87"></span>
-<span class="source-line-no">088</span><span id="line-88">  /**</span>
-<span class="source-line-no">089</span><span id="line-89">   * Checks if this component applies to the specified item.</span>
-<span class="source-line-no">090</span><span id="line-90">   *</span>
-<span class="source-line-no">091</span><span id="line-91">   * @param item The item to check against.</span>
-<span class="source-line-no">092</span><span id="line-92">   *</span>
-<span class="source-line-no">093</span><span id="line-93">   * @return True if this component applies to the item, false otherwise.</span>
-<span class="source-line-no">094</span><span id="line-94">   */</span>
-<span class="source-line-no">095</span><span id="line-95">  @Override</span>
-<span class="source-line-no">096</span><span id="line-96">  public boolean appliesTo(final ItemStack item) {</span>
-<span class="source-line-no">097</span><span id="line-97"></span>
-<span class="source-line-no">098</span><span id="line-98">    return item.getItemMeta() != null;</span>
-<span class="source-line-no">099</span><span id="line-99">  }</span>
-<span class="source-line-no">100</span><span id="line-100">}</span>
+<span class="source-line-no">083</span><span id="line-83">    final ItemMeta meta = item.getItemMeta();</span>
+<span class="source-line-no">084</span><span id="line-84">    if(meta != null &amp;&amp; meta.isGlider()) {</span>
+<span class="source-line-no">085</span><span id="line-85"></span>
+<span class="source-line-no">086</span><span id="line-86">      serialized.applyComponent(this);</span>
+<span class="source-line-no">087</span><span id="line-87">    }</span>
+<span class="source-line-no">088</span><span id="line-88">    return serialized;</span>
+<span class="source-line-no">089</span><span id="line-89">  }</span>
+<span class="source-line-no">090</span><span id="line-90"></span>
+<span class="source-line-no">091</span><span id="line-91">  /**</span>
+<span class="source-line-no">092</span><span id="line-92">   * Checks if this component applies to the specified item.</span>
+<span class="source-line-no">093</span><span id="line-93">   *</span>
+<span class="source-line-no">094</span><span id="line-94">   * @param item The item to check against.</span>
+<span class="source-line-no">095</span><span id="line-95">   *</span>
+<span class="source-line-no">096</span><span id="line-96">   * @return True if this component applies to the item, false otherwise.</span>
+<span class="source-line-no">097</span><span id="line-97">   * @since 0.2.0.0</span>
+<span class="source-line-no">098</span><span id="line-98">   */</span>
+<span class="source-line-no">099</span><span id="line-99">  @Override</span>
+<span class="source-line-no">100</span><span id="line-100">  public boolean appliesTo(final ItemStack item) {</span>
+<span class="source-line-no">101</span><span id="line-101"></span>
+<span class="source-line-no">102</span><span id="line-102">    return item.getItemMeta() != null;</span>
+<span class="source-line-no">103</span><span id="line-103">  }</span>
+<span class="source-line-no">104</span><span id="line-104">}</span>
 
 
 

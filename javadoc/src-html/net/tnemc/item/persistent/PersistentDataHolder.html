@@ -56,72 +56,75 @@
 <span class="source-line-no">043</span><span id="line-43">   * Decodes the {@link JSONHelper JSON object} and sets the values in the current instance.</span>
 <span class="source-line-no">044</span><span id="line-44">   *</span>
 <span class="source-line-no">045</span><span id="line-45">   * @param json The {@link JSONHelper JSON object} to be decoded</span>
-<span class="source-line-no">046</span><span id="line-46">   */</span>
-<span class="source-line-no">047</span><span id="line-47">  public void readJSON(final JSONObject json, final ItemPlatform&lt;?, ?&gt; platform) {</span>
-<span class="source-line-no">048</span><span id="line-48"></span>
-<span class="source-line-no">049</span><span id="line-49">    json.forEach((key, value)-&gt;{</span>
-<span class="source-line-no">050</span><span id="line-50">      final String identifier = String.valueOf(key);</span>
-<span class="source-line-no">051</span><span id="line-51"></span>
-<span class="source-line-no">052</span><span id="line-52">      final Optional&lt;PersistentDataType&lt;?&gt;&gt; data = decode(new JSONHelper((JSONObject)value), platform);</span>
-<span class="source-line-no">053</span><span id="line-53">      data.ifPresent(dataentry-&gt;dataMap.put(identifier, dataentry));</span>
-<span class="source-line-no">054</span><span id="line-54">    });</span>
-<span class="source-line-no">055</span><span id="line-55">  }</span>
-<span class="source-line-no">056</span><span id="line-56"></span>
-<span class="source-line-no">057</span><span id="line-57">  /**</span>
-<span class="source-line-no">058</span><span id="line-58">   * Convert a PersistentDataHolder object to a JSONObject.</span>
-<span class="source-line-no">059</span><span id="line-59">   *</span>
-<span class="source-line-no">060</span><span id="line-60">   * @return The JSONObject representation of the PersistentDataHolder object.</span>
-<span class="source-line-no">061</span><span id="line-61">   */</span>
-<span class="source-line-no">062</span><span id="line-62">  public JSONObject toJSON() {</span>
-<span class="source-line-no">063</span><span id="line-63"></span>
-<span class="source-line-no">064</span><span id="line-64">    final JSONObject persistentData = new JSONObject();</span>
-<span class="source-line-no">065</span><span id="line-65">    for(final Map.Entry&lt;String, PersistentDataType&lt;?&gt;&gt; entry : dataMap.entrySet()) {</span>
-<span class="source-line-no">066</span><span id="line-66">      persistentData.put(entry.getKey(), entry.getValue().toJSON());</span>
-<span class="source-line-no">067</span><span id="line-67">    }</span>
-<span class="source-line-no">068</span><span id="line-68"></span>
-<span class="source-line-no">069</span><span id="line-69">    return persistentData;</span>
-<span class="source-line-no">070</span><span id="line-70">  }</span>
-<span class="source-line-no">071</span><span id="line-71"></span>
-<span class="source-line-no">072</span><span id="line-72">  /**</span>
-<span class="source-line-no">073</span><span id="line-73">   * Decodes the provided JSON object and returns an Optional containing the decoded</span>
-<span class="source-line-no">074</span><span id="line-74">   * PersistentDataType.</span>
-<span class="source-line-no">075</span><span id="line-75">   *</span>
-<span class="source-line-no">076</span><span id="line-76">   * @param json The JSONHelper object to be decoded</span>
+<span class="source-line-no">046</span><span id="line-46">   * @since 0.2.0.0</span>
+<span class="source-line-no">047</span><span id="line-47">   */</span>
+<span class="source-line-no">048</span><span id="line-48">  public void readJSON(final JSONObject json, final ItemPlatform&lt;?, ?, ?&gt; platform) {</span>
+<span class="source-line-no">049</span><span id="line-49"></span>
+<span class="source-line-no">050</span><span id="line-50">    json.forEach((key, value)-&gt;{</span>
+<span class="source-line-no">051</span><span id="line-51">      final String identifier = String.valueOf(key);</span>
+<span class="source-line-no">052</span><span id="line-52"></span>
+<span class="source-line-no">053</span><span id="line-53">      final Optional&lt;PersistentDataType&lt;?&gt;&gt; data = decode(new JSONHelper((JSONObject)value), platform);</span>
+<span class="source-line-no">054</span><span id="line-54">      data.ifPresent(dataentry-&gt;dataMap.put(identifier, dataentry));</span>
+<span class="source-line-no">055</span><span id="line-55">    });</span>
+<span class="source-line-no">056</span><span id="line-56">  }</span>
+<span class="source-line-no">057</span><span id="line-57"></span>
+<span class="source-line-no">058</span><span id="line-58">  /**</span>
+<span class="source-line-no">059</span><span id="line-59">   * Convert a PersistentDataHolder object to a JSONObject.</span>
+<span class="source-line-no">060</span><span id="line-60">   *</span>
+<span class="source-line-no">061</span><span id="line-61">   * @return The JSONObject representation of the PersistentDataHolder object.</span>
+<span class="source-line-no">062</span><span id="line-62">   * @since 0.2.0.0</span>
+<span class="source-line-no">063</span><span id="line-63">   */</span>
+<span class="source-line-no">064</span><span id="line-64">  public JSONObject toJSON() {</span>
+<span class="source-line-no">065</span><span id="line-65"></span>
+<span class="source-line-no">066</span><span id="line-66">    final JSONObject persistentData = new JSONObject();</span>
+<span class="source-line-no">067</span><span id="line-67">    for(final Map.Entry&lt;String, PersistentDataType&lt;?&gt;&gt; entry : dataMap.entrySet()) {</span>
+<span class="source-line-no">068</span><span id="line-68">      persistentData.put(entry.getKey(), entry.getValue().toJSON());</span>
+<span class="source-line-no">069</span><span id="line-69">    }</span>
+<span class="source-line-no">070</span><span id="line-70"></span>
+<span class="source-line-no">071</span><span id="line-71">    return persistentData;</span>
+<span class="source-line-no">072</span><span id="line-72">  }</span>
+<span class="source-line-no">073</span><span id="line-73"></span>
+<span class="source-line-no">074</span><span id="line-74">  /**</span>
+<span class="source-line-no">075</span><span id="line-75">   * Decodes the provided JSON object and returns an Optional containing the decoded</span>
+<span class="source-line-no">076</span><span id="line-76">   * PersistentDataType.</span>
 <span class="source-line-no">077</span><span id="line-77">   *</span>
-<span class="source-line-no">078</span><span id="line-78">   * @return An Optional containing the decoded PersistentDataType if it exists, otherwise an empty</span>
-<span class="source-line-no">079</span><span id="line-79">   * Optional</span>
-<span class="source-line-no">080</span><span id="line-80">   */</span>
-<span class="source-line-no">081</span><span id="line-81">  public Optional&lt;PersistentDataType&lt;?&gt;&gt; decode(final JSONHelper json, final ItemPlatform&lt;?, ?&gt; platform) {</span>
-<span class="source-line-no">082</span><span id="line-82"></span>
-<span class="source-line-no">083</span><span id="line-83">    final String type = json.getString("type");</span>
-<span class="source-line-no">084</span><span id="line-84">    final String namespace = json.getString("namespace");</span>
-<span class="source-line-no">085</span><span id="line-85">    final String key = json.getString("key");</span>
-<span class="source-line-no">086</span><span id="line-86"></span>
-<span class="source-line-no">087</span><span id="line-87">    final Class&lt;? extends PersistentDataType&lt;?&gt;&gt; dataClass = platform.getClasses().get(type);</span>
-<span class="source-line-no">088</span><span id="line-88">    if(dataClass != null) {</span>
+<span class="source-line-no">078</span><span id="line-78">   * @param json The JSONHelper object to be decoded</span>
+<span class="source-line-no">079</span><span id="line-79">   *</span>
+<span class="source-line-no">080</span><span id="line-80">   * @return An Optional containing the decoded PersistentDataType if it exists, otherwise an empty</span>
+<span class="source-line-no">081</span><span id="line-81">   * Optional</span>
+<span class="source-line-no">082</span><span id="line-82">   * @since 0.2.0.0</span>
+<span class="source-line-no">083</span><span id="line-83">   */</span>
+<span class="source-line-no">084</span><span id="line-84">  public Optional&lt;PersistentDataType&lt;?&gt;&gt; decode(final JSONHelper json, final ItemPlatform&lt;?, ?, ?&gt; platform) {</span>
+<span class="source-line-no">085</span><span id="line-85"></span>
+<span class="source-line-no">086</span><span id="line-86">    final String type = json.getString("type");</span>
+<span class="source-line-no">087</span><span id="line-87">    final String namespace = json.getString("namespace");</span>
+<span class="source-line-no">088</span><span id="line-88">    final String key = json.getString("key");</span>
 <span class="source-line-no">089</span><span id="line-89"></span>
-<span class="source-line-no">090</span><span id="line-90">      try {</span>
-<span class="source-line-no">091</span><span id="line-91">        final MethodType constructorType = MethodType.methodType(void.class, String.class, String.class);</span>
-<span class="source-line-no">092</span><span id="line-92">        final MethodHandle constructorHandle = MethodHandles.lookup().findConstructor(dataClass, constructorType);</span>
-<span class="source-line-no">093</span><span id="line-93"></span>
-<span class="source-line-no">094</span><span id="line-94">        final PersistentDataType&lt;?&gt; persistentData = (PersistentDataType&lt;?&gt;)constructorHandle.invoke(namespace, key);</span>
-<span class="source-line-no">095</span><span id="line-95">        persistentData.readJSON(json);</span>
+<span class="source-line-no">090</span><span id="line-90">    final Class&lt;? extends PersistentDataType&lt;?&gt;&gt; dataClass = platform.getClasses().get(type);</span>
+<span class="source-line-no">091</span><span id="line-91">    if(dataClass != null) {</span>
+<span class="source-line-no">092</span><span id="line-92"></span>
+<span class="source-line-no">093</span><span id="line-93">      try {</span>
+<span class="source-line-no">094</span><span id="line-94">        final MethodType constructorType = MethodType.methodType(void.class, String.class, String.class);</span>
+<span class="source-line-no">095</span><span id="line-95">        final MethodHandle constructorHandle = MethodHandles.lookup().findConstructor(dataClass, constructorType);</span>
 <span class="source-line-no">096</span><span id="line-96"></span>
-<span class="source-line-no">097</span><span id="line-97">        return Optional.of(persistentData);</span>
-<span class="source-line-no">098</span><span id="line-98"></span>
-<span class="source-line-no">099</span><span id="line-99">      } catch(final Throwable ignore) {</span>
-<span class="source-line-no">100</span><span id="line-100"></span>
-<span class="source-line-no">101</span><span id="line-101">        return Optional.empty();</span>
-<span class="source-line-no">102</span><span id="line-102">      }</span>
-<span class="source-line-no">103</span><span id="line-103">    }</span>
-<span class="source-line-no">104</span><span id="line-104">    return Optional.empty();</span>
-<span class="source-line-no">105</span><span id="line-105">  }</span>
-<span class="source-line-no">106</span><span id="line-106"></span>
-<span class="source-line-no">107</span><span id="line-107">  public Map&lt;String, PersistentDataType&lt;?&gt;&gt; getData() {</span>
-<span class="source-line-no">108</span><span id="line-108"></span>
-<span class="source-line-no">109</span><span id="line-109">    return dataMap;</span>
-<span class="source-line-no">110</span><span id="line-110">  }</span>
-<span class="source-line-no">111</span><span id="line-111">}</span>
+<span class="source-line-no">097</span><span id="line-97">        final PersistentDataType&lt;?&gt; persistentData = (PersistentDataType&lt;?&gt;)constructorHandle.invoke(namespace, key);</span>
+<span class="source-line-no">098</span><span id="line-98">        persistentData.readJSON(json);</span>
+<span class="source-line-no">099</span><span id="line-99"></span>
+<span class="source-line-no">100</span><span id="line-100">        return Optional.of(persistentData);</span>
+<span class="source-line-no">101</span><span id="line-101"></span>
+<span class="source-line-no">102</span><span id="line-102">      } catch(final Throwable ignore) {</span>
+<span class="source-line-no">103</span><span id="line-103"></span>
+<span class="source-line-no">104</span><span id="line-104">        return Optional.empty();</span>
+<span class="source-line-no">105</span><span id="line-105">      }</span>
+<span class="source-line-no">106</span><span id="line-106">    }</span>
+<span class="source-line-no">107</span><span id="line-107">    return Optional.empty();</span>
+<span class="source-line-no">108</span><span id="line-108">  }</span>
+<span class="source-line-no">109</span><span id="line-109"></span>
+<span class="source-line-no">110</span><span id="line-110">  public Map&lt;String, PersistentDataType&lt;?&gt;&gt; getData() {</span>
+<span class="source-line-no">111</span><span id="line-111"></span>
+<span class="source-line-no">112</span><span id="line-112">    return dataMap;</span>
+<span class="source-line-no">113</span><span id="line-113">  }</span>
+<span class="source-line-no">114</span><span id="line-114">}</span>
 
 
 

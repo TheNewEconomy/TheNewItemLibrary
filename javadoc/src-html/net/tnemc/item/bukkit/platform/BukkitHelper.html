@@ -64,7 +64,7 @@
 <span class="source-line-no">051</span><span id="line-51">    registerHandler("enchantments", new SupplierRegistryHandler(() -&gt; {</span>
 <span class="source-line-no">052</span><span id="line-52"></span>
 <span class="source-line-no">053</span><span id="line-53">      final LinkedList&lt;String&gt; keys = new LinkedList&lt;&gt;();</span>
-<span class="source-line-no">054</span><span id="line-54">      if(VersionUtil.isVersion(BukkitItemPlatform.PLATFORM.version(), "1.20.3")) {</span>
+<span class="source-line-no">054</span><span id="line-54">      if(VersionUtil.isVersion(BukkitItemPlatform.instance().version(), "1.20.3")) {</span>
 <span class="source-line-no">055</span><span id="line-55"></span>
 <span class="source-line-no">056</span><span id="line-56">        Registry.ENCHANTMENT.forEach((enchantment) -&gt; {</span>
 <span class="source-line-no">057</span><span id="line-57">          if(enchantment != null) {</span>

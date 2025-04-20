@@ -48,29 +48,35 @@
 <span class="source-line-no">035</span><span id="line-35">   * @param check    the item to check</span>
 <span class="source-line-no">036</span><span id="line-36">   *</span>
 <span class="source-line-no">037</span><span id="line-37">   * @return true if the LocaleItemCheck applies, false otherwise</span>
-<span class="source-line-no">038</span><span id="line-38">   */</span>
-<span class="source-line-no">039</span><span id="line-39">  boolean applies(final T original, final T check);</span>
-<span class="source-line-no">040</span><span id="line-40"></span>
-<span class="source-line-no">041</span><span id="line-41">  /**</span>
-<span class="source-line-no">042</span><span id="line-42">   * @param original the original stack</span>
-<span class="source-line-no">043</span><span id="line-43">   * @param check    the stack to use for the check</span>
-<span class="source-line-no">044</span><span id="line-44">   *</span>
-<span class="source-line-no">045</span><span id="line-45">   * @return True if the check passes, otherwise false.</span>
-<span class="source-line-no">046</span><span id="line-46">   */</span>
-<span class="source-line-no">047</span><span id="line-47">  boolean check(final T original, final T check);</span>
-<span class="source-line-no">048</span><span id="line-48"></span>
-<span class="source-line-no">049</span><span id="line-49">  /**</span>
-<span class="source-line-no">050</span><span id="line-50">   * @param original the original stack</span>
-<span class="source-line-no">051</span><span id="line-51">   * @param check    the stack to use for the check</span>
-<span class="source-line-no">052</span><span id="line-52">   *</span>
-<span class="source-line-no">053</span><span id="line-53">   * @return True if the check passes, otherwise false.</span>
-<span class="source-line-no">054</span><span id="line-54">   */</span>
-<span class="source-line-no">055</span><span id="line-55">  @Override</span>
-<span class="source-line-no">056</span><span id="line-56">  default boolean check(final AbstractItemStack&lt;T&gt; original, final AbstractItemStack&lt;T&gt; check) {</span>
-<span class="source-line-no">057</span><span id="line-57"></span>
-<span class="source-line-no">058</span><span id="line-58">    return true;//always return true because this shouldn't be used for locale checks.</span>
-<span class="source-line-no">059</span><span id="line-59">  }</span>
-<span class="source-line-no">060</span><span id="line-60">}</span>
+<span class="source-line-no">038</span><span id="line-38">   * @since 0.2.0.0</span>
+<span class="source-line-no">039</span><span id="line-39">   * @since 0.2.0.0</span>
+<span class="source-line-no">040</span><span id="line-40">   */</span>
+<span class="source-line-no">041</span><span id="line-41">  boolean applies(final T original, final T check);</span>
+<span class="source-line-no">042</span><span id="line-42"></span>
+<span class="source-line-no">043</span><span id="line-43">  /**</span>
+<span class="source-line-no">044</span><span id="line-44">   * @param original the original stack</span>
+<span class="source-line-no">045</span><span id="line-45">   * @param check    the stack to use for the check</span>
+<span class="source-line-no">046</span><span id="line-46">   *</span>
+<span class="source-line-no">047</span><span id="line-47">   * @return True if the check passes, otherwise false.</span>
+<span class="source-line-no">048</span><span id="line-48">   * @since 0.2.0.0</span>
+<span class="source-line-no">049</span><span id="line-49">   * @since 0.2.0.0</span>
+<span class="source-line-no">050</span><span id="line-50">   */</span>
+<span class="source-line-no">051</span><span id="line-51">  boolean check(final T original, final T check);</span>
+<span class="source-line-no">052</span><span id="line-52"></span>
+<span class="source-line-no">053</span><span id="line-53">  /**</span>
+<span class="source-line-no">054</span><span id="line-54">   * @param original the original stack</span>
+<span class="source-line-no">055</span><span id="line-55">   * @param check    the stack to use for the check</span>
+<span class="source-line-no">056</span><span id="line-56">   *</span>
+<span class="source-line-no">057</span><span id="line-57">   * @return True if the check passes, otherwise false.</span>
+<span class="source-line-no">058</span><span id="line-58">   * @since 0.2.0.0</span>
+<span class="source-line-no">059</span><span id="line-59">   * @since 0.2.0.0</span>
+<span class="source-line-no">060</span><span id="line-60">   */</span>
+<span class="source-line-no">061</span><span id="line-61">  @Override</span>
+<span class="source-line-no">062</span><span id="line-62">  default boolean check(final AbstractItemStack&lt;T&gt; original, final AbstractItemStack&lt;T&gt; check) {</span>
+<span class="source-line-no">063</span><span id="line-63"></span>
+<span class="source-line-no">064</span><span id="line-64">    return true;//always return true because this shouldn't be used for locale checks.</span>
+<span class="source-line-no">065</span><span id="line-65">  }</span>
+<span class="source-line-no">066</span><span id="line-66">}</span>
 
 
 

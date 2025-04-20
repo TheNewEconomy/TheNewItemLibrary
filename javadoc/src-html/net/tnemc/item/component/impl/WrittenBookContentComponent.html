@@ -119,18 +119,18 @@
 <span class="source-line-no">106</span><span id="line-106">  }</span>
 <span class="source-line-no">107</span><span id="line-107"></span>
 <span class="source-line-no">108</span><span id="line-108">  @Override</span>
-<span class="source-line-no">109</span><span id="line-109">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
+<span class="source-line-no">109</span><span id="line-109">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">110</span><span id="line-110">    pages.clear();</span>
 <span class="source-line-no">111</span><span id="line-111">    pages.addAll(json.getStringList("pages"));</span>
-<span class="source-line-no">112</span><span id="line-112">    if (json.has("title")) title = json.getString("title");</span>
-<span class="source-line-no">113</span><span id="line-113">    if (json.has("author")) author = json.getString("author");</span>
-<span class="source-line-no">114</span><span id="line-114">    if (json.has("generation")) generation = json.getInteger("generation");</span>
-<span class="source-line-no">115</span><span id="line-115">    if (json.has("resolved")) resolved = json.getBoolean("resolved");</span>
+<span class="source-line-no">112</span><span id="line-112">    if(json.has("title")) title = json.getString("title");</span>
+<span class="source-line-no">113</span><span id="line-113">    if(json.has("author")) author = json.getString("author");</span>
+<span class="source-line-no">114</span><span id="line-114">    if(json.has("generation")) generation = json.getInteger("generation");</span>
+<span class="source-line-no">115</span><span id="line-115">    if(json.has("resolved")) resolved = json.getBoolean("resolved");</span>
 <span class="source-line-no">116</span><span id="line-116">  }</span>
 <span class="source-line-no">117</span><span id="line-117"></span>
 <span class="source-line-no">118</span><span id="line-118">  @Override</span>
-<span class="source-line-no">119</span><span id="line-119">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">120</span><span id="line-120">    if (!(component instanceof final WrittenBookContentComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">119</span><span id="line-119">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">120</span><span id="line-120">    if(!(component instanceof final WrittenBookContentComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">121</span><span id="line-121">    return Objects.equals(this.pages, other.pages) &amp;&amp;</span>
 <span class="source-line-no">122</span><span id="line-122">           Objects.equals(this.title, other.title) &amp;&amp;</span>
 <span class="source-line-no">123</span><span id="line-123">           Objects.equals(this.author, other.author) &amp;&amp;</span>

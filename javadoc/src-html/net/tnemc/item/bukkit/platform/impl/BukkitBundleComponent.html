@@ -64,81 +64,85 @@
 <span class="source-line-no">051</span><span id="line-51">   * @param version the version being used when this check is called.</span>
 <span class="source-line-no">052</span><span id="line-52">   *</span>
 <span class="source-line-no">053</span><span id="line-53">   * @return true if this check is enabled for the version, otherwise false</span>
-<span class="source-line-no">054</span><span id="line-54">   */</span>
-<span class="source-line-no">055</span><span id="line-55">  @Override</span>
-<span class="source-line-no">056</span><span id="line-56">  public boolean enabled(final String version) {</span>
-<span class="source-line-no">057</span><span id="line-57"></span>
-<span class="source-line-no">058</span><span id="line-58">    return VersionUtil.isOneSeventeen(version);</span>
-<span class="source-line-no">059</span><span id="line-59">  }</span>
-<span class="source-line-no">060</span><span id="line-60"></span>
-<span class="source-line-no">061</span><span id="line-61">  /**</span>
-<span class="source-line-no">062</span><span id="line-62">   * @param serialized the serialized item stack to use</span>
-<span class="source-line-no">063</span><span id="line-63">   * @param item       the item that we should use to apply this applicator to.</span>
-<span class="source-line-no">064</span><span id="line-64">   *</span>
-<span class="source-line-no">065</span><span id="line-65">   * @return the updated item.</span>
-<span class="source-line-no">066</span><span id="line-66">   */</span>
-<span class="source-line-no">067</span><span id="line-67">  @Override</span>
-<span class="source-line-no">068</span><span id="line-68">  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {</span>
-<span class="source-line-no">069</span><span id="line-69"></span>
-<span class="source-line-no">070</span><span id="line-70">    final Optional&lt;BukkitBundleComponent&gt; componentOptional = serialized.component(identifier());</span>
-<span class="source-line-no">071</span><span id="line-71">    componentOptional.ifPresent(component-&gt;{</span>
-<span class="source-line-no">072</span><span id="line-72"></span>
-<span class="source-line-no">073</span><span id="line-73">      if(item.hasItemMeta() &amp;&amp; item.getItemMeta() instanceof final BundleMeta meta) {</span>
+<span class="source-line-no">054</span><span id="line-54">   * @since 0.2.0.0</span>
+<span class="source-line-no">055</span><span id="line-55">   */</span>
+<span class="source-line-no">056</span><span id="line-56">  @Override</span>
+<span class="source-line-no">057</span><span id="line-57">  public boolean enabled(final String version) {</span>
+<span class="source-line-no">058</span><span id="line-58"></span>
+<span class="source-line-no">059</span><span id="line-59">    return VersionUtil.isOneSeventeen(version);</span>
+<span class="source-line-no">060</span><span id="line-60">  }</span>
+<span class="source-line-no">061</span><span id="line-61"></span>
+<span class="source-line-no">062</span><span id="line-62">  /**</span>
+<span class="source-line-no">063</span><span id="line-63">   * @param serialized the serialized item stack to use</span>
+<span class="source-line-no">064</span><span id="line-64">   * @param item       the item that we should use to apply this applicator to.</span>
+<span class="source-line-no">065</span><span id="line-65">   *</span>
+<span class="source-line-no">066</span><span id="line-66">   * @return the updated item.</span>
+<span class="source-line-no">067</span><span id="line-67">   * @since 0.2.0.0</span>
+<span class="source-line-no">068</span><span id="line-68">   */</span>
+<span class="source-line-no">069</span><span id="line-69">  @Override</span>
+<span class="source-line-no">070</span><span id="line-70">  public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {</span>
+<span class="source-line-no">071</span><span id="line-71"></span>
+<span class="source-line-no">072</span><span id="line-72">    final Optional&lt;BukkitBundleComponent&gt; componentOptional = serialized.component(identifier());</span>
+<span class="source-line-no">073</span><span id="line-73">    componentOptional.ifPresent(component-&gt;{</span>
 <span class="source-line-no">074</span><span id="line-74"></span>
-<span class="source-line-no">075</span><span id="line-75">        componentOptional.get().items.forEach((slot, stack)-&gt;meta.addItem(stack.provider().locale(serialized)));</span>
+<span class="source-line-no">075</span><span id="line-75">      if(item.hasItemMeta() &amp;&amp; item.getItemMeta() instanceof final BundleMeta meta) {</span>
 <span class="source-line-no">076</span><span id="line-76"></span>
-<span class="source-line-no">077</span><span id="line-77">        item.setItemMeta(meta);</span>
-<span class="source-line-no">078</span><span id="line-78">      }</span>
-<span class="source-line-no">079</span><span id="line-79">    });</span>
-<span class="source-line-no">080</span><span id="line-80">    return item;</span>
-<span class="source-line-no">081</span><span id="line-81">  }</span>
-<span class="source-line-no">082</span><span id="line-82"></span>
-<span class="source-line-no">083</span><span id="line-83">  /**</span>
-<span class="source-line-no">084</span><span id="line-84">   * @param item       the item that we should use to deserialize.</span>
-<span class="source-line-no">085</span><span id="line-85">   * @param serialized the serialized item stack we should use to apply this deserializer to</span>
-<span class="source-line-no">086</span><span id="line-86">   *</span>
-<span class="source-line-no">087</span><span id="line-87">   * @return the updated serialized item.</span>
-<span class="source-line-no">088</span><span id="line-88">   */</span>
-<span class="source-line-no">089</span><span id="line-89">  @Override</span>
-<span class="source-line-no">090</span><span id="line-90">  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {</span>
-<span class="source-line-no">091</span><span id="line-91"></span>
-<span class="source-line-no">092</span><span id="line-92">    if(item.hasItemMeta() &amp;&amp; item.getItemMeta() instanceof final BundleMeta meta) {</span>
-<span class="source-line-no">093</span><span id="line-93"></span>
-<span class="source-line-no">094</span><span id="line-94">      int i = 0;</span>
-<span class="source-line-no">095</span><span id="line-95">      for(final ItemStack stack : meta.getItems()) {</span>
+<span class="source-line-no">077</span><span id="line-77">        componentOptional.get().items.forEach((slot, stack)-&gt;meta.addItem(stack.provider().locale(serialized)));</span>
+<span class="source-line-no">078</span><span id="line-78"></span>
+<span class="source-line-no">079</span><span id="line-79">        item.setItemMeta(meta);</span>
+<span class="source-line-no">080</span><span id="line-80">      }</span>
+<span class="source-line-no">081</span><span id="line-81">    });</span>
+<span class="source-line-no">082</span><span id="line-82">    return item;</span>
+<span class="source-line-no">083</span><span id="line-83">  }</span>
+<span class="source-line-no">084</span><span id="line-84"></span>
+<span class="source-line-no">085</span><span id="line-85">  /**</span>
+<span class="source-line-no">086</span><span id="line-86">   * @param item       the item that we should use to deserialize.</span>
+<span class="source-line-no">087</span><span id="line-87">   * @param serialized the serialized item stack we should use to apply this deserializer to</span>
+<span class="source-line-no">088</span><span id="line-88">   *</span>
+<span class="source-line-no">089</span><span id="line-89">   * @return the updated serialized item.</span>
+<span class="source-line-no">090</span><span id="line-90">   * @since 0.2.0.0</span>
+<span class="source-line-no">091</span><span id="line-91">   */</span>
+<span class="source-line-no">092</span><span id="line-92">  @Override</span>
+<span class="source-line-no">093</span><span id="line-93">  public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {</span>
+<span class="source-line-no">094</span><span id="line-94"></span>
+<span class="source-line-no">095</span><span id="line-95">    if(item.hasItemMeta() &amp;&amp; item.getItemMeta() instanceof final BundleMeta meta) {</span>
 <span class="source-line-no">096</span><span id="line-96"></span>
-<span class="source-line-no">097</span><span id="line-97">        if(stack == null) {</span>
-<span class="source-line-no">098</span><span id="line-98">          continue;</span>
-<span class="source-line-no">099</span><span id="line-99">        }</span>
-<span class="source-line-no">100</span><span id="line-100"></span>
-<span class="source-line-no">101</span><span id="line-101">        if(stack.getType().equals(Material.AIR)) {</span>
-<span class="source-line-no">102</span><span id="line-102">          continue;</span>
-<span class="source-line-no">103</span><span id="line-103">        }</span>
-<span class="source-line-no">104</span><span id="line-104"></span>
-<span class="source-line-no">105</span><span id="line-105">        final BukkitItemStack containerSerial = new BukkitItemStack().of(stack);</span>
-<span class="source-line-no">106</span><span id="line-106">        BukkitItemPlatform.PLATFORM.providerApplies(containerSerial, stack);</span>
-<span class="source-line-no">107</span><span id="line-107">        items.put(i, containerSerial);</span>
-<span class="source-line-no">108</span><span id="line-108">        i++;</span>
-<span class="source-line-no">109</span><span id="line-109">      }</span>
-<span class="source-line-no">110</span><span id="line-110">    }</span>
-<span class="source-line-no">111</span><span id="line-111"></span>
-<span class="source-line-no">112</span><span id="line-112">    serialized.applyComponent(this);</span>
-<span class="source-line-no">113</span><span id="line-113">    return serialized;</span>
-<span class="source-line-no">114</span><span id="line-114">  }</span>
-<span class="source-line-no">115</span><span id="line-115"></span>
-<span class="source-line-no">116</span><span id="line-116">  /**</span>
-<span class="source-line-no">117</span><span id="line-117">   * Checks if this component applies to the specified item.</span>
-<span class="source-line-no">118</span><span id="line-118">   *</span>
-<span class="source-line-no">119</span><span id="line-119">   * @param item The item to check against.</span>
-<span class="source-line-no">120</span><span id="line-120">   *</span>
-<span class="source-line-no">121</span><span id="line-121">   * @return True if this component applies to the item, false otherwise.</span>
-<span class="source-line-no">122</span><span id="line-122">   */</span>
-<span class="source-line-no">123</span><span id="line-123">  @Override</span>
-<span class="source-line-no">124</span><span id="line-124">  public boolean appliesTo(final ItemStack item) {</span>
-<span class="source-line-no">125</span><span id="line-125"></span>
-<span class="source-line-no">126</span><span id="line-126">    return item.hasItemMeta() &amp;&amp; item.getItemMeta() instanceof BundleMeta;</span>
-<span class="source-line-no">127</span><span id="line-127">  }</span>
-<span class="source-line-no">128</span><span id="line-128">}</span>
+<span class="source-line-no">097</span><span id="line-97">      int i = 0;</span>
+<span class="source-line-no">098</span><span id="line-98">      for(final ItemStack stack : meta.getItems()) {</span>
+<span class="source-line-no">099</span><span id="line-99"></span>
+<span class="source-line-no">100</span><span id="line-100">        if(stack == null) {</span>
+<span class="source-line-no">101</span><span id="line-101">          continue;</span>
+<span class="source-line-no">102</span><span id="line-102">        }</span>
+<span class="source-line-no">103</span><span id="line-103"></span>
+<span class="source-line-no">104</span><span id="line-104">        if(stack.getType().equals(Material.AIR)) {</span>
+<span class="source-line-no">105</span><span id="line-105">          continue;</span>
+<span class="source-line-no">106</span><span id="line-106">        }</span>
+<span class="source-line-no">107</span><span id="line-107"></span>
+<span class="source-line-no">108</span><span id="line-108">        final BukkitItemStack containerSerial = new BukkitItemStack().of(stack);</span>
+<span class="source-line-no">109</span><span id="line-109">        BukkitItemPlatform.instance().providerApplies(containerSerial, stack);</span>
+<span class="source-line-no">110</span><span id="line-110">        items.put(i, containerSerial);</span>
+<span class="source-line-no">111</span><span id="line-111">        i++;</span>
+<span class="source-line-no">112</span><span id="line-112">      }</span>
+<span class="source-line-no">113</span><span id="line-113">    }</span>
+<span class="source-line-no">114</span><span id="line-114"></span>
+<span class="source-line-no">115</span><span id="line-115">    serialized.applyComponent(this);</span>
+<span class="source-line-no">116</span><span id="line-116">    return serialized;</span>
+<span class="source-line-no">117</span><span id="line-117">  }</span>
+<span class="source-line-no">118</span><span id="line-118"></span>
+<span class="source-line-no">119</span><span id="line-119">  /**</span>
+<span class="source-line-no">120</span><span id="line-120">   * Checks if this component applies to the specified item.</span>
+<span class="source-line-no">121</span><span id="line-121">   *</span>
+<span class="source-line-no">122</span><span id="line-122">   * @param item The item to check against.</span>
+<span class="source-line-no">123</span><span id="line-123">   *</span>
+<span class="source-line-no">124</span><span id="line-124">   * @return True if this component applies to the item, false otherwise.</span>
+<span class="source-line-no">125</span><span id="line-125">   * @since 0.2.0.0</span>
+<span class="source-line-no">126</span><span id="line-126">   */</span>
+<span class="source-line-no">127</span><span id="line-127">  @Override</span>
+<span class="source-line-no">128</span><span id="line-128">  public boolean appliesTo(final ItemStack item) {</span>
+<span class="source-line-no">129</span><span id="line-129"></span>
+<span class="source-line-no">130</span><span id="line-130">    return item.hasItemMeta() &amp;&amp; item.getItemMeta() instanceof BundleMeta;</span>
+<span class="source-line-no">131</span><span id="line-131">  }</span>
+<span class="source-line-no">132</span><span id="line-132">}</span>
 
 
 

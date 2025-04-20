@@ -76,14 +76,14 @@
 <span class="source-line-no">063</span><span id="line-63">  }</span>
 <span class="source-line-no">064</span><span id="line-64"></span>
 <span class="source-line-no">065</span><span id="line-65">  @Override</span>
-<span class="source-line-no">066</span><span id="line-66">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
+<span class="source-line-no">066</span><span id="line-66">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">067</span><span id="line-67">    pattern = json.getString("pattern");</span>
 <span class="source-line-no">068</span><span id="line-68">    material = json.getString("material");</span>
 <span class="source-line-no">069</span><span id="line-69">  }</span>
 <span class="source-line-no">070</span><span id="line-70"></span>
 <span class="source-line-no">071</span><span id="line-71">  @Override</span>
-<span class="source-line-no">072</span><span id="line-72">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">073</span><span id="line-73">    if (!(component instanceof final TrimComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">072</span><span id="line-72">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">073</span><span id="line-73">    if(!(component instanceof final TrimComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">074</span><span id="line-74">    return Objects.equals(this.pattern, other.pattern) &amp;&amp;</span>
 <span class="source-line-no">075</span><span id="line-75">           Objects.equals(this.material, other.material);</span>
 <span class="source-line-no">076</span><span id="line-76">  }</span>

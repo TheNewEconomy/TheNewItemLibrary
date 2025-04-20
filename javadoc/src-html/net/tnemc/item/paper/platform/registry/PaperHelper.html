@@ -66,7 +66,7 @@
 <span class="source-line-no">053</span><span id="line-53">    registerHandler("enchantments", new SupplierRegistryHandler(() -&gt; {</span>
 <span class="source-line-no">054</span><span id="line-54"></span>
 <span class="source-line-no">055</span><span id="line-55">      final LinkedList&lt;String&gt; keys = new LinkedList&lt;&gt;();</span>
-<span class="source-line-no">056</span><span id="line-56">      if(VersionUtil.isVersion(PaperItemPlatform.PLATFORM.version(), "1.21")) {</span>
+<span class="source-line-no">056</span><span id="line-56">      if(VersionUtil.isVersion(PaperItemPlatform.instance().version(), "1.21")) {</span>
 <span class="source-line-no">057</span><span id="line-57"></span>
 <span class="source-line-no">058</span><span id="line-58">        RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).forEach((enchantment)-&gt;{</span>
 <span class="source-line-no">059</span><span id="line-59">          if(enchantment != null) {</span>

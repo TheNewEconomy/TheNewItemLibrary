@@ -129,7 +129,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a><wbr>&lt;<a href="PersistentDataType.html" title="class in net.tnemc.item.persistent">PersistentDataType</a>&lt;?&gt;&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#decode(net.tnemc.item.JSONHelper,net.tnemc.item.platform.ItemPlatform)" class="member-name-link">decode</a><wbr>(<a href="../JSONHelper.html" title="class in net.tnemc.item">JSONHelper</a>&nbsp;json,
- <a href="../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;?,<wbr>?&gt;&nbsp;platform)</code></div>
+ <a href="../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;?,<wbr>?,<wbr>?&gt;&nbsp;platform)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Decodes the provided JSON object and returns an Optional containing the decoded
  PersistentDataType.</div>
@@ -139,7 +139,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readJSON(org.json.simple.JSONObject,net.tnemc.item.platform.ItemPlatform)" class="member-name-link">readJSON</a><wbr>(org.json.simple.JSONObject&nbsp;json,
- <a href="../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;?,<wbr>?&gt;&nbsp;platform)</code></div>
+ <a href="../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;?,<wbr>?,<wbr>?&gt;&nbsp;platform)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Decodes the <a href="../JSONHelper.html" title="class in net.tnemc.item"><code>JSON object</code></a> and sets the values in the current instance.</div>
 </div>
@@ -182,31 +182,35 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="readJSON(org.json.simple.JSONObject,net.tnemc.item.platform.ItemPlatform)">
 <h3>readJSON</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataHolder.html#line-47">readJSON</a></span><wbr><span class="parameters">(org.json.simple.JSONObject&nbsp;json,
- <a href="../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;?,<wbr>?&gt;&nbsp;platform)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataHolder.html#line-48">readJSON</a></span><wbr><span class="parameters">(org.json.simple.JSONObject&nbsp;json,
+ <a href="../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;?,<wbr>?,<wbr>?&gt;&nbsp;platform)</span></div>
 <div class="block">Decodes the <a href="../JSONHelper.html" title="class in net.tnemc.item"><code>JSON object</code></a> and sets the values in the current instance.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>json</code> - The <a href="../JSONHelper.html" title="class in net.tnemc.item"><code>JSON object</code></a> to be decoded</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="toJSON()">
 <h3>toJSON</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.json.simple.JSONObject</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataHolder.html#line-62">toJSON</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.json.simple.JSONObject</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataHolder.html#line-64">toJSON</a></span>()</div>
 <div class="block">Convert a PersistentDataHolder object to a JSONObject.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>The JSONObject representation of the PersistentDataHolder object.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="decode(net.tnemc.item.JSONHelper,net.tnemc.item.platform.ItemPlatform)">
 <h3>decode</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="PersistentDataType.html" title="class in net.tnemc.item.persistent">PersistentDataType</a>&lt;?&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataHolder.html#line-81">decode</a></span><wbr><span class="parameters">(<a href="../JSONHelper.html" title="class in net.tnemc.item">JSONHelper</a>&nbsp;json,
- <a href="../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;?,<wbr>?&gt;&nbsp;platform)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="PersistentDataType.html" title="class in net.tnemc.item.persistent">PersistentDataType</a>&lt;?&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataHolder.html#line-84">decode</a></span><wbr><span class="parameters">(<a href="../JSONHelper.html" title="class in net.tnemc.item">JSONHelper</a>&nbsp;json,
+ <a href="../platform/ItemPlatform.html" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;?,<wbr>?,<wbr>?&gt;&nbsp;platform)</span></div>
 <div class="block">Decodes the provided JSON object and returns an Optional containing the decoded
  PersistentDataType.</div>
 <dl class="notes">
@@ -215,13 +219,15 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>An Optional containing the decoded PersistentDataType if it exists, otherwise an empty
  Optional</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getData()">
 <h3>getData</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="PersistentDataType.html" title="class in net.tnemc.item.persistent">PersistentDataType</a>&lt;?&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataHolder.html#line-107">getData</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="PersistentDataType.html" title="class in net.tnemc.item.persistent">PersistentDataType</a>&lt;?&gt;&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/net/tnemc/item/persistent/PersistentDataHolder.html#line-110">getData</a></span>()</div>
 </section>
 </li>
 </ul>

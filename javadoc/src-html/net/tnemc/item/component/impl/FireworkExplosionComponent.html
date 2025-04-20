@@ -80,15 +80,15 @@
 <span class="source-line-no">067</span><span id="line-67">  }</span>
 <span class="source-line-no">068</span><span id="line-68"></span>
 <span class="source-line-no">069</span><span id="line-69">  @Override</span>
-<span class="source-line-no">070</span><span id="line-70">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
-<span class="source-line-no">071</span><span id="line-71">    if (json.has("explosion")) {</span>
+<span class="source-line-no">070</span><span id="line-70">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
+<span class="source-line-no">071</span><span id="line-71">    if(json.has("explosion")) {</span>
 <span class="source-line-no">072</span><span id="line-72">      explosion.readJSON(json.getHelper("explosion"));</span>
 <span class="source-line-no">073</span><span id="line-73">    }</span>
 <span class="source-line-no">074</span><span id="line-74">  }</span>
 <span class="source-line-no">075</span><span id="line-75"></span>
 <span class="source-line-no">076</span><span id="line-76">  @Override</span>
-<span class="source-line-no">077</span><span id="line-77">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">078</span><span id="line-78">    if (!(component instanceof final FireworkExplosionComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">077</span><span id="line-77">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">078</span><span id="line-78">    if(!(component instanceof final FireworkExplosionComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">079</span><span id="line-79"></span>
 <span class="source-line-no">080</span><span id="line-80">    return Objects.equals(this.explosion, other.explosion);</span>
 <span class="source-line-no">081</span><span id="line-81">  }</span>

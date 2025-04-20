@@ -510,6 +510,16 @@ loadScripts(document, 'script');</script>
 <div class="block">Updates the repair cost of the item stack.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a><wbr>&lt;<a href="../AbstractItemStack.html" title="type parameter in AbstractItemStack">T</a>&gt;</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">AbstractItemStack.</span><code><a href="../AbstractItemStack.html#setItemProvider(java.lang.String)" class="member-name-link">setItemProvider</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;itemProvider)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Sets the item provider to be used for retrieving items.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a><wbr>&lt;<a href="../AbstractItemStack.html" title="type parameter in AbstractItemStack">T</a>&gt;</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">AbstractItemStack.</span><code><a href="../AbstractItemStack.html#setProviderItemID(java.lang.String)" class="member-name-link">setProviderItemID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;providerItemID)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Sets the provider's item ID for the current item.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a><wbr>&lt;<a href="../AbstractItemStack.html" title="type parameter in AbstractItemStack">T</a>&gt;</code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">AbstractItemStack.</span><code><a href="../AbstractItemStack.html#slot(int)" class="member-name-link">slot</a><wbr>(int&nbsp;slot)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Sets the inventory slot of the item stack.</div>
@@ -1777,7 +1787,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="../platform/ItemPlatform.html" class="type-name-link" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;I extends <a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;T&gt;,<wbr>T&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="../platform/ItemPlatform.html" class="type-name-link" title="class in net.tnemc.item.platform">ItemPlatform</a>&lt;I extends <a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;S&gt;,<wbr>S,<wbr>U&gt;</code></div>
 <div class="col-last even-row-color">
 <div class="block">ItemPlatform</div>
 </div>
@@ -1788,8 +1798,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">ItemPlatform.</span><code><a href="../platform/ItemPlatform.html#providerApplies(net.tnemc.item.AbstractItemStack,T)" class="member-name-link">providerApplies</a><wbr>(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="../platform/ItemPlatform.html" title="type parameter in ItemPlatform">T</a>&gt;&nbsp;serialized,
- <a href="../platform/ItemPlatform.html" title="type parameter in ItemPlatform">T</a>&nbsp;item)</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ItemPlatform.</span><code><a href="../platform/ItemPlatform.html#providerApplies(net.tnemc.item.AbstractItemStack,S)" class="member-name-link">providerApplies</a><wbr>(<a href="../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;? extends <a href="../platform/ItemPlatform.html" title="type parameter in ItemPlatform">S</a>&gt;&nbsp;serialized,
+ <a href="../platform/ItemPlatform.html" title="type parameter in ItemPlatform">S</a>&nbsp;item)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Checks if any of the registered item providers are applicable to the given serialized item and item.</div>
 </div>

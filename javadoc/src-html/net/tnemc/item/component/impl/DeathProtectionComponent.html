@@ -74,10 +74,10 @@
 <span class="source-line-no">061</span><span id="line-61">  }</span>
 <span class="source-line-no">062</span><span id="line-62"></span>
 <span class="source-line-no">063</span><span id="line-63">  @Override</span>
-<span class="source-line-no">064</span><span id="line-64">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
+<span class="source-line-no">064</span><span id="line-64">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">065</span><span id="line-65">    deathEffects.clear();</span>
 <span class="source-line-no">066</span><span id="line-66"></span>
-<span class="source-line-no">067</span><span id="line-67">    if (json.has("death_effects")) {</span>
+<span class="source-line-no">067</span><span id="line-67">    if(json.has("death_effects")) {</span>
 <span class="source-line-no">068</span><span id="line-68">      final JSONArray effectsArray = (JSONArray) json.getObject().get("death_effects");</span>
 <span class="source-line-no">069</span><span id="line-69"></span>
 <span class="source-line-no">070</span><span id="line-70">      for (final Object obj : effectsArray) {</span>
@@ -87,7 +87,7 @@
 <span class="source-line-no">074</span><span id="line-74">        // Get the effect class from the platform's reviveEffects map</span>
 <span class="source-line-no">075</span><span id="line-75">        final Class&lt;? extends ComponentEffect&gt; effectClass = platform.effects().get(type);</span>
 <span class="source-line-no">076</span><span id="line-76"></span>
-<span class="source-line-no">077</span><span id="line-77">        if (effectClass != null) {</span>
+<span class="source-line-no">077</span><span id="line-77">        if(effectClass != null) {</span>
 <span class="source-line-no">078</span><span id="line-78">          try {</span>
 <span class="source-line-no">079</span><span id="line-79">            // Instantiate the effect dynamically</span>
 <span class="source-line-no">080</span><span id="line-80">            final ComponentEffect effect = effectClass.getDeclaredConstructor().newInstance();</span>
@@ -102,8 +102,8 @@
 <span class="source-line-no">089</span><span id="line-89">  }</span>
 <span class="source-line-no">090</span><span id="line-90"></span>
 <span class="source-line-no">091</span><span id="line-91">  @Override</span>
-<span class="source-line-no">092</span><span id="line-92">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">093</span><span id="line-93">    if (!(component instanceof final DeathProtectionComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">092</span><span id="line-92">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">093</span><span id="line-93">    if(!(component instanceof final DeathProtectionComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">094</span><span id="line-94"></span>
 <span class="source-line-no">095</span><span id="line-95">    return Objects.equals(this.deathEffects, other.deathEffects);</span>
 <span class="source-line-no">096</span><span id="line-96">  }</span>
@@ -117,30 +117,33 @@
 <span class="source-line-no">104</span><span id="line-104">   * Gets the list of death effects.</span>
 <span class="source-line-no">105</span><span id="line-105">   *</span>
 <span class="source-line-no">106</span><span id="line-106">   * @return A list of `ReviveEffect` objects.</span>
-<span class="source-line-no">107</span><span id="line-107">   */</span>
-<span class="source-line-no">108</span><span id="line-108">  public List&lt;ComponentEffect&gt; deathEffects() {</span>
-<span class="source-line-no">109</span><span id="line-109">    return deathEffects;</span>
-<span class="source-line-no">110</span><span id="line-110">  }</span>
-<span class="source-line-no">111</span><span id="line-111"></span>
-<span class="source-line-no">112</span><span id="line-112">  /**</span>
-<span class="source-line-no">113</span><span id="line-113">   * Applies death effects to the component's list of effects.</span>
-<span class="source-line-no">114</span><span id="line-114">   *</span>
-<span class="source-line-no">115</span><span id="line-115">   * @param deathEffects The list of ComponentEffect to apply as death effects.</span>
-<span class="source-line-no">116</span><span id="line-116">   */</span>
-<span class="source-line-no">117</span><span id="line-117">  public void deathEffects(final List&lt;ComponentEffect&gt; deathEffects) {</span>
-<span class="source-line-no">118</span><span id="line-118">    this.deathEffects.clear();</span>
-<span class="source-line-no">119</span><span id="line-119">    this.deathEffects.addAll(deathEffects);</span>
-<span class="source-line-no">120</span><span id="line-120">  }</span>
-<span class="source-line-no">121</span><span id="line-121"></span>
-<span class="source-line-no">122</span><span id="line-122">  /**</span>
-<span class="source-line-no">123</span><span id="line-123">   * Adds one or more ComponentEffect objects to the list of death effects for this DeathProtectionComponent.</span>
-<span class="source-line-no">124</span><span id="line-124">   *</span>
-<span class="source-line-no">125</span><span id="line-125">   * @param effects One or more ComponentEffect objects to be added as death effects.</span>
-<span class="source-line-no">126</span><span id="line-126">   */</span>
-<span class="source-line-no">127</span><span id="line-127">  public void deathEffect(final ComponentEffect... effects) {</span>
-<span class="source-line-no">128</span><span id="line-128">    this.deathEffects.addAll(Arrays.asList(effects));</span>
-<span class="source-line-no">129</span><span id="line-129">  }</span>
-<span class="source-line-no">130</span><span id="line-130">}</span>
+<span class="source-line-no">107</span><span id="line-107">   * @since 0.2.0.0</span>
+<span class="source-line-no">108</span><span id="line-108">   */</span>
+<span class="source-line-no">109</span><span id="line-109">  public List&lt;ComponentEffect&gt; deathEffects() {</span>
+<span class="source-line-no">110</span><span id="line-110">    return deathEffects;</span>
+<span class="source-line-no">111</span><span id="line-111">  }</span>
+<span class="source-line-no">112</span><span id="line-112"></span>
+<span class="source-line-no">113</span><span id="line-113">  /**</span>
+<span class="source-line-no">114</span><span id="line-114">   * Applies death effects to the component's list of effects.</span>
+<span class="source-line-no">115</span><span id="line-115">   *</span>
+<span class="source-line-no">116</span><span id="line-116">   * @param deathEffects The list of ComponentEffect to apply as death effects.</span>
+<span class="source-line-no">117</span><span id="line-117">   * @since 0.2.0.0</span>
+<span class="source-line-no">118</span><span id="line-118">   */</span>
+<span class="source-line-no">119</span><span id="line-119">  public void deathEffects(final List&lt;ComponentEffect&gt; deathEffects) {</span>
+<span class="source-line-no">120</span><span id="line-120">    this.deathEffects.clear();</span>
+<span class="source-line-no">121</span><span id="line-121">    this.deathEffects.addAll(deathEffects);</span>
+<span class="source-line-no">122</span><span id="line-122">  }</span>
+<span class="source-line-no">123</span><span id="line-123"></span>
+<span class="source-line-no">124</span><span id="line-124">  /**</span>
+<span class="source-line-no">125</span><span id="line-125">   * Adds one or more ComponentEffect objects to the list of death effects for this DeathProtectionComponent.</span>
+<span class="source-line-no">126</span><span id="line-126">   *</span>
+<span class="source-line-no">127</span><span id="line-127">   * @param effects One or more ComponentEffect objects to be added as death effects.</span>
+<span class="source-line-no">128</span><span id="line-128">   * @since 0.2.0.0</span>
+<span class="source-line-no">129</span><span id="line-129">   */</span>
+<span class="source-line-no">130</span><span id="line-130">  public void deathEffect(final ComponentEffect... effects) {</span>
+<span class="source-line-no">131</span><span id="line-131">    this.deathEffects.addAll(Arrays.asList(effects));</span>
+<span class="source-line-no">132</span><span id="line-132">  }</span>
+<span class="source-line-no">133</span><span id="line-133">}</span>
 
 
 

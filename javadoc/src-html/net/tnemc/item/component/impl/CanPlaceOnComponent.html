@@ -87,7 +87,7 @@
 <span class="source-line-no">074</span><span id="line-74">  }</span>
 <span class="source-line-no">075</span><span id="line-75"></span>
 <span class="source-line-no">076</span><span id="line-76">  @Override</span>
-<span class="source-line-no">077</span><span id="line-77">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
+<span class="source-line-no">077</span><span id="line-77">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">078</span><span id="line-78">    predicates.clear();</span>
 <span class="source-line-no">079</span><span id="line-79"></span>
 <span class="source-line-no">080</span><span id="line-80">    final JSONArray predicatesArray = (JSONArray) json.getObject().get("predicates");</span>
@@ -102,7 +102,7 @@
 <span class="source-line-no">089</span><span id="line-89">  }</span>
 <span class="source-line-no">090</span><span id="line-90"></span>
 <span class="source-line-no">091</span><span id="line-91">  @Override</span>
-<span class="source-line-no">092</span><span id="line-92">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
+<span class="source-line-no">092</span><span id="line-92">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
 <span class="source-line-no">093</span><span id="line-93">    if(!(component instanceof final CanPlaceOnComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">094</span><span id="line-94"></span>
 <span class="source-line-no">095</span><span id="line-95">    return Objects.equals(this.predicates, other.predicates);</span>
@@ -117,31 +117,34 @@
 <span class="source-line-no">104</span><span id="line-104">   * Retrieves the list of predicates associated with this CanBreakComponent.</span>
 <span class="source-line-no">105</span><span id="line-105">   *</span>
 <span class="source-line-no">106</span><span id="line-106">   * @return The list of BlockPredicate objects.</span>
-<span class="source-line-no">107</span><span id="line-107">   */</span>
-<span class="source-line-no">108</span><span id="line-108">  public List&lt;BlockPredicate&gt; predicates() {</span>
-<span class="source-line-no">109</span><span id="line-109"></span>
-<span class="source-line-no">110</span><span id="line-110">    return predicates;</span>
-<span class="source-line-no">111</span><span id="line-111">  }</span>
-<span class="source-line-no">112</span><span id="line-112"></span>
-<span class="source-line-no">113</span><span id="line-113">  /**</span>
-<span class="source-line-no">114</span><span id="line-114">   * Modifies the list of predicates associated with this CanBreakComponent by replacing it with a new list.</span>
-<span class="source-line-no">115</span><span id="line-115">   *</span>
-<span class="source-line-no">116</span><span id="line-116">   * @param predicates The new list of BlockPredicate objects to replace the existing list with.</span>
-<span class="source-line-no">117</span><span id="line-117">   */</span>
-<span class="source-line-no">118</span><span id="line-118">  public void predicates(final List&lt;BlockPredicate&gt; predicates) {</span>
-<span class="source-line-no">119</span><span id="line-119">    this.predicates.clear();</span>
-<span class="source-line-no">120</span><span id="line-120">    this.predicates.addAll(predicates);</span>
-<span class="source-line-no">121</span><span id="line-121">  }</span>
-<span class="source-line-no">122</span><span id="line-122"></span>
-<span class="source-line-no">123</span><span id="line-123">  /**</span>
-<span class="source-line-no">124</span><span id="line-124">   * Add one or more BlockPredicate objects to the list of predicates associated with this component.</span>
-<span class="source-line-no">125</span><span id="line-125">   *</span>
-<span class="source-line-no">126</span><span id="line-126">   * @param predicates The BlockPredicate objects to add to the list.</span>
-<span class="source-line-no">127</span><span id="line-127">   */</span>
-<span class="source-line-no">128</span><span id="line-128">  public void predicates(final BlockPredicate... predicates) {</span>
-<span class="source-line-no">129</span><span id="line-129">    this.predicates.addAll(Arrays.asList(predicates));</span>
-<span class="source-line-no">130</span><span id="line-130">  }</span>
-<span class="source-line-no">131</span><span id="line-131">}</span>
+<span class="source-line-no">107</span><span id="line-107">   * @since 0.2.0.0</span>
+<span class="source-line-no">108</span><span id="line-108">   */</span>
+<span class="source-line-no">109</span><span id="line-109">  public List&lt;BlockPredicate&gt; predicates() {</span>
+<span class="source-line-no">110</span><span id="line-110"></span>
+<span class="source-line-no">111</span><span id="line-111">    return predicates;</span>
+<span class="source-line-no">112</span><span id="line-112">  }</span>
+<span class="source-line-no">113</span><span id="line-113"></span>
+<span class="source-line-no">114</span><span id="line-114">  /**</span>
+<span class="source-line-no">115</span><span id="line-115">   * Modifies the list of predicates associated with this CanBreakComponent by replacing it with a new list.</span>
+<span class="source-line-no">116</span><span id="line-116">   *</span>
+<span class="source-line-no">117</span><span id="line-117">   * @param predicates The new list of BlockPredicate objects to replace the existing list with.</span>
+<span class="source-line-no">118</span><span id="line-118">   * @since 0.2.0.0</span>
+<span class="source-line-no">119</span><span id="line-119">   */</span>
+<span class="source-line-no">120</span><span id="line-120">  public void predicates(final List&lt;BlockPredicate&gt; predicates) {</span>
+<span class="source-line-no">121</span><span id="line-121">    this.predicates.clear();</span>
+<span class="source-line-no">122</span><span id="line-122">    this.predicates.addAll(predicates);</span>
+<span class="source-line-no">123</span><span id="line-123">  }</span>
+<span class="source-line-no">124</span><span id="line-124"></span>
+<span class="source-line-no">125</span><span id="line-125">  /**</span>
+<span class="source-line-no">126</span><span id="line-126">   * Add one or more BlockPredicate objects to the list of predicates associated with this component.</span>
+<span class="source-line-no">127</span><span id="line-127">   *</span>
+<span class="source-line-no">128</span><span id="line-128">   * @param predicates The BlockPredicate objects to add to the list.</span>
+<span class="source-line-no">129</span><span id="line-129">   * @since 0.2.0.0</span>
+<span class="source-line-no">130</span><span id="line-130">   */</span>
+<span class="source-line-no">131</span><span id="line-131">  public void predicates(final BlockPredicate... predicates) {</span>
+<span class="source-line-no">132</span><span id="line-132">    this.predicates.addAll(Arrays.asList(predicates));</span>
+<span class="source-line-no">133</span><span id="line-133">  }</span>
+<span class="source-line-no">134</span><span id="line-134">}</span>
 
 
 

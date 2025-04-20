@@ -93,7 +93,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/conversion/PlatformConverter.html#line-31">PlatformConverter</a></span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">PlatformConverter</div>
+<div class="block">PlatformConverter is used for converting TNIL-based data strings to the Platform's enum/registry entries.</div>
 <dl class="notes">
 <dt>Since:</dt>
 <dd>0.2.0.0</dd>
@@ -177,7 +177,7 @@ O&gt;&nbsp;void</code></div>
 <section class="detail" id="registerConversion(java.lang.Class,java.lang.Class,java.util.function.Function)">
 <h3>registerConversion</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;I,<wbr>
-O&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/conversion/PlatformConverter.html#line-46">registerConversion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;I&gt;&nbsp;inputClass,
+O&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/conversion/PlatformConverter.html#line-47">registerConversion</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;I&gt;&nbsp;inputClass,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;O&gt;&nbsp;outputClass,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;I,<wbr>O&gt;&nbsp;converter)</span></div>
 <div class="block">Registers a conversion between input and output classes using a provided converter function.</div>
@@ -190,7 +190,7 @@ O&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="elemen
 <dd><code>outputClass</code> - The class of the output object to convert to</dd>
 <dd><code>converter</code> - The function that performs the conversion from input to output</dd>
 <dt>Since:</dt>
-<dd>0.2.0.0</dd>
+<dd>0.2.0.0, 0.2.0.0</dd>
 </dl>
 </section>
 </li>
@@ -198,7 +198,7 @@ O&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="elemen
 <section class="detail" id="convert(I,java.lang.Class)">
 <h3 id="convert(java.lang.Object,java.lang.Class)">convert</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;I,<wbr>
-O&gt;</span>&nbsp;<span class="return-type">O</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/conversion/PlatformConverter.html#line-63">convert</a></span><wbr><span class="parameters">(I&nbsp;input,
+O&gt;</span>&nbsp;<span class="return-type">O</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/conversion/PlatformConverter.html#line-65">convert</a></span><wbr><span class="parameters">(I&nbsp;input,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;O&gt;&nbsp;outputClass)</span></div>
 <div class="block">Performs a conversion from input type to output type using registered converters.</div>
 <dl class="notes">
@@ -213,7 +213,7 @@ O&gt;</span>&nbsp;<span class="return-type">O</span>&nbsp;<span class="element-n
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the input is null or if no conversion is registered for the specified types</dd>
 <dt>Since:</dt>
-<dd>0.2.0.0</dd>
+<dd>0.2.0.0, 0.2.0.0</dd>
 </dl>
 </section>
 </li>

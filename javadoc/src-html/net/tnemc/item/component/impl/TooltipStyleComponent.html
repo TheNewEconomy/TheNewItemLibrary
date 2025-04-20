@@ -74,13 +74,13 @@
 <span class="source-line-no">061</span><span id="line-61">  }</span>
 <span class="source-line-no">062</span><span id="line-62"></span>
 <span class="source-line-no">063</span><span id="line-63">  @Override</span>
-<span class="source-line-no">064</span><span id="line-64">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
+<span class="source-line-no">064</span><span id="line-64">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">065</span><span id="line-65">    style = json.getString("style");</span>
 <span class="source-line-no">066</span><span id="line-66">  }</span>
 <span class="source-line-no">067</span><span id="line-67"></span>
 <span class="source-line-no">068</span><span id="line-68">  @Override</span>
-<span class="source-line-no">069</span><span id="line-69">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">070</span><span id="line-70">    if (!(component instanceof final TooltipStyleComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">069</span><span id="line-69">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">070</span><span id="line-70">    if(!(component instanceof final TooltipStyleComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">071</span><span id="line-71">    return Objects.equals(this.style, other.style);</span>
 <span class="source-line-no">072</span><span id="line-72">  }</span>
 <span class="source-line-no">073</span><span id="line-73"></span>

@@ -23,3 +23,6 @@ net.tnemc.item.paper.platform.registry
 net.tnemc.item.bukkit
 net.tnemc.item.bukkit.platform
 net.tnemc.item.bukkit.platform.impl
+net.tnemc.item.example.listeners
+net.tnemc.item.example.command
+net.tnemc.item.example

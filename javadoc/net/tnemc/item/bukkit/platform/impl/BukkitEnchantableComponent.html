@@ -156,7 +156,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.tnemc.item.component.impl.EnchantableComponent">Methods inherited from class&nbsp;net.tnemc.item.component.impl.<a href="../../../component/impl/EnchantableComponent.html" title="class in net.tnemc.item.component.impl">EnchantableComponent</a></h3>
-<code><a href="../../../component/impl/EnchantableComponent.html#equals(net.tnemc.item.component.SerialComponent)">equals</a>, <a href="../../../component/impl/EnchantableComponent.html#identifier()">identifier</a>, <a href="../../../component/impl/EnchantableComponent.html#readJSON(net.tnemc.item.JSONHelper,net.tnemc.item.platform.ItemPlatform)">readJSON</a>, <a href="../../../component/impl/EnchantableComponent.html#toJSON()">toJSON</a>, <a href="../../../component/impl/EnchantableComponent.html#value()">value</a>, <a href="../../../component/impl/EnchantableComponent.html#value(int)">value</a></code></div>
+<code><a href="../../../component/impl/EnchantableComponent.html#identifier()">identifier</a>, <a href="../../../component/impl/EnchantableComponent.html#readJSON(net.tnemc.item.JSONHelper,net.tnemc.item.platform.ItemPlatform)">readJSON</a>, <a href="../../../component/impl/EnchantableComponent.html#similar(net.tnemc.item.component.SerialComponent)">similar</a>, <a href="../../../component/impl/EnchantableComponent.html#toJSON()">toJSON</a>, <a href="../../../component/impl/EnchantableComponent.html#value()">value</a>, <a href="../../../component/impl/EnchantableComponent.html#value(int)">value</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -200,19 +200,21 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="enabled(java.lang.String)">
 <h3>enabled</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/net/tnemc/item/bukkit/platform/impl/BukkitEnchantableComponent.html#line-51">enabled</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;version)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/net/tnemc/item/bukkit/platform/impl/BukkitEnchantableComponent.html#line-52">enabled</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;version)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>version</code> - the version being used when this check is called.</dd>
 <dt>Returns:</dt>
 <dd>true if this check is enabled for the version, otherwise false</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="apply(net.tnemc.item.bukkit.BukkitItemStack,org.bukkit.inventory.ItemStack)">
 <h3>apply</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.bukkit.inventory.ItemStack</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/net/tnemc/item/bukkit/platform/impl/BukkitEnchantableComponent.html#line-63">apply</a></span><wbr><span class="parameters">(<a href="../../BukkitItemStack.html" title="class in net.tnemc.item.bukkit">BukkitItemStack</a>&nbsp;serialized,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.bukkit.inventory.ItemStack</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/net/tnemc/item/bukkit/platform/impl/BukkitEnchantableComponent.html#line-65">apply</a></span><wbr><span class="parameters">(<a href="../../BukkitItemStack.html" title="class in net.tnemc.item.bukkit">BukkitItemStack</a>&nbsp;serialized,
  org.bukkit.inventory.ItemStack&nbsp;item)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -220,13 +222,15 @@ loadScripts(document, 'script');</script>
 <dd><code>item</code> - the item that we should use to apply this applicator to.</dd>
 <dt>Returns:</dt>
 <dd>the updated item.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="serialize(org.bukkit.inventory.ItemStack,net.tnemc.item.bukkit.BukkitItemStack)">
 <h3>serialize</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../BukkitItemStack.html" title="class in net.tnemc.item.bukkit">BukkitItemStack</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/net/tnemc/item/bukkit/platform/impl/BukkitEnchantableComponent.html#line-86">serialize</a></span><wbr><span class="parameters">(org.bukkit.inventory.ItemStack&nbsp;item,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../BukkitItemStack.html" title="class in net.tnemc.item.bukkit">BukkitItemStack</a></span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/net/tnemc/item/bukkit/platform/impl/BukkitEnchantableComponent.html#line-89">serialize</a></span><wbr><span class="parameters">(org.bukkit.inventory.ItemStack&nbsp;item,
  <a href="../../BukkitItemStack.html" title="class in net.tnemc.item.bukkit">BukkitItemStack</a>&nbsp;serialized)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -234,19 +238,23 @@ loadScripts(document, 'script');</script>
 <dd><code>serialized</code> - the serialized item stack we should use to apply this deserializer to</dd>
 <dt>Returns:</dt>
 <dd>the updated serialized item.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="appliesTo(org.bukkit.inventory.ItemStack)">
 <h3>appliesTo</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/net/tnemc/item/bukkit/platform/impl/BukkitEnchantableComponent.html#line-106">appliesTo</a></span><wbr><span class="parameters">(org.bukkit.inventory.ItemStack&nbsp;item)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../../src-html/net/tnemc/item/bukkit/platform/impl/BukkitEnchantableComponent.html#line-110">appliesTo</a></span><wbr><span class="parameters">(org.bukkit.inventory.ItemStack&nbsp;item)</span></div>
 <div class="block">Checks if this component applies to the specified item.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>item</code> - The item to check against.</dd>
 <dt>Returns:</dt>
 <dd>True if this component applies to the item, false otherwise.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0</dd>
 </dl>
 </section>
 </li>

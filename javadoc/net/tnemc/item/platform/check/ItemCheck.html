@@ -164,29 +164,33 @@ extends <a href="../Identifiable.html" title="interface in net.tnemc.item.platfo
 <li>
 <section class="detail" id="skipRest()">
 <h3>skipRest</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/check/ItemCheck.html#line-39">skipRest</a></span>()</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/check/ItemCheck.html#line-41">skipRest</a></span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>true if the checks after this one should be skipped.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0, 0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="enabled(java.lang.String)">
 <h3>enabled</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/check/ItemCheck.html#line-49">enabled</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;version)</span></div>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/check/ItemCheck.html#line-53">enabled</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;version)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>version</code> - the version being used when this check is called.</dd>
 <dt>Returns:</dt>
 <dd>true if this check is enabled for the version, otherwise false</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0, 0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="applies(net.tnemc.item.AbstractItemStack,net.tnemc.item.AbstractItemStack)">
 <h3>applies</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/check/ItemCheck.html#line-58">applies</a></span><wbr><span class="parameters">(<a href="../../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;<a href="ItemCheck.html" title="type parameter in ItemCheck">T</a>&gt;&nbsp;original,
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/check/ItemCheck.html#line-64">applies</a></span><wbr><span class="parameters">(<a href="../../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;<a href="ItemCheck.html" title="type parameter in ItemCheck">T</a>&gt;&nbsp;original,
  <a href="../../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;<a href="ItemCheck.html" title="type parameter in ItemCheck">T</a>&gt;&nbsp;check)</span></div>
 <div class="block">Determines if a given check should be applied to an original item stack for a specific version.</div>
 <dl class="notes">
@@ -195,13 +199,15 @@ extends <a href="../Identifiable.html" title="interface in net.tnemc.item.platfo
 <dd><code>check</code> - the item stack to use for the check</dd>
 <dt>Returns:</dt>
 <dd>true if the check applies, false otherwise</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0, 0.2.0.0</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="check(net.tnemc.item.AbstractItemStack,net.tnemc.item.AbstractItemStack)">
 <h3>check</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/check/ItemCheck.html#line-66">check</a></span><wbr><span class="parameters">(<a href="../../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;<a href="ItemCheck.html" title="type parameter in ItemCheck">T</a>&gt;&nbsp;original,
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../../src-html/net/tnemc/item/platform/check/ItemCheck.html#line-74">check</a></span><wbr><span class="parameters">(<a href="../../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;<a href="ItemCheck.html" title="type parameter in ItemCheck">T</a>&gt;&nbsp;original,
  <a href="../../AbstractItemStack.html" title="interface in net.tnemc.item">AbstractItemStack</a>&lt;<a href="ItemCheck.html" title="type parameter in ItemCheck">T</a>&gt;&nbsp;check)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -209,6 +215,8 @@ extends <a href="../Identifiable.html" title="interface in net.tnemc.item.platfo
 <dd><code>check</code> - the stack to use for the check</dd>
 <dt>Returns:</dt>
 <dd>True if the check passes, otherwise false.</dd>
+<dt>Since:</dt>
+<dd>0.2.0.0, 0.2.0.0</dd>
 </dl>
 </section>
 </li>

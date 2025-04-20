@@ -63,12 +63,12 @@
 <span class="source-line-no">050</span><span id="line-50">  }</span>
 <span class="source-line-no">051</span><span id="line-51"></span>
 <span class="source-line-no">052</span><span id="line-52">  @Override</span>
-<span class="source-line-no">053</span><span id="line-53">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T&gt; platform) {</span>
+<span class="source-line-no">053</span><span id="line-53">  public void readJSON(final JSONHelper json, final ItemPlatform&lt;I, T, ?&gt; platform) {</span>
 <span class="source-line-no">054</span><span id="line-54">  }</span>
 <span class="source-line-no">055</span><span id="line-55"></span>
 <span class="source-line-no">056</span><span id="line-56">  @Override</span>
-<span class="source-line-no">057</span><span id="line-57">  public boolean equals(final SerialComponent&lt;I, T&gt; component) {</span>
-<span class="source-line-no">058</span><span id="line-58">    if (!(component instanceof final UnbreakableComponent&lt;?, ?&gt; other)) return false;</span>
+<span class="source-line-no">057</span><span id="line-57">  public boolean similar(final SerialComponent&lt;?, ?&gt; component) {</span>
+<span class="source-line-no">058</span><span id="line-58">    if(!(component instanceof final UnbreakableComponent&lt;?, ?&gt; other)) return false;</span>
 <span class="source-line-no">059</span><span id="line-59">    return true;</span>
 <span class="source-line-no">060</span><span id="line-60">  }</span>
 <span class="source-line-no">061</span><span id="line-61"></span>

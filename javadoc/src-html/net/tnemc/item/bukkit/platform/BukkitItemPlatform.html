@@ -32,430 +32,478 @@
 <span class="source-line-no">019</span><span id="line-19"> */</span>
 <span class="source-line-no">020</span><span id="line-20"></span>
 <span class="source-line-no">021</span><span id="line-21">import net.tnemc.item.AbstractItemStack;</span>
-<span class="source-line-no">022</span><span id="line-22">import net.tnemc.item.bukkit.BukkitItemStack;</span>
-<span class="source-line-no">023</span><span id="line-23">import net.tnemc.item.bukkit.VanillaProvider;</span>
-<span class="source-line-no">024</span><span id="line-24">import net.tnemc.item.bukkit.platform.impl.BukkitBundleComponent;</span>
-<span class="source-line-no">025</span><span id="line-25">import net.tnemc.item.bukkit.platform.impl.BukkitContainerComponent;</span>
-<span class="source-line-no">026</span><span id="line-26">import net.tnemc.item.bukkit.platform.impl.BukkitCustomNameComponent;</span>
-<span class="source-line-no">027</span><span id="line-27">import net.tnemc.item.bukkit.platform.impl.BukkitDamageComponent;</span>
-<span class="source-line-no">028</span><span id="line-28">import net.tnemc.item.bukkit.platform.impl.BukkitEnchantmentsComponent;</span>
-<span class="source-line-no">029</span><span id="line-29">import net.tnemc.item.bukkit.platform.impl.BukkitItemModelComponent;</span>
-<span class="source-line-no">030</span><span id="line-30">import net.tnemc.item.bukkit.platform.impl.BukkitItemNameComponent;</span>
-<span class="source-line-no">031</span><span id="line-31">import net.tnemc.item.bukkit.platform.impl.BukkitLoreComponent;</span>
-<span class="source-line-no">032</span><span id="line-32">import net.tnemc.item.bukkit.platform.impl.BukkitMaxStackSizeComponent;</span>
-<span class="source-line-no">033</span><span id="line-33">import net.tnemc.item.bukkit.platform.impl.BukkitModelDataComponent;</span>
-<span class="source-line-no">034</span><span id="line-34">import net.tnemc.item.bukkit.platform.impl.BukkitModelDataOldComponent;</span>
-<span class="source-line-no">035</span><span id="line-35">import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;</span>
-<span class="source-line-no">036</span><span id="line-36">import net.tnemc.item.bukkit.platform.impl.BukkitShulkerColorComponent;</span>
-<span class="source-line-no">037</span><span id="line-37">import net.tnemc.item.platform.ItemPlatform;</span>
-<span class="source-line-no">038</span><span id="line-38">import net.tnemc.item.providers.ItemProvider;</span>
-<span class="source-line-no">039</span><span id="line-39">import net.tnemc.item.providers.VersionUtil;</span>
-<span class="source-line-no">040</span><span id="line-40">import org.bukkit.Bukkit;</span>
-<span class="source-line-no">041</span><span id="line-41">import org.bukkit.DyeColor;</span>
-<span class="source-line-no">042</span><span id="line-42">import org.bukkit.NamespacedKey;</span>
-<span class="source-line-no">043</span><span id="line-43">import org.bukkit.Registry;</span>
-<span class="source-line-no">044</span><span id="line-44">import org.bukkit.attribute.AttributeModifier;</span>
-<span class="source-line-no">045</span><span id="line-45">import org.bukkit.block.banner.PatternType;</span>
-<span class="source-line-no">046</span><span id="line-46">import org.bukkit.enchantments.Enchantment;</span>
-<span class="source-line-no">047</span><span id="line-47">import org.bukkit.inventory.EquipmentSlot;</span>
-<span class="source-line-no">048</span><span id="line-48">import org.bukkit.inventory.EquipmentSlotGroup;</span>
-<span class="source-line-no">049</span><span id="line-49">import org.bukkit.inventory.ItemRarity;</span>
-<span class="source-line-no">050</span><span id="line-50">import org.bukkit.inventory.ItemStack;</span>
-<span class="source-line-no">051</span><span id="line-51">import org.bukkit.inventory.meta.trim.TrimMaterial;</span>
-<span class="source-line-no">052</span><span id="line-52">import org.bukkit.inventory.meta.trim.TrimPattern;</span>
-<span class="source-line-no">053</span><span id="line-53">import org.bukkit.potion.PotionEffectType;</span>
-<span class="source-line-no">054</span><span id="line-54">import org.jetbrains.annotations.NotNull;</span>
-<span class="source-line-no">055</span><span id="line-55">import org.json.simple.JSONObject;</span>
-<span class="source-line-no">056</span><span id="line-56">import org.json.simple.parser.ParseException;</span>
-<span class="source-line-no">057</span><span id="line-57"></span>
-<span class="source-line-no">058</span><span id="line-58">import java.util.Locale;</span>
-<span class="source-line-no">059</span><span id="line-59">import java.util.Optional;</span>
-<span class="source-line-no">060</span><span id="line-60"></span>
-<span class="source-line-no">061</span><span id="line-61">/**</span>
-<span class="source-line-no">062</span><span id="line-62"> * BukkitItemPlatform</span>
-<span class="source-line-no">063</span><span id="line-63"> *</span>
-<span class="source-line-no">064</span><span id="line-64"> * @author creatorfromhell</span>
-<span class="source-line-no">065</span><span id="line-65"> * @since 0.1.7.7</span>
-<span class="source-line-no">066</span><span id="line-66"> */</span>
-<span class="source-line-no">067</span><span id="line-67">public class BukkitItemPlatform extends ItemPlatform&lt;BukkitItemStack, ItemStack&gt; {</span>
-<span class="source-line-no">068</span><span id="line-68"></span>
-<span class="source-line-no">069</span><span id="line-69">  public static final BukkitItemPlatform PLATFORM = new BukkitItemPlatform();</span>
-<span class="source-line-no">070</span><span id="line-70">  //TODO: make this an actual singleton setup</span>
-<span class="source-line-no">071</span><span id="line-71"></span>
-<span class="source-line-no">072</span><span id="line-72">  protected final VanillaProvider defaultProvider = new VanillaProvider();</span>
+<span class="source-line-no">022</span><span id="line-22">import net.tnemc.item.bukkit.BukkitCalculationsProvider;</span>
+<span class="source-line-no">023</span><span id="line-23">import net.tnemc.item.bukkit.BukkitItemStack;</span>
+<span class="source-line-no">024</span><span id="line-24">import net.tnemc.item.bukkit.VanillaProvider;</span>
+<span class="source-line-no">025</span><span id="line-25">import net.tnemc.item.bukkit.platform.impl.BukkitBundleComponent;</span>
+<span class="source-line-no">026</span><span id="line-26">import net.tnemc.item.bukkit.platform.impl.BukkitContainerComponent;</span>
+<span class="source-line-no">027</span><span id="line-27">import net.tnemc.item.bukkit.platform.impl.BukkitCustomNameComponent;</span>
+<span class="source-line-no">028</span><span id="line-28">import net.tnemc.item.bukkit.platform.impl.BukkitDamageComponent;</span>
+<span class="source-line-no">029</span><span id="line-29">import net.tnemc.item.bukkit.platform.impl.BukkitEnchantmentsComponent;</span>
+<span class="source-line-no">030</span><span id="line-30">import net.tnemc.item.bukkit.platform.impl.BukkitItemModelComponent;</span>
+<span class="source-line-no">031</span><span id="line-31">import net.tnemc.item.bukkit.platform.impl.BukkitItemNameComponent;</span>
+<span class="source-line-no">032</span><span id="line-32">import net.tnemc.item.bukkit.platform.impl.BukkitLoreComponent;</span>
+<span class="source-line-no">033</span><span id="line-33">import net.tnemc.item.bukkit.platform.impl.BukkitMaxStackSizeComponent;</span>
+<span class="source-line-no">034</span><span id="line-34">import net.tnemc.item.bukkit.platform.impl.BukkitModelDataComponent;</span>
+<span class="source-line-no">035</span><span id="line-35">import net.tnemc.item.bukkit.platform.impl.BukkitModelDataOldComponent;</span>
+<span class="source-line-no">036</span><span id="line-36">import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;</span>
+<span class="source-line-no">037</span><span id="line-37">import net.tnemc.item.bukkit.platform.impl.BukkitShulkerColorComponent;</span>
+<span class="source-line-no">038</span><span id="line-38">import net.tnemc.item.bukkitbase.platform.providers.ItemAdderProvider;</span>
+<span class="source-line-no">039</span><span id="line-39">import net.tnemc.item.bukkitbase.platform.providers.MMOItemProvider;</span>
+<span class="source-line-no">040</span><span id="line-40">import net.tnemc.item.bukkitbase.platform.providers.NexoProvider;</span>
+<span class="source-line-no">041</span><span id="line-41">import net.tnemc.item.bukkitbase.platform.providers.NovaProvider;</span>
+<span class="source-line-no">042</span><span id="line-42">import net.tnemc.item.bukkitbase.platform.providers.OraxenProvider;</span>
+<span class="source-line-no">043</span><span id="line-43">import net.tnemc.item.bukkitbase.platform.providers.SlimefunProvider;</span>
+<span class="source-line-no">044</span><span id="line-44">import net.tnemc.item.platform.ItemPlatform;</span>
+<span class="source-line-no">045</span><span id="line-45">import net.tnemc.item.providers.CalculationsProvider;</span>
+<span class="source-line-no">046</span><span id="line-46">import net.tnemc.item.providers.ItemProvider;</span>
+<span class="source-line-no">047</span><span id="line-47">import net.tnemc.item.providers.VersionUtil;</span>
+<span class="source-line-no">048</span><span id="line-48">import org.bukkit.Bukkit;</span>
+<span class="source-line-no">049</span><span id="line-49">import org.bukkit.DyeColor;</span>
+<span class="source-line-no">050</span><span id="line-50">import org.bukkit.NamespacedKey;</span>
+<span class="source-line-no">051</span><span id="line-51">import org.bukkit.Registry;</span>
+<span class="source-line-no">052</span><span id="line-52">import org.bukkit.attribute.AttributeModifier;</span>
+<span class="source-line-no">053</span><span id="line-53">import org.bukkit.block.banner.PatternType;</span>
+<span class="source-line-no">054</span><span id="line-54">import org.bukkit.enchantments.Enchantment;</span>
+<span class="source-line-no">055</span><span id="line-55">import org.bukkit.inventory.*;</span>
+<span class="source-line-no">056</span><span id="line-56">import org.bukkit.inventory.meta.trim.TrimMaterial;</span>
+<span class="source-line-no">057</span><span id="line-57">import org.bukkit.inventory.meta.trim.TrimPattern;</span>
+<span class="source-line-no">058</span><span id="line-58">import org.bukkit.potion.PotionEffectType;</span>
+<span class="source-line-no">059</span><span id="line-59">import org.jetbrains.annotations.NotNull;</span>
+<span class="source-line-no">060</span><span id="line-60">import org.json.simple.JSONObject;</span>
+<span class="source-line-no">061</span><span id="line-61">import org.json.simple.parser.ParseException;</span>
+<span class="source-line-no">062</span><span id="line-62"></span>
+<span class="source-line-no">063</span><span id="line-63">import java.util.Locale;</span>
+<span class="source-line-no">064</span><span id="line-64">import java.util.Optional;</span>
+<span class="source-line-no">065</span><span id="line-65"></span>
+<span class="source-line-no">066</span><span id="line-66">/**</span>
+<span class="source-line-no">067</span><span id="line-67"> * BukkitItemPlatform</span>
+<span class="source-line-no">068</span><span id="line-68"> *</span>
+<span class="source-line-no">069</span><span id="line-69"> * @author creatorfromhell</span>
+<span class="source-line-no">070</span><span id="line-70"> * @since 0.1.7.7</span>
+<span class="source-line-no">071</span><span id="line-71"> */</span>
+<span class="source-line-no">072</span><span id="line-72">public class BukkitItemPlatform extends ItemPlatform&lt;BukkitItemStack, ItemStack, Inventory&gt; {</span>
 <span class="source-line-no">073</span><span id="line-73"></span>
-<span class="source-line-no">074</span><span id="line-74">  private BukkitItemPlatform() {</span>
+<span class="source-line-no">074</span><span id="line-74">  private static volatile BukkitItemPlatform instance;</span>
 <span class="source-line-no">075</span><span id="line-75"></span>
-<span class="source-line-no">076</span><span id="line-76">    super();</span>
-<span class="source-line-no">077</span><span id="line-77">  }</span>
+<span class="source-line-no">076</span><span id="line-76">  protected final VanillaProvider defaultProvider = new VanillaProvider();</span>
+<span class="source-line-no">077</span><span id="line-77">  protected final BukkitCalculationsProvider calculationsProvider = new BukkitCalculationsProvider();</span>
 <span class="source-line-no">078</span><span id="line-78"></span>
-<span class="source-line-no">079</span><span id="line-79">  /**</span>
-<span class="source-line-no">080</span><span id="line-80">   * @return the version that is being used currently</span>
-<span class="source-line-no">081</span><span id="line-81">   */</span>
-<span class="source-line-no">082</span><span id="line-82">  @Override</span>
-<span class="source-line-no">083</span><span id="line-83">  public String version() {</span>
-<span class="source-line-no">084</span><span id="line-84">    return Bukkit.getServer().getBukkitVersion().split("-")[0];</span>
-<span class="source-line-no">085</span><span id="line-85">  }</span>
-<span class="source-line-no">086</span><span id="line-86"></span>
-<span class="source-line-no">087</span><span id="line-87">  @Override</span>
-<span class="source-line-no">088</span><span id="line-88">  public void addDefaults() {</span>
-<span class="source-line-no">089</span><span id="line-89"></span>
-<span class="source-line-no">090</span><span id="line-90">    registerConversions();</span>
-<span class="source-line-no">091</span><span id="line-91"></span>
-<span class="source-line-no">092</span><span id="line-92">    //bukkit base implementation.</span>
-<span class="source-line-no">093</span><span id="line-93">    addMulti(new BukkitBundleComponent());</span>
-<span class="source-line-no">094</span><span id="line-94">    addMulti(new BukkitContainerComponent());</span>
-<span class="source-line-no">095</span><span id="line-95">    addMulti(new BukkitCustomNameComponent());</span>
-<span class="source-line-no">096</span><span id="line-96">    addMulti(new BukkitDamageComponent());</span>
-<span class="source-line-no">097</span><span id="line-97">    addMulti(new BukkitEnchantmentsComponent());</span>
-<span class="source-line-no">098</span><span id="line-98">    addMulti(new BukkitItemModelComponent());</span>
-<span class="source-line-no">099</span><span id="line-99">    addMulti(new BukkitItemNameComponent());</span>
-<span class="source-line-no">100</span><span id="line-100">    addMulti(new BukkitLoreComponent());</span>
-<span class="source-line-no">101</span><span id="line-101">    addMulti(new BukkitMaxStackSizeComponent());</span>
-<span class="source-line-no">102</span><span id="line-102">    addMulti(new BukkitModelDataComponent());</span>
-<span class="source-line-no">103</span><span id="line-103">    addMulti(new BukkitModelDataOldComponent());</span>
-<span class="source-line-no">104</span><span id="line-104">    addMulti(new BukkitProfileComponent());</span>
-<span class="source-line-no">105</span><span id="line-105">    addMulti(new BukkitShulkerColorComponent());</span>
+<span class="source-line-no">079</span><span id="line-79">  private BukkitItemPlatform() {</span>
+<span class="source-line-no">080</span><span id="line-80"></span>
+<span class="source-line-no">081</span><span id="line-81">    super();</span>
+<span class="source-line-no">082</span><span id="line-82">  }</span>
+<span class="source-line-no">083</span><span id="line-83"></span>
+<span class="source-line-no">084</span><span id="line-84">  @Override</span>
+<span class="source-line-no">085</span><span id="line-85">  public BukkitItemStack createStack(final String material) {</span>
+<span class="source-line-no">086</span><span id="line-86">    return new BukkitItemStack().of(material, 1);</span>
+<span class="source-line-no">087</span><span id="line-87">  }</span>
+<span class="source-line-no">088</span><span id="line-88"></span>
+<span class="source-line-no">089</span><span id="line-89">  public static BukkitItemPlatform instance() {</span>
+<span class="source-line-no">090</span><span id="line-90"></span>
+<span class="source-line-no">091</span><span id="line-91">    final BukkitItemPlatform result = instance;</span>
+<span class="source-line-no">092</span><span id="line-92">    if(result != null) {</span>
+<span class="source-line-no">093</span><span id="line-93">      return result;</span>
+<span class="source-line-no">094</span><span id="line-94">    }</span>
+<span class="source-line-no">095</span><span id="line-95"></span>
+<span class="source-line-no">096</span><span id="line-96">    synchronized(BukkitItemPlatform.class) {</span>
+<span class="source-line-no">097</span><span id="line-97"></span>
+<span class="source-line-no">098</span><span id="line-98">      if(instance == null) {</span>
+<span class="source-line-no">099</span><span id="line-99"></span>
+<span class="source-line-no">100</span><span id="line-100">        instance = new BukkitItemPlatform();</span>
+<span class="source-line-no">101</span><span id="line-101">        instance.addDefaults();</span>
+<span class="source-line-no">102</span><span id="line-102">      }</span>
+<span class="source-line-no">103</span><span id="line-103">      return instance;</span>
+<span class="source-line-no">104</span><span id="line-104">    }</span>
+<span class="source-line-no">105</span><span id="line-105">  }</span>
 <span class="source-line-no">106</span><span id="line-106"></span>
-<span class="source-line-no">107</span><span id="line-107">  }</span>
-<span class="source-line-no">108</span><span id="line-108"></span>
-<span class="source-line-no">109</span><span id="line-109">  /**</span>
-<span class="source-line-no">110</span><span id="line-110">   * Retrieves the default provider for the item stack comparison.</span>
-<span class="source-line-no">111</span><span id="line-111">   *</span>
-<span class="source-line-no">112</span><span id="line-112">   * @return the default provider for the item stack comparison.</span>
-<span class="source-line-no">113</span><span id="line-113">   */</span>
-<span class="source-line-no">114</span><span id="line-114">  @Override</span>
-<span class="source-line-no">115</span><span id="line-115">  public @NotNull ItemProvider&lt;ItemStack&gt; defaultProvider() {</span>
-<span class="source-line-no">116</span><span id="line-116"></span>
-<span class="source-line-no">117</span><span id="line-117">    return defaultProvider;</span>
-<span class="source-line-no">118</span><span id="line-118">  }</span>
-<span class="source-line-no">119</span><span id="line-119"></span>
-<span class="source-line-no">120</span><span id="line-120">  /**</span>
-<span class="source-line-no">121</span><span id="line-121">   * Retrieves the identifier of the default provider for the item stack comparison.</span>
-<span class="source-line-no">122</span><span id="line-122">   *</span>
-<span class="source-line-no">123</span><span id="line-123">   * @return The identifier of the default provider for the item stack comparison.</span>
-<span class="source-line-no">124</span><span id="line-124">   */</span>
-<span class="source-line-no">125</span><span id="line-125">  @Override</span>
-<span class="source-line-no">126</span><span id="line-126">  public @NotNull String defaultProviderIdentifier() {</span>
-<span class="source-line-no">127</span><span id="line-127"></span>
-<span class="source-line-no">128</span><span id="line-128">    return defaultProvider.identifier();</span>
-<span class="source-line-no">129</span><span id="line-129">  }</span>
-<span class="source-line-no">130</span><span id="line-130"></span>
-<span class="source-line-no">131</span><span id="line-131">  /**</span>
-<span class="source-line-no">132</span><span id="line-132">   * Converts the given locale stack to an instance of {@link AbstractItemStack}</span>
-<span class="source-line-no">133</span><span id="line-133">   *</span>
-<span class="source-line-no">134</span><span id="line-134">   * @param locale the locale to convert</span>
-<span class="source-line-no">135</span><span id="line-135">   *</span>
-<span class="source-line-no">136</span><span id="line-136">   * @return the converted locale of type I</span>
-<span class="source-line-no">137</span><span id="line-137">   */</span>
-<span class="source-line-no">138</span><span id="line-138">  @Override</span>
-<span class="source-line-no">139</span><span id="line-139">  public BukkitItemStack locale(final ItemStack locale) {</span>
-<span class="source-line-no">140</span><span id="line-140"></span>
-<span class="source-line-no">141</span><span id="line-141">    return new BukkitItemStack().of(locale);</span>
-<span class="source-line-no">142</span><span id="line-142">  }</span>
+<span class="source-line-no">107</span><span id="line-107">  /**</span>
+<span class="source-line-no">108</span><span id="line-108">   * @return the version that is being used currently</span>
+<span class="source-line-no">109</span><span id="line-109">   * @since 0.2.0.0</span>
+<span class="source-line-no">110</span><span id="line-110">   */</span>
+<span class="source-line-no">111</span><span id="line-111">  @Override</span>
+<span class="source-line-no">112</span><span id="line-112">  public String version() {</span>
+<span class="source-line-no">113</span><span id="line-113">    return Bukkit.getServer().getBukkitVersion().split("-")[0];</span>
+<span class="source-line-no">114</span><span id="line-114">  }</span>
+<span class="source-line-no">115</span><span id="line-115"></span>
+<span class="source-line-no">116</span><span id="line-116">  @Override</span>
+<span class="source-line-no">117</span><span id="line-117">  public void addDefaults() {</span>
+<span class="source-line-no">118</span><span id="line-118"></span>
+<span class="source-line-no">119</span><span id="line-119">    registerConversions();</span>
+<span class="source-line-no">120</span><span id="line-120"></span>
+<span class="source-line-no">121</span><span id="line-121">    //bukkit base implementation.</span>
+<span class="source-line-no">122</span><span id="line-122">    addMulti(new BukkitBundleComponent());</span>
+<span class="source-line-no">123</span><span id="line-123">    addMulti(new BukkitContainerComponent());</span>
+<span class="source-line-no">124</span><span id="line-124">    addMulti(new BukkitCustomNameComponent());</span>
+<span class="source-line-no">125</span><span id="line-125">    addMulti(new BukkitDamageComponent());</span>
+<span class="source-line-no">126</span><span id="line-126">    addMulti(new BukkitEnchantmentsComponent());</span>
+<span class="source-line-no">127</span><span id="line-127">    addMulti(new BukkitItemModelComponent());</span>
+<span class="source-line-no">128</span><span id="line-128">    addMulti(new BukkitItemNameComponent());</span>
+<span class="source-line-no">129</span><span id="line-129">    addMulti(new BukkitLoreComponent());</span>
+<span class="source-line-no">130</span><span id="line-130">    addMulti(new BukkitMaxStackSizeComponent());</span>
+<span class="source-line-no">131</span><span id="line-131">    addMulti(new BukkitModelDataComponent());</span>
+<span class="source-line-no">132</span><span id="line-132">    addMulti(new BukkitModelDataOldComponent());</span>
+<span class="source-line-no">133</span><span id="line-133">    addMulti(new BukkitProfileComponent());</span>
+<span class="source-line-no">134</span><span id="line-134">    addMulti(new BukkitShulkerColorComponent());</span>
+<span class="source-line-no">135</span><span id="line-135"></span>
+<span class="source-line-no">136</span><span id="line-136">    addItemProvider(new ItemAdderProvider());</span>
+<span class="source-line-no">137</span><span id="line-137">    addItemProvider(new MMOItemProvider());</span>
+<span class="source-line-no">138</span><span id="line-138">    addItemProvider(new NexoProvider());</span>
+<span class="source-line-no">139</span><span id="line-139">    addItemProvider(new NovaProvider());</span>
+<span class="source-line-no">140</span><span id="line-140">    addItemProvider(new OraxenProvider());</span>
+<span class="source-line-no">141</span><span id="line-141">    addItemProvider(new SlimefunProvider());</span>
+<span class="source-line-no">142</span><span id="line-142">    addItemProvider(defaultProvider);</span>
 <span class="source-line-no">143</span><span id="line-143"></span>
-<span class="source-line-no">144</span><span id="line-144">  @SuppressWarnings({"deprecation", "UnstableApiUsage" })</span>
-<span class="source-line-no">145</span><span id="line-145">  private void registerConversions() {</span>
-<span class="source-line-no">146</span><span id="line-146"></span>
-<span class="source-line-no">147</span><span id="line-147">    //RegisterConversion for EquipmentSlot</span>
-<span class="source-line-no">148</span><span id="line-148">    converter.registerConversion(String.class, EquipmentSlot.class, input -&gt; {</span>
-<span class="source-line-no">149</span><span id="line-149">      switch (input.toUpperCase()) {</span>
-<span class="source-line-no">150</span><span id="line-150">        case "HAND": return EquipmentSlot.HAND;</span>
-<span class="source-line-no">151</span><span id="line-151">        case "OFF_HAND": return EquipmentSlot.OFF_HAND;</span>
-<span class="source-line-no">152</span><span id="line-152">        case "FEET": return EquipmentSlot.FEET;</span>
-<span class="source-line-no">153</span><span id="line-153">        case "LEGS": return EquipmentSlot.LEGS;</span>
-<span class="source-line-no">154</span><span id="line-154">        case "CHEST": return EquipmentSlot.CHEST;</span>
-<span class="source-line-no">155</span><span id="line-155">        case "HEAD": return EquipmentSlot.HEAD;</span>
-<span class="source-line-no">156</span><span id="line-156">        case "BODY": return EquipmentSlot.BODY;</span>
-<span class="source-line-no">157</span><span id="line-157">        default: return EquipmentSlot.HAND;</span>
-<span class="source-line-no">158</span><span id="line-158">      }</span>
-<span class="source-line-no">159</span><span id="line-159">    });</span>
-<span class="source-line-no">160</span><span id="line-160"></span>
-<span class="source-line-no">161</span><span id="line-161">    converter.registerConversion(EquipmentSlot.class, String.class, input-&gt;switch(input) {</span>
-<span class="source-line-no">162</span><span id="line-162">      case HAND -&gt; "HAND";</span>
-<span class="source-line-no">163</span><span id="line-163">      case OFF_HAND -&gt; "OFF_HAND";</span>
-<span class="source-line-no">164</span><span id="line-164">      case FEET -&gt; "FEET";</span>
-<span class="source-line-no">165</span><span id="line-165">      case LEGS -&gt; "LEGS";</span>
-<span class="source-line-no">166</span><span id="line-166">      case CHEST -&gt; "CHEST";</span>
-<span class="source-line-no">167</span><span id="line-167">      case HEAD -&gt; "HEAD";</span>
-<span class="source-line-no">168</span><span id="line-168">      case BODY -&gt; "BODY";</span>
-<span class="source-line-no">169</span><span id="line-169">      case SADDLE -&gt; "SADDLE";</span>
-<span class="source-line-no">170</span><span id="line-170">      default -&gt; "HAND";</span>
-<span class="source-line-no">171</span><span id="line-171">    });</span>
-<span class="source-line-no">172</span><span id="line-172"></span>
-<span class="source-line-no">173</span><span id="line-173">    //RegisterConversion for EquipmentSlotGroup</span>
-<span class="source-line-no">174</span><span id="line-174">    converter.registerConversion(String.class, EquipmentSlotGroup.class, input -&gt; {</span>
-<span class="source-line-no">175</span><span id="line-175">      final EquipmentSlotGroup group = EquipmentSlotGroup.getByName(input);</span>
-<span class="source-line-no">176</span><span id="line-176">      if(group == null) {</span>
-<span class="source-line-no">177</span><span id="line-177">        throw new IllegalArgumentException("Unknown input: " + input);</span>
-<span class="source-line-no">178</span><span id="line-178">      }</span>
-<span class="source-line-no">179</span><span id="line-179">      return group;</span>
-<span class="source-line-no">180</span><span id="line-180">    });</span>
-<span class="source-line-no">181</span><span id="line-181"></span>
-<span class="source-line-no">182</span><span id="line-182">    converter.registerConversion(EquipmentSlotGroup.class, String.class, EquipmentSlotGroup::toString);</span>
-<span class="source-line-no">183</span><span id="line-183"></span>
-<span class="source-line-no">184</span><span id="line-184">    //Register Conversions for AttributeModifier</span>
-<span class="source-line-no">185</span><span id="line-185">    converter.registerConversion(String.class, AttributeModifier.Operation.class, input-&gt;switch(input.toLowerCase()) {</span>
-<span class="source-line-no">186</span><span id="line-186">      case "add_value" -&gt; AttributeModifier.Operation.ADD_NUMBER;</span>
-<span class="source-line-no">187</span><span id="line-187">      case "add_multiplied_base" -&gt; AttributeModifier.Operation.ADD_SCALAR;</span>
-<span class="source-line-no">188</span><span id="line-188">      case "add_multiplied_total" -&gt; AttributeModifier.Operation.MULTIPLY_SCALAR_1;</span>
-<span class="source-line-no">189</span><span id="line-189">      default -&gt; throw new IllegalArgumentException("Unknown input: " + input);</span>
-<span class="source-line-no">190</span><span id="line-190">    });</span>
-<span class="source-line-no">191</span><span id="line-191"></span>
-<span class="source-line-no">192</span><span id="line-192">    converter.registerConversion(AttributeModifier.Operation.class, String.class, input -&gt;switch(input) {</span>
-<span class="source-line-no">193</span><span id="line-193">      case ADD_NUMBER -&gt; "add_value";</span>
-<span class="source-line-no">194</span><span id="line-194">      case ADD_SCALAR -&gt; "add_multiplied_base";</span>
-<span class="source-line-no">195</span><span id="line-195">      case MULTIPLY_SCALAR_1 -&gt; "add_multiplied_total";</span>
-<span class="source-line-no">196</span><span id="line-196">    });</span>
-<span class="source-line-no">197</span><span id="line-197"></span>
-<span class="source-line-no">198</span><span id="line-198">    //Register conversions for DyeColor</span>
-<span class="source-line-no">199</span><span id="line-199">    converter.registerConversion(String.class, DyeColor.class, input -&gt;switch(input.toLowerCase(Locale.ROOT)) {</span>
-<span class="source-line-no">200</span><span id="line-200">      case "white" -&gt; DyeColor.WHITE;</span>
-<span class="source-line-no">201</span><span id="line-201">      case "orange" -&gt; DyeColor.ORANGE;</span>
-<span class="source-line-no">202</span><span id="line-202">      case "magenta" -&gt; DyeColor.MAGENTA;</span>
-<span class="source-line-no">203</span><span id="line-203">      case "light_blue" -&gt; DyeColor.LIGHT_BLUE;</span>
-<span class="source-line-no">204</span><span id="line-204">      case "yellow" -&gt; DyeColor.YELLOW;</span>
-<span class="source-line-no">205</span><span id="line-205">      case "lime" -&gt; DyeColor.LIME;</span>
-<span class="source-line-no">206</span><span id="line-206">      case "pink" -&gt; DyeColor.PINK;</span>
-<span class="source-line-no">207</span><span id="line-207">      case "gray" -&gt; DyeColor.GRAY;</span>
-<span class="source-line-no">208</span><span id="line-208">      case "light_gray" -&gt; DyeColor.LIGHT_GRAY;</span>
-<span class="source-line-no">209</span><span id="line-209">      case "cyan" -&gt; DyeColor.CYAN;</span>
-<span class="source-line-no">210</span><span id="line-210">      case "purple" -&gt; DyeColor.PURPLE;</span>
-<span class="source-line-no">211</span><span id="line-211">      case "blue" -&gt; DyeColor.BLUE;</span>
-<span class="source-line-no">212</span><span id="line-212">      case "brown" -&gt; DyeColor.BROWN;</span>
-<span class="source-line-no">213</span><span id="line-213">      case "green" -&gt; DyeColor.GREEN;</span>
-<span class="source-line-no">214</span><span id="line-214">      case "red" -&gt; DyeColor.RED;</span>
-<span class="source-line-no">215</span><span id="line-215">      case "black" -&gt; DyeColor.BLACK;</span>
-<span class="source-line-no">216</span><span id="line-216">      default -&gt; throw new IllegalArgumentException("Unknown DyeColor: " + input);</span>
-<span class="source-line-no">217</span><span id="line-217">    });</span>
-<span class="source-line-no">218</span><span id="line-218"></span>
-<span class="source-line-no">219</span><span id="line-219">    converter.registerConversion(DyeColor.class, String.class, input -&gt;switch(input) {</span>
-<span class="source-line-no">220</span><span id="line-220">      case WHITE -&gt; "white";</span>
-<span class="source-line-no">221</span><span id="line-221">      case ORANGE -&gt; "orange";</span>
-<span class="source-line-no">222</span><span id="line-222">      case MAGENTA -&gt; "magenta";</span>
-<span class="source-line-no">223</span><span id="line-223">      case LIGHT_BLUE -&gt; "light_blue";</span>
-<span class="source-line-no">224</span><span id="line-224">      case YELLOW -&gt; "yellow";</span>
-<span class="source-line-no">225</span><span id="line-225">      case LIME -&gt; "lime";</span>
-<span class="source-line-no">226</span><span id="line-226">      case PINK -&gt; "pink";</span>
-<span class="source-line-no">227</span><span id="line-227">      case GRAY -&gt; "gray";</span>
-<span class="source-line-no">228</span><span id="line-228">      case LIGHT_GRAY -&gt; "light_gray";</span>
-<span class="source-line-no">229</span><span id="line-229">      case CYAN -&gt; "cyan";</span>
-<span class="source-line-no">230</span><span id="line-230">      case PURPLE -&gt; "purple";</span>
-<span class="source-line-no">231</span><span id="line-231">      case BLUE -&gt; "blue";</span>
-<span class="source-line-no">232</span><span id="line-232">      case BROWN -&gt; "brown";</span>
-<span class="source-line-no">233</span><span id="line-233">      case GREEN -&gt; "green";</span>
-<span class="source-line-no">234</span><span id="line-234">      case RED -&gt; "red";</span>
-<span class="source-line-no">235</span><span id="line-235">      case BLACK -&gt; "black";</span>
-<span class="source-line-no">236</span><span id="line-236">    });</span>
-<span class="source-line-no">237</span><span id="line-237"></span>
-<span class="source-line-no">238</span><span id="line-238">    //Register Conversions for PatternType, which will be dependent on versions</span>
-<span class="source-line-no">239</span><span id="line-239">    //We'll separate the legacy find methods from the modern ones in order to maintain one component</span>
-<span class="source-line-no">240</span><span id="line-240">    // class for both.</span>
-<span class="source-line-no">241</span><span id="line-241">    if(VersionUtil.isOneTwentyOne(version())) {</span>
-<span class="source-line-no">242</span><span id="line-242"></span>
-<span class="source-line-no">243</span><span id="line-243">      converter.registerConversion(String.class, PatternType.class, input-&gt;{</span>
+<span class="source-line-no">144</span><span id="line-144">    System.out.println("Item Providers: " + itemProviders.size());</span>
+<span class="source-line-no">145</span><span id="line-145"></span>
+<span class="source-line-no">146</span><span id="line-146">  }</span>
+<span class="source-line-no">147</span><span id="line-147"></span>
+<span class="source-line-no">148</span><span id="line-148">  /**</span>
+<span class="source-line-no">149</span><span id="line-149">   * Retrieves the default provider for the item stack comparison.</span>
+<span class="source-line-no">150</span><span id="line-150">   *</span>
+<span class="source-line-no">151</span><span id="line-151">   * @return the default provider for the item stack comparison.</span>
+<span class="source-line-no">152</span><span id="line-152">   * @since 0.2.0.0</span>
+<span class="source-line-no">153</span><span id="line-153">   */</span>
+<span class="source-line-no">154</span><span id="line-154">  @Override</span>
+<span class="source-line-no">155</span><span id="line-155">  public @NotNull ItemProvider&lt;ItemStack&gt; defaultProvider() {</span>
+<span class="source-line-no">156</span><span id="line-156"></span>
+<span class="source-line-no">157</span><span id="line-157">    return defaultProvider;</span>
+<span class="source-line-no">158</span><span id="line-158">  }</span>
+<span class="source-line-no">159</span><span id="line-159"></span>
+<span class="source-line-no">160</span><span id="line-160">  /**</span>
+<span class="source-line-no">161</span><span id="line-161">   * Retrieves the identifier of the default provider for the item stack comparison.</span>
+<span class="source-line-no">162</span><span id="line-162">   *</span>
+<span class="source-line-no">163</span><span id="line-163">   * @return The identifier of the default provider for the item stack comparison.</span>
+<span class="source-line-no">164</span><span id="line-164">   * @since 0.2.0.0</span>
+<span class="source-line-no">165</span><span id="line-165">   */</span>
+<span class="source-line-no">166</span><span id="line-166">  @Override</span>
+<span class="source-line-no">167</span><span id="line-167">  public @NotNull String defaultProviderIdentifier() {</span>
+<span class="source-line-no">168</span><span id="line-168"></span>
+<span class="source-line-no">169</span><span id="line-169">    return defaultProvider.identifier();</span>
+<span class="source-line-no">170</span><span id="line-170">  }</span>
+<span class="source-line-no">171</span><span id="line-171"></span>
+<span class="source-line-no">172</span><span id="line-172">  @Override</span>
+<span class="source-line-no">173</span><span id="line-173">  public BukkitCalculationsProvider calculations() {</span>
+<span class="source-line-no">174</span><span id="line-174">    return calculationsProvider;</span>
+<span class="source-line-no">175</span><span id="line-175">  }</span>
+<span class="source-line-no">176</span><span id="line-176"></span>
+<span class="source-line-no">177</span><span id="line-177">  /**</span>
+<span class="source-line-no">178</span><span id="line-178">   * Converts the given locale stack to an instance of {@link AbstractItemStack}</span>
+<span class="source-line-no">179</span><span id="line-179">   *</span>
+<span class="source-line-no">180</span><span id="line-180">   * @param locale the locale to convert</span>
+<span class="source-line-no">181</span><span id="line-181">   *</span>
+<span class="source-line-no">182</span><span id="line-182">   * @return the converted locale of type I</span>
+<span class="source-line-no">183</span><span id="line-183">   * @since 0.2.0.0</span>
+<span class="source-line-no">184</span><span id="line-184">   */</span>
+<span class="source-line-no">185</span><span id="line-185">  @Override</span>
+<span class="source-line-no">186</span><span id="line-186">  public BukkitItemStack locale(final ItemStack locale) {</span>
+<span class="source-line-no">187</span><span id="line-187"></span>
+<span class="source-line-no">188</span><span id="line-188">    return new BukkitItemStack().of(locale);</span>
+<span class="source-line-no">189</span><span id="line-189">  }</span>
+<span class="source-line-no">190</span><span id="line-190"></span>
+<span class="source-line-no">191</span><span id="line-191">  @SuppressWarnings({"deprecation", "UnstableApiUsage" })</span>
+<span class="source-line-no">192</span><span id="line-192">  private void registerConversions() {</span>
+<span class="source-line-no">193</span><span id="line-193"></span>
+<span class="source-line-no">194</span><span id="line-194">    //RegisterConversion for EquipmentSlot</span>
+<span class="source-line-no">195</span><span id="line-195">    converter.registerConversion(String.class, EquipmentSlot.class, input -&gt; {</span>
+<span class="source-line-no">196</span><span id="line-196">      switch (input.toUpperCase()) {</span>
+<span class="source-line-no">197</span><span id="line-197">        case "HAND": return EquipmentSlot.HAND;</span>
+<span class="source-line-no">198</span><span id="line-198">        case "OFF_HAND": return EquipmentSlot.OFF_HAND;</span>
+<span class="source-line-no">199</span><span id="line-199">        case "FEET": return EquipmentSlot.FEET;</span>
+<span class="source-line-no">200</span><span id="line-200">        case "LEGS": return EquipmentSlot.LEGS;</span>
+<span class="source-line-no">201</span><span id="line-201">        case "CHEST": return EquipmentSlot.CHEST;</span>
+<span class="source-line-no">202</span><span id="line-202">        case "HEAD": return EquipmentSlot.HEAD;</span>
+<span class="source-line-no">203</span><span id="line-203">        case "BODY": return EquipmentSlot.BODY;</span>
+<span class="source-line-no">204</span><span id="line-204">        default: return EquipmentSlot.HAND;</span>
+<span class="source-line-no">205</span><span id="line-205">      }</span>
+<span class="source-line-no">206</span><span id="line-206">    });</span>
+<span class="source-line-no">207</span><span id="line-207"></span>
+<span class="source-line-no">208</span><span id="line-208">    converter.registerConversion(EquipmentSlot.class, String.class, input-&gt;switch(input) {</span>
+<span class="source-line-no">209</span><span id="line-209">      case HAND -&gt; "HAND";</span>
+<span class="source-line-no">210</span><span id="line-210">      case OFF_HAND -&gt; "OFF_HAND";</span>
+<span class="source-line-no">211</span><span id="line-211">      case FEET -&gt; "FEET";</span>
+<span class="source-line-no">212</span><span id="line-212">      case LEGS -&gt; "LEGS";</span>
+<span class="source-line-no">213</span><span id="line-213">      case CHEST -&gt; "CHEST";</span>
+<span class="source-line-no">214</span><span id="line-214">      case HEAD -&gt; "HEAD";</span>
+<span class="source-line-no">215</span><span id="line-215">      case BODY -&gt; "BODY";</span>
+<span class="source-line-no">216</span><span id="line-216">      case SADDLE -&gt; "SADDLE";</span>
+<span class="source-line-no">217</span><span id="line-217">      default -&gt; "HAND";</span>
+<span class="source-line-no">218</span><span id="line-218">    });</span>
+<span class="source-line-no">219</span><span id="line-219"></span>
+<span class="source-line-no">220</span><span id="line-220">    //RegisterConversion for EquipmentSlotGroup</span>
+<span class="source-line-no">221</span><span id="line-221">    converter.registerConversion(String.class, EquipmentSlotGroup.class, input -&gt; {</span>
+<span class="source-line-no">222</span><span id="line-222">      final EquipmentSlotGroup group = EquipmentSlotGroup.getByName(input);</span>
+<span class="source-line-no">223</span><span id="line-223">      if(group == null) {</span>
+<span class="source-line-no">224</span><span id="line-224">        throw new IllegalArgumentException("Unknown input: " + input);</span>
+<span class="source-line-no">225</span><span id="line-225">      }</span>
+<span class="source-line-no">226</span><span id="line-226">      return group;</span>
+<span class="source-line-no">227</span><span id="line-227">    });</span>
+<span class="source-line-no">228</span><span id="line-228"></span>
+<span class="source-line-no">229</span><span id="line-229">    converter.registerConversion(EquipmentSlotGroup.class, String.class, EquipmentSlotGroup::toString);</span>
+<span class="source-line-no">230</span><span id="line-230"></span>
+<span class="source-line-no">231</span><span id="line-231">    //Register Conversions for AttributeModifier</span>
+<span class="source-line-no">232</span><span id="line-232">    converter.registerConversion(String.class, AttributeModifier.Operation.class, input-&gt;switch(input.toLowerCase()) {</span>
+<span class="source-line-no">233</span><span id="line-233">      case "add_value" -&gt; AttributeModifier.Operation.ADD_NUMBER;</span>
+<span class="source-line-no">234</span><span id="line-234">      case "add_multiplied_base" -&gt; AttributeModifier.Operation.ADD_SCALAR;</span>
+<span class="source-line-no">235</span><span id="line-235">      case "add_multiplied_total" -&gt; AttributeModifier.Operation.MULTIPLY_SCALAR_1;</span>
+<span class="source-line-no">236</span><span id="line-236">      default -&gt; throw new IllegalArgumentException("Unknown input: " + input);</span>
+<span class="source-line-no">237</span><span id="line-237">    });</span>
+<span class="source-line-no">238</span><span id="line-238"></span>
+<span class="source-line-no">239</span><span id="line-239">    converter.registerConversion(AttributeModifier.Operation.class, String.class, input -&gt;switch(input) {</span>
+<span class="source-line-no">240</span><span id="line-240">      case ADD_NUMBER -&gt; "add_value";</span>
+<span class="source-line-no">241</span><span id="line-241">      case ADD_SCALAR -&gt; "add_multiplied_base";</span>
+<span class="source-line-no">242</span><span id="line-242">      case MULTIPLY_SCALAR_1 -&gt; "add_multiplied_total";</span>
+<span class="source-line-no">243</span><span id="line-243">    });</span>
 <span class="source-line-no">244</span><span id="line-244"></span>
-<span class="source-line-no">245</span><span id="line-245">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
-<span class="source-line-no">246</span><span id="line-246">        if(key != null) {</span>
-<span class="source-line-no">247</span><span id="line-247"></span>
-<span class="source-line-no">248</span><span id="line-248">          final PatternType patternType = Registry.BANNER_PATTERN.get(key);</span>
-<span class="source-line-no">249</span><span id="line-249">          if(patternType != null) {</span>
-<span class="source-line-no">250</span><span id="line-250"></span>
-<span class="source-line-no">251</span><span id="line-251">            return patternType;</span>
-<span class="source-line-no">252</span><span id="line-252">          }</span>
-<span class="source-line-no">253</span><span id="line-253">        }</span>
-<span class="source-line-no">254</span><span id="line-254">        throw new IllegalArgumentException("Unknown PatternType: " + input);</span>
-<span class="source-line-no">255</span><span id="line-255">      });</span>
-<span class="source-line-no">256</span><span id="line-256"></span>
-<span class="source-line-no">257</span><span id="line-257">      if(VersionUtil.isOneTwentyOneFour(version())) {</span>
-<span class="source-line-no">258</span><span id="line-258"></span>
-<span class="source-line-no">259</span><span id="line-259">        converter.registerConversion(PatternType.class, String.class, input-&gt;{</span>
-<span class="source-line-no">260</span><span id="line-260"></span>
-<span class="source-line-no">261</span><span id="line-261">          final NamespacedKey key = input.getKeyOrThrow();</span>
-<span class="source-line-no">262</span><span id="line-262"></span>
-<span class="source-line-no">263</span><span id="line-263">          return key.toString();</span>
-<span class="source-line-no">264</span><span id="line-264">        });</span>
-<span class="source-line-no">265</span><span id="line-265">      } else {</span>
-<span class="source-line-no">266</span><span id="line-266"></span>
-<span class="source-line-no">267</span><span id="line-267">        converter.registerConversion(PatternType.class, String.class, input-&gt;{</span>
-<span class="source-line-no">268</span><span id="line-268"></span>
-<span class="source-line-no">269</span><span id="line-269">          final NamespacedKey key = input.getKey();</span>
-<span class="source-line-no">270</span><span id="line-270"></span>
-<span class="source-line-no">271</span><span id="line-271">          return key.toString();</span>
-<span class="source-line-no">272</span><span id="line-272">        });</span>
-<span class="source-line-no">273</span><span id="line-273">      }</span>
-<span class="source-line-no">274</span><span id="line-274"></span>
-<span class="source-line-no">275</span><span id="line-275">    } else {</span>
-<span class="source-line-no">276</span><span id="line-276"></span>
-<span class="source-line-no">277</span><span id="line-277">      converter.registerConversion(String.class, PatternType.class, PatternType::valueOf);</span>
-<span class="source-line-no">278</span><span id="line-278"></span>
-<span class="source-line-no">279</span><span id="line-279">      converter.registerConversion(PatternType.class, String.class, PatternType::getIdentifier);</span>
-<span class="source-line-no">280</span><span id="line-280">    }</span>
-<span class="source-line-no">281</span><span id="line-281"></span>
-<span class="source-line-no">282</span><span id="line-282">    //Register Conversions for Enchantment, which will be dependent on versions</span>
-<span class="source-line-no">283</span><span id="line-283">    //We'll separate the legacy find methods from the modern ones in order to maintain one component</span>
-<span class="source-line-no">284</span><span id="line-284">    // class for both.</span>
-<span class="source-line-no">285</span><span id="line-285">    if(VersionUtil.isOneTwentyOneFour(version())) {</span>
-<span class="source-line-no">286</span><span id="line-286"></span>
-<span class="source-line-no">287</span><span id="line-287">      converter.registerConversion(String.class, Enchantment.class, (final String input)-&gt;{</span>
-<span class="source-line-no">288</span><span id="line-288"></span>
-<span class="source-line-no">289</span><span id="line-289">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
-<span class="source-line-no">290</span><span id="line-290">        if(key != null) {</span>
+<span class="source-line-no">245</span><span id="line-245">    //Register conversions for DyeColor</span>
+<span class="source-line-no">246</span><span id="line-246">    converter.registerConversion(String.class, DyeColor.class, input -&gt;switch(input.toLowerCase(Locale.ROOT)) {</span>
+<span class="source-line-no">247</span><span id="line-247">      case "white" -&gt; DyeColor.WHITE;</span>
+<span class="source-line-no">248</span><span id="line-248">      case "orange" -&gt; DyeColor.ORANGE;</span>
+<span class="source-line-no">249</span><span id="line-249">      case "magenta" -&gt; DyeColor.MAGENTA;</span>
+<span class="source-line-no">250</span><span id="line-250">      case "light_blue" -&gt; DyeColor.LIGHT_BLUE;</span>
+<span class="source-line-no">251</span><span id="line-251">      case "yellow" -&gt; DyeColor.YELLOW;</span>
+<span class="source-line-no">252</span><span id="line-252">      case "lime" -&gt; DyeColor.LIME;</span>
+<span class="source-line-no">253</span><span id="line-253">      case "pink" -&gt; DyeColor.PINK;</span>
+<span class="source-line-no">254</span><span id="line-254">      case "gray" -&gt; DyeColor.GRAY;</span>
+<span class="source-line-no">255</span><span id="line-255">      case "light_gray" -&gt; DyeColor.LIGHT_GRAY;</span>
+<span class="source-line-no">256</span><span id="line-256">      case "cyan" -&gt; DyeColor.CYAN;</span>
+<span class="source-line-no">257</span><span id="line-257">      case "purple" -&gt; DyeColor.PURPLE;</span>
+<span class="source-line-no">258</span><span id="line-258">      case "blue" -&gt; DyeColor.BLUE;</span>
+<span class="source-line-no">259</span><span id="line-259">      case "brown" -&gt; DyeColor.BROWN;</span>
+<span class="source-line-no">260</span><span id="line-260">      case "green" -&gt; DyeColor.GREEN;</span>
+<span class="source-line-no">261</span><span id="line-261">      case "red" -&gt; DyeColor.RED;</span>
+<span class="source-line-no">262</span><span id="line-262">      case "black" -&gt; DyeColor.BLACK;</span>
+<span class="source-line-no">263</span><span id="line-263">      default -&gt; throw new IllegalArgumentException("Unknown DyeColor: " + input);</span>
+<span class="source-line-no">264</span><span id="line-264">    });</span>
+<span class="source-line-no">265</span><span id="line-265"></span>
+<span class="source-line-no">266</span><span id="line-266">    converter.registerConversion(DyeColor.class, String.class, input -&gt;switch(input) {</span>
+<span class="source-line-no">267</span><span id="line-267">      case WHITE -&gt; "white";</span>
+<span class="source-line-no">268</span><span id="line-268">      case ORANGE -&gt; "orange";</span>
+<span class="source-line-no">269</span><span id="line-269">      case MAGENTA -&gt; "magenta";</span>
+<span class="source-line-no">270</span><span id="line-270">      case LIGHT_BLUE -&gt; "light_blue";</span>
+<span class="source-line-no">271</span><span id="line-271">      case YELLOW -&gt; "yellow";</span>
+<span class="source-line-no">272</span><span id="line-272">      case LIME -&gt; "lime";</span>
+<span class="source-line-no">273</span><span id="line-273">      case PINK -&gt; "pink";</span>
+<span class="source-line-no">274</span><span id="line-274">      case GRAY -&gt; "gray";</span>
+<span class="source-line-no">275</span><span id="line-275">      case LIGHT_GRAY -&gt; "light_gray";</span>
+<span class="source-line-no">276</span><span id="line-276">      case CYAN -&gt; "cyan";</span>
+<span class="source-line-no">277</span><span id="line-277">      case PURPLE -&gt; "purple";</span>
+<span class="source-line-no">278</span><span id="line-278">      case BLUE -&gt; "blue";</span>
+<span class="source-line-no">279</span><span id="line-279">      case BROWN -&gt; "brown";</span>
+<span class="source-line-no">280</span><span id="line-280">      case GREEN -&gt; "green";</span>
+<span class="source-line-no">281</span><span id="line-281">      case RED -&gt; "red";</span>
+<span class="source-line-no">282</span><span id="line-282">      case BLACK -&gt; "black";</span>
+<span class="source-line-no">283</span><span id="line-283">    });</span>
+<span class="source-line-no">284</span><span id="line-284"></span>
+<span class="source-line-no">285</span><span id="line-285">    //Register Conversions for PatternType, which will be dependent on versions</span>
+<span class="source-line-no">286</span><span id="line-286">    //We'll separate the legacy find methods from the modern ones in order to maintain one component</span>
+<span class="source-line-no">287</span><span id="line-287">    // class for both.</span>
+<span class="source-line-no">288</span><span id="line-288">    if(VersionUtil.isOneTwentyOne(version())) {</span>
+<span class="source-line-no">289</span><span id="line-289"></span>
+<span class="source-line-no">290</span><span id="line-290">      converter.registerConversion(String.class, PatternType.class, input-&gt;{</span>
 <span class="source-line-no">291</span><span id="line-291"></span>
-<span class="source-line-no">292</span><span id="line-292">          return Registry.ENCHANTMENT.getOrThrow(key);</span>
-<span class="source-line-no">293</span><span id="line-293">        }</span>
-<span class="source-line-no">294</span><span id="line-294">        throw new IllegalArgumentException("Unknown Enchantment: " + input);</span>
-<span class="source-line-no">295</span><span id="line-295">      });</span>
-<span class="source-line-no">296</span><span id="line-296"></span>
-<span class="source-line-no">297</span><span id="line-297">      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)-&gt;input.getKeyOrThrow().toString());</span>
-<span class="source-line-no">298</span><span id="line-298"></span>
-<span class="source-line-no">299</span><span id="line-299">    } else if(VersionUtil.isOneThirteen(version())) {</span>
-<span class="source-line-no">300</span><span id="line-300">      converter.registerConversion(String.class, Enchantment.class, (final String input)-&gt;{</span>
-<span class="source-line-no">301</span><span id="line-301"></span>
-<span class="source-line-no">302</span><span id="line-302">        final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.fromString(input));</span>
-<span class="source-line-no">303</span><span id="line-303">        if(enchantment == null) {</span>
-<span class="source-line-no">304</span><span id="line-304"></span>
-<span class="source-line-no">305</span><span id="line-305">          throw new IllegalArgumentException("Unknown Enchantment: " + input);</span>
-<span class="source-line-no">306</span><span id="line-306">        }</span>
-<span class="source-line-no">307</span><span id="line-307">        return enchantment;</span>
-<span class="source-line-no">308</span><span id="line-308">      });</span>
+<span class="source-line-no">292</span><span id="line-292">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
+<span class="source-line-no">293</span><span id="line-293">        if(key != null) {</span>
+<span class="source-line-no">294</span><span id="line-294"></span>
+<span class="source-line-no">295</span><span id="line-295">          final PatternType patternType = Registry.BANNER_PATTERN.get(key);</span>
+<span class="source-line-no">296</span><span id="line-296">          if(patternType != null) {</span>
+<span class="source-line-no">297</span><span id="line-297"></span>
+<span class="source-line-no">298</span><span id="line-298">            return patternType;</span>
+<span class="source-line-no">299</span><span id="line-299">          }</span>
+<span class="source-line-no">300</span><span id="line-300">        }</span>
+<span class="source-line-no">301</span><span id="line-301">        throw new IllegalArgumentException("Unknown PatternType: " + input);</span>
+<span class="source-line-no">302</span><span id="line-302">      });</span>
+<span class="source-line-no">303</span><span id="line-303"></span>
+<span class="source-line-no">304</span><span id="line-304">      if(VersionUtil.isOneTwentyOneFour(version())) {</span>
+<span class="source-line-no">305</span><span id="line-305"></span>
+<span class="source-line-no">306</span><span id="line-306">        converter.registerConversion(PatternType.class, String.class, input-&gt;{</span>
+<span class="source-line-no">307</span><span id="line-307"></span>
+<span class="source-line-no">308</span><span id="line-308">          final NamespacedKey key = input.getKeyOrThrow();</span>
 <span class="source-line-no">309</span><span id="line-309"></span>
-<span class="source-line-no">310</span><span id="line-310">      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)-&gt;input.getKey().getKey());</span>
-<span class="source-line-no">311</span><span id="line-311">    } else {</span>
-<span class="source-line-no">312</span><span id="line-312"></span>
-<span class="source-line-no">313</span><span id="line-313">      converter.registerConversion(String.class, Enchantment.class, (final String input)-&gt;{</span>
-<span class="source-line-no">314</span><span id="line-314"></span>
-<span class="source-line-no">315</span><span id="line-315">        final Enchantment enchantment = Enchantment.getByName(input);</span>
-<span class="source-line-no">316</span><span id="line-316">        if(enchantment == null) {</span>
+<span class="source-line-no">310</span><span id="line-310">          return key.toString();</span>
+<span class="source-line-no">311</span><span id="line-311">        });</span>
+<span class="source-line-no">312</span><span id="line-312">      } else {</span>
+<span class="source-line-no">313</span><span id="line-313"></span>
+<span class="source-line-no">314</span><span id="line-314">        converter.registerConversion(PatternType.class, String.class, input-&gt;{</span>
+<span class="source-line-no">315</span><span id="line-315"></span>
+<span class="source-line-no">316</span><span id="line-316">          final NamespacedKey key = input.getKey();</span>
 <span class="source-line-no">317</span><span id="line-317"></span>
-<span class="source-line-no">318</span><span id="line-318">          throw new IllegalArgumentException("Unknown Enchantment: " + input);</span>
-<span class="source-line-no">319</span><span id="line-319">        }</span>
-<span class="source-line-no">320</span><span id="line-320">        return enchantment;</span>
-<span class="source-line-no">321</span><span id="line-321">      });</span>
-<span class="source-line-no">322</span><span id="line-322"></span>
-<span class="source-line-no">323</span><span id="line-323">      converter.registerConversion(Enchantment.class, String.class, Enchantment::getName);</span>
-<span class="source-line-no">324</span><span id="line-324">    }</span>
+<span class="source-line-no">318</span><span id="line-318">          return key.toString();</span>
+<span class="source-line-no">319</span><span id="line-319">        });</span>
+<span class="source-line-no">320</span><span id="line-320">      }</span>
+<span class="source-line-no">321</span><span id="line-321"></span>
+<span class="source-line-no">322</span><span id="line-322">    } else {</span>
+<span class="source-line-no">323</span><span id="line-323"></span>
+<span class="source-line-no">324</span><span id="line-324">      converter.registerConversion(String.class, PatternType.class, PatternType::valueOf);</span>
 <span class="source-line-no">325</span><span id="line-325"></span>
-<span class="source-line-no">326</span><span id="line-326">    //Register Conversions for Trim Material, which will be dependent on versions</span>
-<span class="source-line-no">327</span><span id="line-327">    //We'll separate the legacy find methods from the modern ones in order to maintain one component</span>
-<span class="source-line-no">328</span><span id="line-328">    // class for both.</span>
-<span class="source-line-no">329</span><span id="line-329">    if(VersionUtil.isOneTwentyOneFour(version())) {</span>
-<span class="source-line-no">330</span><span id="line-330"></span>
-<span class="source-line-no">331</span><span id="line-331">      converter.registerConversion(TrimMaterial.class, String.class, input-&gt;input.getKeyOrThrow().toString());</span>
-<span class="source-line-no">332</span><span id="line-332"></span>
-<span class="source-line-no">333</span><span id="line-333">      converter.registerConversion(String.class, TrimMaterial.class, input-&gt;{</span>
-<span class="source-line-no">334</span><span id="line-334">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
-<span class="source-line-no">335</span><span id="line-335">        if(key != null) {</span>
-<span class="source-line-no">336</span><span id="line-336"></span>
-<span class="source-line-no">337</span><span id="line-337">          return Registry.TRIM_MATERIAL.getOrThrow(key);</span>
-<span class="source-line-no">338</span><span id="line-338">        }</span>
-<span class="source-line-no">339</span><span id="line-339">        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);</span>
-<span class="source-line-no">340</span><span id="line-340">      });</span>
-<span class="source-line-no">341</span><span id="line-341"></span>
-<span class="source-line-no">342</span><span id="line-342">    } else if(VersionUtil.isOneTwenty(version())) {</span>
+<span class="source-line-no">326</span><span id="line-326">      converter.registerConversion(PatternType.class, String.class, PatternType::getIdentifier);</span>
+<span class="source-line-no">327</span><span id="line-327">    }</span>
+<span class="source-line-no">328</span><span id="line-328"></span>
+<span class="source-line-no">329</span><span id="line-329">    //Register Conversions for Enchantment, which will be dependent on versions</span>
+<span class="source-line-no">330</span><span id="line-330">    //We'll separate the legacy find methods from the modern ones in order to maintain one component</span>
+<span class="source-line-no">331</span><span id="line-331">    // class for both.</span>
+<span class="source-line-no">332</span><span id="line-332">    if(VersionUtil.isOneTwentyOneFour(version())) {</span>
+<span class="source-line-no">333</span><span id="line-333"></span>
+<span class="source-line-no">334</span><span id="line-334">      converter.registerConversion(String.class, Enchantment.class, (final String input)-&gt;{</span>
+<span class="source-line-no">335</span><span id="line-335"></span>
+<span class="source-line-no">336</span><span id="line-336">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
+<span class="source-line-no">337</span><span id="line-337">        if(key != null) {</span>
+<span class="source-line-no">338</span><span id="line-338"></span>
+<span class="source-line-no">339</span><span id="line-339">          return Registry.ENCHANTMENT.getOrThrow(key);</span>
+<span class="source-line-no">340</span><span id="line-340">        }</span>
+<span class="source-line-no">341</span><span id="line-341">        throw new IllegalArgumentException("Unknown Enchantment: " + input);</span>
+<span class="source-line-no">342</span><span id="line-342">      });</span>
 <span class="source-line-no">343</span><span id="line-343"></span>
-<span class="source-line-no">344</span><span id="line-344">      converter.registerConversion(TrimMaterial.class, String.class, input-&gt;input.getKey().toString());</span>
+<span class="source-line-no">344</span><span id="line-344">      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)-&gt;input.getKeyOrThrow().toString());</span>
 <span class="source-line-no">345</span><span id="line-345"></span>
-<span class="source-line-no">346</span><span id="line-346">      converter.registerConversion(String.class, TrimMaterial.class, input-&gt;{</span>
-<span class="source-line-no">347</span><span id="line-347">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
-<span class="source-line-no">348</span><span id="line-348">        if(key != null) {</span>
-<span class="source-line-no">349</span><span id="line-349"></span>
-<span class="source-line-no">350</span><span id="line-350">          return Registry.TRIM_MATERIAL.get(key);</span>
-<span class="source-line-no">351</span><span id="line-351">        }</span>
-<span class="source-line-no">352</span><span id="line-352">        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);</span>
-<span class="source-line-no">353</span><span id="line-353">      });</span>
-<span class="source-line-no">354</span><span id="line-354">    }</span>
-<span class="source-line-no">355</span><span id="line-355"></span>
-<span class="source-line-no">356</span><span id="line-356">    //Register Conversions for NamespacedKey, which will be dependent on versions</span>
-<span class="source-line-no">357</span><span id="line-357">    //We'll separate the legacy find methods from the modern ones in order to maintain one component</span>
-<span class="source-line-no">358</span><span id="line-358">    // class for both.</span>
-<span class="source-line-no">359</span><span id="line-359">    converter.registerConversion(ItemRarity.class, String.class, input-&gt;switch(input) {</span>
-<span class="source-line-no">360</span><span id="line-360">      case EPIC -&gt; "epic";</span>
-<span class="source-line-no">361</span><span id="line-361">      case RARE -&gt; "rare";</span>
-<span class="source-line-no">362</span><span id="line-362">      case UNCOMMON -&gt; "uncommon";</span>
-<span class="source-line-no">363</span><span id="line-363">      default -&gt; "common";</span>
-<span class="source-line-no">364</span><span id="line-364">    });</span>
-<span class="source-line-no">365</span><span id="line-365"></span>
-<span class="source-line-no">366</span><span id="line-366">    converter.registerConversion(String.class, ItemRarity.class, input-&gt;switch(input.toLowerCase()) {</span>
-<span class="source-line-no">367</span><span id="line-367">      case "epic" -&gt; ItemRarity.EPIC;</span>
-<span class="source-line-no">368</span><span id="line-368">      case "rare" -&gt; ItemRarity.RARE;</span>
-<span class="source-line-no">369</span><span id="line-369">      case "uncommon" -&gt; ItemRarity.UNCOMMON;</span>
-<span class="source-line-no">370</span><span id="line-370">      default -&gt; ItemRarity.COMMON;</span>
-<span class="source-line-no">371</span><span id="line-371">    });</span>
+<span class="source-line-no">346</span><span id="line-346">    } else if(VersionUtil.isOneThirteen(version())) {</span>
+<span class="source-line-no">347</span><span id="line-347">      converter.registerConversion(String.class, Enchantment.class, (final String input)-&gt;{</span>
+<span class="source-line-no">348</span><span id="line-348"></span>
+<span class="source-line-no">349</span><span id="line-349">        final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.fromString(input));</span>
+<span class="source-line-no">350</span><span id="line-350">        if(enchantment == null) {</span>
+<span class="source-line-no">351</span><span id="line-351"></span>
+<span class="source-line-no">352</span><span id="line-352">          throw new IllegalArgumentException("Unknown Enchantment: " + input);</span>
+<span class="source-line-no">353</span><span id="line-353">        }</span>
+<span class="source-line-no">354</span><span id="line-354">        return enchantment;</span>
+<span class="source-line-no">355</span><span id="line-355">      });</span>
+<span class="source-line-no">356</span><span id="line-356"></span>
+<span class="source-line-no">357</span><span id="line-357">      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)-&gt;input.getKey().getKey());</span>
+<span class="source-line-no">358</span><span id="line-358">    } else {</span>
+<span class="source-line-no">359</span><span id="line-359"></span>
+<span class="source-line-no">360</span><span id="line-360">      converter.registerConversion(String.class, Enchantment.class, (final String input)-&gt;{</span>
+<span class="source-line-no">361</span><span id="line-361"></span>
+<span class="source-line-no">362</span><span id="line-362">        final Enchantment enchantment = Enchantment.getByName(input);</span>
+<span class="source-line-no">363</span><span id="line-363">        if(enchantment == null) {</span>
+<span class="source-line-no">364</span><span id="line-364"></span>
+<span class="source-line-no">365</span><span id="line-365">          throw new IllegalArgumentException("Unknown Enchantment: " + input);</span>
+<span class="source-line-no">366</span><span id="line-366">        }</span>
+<span class="source-line-no">367</span><span id="line-367">        return enchantment;</span>
+<span class="source-line-no">368</span><span id="line-368">      });</span>
+<span class="source-line-no">369</span><span id="line-369"></span>
+<span class="source-line-no">370</span><span id="line-370">      converter.registerConversion(Enchantment.class, String.class, Enchantment::getName);</span>
+<span class="source-line-no">371</span><span id="line-371">    }</span>
 <span class="source-line-no">372</span><span id="line-372"></span>
-<span class="source-line-no">373</span><span id="line-373">    //Register Conversions for Trim Pattern, which will be dependent on versions</span>
+<span class="source-line-no">373</span><span id="line-373">    //Register Conversions for Trim Material, which will be dependent on versions</span>
 <span class="source-line-no">374</span><span id="line-374">    //We'll separate the legacy find methods from the modern ones in order to maintain one component</span>
 <span class="source-line-no">375</span><span id="line-375">    // class for both.</span>
 <span class="source-line-no">376</span><span id="line-376">    if(VersionUtil.isOneTwentyOneFour(version())) {</span>
 <span class="source-line-no">377</span><span id="line-377"></span>
-<span class="source-line-no">378</span><span id="line-378">      converter.registerConversion(TrimPattern.class, String.class, input-&gt;input.getKeyOrThrow().toString());</span>
+<span class="source-line-no">378</span><span id="line-378">      converter.registerConversion(TrimMaterial.class, String.class, input-&gt;input.getKeyOrThrow().toString());</span>
 <span class="source-line-no">379</span><span id="line-379"></span>
-<span class="source-line-no">380</span><span id="line-380">      converter.registerConversion(String.class, TrimPattern.class, input-&gt;{</span>
+<span class="source-line-no">380</span><span id="line-380">      converter.registerConversion(String.class, TrimMaterial.class, input-&gt;{</span>
 <span class="source-line-no">381</span><span id="line-381">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
 <span class="source-line-no">382</span><span id="line-382">        if(key != null) {</span>
 <span class="source-line-no">383</span><span id="line-383"></span>
-<span class="source-line-no">384</span><span id="line-384">          return Registry.TRIM_PATTERN.getOrThrow(key);</span>
+<span class="source-line-no">384</span><span id="line-384">          return Registry.TRIM_MATERIAL.getOrThrow(key);</span>
 <span class="source-line-no">385</span><span id="line-385">        }</span>
-<span class="source-line-no">386</span><span id="line-386">        throw new IllegalArgumentException("Unknown TrimPattern: " + input);</span>
+<span class="source-line-no">386</span><span id="line-386">        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);</span>
 <span class="source-line-no">387</span><span id="line-387">      });</span>
 <span class="source-line-no">388</span><span id="line-388"></span>
 <span class="source-line-no">389</span><span id="line-389">    } else if(VersionUtil.isOneTwenty(version())) {</span>
 <span class="source-line-no">390</span><span id="line-390"></span>
-<span class="source-line-no">391</span><span id="line-391">      converter.registerConversion(TrimPattern.class, String.class, input-&gt;input.getKey().toString());</span>
+<span class="source-line-no">391</span><span id="line-391">      converter.registerConversion(TrimMaterial.class, String.class, input-&gt;input.getKey().toString());</span>
 <span class="source-line-no">392</span><span id="line-392"></span>
-<span class="source-line-no">393</span><span id="line-393">      converter.registerConversion(String.class, TrimPattern.class, input-&gt;{</span>
+<span class="source-line-no">393</span><span id="line-393">      converter.registerConversion(String.class, TrimMaterial.class, input-&gt;{</span>
 <span class="source-line-no">394</span><span id="line-394">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
 <span class="source-line-no">395</span><span id="line-395">        if(key != null) {</span>
 <span class="source-line-no">396</span><span id="line-396"></span>
-<span class="source-line-no">397</span><span id="line-397">          return Registry.TRIM_PATTERN.get(key);</span>
+<span class="source-line-no">397</span><span id="line-397">          return Registry.TRIM_MATERIAL.get(key);</span>
 <span class="source-line-no">398</span><span id="line-398">        }</span>
-<span class="source-line-no">399</span><span id="line-399">        throw new IllegalArgumentException("Unknown TrimPattern: " + input);</span>
+<span class="source-line-no">399</span><span id="line-399">        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);</span>
 <span class="source-line-no">400</span><span id="line-400">      });</span>
 <span class="source-line-no">401</span><span id="line-401">    }</span>
 <span class="source-line-no">402</span><span id="line-402"></span>
-<span class="source-line-no">403</span><span id="line-403">    if(VersionUtil.isOneTwentyOneFour(version())) {</span>
-<span class="source-line-no">404</span><span id="line-404"></span>
-<span class="source-line-no">405</span><span id="line-405">      converter.registerConversion(PotionEffectType.class, String.class, input-&gt;input.getKeyOrThrow().toString());</span>
-<span class="source-line-no">406</span><span id="line-406">      converter.registerConversion(String.class, PotionEffectType.class, input-&gt;{</span>
-<span class="source-line-no">407</span><span id="line-407">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
-<span class="source-line-no">408</span><span id="line-408">        if(key != null) {</span>
-<span class="source-line-no">409</span><span id="line-409"></span>
-<span class="source-line-no">410</span><span id="line-410">          return Registry.EFFECT.getOrThrow(key);</span>
-<span class="source-line-no">411</span><span id="line-411">        }</span>
-<span class="source-line-no">412</span><span id="line-412">        throw new IllegalArgumentException("Unknown PotionEffectType: " + input);</span>
-<span class="source-line-no">413</span><span id="line-413">      });</span>
-<span class="source-line-no">414</span><span id="line-414">    } else {</span>
-<span class="source-line-no">415</span><span id="line-415"></span>
-<span class="source-line-no">416</span><span id="line-416">      converter.registerConversion(PotionEffectType.class, String.class, PotionEffectType::getName);</span>
-<span class="source-line-no">417</span><span id="line-417">      converter.registerConversion(String.class, PotionEffectType.class, input-&gt;{</span>
-<span class="source-line-no">418</span><span id="line-418"></span>
-<span class="source-line-no">419</span><span id="line-419">        final PotionEffectType type = PotionEffectType.getByName(input);</span>
-<span class="source-line-no">420</span><span id="line-420">        if(type != null) {</span>
-<span class="source-line-no">421</span><span id="line-421"></span>
-<span class="source-line-no">422</span><span id="line-422">          return type;</span>
-<span class="source-line-no">423</span><span id="line-423">        }</span>
-<span class="source-line-no">424</span><span id="line-424">        throw new IllegalArgumentException("Unknown PotionEffectType: " + input);</span>
-<span class="source-line-no">425</span><span id="line-425">      });</span>
-<span class="source-line-no">426</span><span id="line-426">    }</span>
-<span class="source-line-no">427</span><span id="line-427">  }</span>
-<span class="source-line-no">428</span><span id="line-428"></span>
-<span class="source-line-no">429</span><span id="line-429">  /**</span>
-<span class="source-line-no">430</span><span id="line-430">   * Initializes and returns an AbstractItemStack object by deserializing the provided JSON object.</span>
-<span class="source-line-no">431</span><span id="line-431">   *</span>
-<span class="source-line-no">432</span><span id="line-432">   * @param object the JSON object to deserialize</span>
-<span class="source-line-no">433</span><span id="line-433">   *</span>
-<span class="source-line-no">434</span><span id="line-434">   * @return an initialized AbstractItemStack object</span>
-<span class="source-line-no">435</span><span id="line-435">   */</span>
-<span class="source-line-no">436</span><span id="line-436">  @Override</span>
-<span class="source-line-no">437</span><span id="line-437">  public Optional&lt;BukkitItemStack&gt; initSerialized(final JSONObject object) {</span>
-<span class="source-line-no">438</span><span id="line-438"></span>
-<span class="source-line-no">439</span><span id="line-439">    try {</span>
-<span class="source-line-no">440</span><span id="line-440">      return Optional.ofNullable(new BukkitItemStack().of(object));</span>
-<span class="source-line-no">441</span><span id="line-441">    } catch(final ParseException e) {</span>
-<span class="source-line-no">442</span><span id="line-442">      return Optional.empty();</span>
-<span class="source-line-no">443</span><span id="line-443">    }</span>
-<span class="source-line-no">444</span><span id="line-444">  }</span>
-<span class="source-line-no">445</span><span id="line-445">}</span>
+<span class="source-line-no">403</span><span id="line-403">    //Register Conversions for NamespacedKey, which will be dependent on versions</span>
+<span class="source-line-no">404</span><span id="line-404">    //We'll separate the legacy find methods from the modern ones in order to maintain one component</span>
+<span class="source-line-no">405</span><span id="line-405">    // class for both.</span>
+<span class="source-line-no">406</span><span id="line-406">    converter.registerConversion(ItemRarity.class, String.class, input-&gt;switch(input) {</span>
+<span class="source-line-no">407</span><span id="line-407">      case EPIC -&gt; "epic";</span>
+<span class="source-line-no">408</span><span id="line-408">      case RARE -&gt; "rare";</span>
+<span class="source-line-no">409</span><span id="line-409">      case UNCOMMON -&gt; "uncommon";</span>
+<span class="source-line-no">410</span><span id="line-410">      default -&gt; "common";</span>
+<span class="source-line-no">411</span><span id="line-411">    });</span>
+<span class="source-line-no">412</span><span id="line-412"></span>
+<span class="source-line-no">413</span><span id="line-413">    converter.registerConversion(String.class, ItemRarity.class, input-&gt;switch(input.toLowerCase()) {</span>
+<span class="source-line-no">414</span><span id="line-414">      case "epic" -&gt; ItemRarity.EPIC;</span>
+<span class="source-line-no">415</span><span id="line-415">      case "rare" -&gt; ItemRarity.RARE;</span>
+<span class="source-line-no">416</span><span id="line-416">      case "uncommon" -&gt; ItemRarity.UNCOMMON;</span>
+<span class="source-line-no">417</span><span id="line-417">      default -&gt; ItemRarity.COMMON;</span>
+<span class="source-line-no">418</span><span id="line-418">    });</span>
+<span class="source-line-no">419</span><span id="line-419"></span>
+<span class="source-line-no">420</span><span id="line-420">    //Register Conversions for Trim Pattern, which will be dependent on versions</span>
+<span class="source-line-no">421</span><span id="line-421">    //We'll separate the legacy find methods from the modern ones in order to maintain one component</span>
+<span class="source-line-no">422</span><span id="line-422">    // class for both.</span>
+<span class="source-line-no">423</span><span id="line-423">    if(VersionUtil.isOneTwentyOneFour(version())) {</span>
+<span class="source-line-no">424</span><span id="line-424"></span>
+<span class="source-line-no">425</span><span id="line-425">      converter.registerConversion(TrimPattern.class, String.class, input-&gt;input.getKeyOrThrow().toString());</span>
+<span class="source-line-no">426</span><span id="line-426"></span>
+<span class="source-line-no">427</span><span id="line-427">      converter.registerConversion(String.class, TrimPattern.class, input-&gt;{</span>
+<span class="source-line-no">428</span><span id="line-428">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
+<span class="source-line-no">429</span><span id="line-429">        if(key != null) {</span>
+<span class="source-line-no">430</span><span id="line-430"></span>
+<span class="source-line-no">431</span><span id="line-431">          return Registry.TRIM_PATTERN.getOrThrow(key);</span>
+<span class="source-line-no">432</span><span id="line-432">        }</span>
+<span class="source-line-no">433</span><span id="line-433">        throw new IllegalArgumentException("Unknown TrimPattern: " + input);</span>
+<span class="source-line-no">434</span><span id="line-434">      });</span>
+<span class="source-line-no">435</span><span id="line-435"></span>
+<span class="source-line-no">436</span><span id="line-436">    } else if(VersionUtil.isOneTwenty(version())) {</span>
+<span class="source-line-no">437</span><span id="line-437"></span>
+<span class="source-line-no">438</span><span id="line-438">      converter.registerConversion(TrimPattern.class, String.class, input-&gt;input.getKey().toString());</span>
+<span class="source-line-no">439</span><span id="line-439"></span>
+<span class="source-line-no">440</span><span id="line-440">      converter.registerConversion(String.class, TrimPattern.class, input-&gt;{</span>
+<span class="source-line-no">441</span><span id="line-441">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
+<span class="source-line-no">442</span><span id="line-442">        if(key != null) {</span>
+<span class="source-line-no">443</span><span id="line-443"></span>
+<span class="source-line-no">444</span><span id="line-444">          return Registry.TRIM_PATTERN.get(key);</span>
+<span class="source-line-no">445</span><span id="line-445">        }</span>
+<span class="source-line-no">446</span><span id="line-446">        throw new IllegalArgumentException("Unknown TrimPattern: " + input);</span>
+<span class="source-line-no">447</span><span id="line-447">      });</span>
+<span class="source-line-no">448</span><span id="line-448">    }</span>
+<span class="source-line-no">449</span><span id="line-449"></span>
+<span class="source-line-no">450</span><span id="line-450">    if(VersionUtil.isOneTwentyOneFour(version())) {</span>
+<span class="source-line-no">451</span><span id="line-451"></span>
+<span class="source-line-no">452</span><span id="line-452">      converter.registerConversion(PotionEffectType.class, String.class, input-&gt;input.getKeyOrThrow().toString());</span>
+<span class="source-line-no">453</span><span id="line-453">      converter.registerConversion(String.class, PotionEffectType.class, input-&gt;{</span>
+<span class="source-line-no">454</span><span id="line-454">        final NamespacedKey key = NamespacedKey.fromString(input);</span>
+<span class="source-line-no">455</span><span id="line-455">        if(key != null) {</span>
+<span class="source-line-no">456</span><span id="line-456"></span>
+<span class="source-line-no">457</span><span id="line-457">          return Registry.EFFECT.getOrThrow(key);</span>
+<span class="source-line-no">458</span><span id="line-458">        }</span>
+<span class="source-line-no">459</span><span id="line-459">        throw new IllegalArgumentException("Unknown PotionEffectType: " + input);</span>
+<span class="source-line-no">460</span><span id="line-460">      });</span>
+<span class="source-line-no">461</span><span id="line-461">    } else {</span>
+<span class="source-line-no">462</span><span id="line-462"></span>
+<span class="source-line-no">463</span><span id="line-463">      converter.registerConversion(PotionEffectType.class, String.class, PotionEffectType::getName);</span>
+<span class="source-line-no">464</span><span id="line-464">      converter.registerConversion(String.class, PotionEffectType.class, input-&gt;{</span>
+<span class="source-line-no">465</span><span id="line-465"></span>
+<span class="source-line-no">466</span><span id="line-466">        final PotionEffectType type = PotionEffectType.getByName(input);</span>
+<span class="source-line-no">467</span><span id="line-467">        if(type != null) {</span>
+<span class="source-line-no">468</span><span id="line-468"></span>
+<span class="source-line-no">469</span><span id="line-469">          return type;</span>
+<span class="source-line-no">470</span><span id="line-470">        }</span>
+<span class="source-line-no">471</span><span id="line-471">        throw new IllegalArgumentException("Unknown PotionEffectType: " + input);</span>
+<span class="source-line-no">472</span><span id="line-472">      });</span>
+<span class="source-line-no">473</span><span id="line-473">    }</span>
+<span class="source-line-no">474</span><span id="line-474">  }</span>
+<span class="source-line-no">475</span><span id="line-475"></span>
+<span class="source-line-no">476</span><span id="line-476">  /**</span>
+<span class="source-line-no">477</span><span id="line-477">   * Initializes and returns an AbstractItemStack object by deserializing the provided JSON object.</span>
+<span class="source-line-no">478</span><span id="line-478">   *</span>
+<span class="source-line-no">479</span><span id="line-479">   * @param object the JSON object to deserialize</span>
+<span class="source-line-no">480</span><span id="line-480">   *</span>
+<span class="source-line-no">481</span><span id="line-481">   * @return an initialized AbstractItemStack object</span>
+<span class="source-line-no">482</span><span id="line-482">   * @since 0.2.0.0</span>
+<span class="source-line-no">483</span><span id="line-483">   */</span>
+<span class="source-line-no">484</span><span id="line-484">  @Override</span>
+<span class="source-line-no">485</span><span id="line-485">  public Optional&lt;BukkitItemStack&gt; initSerialized(final JSONObject object) {</span>
+<span class="source-line-no">486</span><span id="line-486"></span>
+<span class="source-line-no">487</span><span id="line-487">    try {</span>
+<span class="source-line-no">488</span><span id="line-488">      return Optional.ofNullable(new BukkitItemStack().of(object));</span>
+<span class="source-line-no">489</span><span id="line-489">    } catch(final ParseException e) {</span>
+<span class="source-line-no">490</span><span id="line-490">      return Optional.empty();</span>
+<span class="source-line-no">491</span><span id="line-491">    }</span>
+<span class="source-line-no">492</span><span id="line-492">  }</span>
+<span class="source-line-no">493</span><span id="line-493">}</span>
 
 
 
