@@ -67,7 +67,7 @@ public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> imple
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final ItemNameComponent<?, ?> other)) return false;
 
     return Objects.equals(this.itemName, other.itemName);

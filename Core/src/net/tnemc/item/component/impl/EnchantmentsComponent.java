@@ -88,7 +88,7 @@ public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> i
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final EnchantmentsComponent<?, ?> other)) return false;
 
     return Objects.equals(this.levels, other.levels);

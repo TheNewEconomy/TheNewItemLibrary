@@ -56,7 +56,7 @@ public abstract class GliderComponent<I extends AbstractItemStack<T>, T> impleme
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     return component instanceof GliderComponent<?, ?>;
   }
 

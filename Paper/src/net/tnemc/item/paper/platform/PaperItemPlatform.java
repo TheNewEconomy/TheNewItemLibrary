@@ -97,8 +97,8 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
   }
 
   @Override
-  public PaperItemStack createStack() {
-    return new PaperItemStack();
+  public PaperItemStack createStack(final String material) {
+    return new PaperItemStack().of(material, 1);
   }
 
   public static PaperItemPlatform instance() {

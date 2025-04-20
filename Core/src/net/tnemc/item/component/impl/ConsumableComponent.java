@@ -145,7 +145,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final ConsumableComponent<?, ?> other)) return false;
     return Float.compare(this.consumeSeconds, other.consumeSeconds) == 0 &&
            Objects.equals(this.animation, other.animation) &&

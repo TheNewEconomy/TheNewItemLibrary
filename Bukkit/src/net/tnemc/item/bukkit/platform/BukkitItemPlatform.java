@@ -82,8 +82,8 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
   }
 
   @Override
-  public BukkitItemStack createStack() {
-    return new BukkitItemStack();
+  public BukkitItemStack createStack(final String material) {
+    return new BukkitItemStack().of(material, 1);
   }
 
   public static BukkitItemPlatform instance() {

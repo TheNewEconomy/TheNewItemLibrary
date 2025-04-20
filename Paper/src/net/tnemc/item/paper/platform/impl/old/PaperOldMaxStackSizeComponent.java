@@ -43,8 +43,7 @@ public class PaperOldMaxStackSizeComponent extends MaxStackSizeComponent<PaperIt
   @Override
   public boolean enabled(final String version) {
 
-    //TODO: Look up version
-    return VersionUtil.isOneThirteen(version);
+    return VersionUtil.isOneTwentyOne(version);
   }
 
   /**

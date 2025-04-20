@@ -119,7 +119,7 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final BucketEntityDataComponent<?, ?> other)) return false;
     return this.noAI == other.noAI &&
            this.silent == other.silent &&

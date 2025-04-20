@@ -65,7 +65,7 @@ public abstract class MaxDamageComponent<I extends AbstractItemStack<T>, T> impl
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final MaxDamageComponent<?, ?> other)) return false;
     return this.maxDamage == other.maxDamage;
   }

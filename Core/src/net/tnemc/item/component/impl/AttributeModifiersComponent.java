@@ -146,7 +146,7 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
    * @since 0.2.0.0
    */
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final AttributeModifiersComponent<?, ?> other)) return false;
     return Objects.equals(this.modifiers, other.modifiers);
   }

@@ -76,7 +76,7 @@ public abstract class PotionDurationScaleComponent<I extends AbstractItemStack<T
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final PotionDurationScaleComponent<?, ?> other)) return false;
     return Float.compare(this.potionDuration, other.potionDuration) == 0;
   }

@@ -90,7 +90,7 @@ public abstract class WeaponComponent<I extends AbstractItemStack<T>, T> impleme
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final WeaponComponent<?, ?> other)) return false;
     return this.damagePerAttack == other.damagePerAttack && this.canDisableBlocking == other.canDisableBlocking;
   }

@@ -77,7 +77,7 @@ public abstract class WritableBookContentComponent<I extends AbstractItemStack<T
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final WritableBookContentComponent<?, ?> other)) return false;
     return Objects.equals(this.pages, other.pages);
   }

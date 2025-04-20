@@ -72,7 +72,7 @@ public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> impl
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final DyedColorComponent<?, ?> other)) return false;
 
     return this.rgb == other.rgb;

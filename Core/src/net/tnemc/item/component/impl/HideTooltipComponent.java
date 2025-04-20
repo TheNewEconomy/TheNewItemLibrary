@@ -61,7 +61,7 @@ public abstract class HideTooltipComponent<I extends AbstractItemStack<T>, T> im
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     return component instanceof HideTooltipComponent;
   }
 

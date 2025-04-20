@@ -19,8 +19,10 @@ package net.tnemc.item.bukkit;
  */
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
+import net.tnemc.item.bukkit.platform.impl.BukkitAttributeModifiersComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitBundleComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitContainerComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitCustomNameComponent;
@@ -36,6 +38,8 @@ import net.tnemc.item.bukkit.platform.impl.BukkitMaxStackSizeComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitModelDataComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitModelDataOldComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitRarityComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitRepairCostComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitTooltipStyleComponent;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
@@ -166,8 +170,74 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
     this.material = material;
     this.amount = amount;
+
     this.dirty = true;
-    return this;
+
+    Material materialInstance = null;
+
+    try {
+      final NamespacedKey key = NamespacedKey.fromString(material);
+      if(key != null) {
+
+        System.out.println("Key is not null");
+
+        materialInstance = Registry.MATERIAL.get(key);
+      }
+    } catch(final NoSuchMethodError ignore) {
+      materialInstance = Material.matchMaterial(material);
+    }
+
+    if(materialInstance == null) {
+
+      System.out.println("Material is null");
+
+      return this;
+    }
+
+    this.localeStack = new ItemStack(materialInstance, amount);
+
+    //final ItemMeta meta = localeStack.getItemMeta();
+
+    //TODO: Move default components and default values to the SerialComponent object somehow
+    //Maybe through isDefault and applyDefault methods
+    /*try {
+
+      System.out.println("Checking some values");
+      System.out.println("Item Translation: " + materialInstance.getItemTranslationKey());
+      if(meta != null) {
+        System.out.println("Has model: " + meta.hasItemModel());
+        if(meta.hasLore()) {
+          System.out.println("Model: " + meta.getItemModel());
+        }
+      }
+
+      if(meta != null && meta.hasRarity()) {
+        applyComponent(new BukkitRarityComponent(BukkitItemPlatform.instance().converter().convert(meta.getRarity(), String.class)));
+      }
+    } catch(final NoSuchMethodError ignore) {
+    }
+
+    try {
+
+      if(meta != null && meta.hasItemName()) {
+        System.out.println("Has item name: " + meta.getItemName());
+        applyComponent(new BukkitItemNameComponent(LegacyComponentSerializer.legacySection().deserialize(meta.getItemName())));
+      }
+    } catch(final NoSuchMethodError ignore) {
+    }*/
+
+    //Apply our default components.
+    //applyComponent(new BukkitMaxStackSizeComponent(materialInstance.getMaxStackSize()));
+    //applyComponent(new BukkitEnchantmentsComponent());
+    //applyComponent(new BukkitLoreComponent());
+    //applyComponent(new BukkitRepairCostComponent());
+    //applyComponent(new BukkitAttributeModifiersComponent());
+    //applyComponent(new BukkitItemNameComponent());
+
+    //TODO: Replace with custom solution? or would this be the best solution for the defaults?
+    // custom is kinda overcomplicated but what is the performance hand off of new stack -> serialized,
+    // alternatively we have to do this anyways for the locale cache?
+    return of(new ItemStack(materialInstance, amount));
   }
 
   /**

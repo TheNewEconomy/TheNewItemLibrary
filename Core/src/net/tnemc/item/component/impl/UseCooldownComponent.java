@@ -75,7 +75,7 @@ public abstract class UseCooldownComponent<I extends AbstractItemStack<T>, T> im
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final UseCooldownComponent<?, ?> other)) return false;
     return this.seconds == other.seconds && Objects.equals(this.cooldownGroup, other.cooldownGroup);
   }

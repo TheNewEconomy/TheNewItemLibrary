@@ -96,7 +96,7 @@ public abstract class TooltipDisplayComponent<I extends AbstractItemStack<T>, T>
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final TooltipDisplayComponent<?, ?> other)) return false;
     return Objects.equals(this.hiddenComponents, other.hiddenComponents) && Objects.equals(this.hideTooltip, other.hideTooltip);
   }

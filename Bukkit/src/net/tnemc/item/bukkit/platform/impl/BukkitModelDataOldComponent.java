@@ -54,7 +54,7 @@ public class BukkitModelDataOldComponent extends ModelDataOldComponent<BukkitIte
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasItemMeta() && item.getItemMeta() != null;
+    return item.hasItemMeta() && item.getItemMeta() != null && item.getItemMeta().hasCustomModelData();
   }
 
   /**
@@ -96,7 +96,7 @@ public class BukkitModelDataOldComponent extends ModelDataOldComponent<BukkitIte
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isLessThan(version, "1.21.5");
+    return !VersionUtil.isOneTwentyOneFive(version);
   }
 
   /**
@@ -113,6 +113,8 @@ public class BukkitModelDataOldComponent extends ModelDataOldComponent<BukkitIte
 
       this.modelData = item.getItemMeta().getCustomModelData();
     }
+
+    System.out.println("Old Model Data: " + this.modelData);
 
     serialized.applyComponent(this);
     return serialized;

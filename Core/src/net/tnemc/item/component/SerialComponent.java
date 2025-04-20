@@ -63,17 +63,6 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
   void readJSON(JSONHelper json, ItemPlatform<I, T, ?> platform);
 
   /**
-   * Used to determine if some data is equal to this component. This means that it has to be an
-   * exact copy of this component.
-   *
-   * @param component The component to compare.
-   *
-   * @return True if similar, otherwise false.
-   * @since 0.2.0.0
-   */
-  boolean equals(SerialComponent<I, T> component);
-
-  /**
    * Checks if this component applies to the specified item stack.
    *
    * @param original the original item stack
@@ -108,12 +97,19 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
       final SerialComponent<?, ?> checkComponent = check.components().get(identifier());
       //return originalComponent.equals(checkComponent);
 
-      return original.components().get(identifier()).equals(check.components().get(identifier()));
+      return original.components().get(identifier()).similar(check.components().get(identifier()));
     }
 
     System.out.println("Both components do not contain the check, doing check to make sure neither have it.");
     return !original.components().containsKey(identifier()) && !check.components().containsKey(identifier());
   }
+
+  /**
+   *
+   * @param component The SerialComponent to compare for similarity.
+   * @return True if the components are similar, false otherwise.
+   */
+  boolean similar(final SerialComponent<?, ?> component);
 
   /**
    * Clones the current {@link SerialComponent} object.

@@ -56,7 +56,7 @@ public abstract class IntangibleProjectileComponent<I extends AbstractItemStack<
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     return component instanceof IntangibleProjectileComponent;
   }
 

@@ -67,7 +67,7 @@ public abstract class RarityComponent<I extends AbstractItemStack<T>, T> impleme
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final RarityComponent<?, ?> other)) return false;
     return Objects.equals(this.rarity, other.rarity);
   }

@@ -74,7 +74,7 @@ public abstract class FireworkExplosionComponent<I extends AbstractItemStack<T>,
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final FireworkExplosionComponent<?, ?> other)) return false;
 
     return Objects.equals(this.explosion, other.explosion);

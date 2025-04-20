@@ -42,7 +42,7 @@ public class Example extends JavaPlugin {
   }
 
   private BukkitItemStack build() {
-    return this.platform.createStack().material("gold_ingot")
+    return this.platform.createStack("gold_ingot")
             .amount(10)
             .itemName(MiniMessage.miniMessage().deserialize("<gold>Test"))
             .lore(Arrays.asList(
@@ -53,7 +53,7 @@ public class Example extends JavaPlugin {
   }
 
   private BukkitItemStack buildNexo() {
-    return this.platform.createStack().material("paper")
+    return this.platform.createStack("paper")
             .setProviderItemID("forest_axe")
             .setItemProvider("nexo");
   }

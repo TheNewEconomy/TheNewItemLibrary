@@ -109,11 +109,9 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
 
-        if(meta.hasDamage() && meta.getDamage() != 0) {
+        if(meta.hasDamage()) {
 
           this.damage = meta.getDamage();
-
-          System.out.println("Damage: " + meta.getDamage());
 
           serialized.applyComponent(this);
         }

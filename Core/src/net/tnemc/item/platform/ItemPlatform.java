@@ -109,12 +109,13 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   }
 
   /**
-   * Creates and returns an instance of an item stack.
+   * Creates a new stack based on the given material.
    *
-   * @return An instance of the item stack represented by the generic type I.
+   * @param material The material used for creating the stack.
+   * @return The newly created stack.
    * @since 0.2.0.0
    */
-  public abstract I createStack();
+  public abstract I createStack(final String material);
 
   /**
    * @return the version that is being used currently

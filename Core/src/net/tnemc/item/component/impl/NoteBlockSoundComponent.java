@@ -65,7 +65,7 @@ public abstract class NoteBlockSoundComponent<I extends AbstractItemStack<T>, T>
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final NoteBlockSoundComponent<?, ?> other)) return false;
     return Objects.equals(this.soundId, other.soundId);
   }

@@ -153,7 +153,7 @@ public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implement
    * @since 0.2.0.0
    */
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
 
     if(component instanceof final ToolComponent<?, ?> tool) {
       return Float.compare(this.defaultSpeed, tool.defaultSpeed) == 0 &&

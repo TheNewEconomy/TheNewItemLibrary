@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
+import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.ItemProvider;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -61,7 +62,28 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
 
-    return BukkitItemPlatform.instance().check((BukkitItemStack)original, new BukkitItemStack().of(compare));
+    final BukkitItemStack compareStack = new BukkitItemStack().of(compare);
+
+    System.out.println("==== Similar call ====");
+
+    System.out.println("original Components");
+
+    for(final SerialComponent component : original.components().values()) {
+
+      System.out.println("Entry: " + component.identifier());
+    }
+
+    System.out.println("Compare Components");
+
+    for(final SerialComponent component : compareStack.components().values()) {
+
+      System.out.println("Entry: " + component.identifier());
+    }
+
+    System.out.println("==== Similar end ====");
+
+
+    return BukkitItemPlatform.instance().check((BukkitItemStack)original, compareStack);
   }
 
   /**
@@ -96,7 +118,7 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
 
           material = Registry.MATERIAL.get(key);
         }
-      } catch(final Exception ignore) {
+      } catch(final NoSuchMethodError ignore) {
         material = Material.matchMaterial(bukkit.material());
       }
 

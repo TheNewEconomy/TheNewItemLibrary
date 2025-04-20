@@ -96,7 +96,7 @@ public abstract class BreakSoundComponent<I extends AbstractItemStack<T>, T> imp
    * @since 0.2.0.0
    */
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
 
     if(!(component instanceof final BreakSoundComponent<?, ?> other)) return false;
 

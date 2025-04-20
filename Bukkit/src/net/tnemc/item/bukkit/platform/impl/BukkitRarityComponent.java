@@ -54,8 +54,7 @@ public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, Item
   @Override
   public boolean enabled(final String version) {
 
-    //TODO: Look up version
-    return VersionUtil.isOneThirteen(version);
+    return VersionUtil.isOneTwentyOne(version);
   }
 
   /**

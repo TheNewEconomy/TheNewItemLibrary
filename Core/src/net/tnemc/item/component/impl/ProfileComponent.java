@@ -108,7 +108,7 @@ public abstract class ProfileComponent<I extends AbstractItemStack<T>, T> implem
    * @since 0.2.0.0
    */
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
 
     if(!(component instanceof final ProfileComponent<?, ?> other)) return false;
     if(profile != null) {

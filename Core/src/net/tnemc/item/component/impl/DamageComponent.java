@@ -81,7 +81,7 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final DamageComponent<?, ?> other)) {
 
       System.out.println("mismatch damage component");
