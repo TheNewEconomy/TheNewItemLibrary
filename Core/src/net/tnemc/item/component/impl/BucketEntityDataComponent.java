@@ -104,7 +104,7 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     noAI = json.getBoolean("NoAI");
     silent = json.getBoolean("Silent");
     noGravity = json.getBoolean("NoGravity");
@@ -119,8 +119,8 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final BucketEntityDataComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final BucketEntityDataComponent<?, ?> other)) return false;
     return this.noAI == other.noAI &&
            this.silent == other.silent &&
            this.noGravity == other.noGravity &&

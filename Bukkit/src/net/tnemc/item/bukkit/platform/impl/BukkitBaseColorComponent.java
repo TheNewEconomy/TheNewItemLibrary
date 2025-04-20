@@ -44,6 +44,7 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
    * Constructs a new BaseColorComponent with the specified color.
    *
    * @param color The base color value for the component.
+   * @since 0.2.0.0
    */
   public BukkitBaseColorComponent(final String color) {
 
@@ -54,6 +55,7 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
@@ -66,6 +68,7 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
@@ -76,7 +79,7 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
       if(item.hasItemMeta() && item.getItemMeta() instanceof final ShieldMeta meta) {
 
         try {
-          final DyeColor dyeColor = BukkitItemPlatform.PLATFORM.converter().convert(componentOptional.get().color, DyeColor.class);
+          final DyeColor dyeColor = BukkitItemPlatform.instance().converter().convert(componentOptional.get().color, DyeColor.class);
           meta.setBaseColor(dyeColor);
         } catch(final IllegalArgumentException ignore) {
           meta.setBaseColor(null);
@@ -93,6 +96,7 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   * @since 0.2.0.0
    */
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
@@ -101,7 +105,7 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
 
       if(meta.getBaseColor() != null) {
 
-        this.color = BukkitItemPlatform.PLATFORM.converter().convert(meta.getBaseColor(), String.class);
+        this.color = BukkitItemPlatform.instance().converter().convert(meta.getBaseColor(), String.class);
       }
     }
 
@@ -115,6 +119,7 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {

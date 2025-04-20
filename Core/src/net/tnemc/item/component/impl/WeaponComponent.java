@@ -61,6 +61,7 @@ public abstract class WeaponComponent<I extends AbstractItemStack<T>, T> impleme
 
   /**
    * @return the type of component this is.
+   * @since 0.2.0.0
    */
   @Override
   public String identifier() {
@@ -72,6 +73,7 @@ public abstract class WeaponComponent<I extends AbstractItemStack<T>, T> impleme
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
+   * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
@@ -82,14 +84,14 @@ public abstract class WeaponComponent<I extends AbstractItemStack<T>, T> impleme
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     damagePerAttack = json.getInteger("damage_per_attack");
     canDisableBlocking = json.getBoolean("can_disable_blocking");
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final WeaponComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final WeaponComponent<?, ?> other)) return false;
     return this.damagePerAttack == other.damagePerAttack && this.canDisableBlocking == other.canDisableBlocking;
   }
 

@@ -60,13 +60,13 @@ public abstract class NoteBlockSoundComponent<I extends AbstractItemStack<T>, T>
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     soundId = json.getString("note_block_sound");
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final NoteBlockSoundComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final NoteBlockSoundComponent<?, ?> other)) return false;
     return Objects.equals(this.soundId, other.soundId);
   }
 

@@ -19,6 +19,7 @@ package net.tnemc.item.component.helper.effect;
  */
 
 import net.tnemc.item.JSONHelper;
+import net.tnemc.item.component.helper.ItemDamage;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
@@ -80,7 +81,7 @@ public class EffectInstance {
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final EffectInstance other)) return false;
+    if(!(obj instanceof final EffectInstance other)) return false;
 
     return Objects.equals(this.id, other.id) &&
            this.amplifier == other.amplifier &&
@@ -153,5 +154,17 @@ public class EffectInstance {
   public void showIcon(final boolean showIcon) {
 
     this.showIcon = showIcon;
+  }
+
+  @Override
+  public EffectInstance clone() throws CloneNotSupportedException {
+    return new EffectInstance(
+            this.id,
+            this.amplifier,
+            this.duration,
+            this.showParticles,
+            this.ambient,
+            this.showIcon
+    );
   }
 }

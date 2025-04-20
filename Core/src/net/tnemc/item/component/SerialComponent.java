@@ -33,7 +33,6 @@ import org.json.simple.JSONObject;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-
 public interface SerialComponent<I extends AbstractItemStack<T>, T> extends ItemCheck<T>, ItemApplicator<I, T>, ItemSerializer<I, T> {
 
 
@@ -42,6 +41,7 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    *
    * @param item The item to check against.
    * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   boolean appliesTo(T item);
 
@@ -49,6 +49,7 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
+   * @since 0.2.0.0
    */
   JSONObject toJSON();
 
@@ -57,18 +58,9 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    *
    * @param json     The JSONHelper instance of the json data.
    * @param platform The {@link ItemPlatform platform} instance.
+   * @since 0.2.0.0
    */
-  void readJSON(JSONHelper json, ItemPlatform<I, T> platform);
-
-  /**
-   * Used to determine if some data is equal to this component. This means that it has to be an
-   * exact copy of this component.
-   *
-   * @param component The component to compare.
-   *
-   * @return True if similar, otherwise false.
-   */
-  boolean equals(SerialComponent<I, T> component);
+  void readJSON(JSONHelper json, ItemPlatform<I, T, ?> platform);
 
   /**
    * Checks if this component applies to the specified item stack.
@@ -76,6 +68,7 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    * @param original the original item stack
    * @param check the item stack to check against
    * @return true if the check passes, false otherwise
+   * @since 0.2.0.0
    */
   default boolean applies(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
 
@@ -87,14 +80,42 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    * @param check    the stack to use for the check
    *
    * @return True if the check passes, otherwise false.
+   * @since 0.2.0.0
    */
   @Override
   default boolean check(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
-    if(original.components().containsKey(identifier()) && check.components().containsKey(identifier())) {
 
-      return original.components().get(identifier()).equals(check.components().get(identifier()));
+    System.out.println("Checking " + identifier());
+
+    System.out.println("Original contains: " + original.components().containsKey(identifier()));
+    System.out.println("check contains: " + check.components().containsKey(identifier()));
+
+    if(original.components().containsKey(identifier()) && check.components().containsKey(identifier())) {
+      System.out.println("Both stacks contain the check, doing equals");
+
+      final SerialComponent<?, ?> originalComponent = original.components().get(identifier());
+      final SerialComponent<?, ?> checkComponent = check.components().get(identifier());
+      //return originalComponent.equals(checkComponent);
+
+      return original.components().get(identifier()).similar(check.components().get(identifier()));
     }
 
+    System.out.println("Both components do not contain the check, doing check to make sure neither have it.");
     return !original.components().containsKey(identifier()) && !check.components().containsKey(identifier());
   }
+
+  /**
+   *
+   * @param component The SerialComponent to compare for similarity.
+   * @return True if the components are similar, false otherwise.
+   */
+  boolean similar(final SerialComponent<?, ?> component);
+
+  /**
+   * Clones the current {@link SerialComponent} object.
+   * This method creates a deep copy of the current component, including all its properties and components.
+   *
+   * @return A new {@link SerialComponent} object that is a clone of the current component.
+   */
+  //SerialComponent<I, T> cloneComponent();
 }

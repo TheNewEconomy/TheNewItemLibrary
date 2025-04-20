@@ -60,13 +60,13 @@ public abstract class MapIDComponent<I extends AbstractItemStack<T>, T> implemen
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     mapId = json.getInteger("map_id");
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final MapIDComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final MapIDComponent<?, ?> other)) return false;
     return this.mapId == other.mapId;
   }
 

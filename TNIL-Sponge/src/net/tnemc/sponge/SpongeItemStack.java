@@ -98,7 +98,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
     this.stack = locale;
 
-    return SpongeItemPlatform.PLATFORM.serializer(this.stack, this);
+    return SpongeItemPlatform.instance().serializer(this.stack, this);
   }
 
   @Override
@@ -618,7 +618,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
   public boolean similarStack(final SpongeItemStack stack) {
 
-    return SpongeItemPlatform.PLATFORM.check(this, stack);
+    return SpongeItemPlatform.instance().check(this, stack);
   }
 
   @Override
@@ -627,7 +627,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     if(stack == null || dirty) {
       stack = ItemStack.builder().itemType((ItemType)ItemTypes.registry().value(fromString())).quantity(amount).build();
 
-      stack = SpongeItemPlatform.PLATFORM.apply(this, stack);
+      stack = SpongeItemPlatform.instance().apply(this, stack);
     }
     return stack;
   }
@@ -637,7 +637,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
 
     if(json.has("persistent-data")) {
-      holder.readJSON(json.getJSON("persistent-data"), SpongeItemPlatform.PLATFORM);
+      holder.readJSON(json.getJSON("persistent-data"), SpongeItemPlatform.instance());
     }
   }
 

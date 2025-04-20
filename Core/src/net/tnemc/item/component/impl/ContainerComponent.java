@@ -64,7 +64,7 @@ public abstract class ContainerComponent<I extends AbstractItemStack<T>, T> impl
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
 
     items.clear();
     json.getJSON("items").forEach((key, value)->{
@@ -76,7 +76,7 @@ public abstract class ContainerComponent<I extends AbstractItemStack<T>, T> impl
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(component instanceof final ContainerComponent<?, ?> compare) {
 
       if(items.size() != compare.items.size()) return false;

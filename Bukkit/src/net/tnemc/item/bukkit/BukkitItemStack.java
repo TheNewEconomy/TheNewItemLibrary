@@ -19,20 +19,28 @@ package net.tnemc.item.bukkit;
  */
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
+import net.tnemc.item.bukkit.platform.impl.BukkitAttributeModifiersComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitBundleComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitContainerComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitCustomNameComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitDamageComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitDyedColorComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitEnchantableComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitEnchantmentsComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemModelComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemNameComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitLoreComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitMaxDamageComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitMaxStackSizeComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitModelDataComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitModelDataOldComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitRarityComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitRepairCostComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitTooltipStyleComponent;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.BlockPredicate;
@@ -108,7 +116,9 @@ import net.tnemc.item.component.impl.WrittenBookContentComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.SkullProfile;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -136,11 +146,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   private int slot = 0;
   private String material;
-  private int amount;
+  private int amount = 1;
   private boolean debug = false;
 
   //item providers
-  private String itemProvider = BukkitItemPlatform.PLATFORM.defaultProviderIdentifier();
+  private String itemProvider = BukkitItemPlatform.instance().defaultProviderIdentifier();
   private String providerItemID = material;
 
   //our locale stack
@@ -160,8 +170,74 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
     this.material = material;
     this.amount = amount;
+
     this.dirty = true;
-    return this;
+
+    Material materialInstance = null;
+
+    try {
+      final NamespacedKey key = NamespacedKey.fromString(material);
+      if(key != null) {
+
+        System.out.println("Key is not null");
+
+        materialInstance = Registry.MATERIAL.get(key);
+      }
+    } catch(final NoSuchMethodError ignore) {
+      materialInstance = Material.matchMaterial(material);
+    }
+
+    if(materialInstance == null) {
+
+      System.out.println("Material is null");
+
+      return this;
+    }
+
+    this.localeStack = new ItemStack(materialInstance, amount);
+
+    //final ItemMeta meta = localeStack.getItemMeta();
+
+    //TODO: Move default components and default values to the SerialComponent object somehow
+    //Maybe through isDefault and applyDefault methods
+    /*try {
+
+      System.out.println("Checking some values");
+      System.out.println("Item Translation: " + materialInstance.getItemTranslationKey());
+      if(meta != null) {
+        System.out.println("Has model: " + meta.hasItemModel());
+        if(meta.hasLore()) {
+          System.out.println("Model: " + meta.getItemModel());
+        }
+      }
+
+      if(meta != null && meta.hasRarity()) {
+        applyComponent(new BukkitRarityComponent(BukkitItemPlatform.instance().converter().convert(meta.getRarity(), String.class)));
+      }
+    } catch(final NoSuchMethodError ignore) {
+    }
+
+    try {
+
+      if(meta != null && meta.hasItemName()) {
+        System.out.println("Has item name: " + meta.getItemName());
+        applyComponent(new BukkitItemNameComponent(LegacyComponentSerializer.legacySection().deserialize(meta.getItemName())));
+      }
+    } catch(final NoSuchMethodError ignore) {
+    }*/
+
+    //Apply our default components.
+    //applyComponent(new BukkitMaxStackSizeComponent(materialInstance.getMaxStackSize()));
+    //applyComponent(new BukkitEnchantmentsComponent());
+    //applyComponent(new BukkitLoreComponent());
+    //applyComponent(new BukkitRepairCostComponent());
+    //applyComponent(new BukkitAttributeModifiersComponent());
+    //applyComponent(new BukkitItemNameComponent());
+
+    //TODO: Replace with custom solution? or would this be the best solution for the defaults?
+    // custom is kinda overcomplicated but what is the performance hand off of new stack -> serialized,
+    // alternatively we have to do this anyways for the locale cache?
+    return of(new ItemStack(materialInstance, amount));
   }
 
   /**
@@ -175,9 +251,18 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public BukkitItemStack of(final ItemStack locale) {
 
     this.localeStack = locale;
-    final NamespacedKey key = locale.getType().getKeyOrNull();
-    if(key != null) {
-      this.material = key.toString();
+
+    try {
+
+      final NamespacedKey key = locale.getType().getKeyOrNull();
+      if(key != null) {
+
+        System.out.println("Key is not null");
+
+        material = key.toString();
+      }
+    } catch(final NoSuchMethodError ignore) {
+      material = locale.getType().getKey().toString();
     }
 
     this.amount = locale.getAmount();
@@ -189,7 +274,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
       }
     }
 
-    return BukkitItemPlatform.PLATFORM.serializer(this.localeStack, this);
+    return BukkitItemPlatform.instance().serializer(this.localeStack, this);
   }
 
   /**
@@ -496,9 +581,10 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    * @param itemProvider the string representing the item provider to be set
    */
   @Override
-  public void setItemProvider(final String itemProvider) {
+  public BukkitItemStack setItemProvider(final String itemProvider) {
     this.itemProvider = itemProvider;
     this.dirty = true;
+    return this;
   }
 
   /**
@@ -518,10 +604,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    * @param providerItemID the unique ID assigned by the provider for the item
    */
   @Override
-  public void setProviderItemID(final String providerItemID) {
+  public BukkitItemStack setProviderItemID(final String providerItemID) {
 
     this.providerItemID = providerItemID;
     this.dirty = true;
+    return this;
   }
 
   /**
@@ -532,7 +619,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public ItemProvider<ItemStack> provider() {
 
-    return BukkitItemPlatform.PLATFORM.provider(itemProvider);
+    return BukkitItemPlatform.instance().provider(itemProvider);
   }
 
   /**
@@ -544,6 +631,42 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   public JSONObject toJSON() {
 
     return null;
+  }
+
+  @Override
+  public BukkitItemStack clone() {
+    final BukkitItemStack copy = new BukkitItemStack();
+
+    //Basics
+    copy.material = this.material;
+    copy.amount = this.amount;
+    copy.slot = this.slot;
+    copy.debug = this.debug;
+
+    //Flags
+    copy.flags.addAll(this.flags);
+
+    //Components
+    for(final Map.Entry<String, SerialComponent<AbstractItemStack<ItemStack>, ItemStack>> entry : this.components.entrySet()) {
+
+      //TODO: clone components
+      //final SerialComponent<AbstractItemStack<ItemStack>, ItemStack> clonedComponent = entry.getValue().cloneComponent();
+      //copy.components.put(entry.getKey(), clonedComponent);
+    }
+
+    //PersistentData
+    final PersistentDataHolder clonedHolder = new PersistentDataHolder();
+    clonedHolder.getData().putAll(this.holder.getData());
+    copy.applyPersistentHolder(clonedHolder, true);
+
+    //Item Provider
+    copy.itemProvider = this.itemProvider;
+    copy.providerItemID = this.providerItemID;
+
+    //Mark the clone as dirty
+    copy.dirty = true;
+
+    return copy;
   }
 
   /**
@@ -842,6 +965,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchantable(final int value) {
 
+    applyComponent(new BukkitEnchantableComponent(value));
     return this;
   }
 
@@ -857,7 +981,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public BukkitItemStack enchantmentGlintOverride(final boolean glintOverride) {
-
     return this;
   }
 
@@ -1182,6 +1305,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack maxDamage(final int maxDamage) {
 
+    applyComponent(new BukkitMaxDamageComponent(maxDamage));
     return this;
   }
 
@@ -1198,6 +1322,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack maxStackSize(final int maxStackSize) {
 
+    applyComponent(new BukkitMaxStackSizeComponent(maxStackSize));
     return this;
   }
 
@@ -1535,6 +1660,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack tooltipStyle(final String style) {
 
+    applyComponent(new BukkitTooltipStyleComponent(style));
     return this;
   }
 

@@ -43,6 +43,7 @@ public abstract class ChargedProjectilesComponent<I extends AbstractItemStack<T>
 
   /**
    * @return the type of component this is.
+   * @since 0.2.0.0
    */
   @Override
   public String identifier() {

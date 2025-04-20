@@ -71,14 +71,14 @@ public abstract class WritableBookContentComponent<I extends AbstractItemStack<T
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     pages.clear();
     pages.addAll(json.getStringList("pages"));
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final WritableBookContentComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final WritableBookContentComponent<?, ?> other)) return false;
     return Objects.equals(this.pages, other.pages);
   }
 

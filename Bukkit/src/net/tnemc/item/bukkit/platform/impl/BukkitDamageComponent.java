@@ -38,6 +38,7 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
   /**
    * Represents a component that manages damage information. This component stores and provides
    * methods for handling damage values.
+   * @since 0.2.0.0
    */
   public BukkitDamageComponent() {
 
@@ -47,6 +48,7 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
    * Constructs a new DamageComponent with the specified damage amount.
    *
    * @param damage the amount of damage for the component
+   * @since 0.2.0.0
    */
   public BukkitDamageComponent(final int damage) {
 
@@ -57,6 +59,7 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
@@ -69,6 +72,7 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
@@ -76,7 +80,7 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
     final Optional<BukkitDamageComponent> componentOptional = serialized.component(identifier());
 
     if(componentOptional.isPresent()) {
-      if(VersionUtil.isOneThirteen(BukkitItemPlatform.PLATFORM.version())) {
+      if(VersionUtil.isOneThirteen(BukkitItemPlatform.instance().version())) {
 
         if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
 
@@ -96,20 +100,27 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   * @since 0.2.0.0
    */
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
-    if(VersionUtil.isOneThirteen(BukkitItemPlatform.PLATFORM.version())) {
+    if(VersionUtil.isOneThirteen(BukkitItemPlatform.instance().version())) {
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
-        this.damage = meta.getDamage();
+
+        if(meta.hasDamage()) {
+
+          this.damage = meta.getDamage();
+
+          serialized.applyComponent(this);
+        }
       }
     } else {
       this.damage = item.getDurability();
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(this);
+    }
     return serialized;
   }
 
@@ -119,6 +130,7 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {

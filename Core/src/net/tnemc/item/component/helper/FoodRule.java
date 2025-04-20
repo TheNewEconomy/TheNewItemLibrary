@@ -22,6 +22,8 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.helper.effect.EffectInstance;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * FoodRule
  *
@@ -87,5 +89,12 @@ public class FoodRule {
   public void setChance(final float chance) {
 
     this.chance = chance;
+  }
+
+  @Override
+  public FoodRule clone() throws CloneNotSupportedException {
+
+    final EffectInstance clonedEffect = this.potionEffect != null? this.potionEffect.clone() : null;
+    return new FoodRule(clonedEffect, this.chance);
   }
 }

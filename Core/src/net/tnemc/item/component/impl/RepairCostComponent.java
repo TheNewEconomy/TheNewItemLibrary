@@ -61,13 +61,13 @@ public abstract class RepairCostComponent<I extends AbstractItemStack<T>, T> imp
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     repairCost = json.getInteger("repair_cost");
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final RepairCostComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final RepairCostComponent<?, ?> other)) return false;
     return this.repairCost == other.repairCost;
   }
 

@@ -67,7 +67,7 @@ public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     types.clear();
     if(json.has("types")) {
       types.addAll(json.getStringList("types"));
@@ -75,7 +75,7 @@ public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final DamageResistantComponent<?, ?> other)) return false;
 
     return Objects.equals(this.types, other.types);

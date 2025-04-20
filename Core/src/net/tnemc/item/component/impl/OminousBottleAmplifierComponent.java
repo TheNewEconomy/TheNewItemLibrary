@@ -60,13 +60,13 @@ public abstract class OminousBottleAmplifierComponent<I extends AbstractItemStac
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     amplifier = json.getInteger("amplifier");
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final OminousBottleAmplifierComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final OminousBottleAmplifierComponent<?, ?> other)) return false;
     return this.amplifier == other.amplifier;
   }
 

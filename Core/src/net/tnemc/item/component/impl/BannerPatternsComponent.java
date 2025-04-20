@@ -46,6 +46,7 @@ public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T>
 
   /**
    * Represents a component that handles banner patterns for an object.
+   * @since 0.2.0.0
    */
   public BannerPatternsComponent() {
 
@@ -55,6 +56,7 @@ public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T>
    * Creates a new BannerPatternsComponent with the provided list of PatternData objects.
    *
    * @param patterns The list of PatternData objects to initialize the component with.
+   * @since 0.2.0.0
    */
   public BannerPatternsComponent(final List<PatternData> patterns) {
 
@@ -63,6 +65,7 @@ public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T>
 
   /**
    * @return the type of component this is.
+   * @since 0.2.0.0
    */
   @Override
   public String identifier() {
@@ -73,6 +76,7 @@ public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T>
    * Converts this component's data to a JSON object.
    *
    * @return The JSONObject representing this component's data.
+   * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
@@ -96,9 +100,10 @@ public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T>
    *
    * @param json The JSONHelper instance of the JSON data.
    * @param platform The ItemPlatform instance.
+   * @since 0.2.0.0
    */
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     patterns.clear();
 
     final JSONArray patternsArray = (JSONArray) json.getObject().get("patterns");
@@ -119,9 +124,10 @@ public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T>
    *
    * @param component The component to compare.
    * @return True if similar, otherwise false.
+   * @since 0.2.0.0
    */
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final BannerPatternsComponent<?, ?> other)) return false;
 
     return Objects.equals(this.patterns, other.patterns);
@@ -136,6 +142,7 @@ public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T>
    * Retrieve the list of PatternData objects associated with this BannerPatternsComponent.
    *
    * @return List of PatternData objects representing the patterns.
+   * @since 0.2.0.0
    */
   public List<PatternData> patterns() {
 
@@ -146,6 +153,7 @@ public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T>
    * Sets the list of patterns for this object by replacing the existing patterns with the provided list.
    *
    * @param patterns List of PatternData objects to set as new patterns
+   * @since 0.2.0.0
    */
   public void patterns(final List<PatternData> patterns) {
     this.patterns.clear();
@@ -161,6 +169,7 @@ public abstract class BannerPatternsComponent<I extends AbstractItemStack<T>, T>
    * Adds a pattern to the list of patterns for this BannerPatternsComponent.
    *
    * @param pattern The PatternData to add.
+   * @since 0.2.0.0
    */
   public void patterns(final PatternData pattern) {
     this.patterns.add(pattern);

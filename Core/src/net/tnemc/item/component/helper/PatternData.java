@@ -18,6 +18,8 @@ package net.tnemc.item.component.helper;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import java.util.ArrayList;
+
 /**
  * PatternData
  *
@@ -53,5 +55,10 @@ public class PatternData {
   public void setPattern(final String pattern) {
 
     this.pattern = pattern;
+  }
+
+  @Override
+  public PatternData clone() throws CloneNotSupportedException {
+    return new PatternData(this.color, this.pattern);
   }
 }

@@ -64,7 +64,7 @@ public class TeleportRandomlyComponentEffect extends ComponentEffect {
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final TeleportRandomlyComponentEffect other)) return false;
+    if(!(obj instanceof final TeleportRandomlyComponentEffect other)) return false;
 
     return super.equals(obj) && Float.compare(this.diameter, other.diameter) == 0;
   }
@@ -72,5 +72,13 @@ public class TeleportRandomlyComponentEffect extends ComponentEffect {
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), diameter);
+  }
+
+  @Override
+  public TeleportRandomlyComponentEffect clone() {
+    final TeleportRandomlyComponentEffect copy = new TeleportRandomlyComponentEffect();
+    copy.probability(this.probability);
+    copy.setDiameter(this.getDiameter());
+    return copy;
   }
 }

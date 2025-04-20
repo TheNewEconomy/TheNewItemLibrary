@@ -59,6 +59,7 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
 
   /**
    * @return the type of component this is.
+   * @since 0.2.0.0
    */
   @Override
   public String identifier() {
@@ -69,6 +70,7 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
    * Converts this component's data to a JSON object.
    *
    * @return The JSONObject representing this component's data.
+   * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
@@ -85,9 +87,10 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
    *
    * @param json      The JSONHelper instance of the json data.
    * @param platform  The ItemPlatform instance.
+   * @since 0.2.0.0
    */
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     colours.clear();
     colours.addAll(json.getStringList("colours"));
 
@@ -107,10 +110,11 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
    *
    * @param component The component to compare.
    * @return True if similar, otherwise false.
+   * @since 0.2.0.0
    */
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final ModelDataComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final ModelDataComponent<?, ?> other)) return false;
     return Objects.equals(this.colours, other.colours) &&
            Objects.equals(this.floats, other.floats) &&
            Objects.equals(this.flags, other.flags) &&

@@ -39,9 +39,19 @@ public abstract class ComponentEffect {
 
   public abstract void readJSON(JSONHelper json);
 
+  public float probability() {
+
+    return probability;
+  }
+
+  public void probability(final float probability) {
+
+    this.probability = probability;
+  }
+
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final ComponentEffect other)) return false;
+    if(!(obj instanceof final ComponentEffect other)) return false;
 
     return Float.compare(this.probability, other.probability) == 0;
   }

@@ -78,7 +78,7 @@ public abstract class FireworksComponent<I extends AbstractItemStack<T>, T> impl
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     explosions.clear();
 
     final JSONArray explosionsArray = (JSONArray) json.getObject().get("explosions");
@@ -97,7 +97,7 @@ public abstract class FireworksComponent<I extends AbstractItemStack<T>, T> impl
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final FireworksComponent<?, ?> other)) return false;
 
     return this.flightDuration == other.flightDuration &&

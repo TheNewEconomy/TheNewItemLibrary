@@ -67,6 +67,7 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
 
   /**
    * @return the type of component this is.
+   * @since 0.2.0.0
    */
   @Override
   public String identifier() {
@@ -78,6 +79,7 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
+   * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
@@ -130,9 +132,10 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
    * Reads JSON data and converts it back to a {@link SerialComponent} object.
    *
    * @param json The JSONHelper instance of the json data.
+   * @since 0.2.0.0
    */
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
 
     //Deserialize DamageReductions
     final JSONArray reductionsArray = (JSONArray)json.getObject().get("reductions");
@@ -187,9 +190,10 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
    * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
+   * @since 0.2.0.0
    */
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
 
     if(!(component instanceof final BlocksAttacksComponent<?, ?> other)) return false;
 

@@ -71,14 +71,14 @@ public abstract class RepairableComponent<I extends AbstractItemStack<T>, T> imp
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     repairItems.clear();
     repairItems.addAll(json.getStringList("items"));
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final RepairableComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final RepairableComponent<?, ?> other)) return false;
     return Objects.equals(this.repairItems, other.repairItems);
   }
 

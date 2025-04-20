@@ -21,6 +21,7 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
+import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.impl.AttributeModifiersComponent;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -42,6 +43,7 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
 
   /**
    * Constructor for AttributeModifiersComponent. Initializes an empty list of AttributeModifiers.
+   * @since 0.2.0.0
    */
   public BukkitAttributeModifiersComponent() {
 
@@ -52,6 +54,7 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
    * AttributeModifiers and a boolean flag to show in tooltip.
    *
    * @param modifiers The list of AttributeModifiers to associate with this component.
+   * @since 0.2.0.0
    */
   public BukkitAttributeModifiersComponent(final List<net.tnemc.item.component.helper.AttributeModifier> modifiers) {
 
@@ -62,6 +65,7 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
@@ -74,6 +78,7 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
@@ -84,8 +89,8 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
 
       for(final net.tnemc.item.component.helper.AttributeModifier attribute : componentOptional.get().modifiers()) {
 
-        final AttributeModifier.Operation operation = BukkitItemPlatform.PLATFORM.converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);
-        final EquipmentSlotGroup slot = BukkitItemPlatform.PLATFORM.converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);
+        final AttributeModifier.Operation operation = BukkitItemPlatform.instance().converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);
+        final EquipmentSlotGroup slot = BukkitItemPlatform.instance().converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);
         final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType()),
                                                              attribute.getAmount(),
                                                              operation,
@@ -103,6 +108,7 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   * @since 0.2.0.0
    */
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
@@ -116,6 +122,7 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {

@@ -56,6 +56,7 @@ public abstract class BaseHelper {
    * Returns a collection of materials.
    *
    * @return a collection of materials
+   * @since 0.2.0.0
    */
   public LinkedList<String> materials() {
 
@@ -66,6 +67,7 @@ public abstract class BaseHelper {
    * Returns a collection of enchantments.
    *
    * @return a collection of enchantments
+   * @since 0.2.0.0
    */
   public LinkedList<String> enchantments() {
 
@@ -76,6 +78,7 @@ public abstract class BaseHelper {
    * Returns a collection of flags.
    *
    * @return a collection of flags
+   * @since 0.2.0.0
    */
   public LinkedList<String> flags() {
 

@@ -61,10 +61,10 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     deathEffects.clear();
 
-    if (json.has("death_effects")) {
+    if(json.has("death_effects")) {
       final JSONArray effectsArray = (JSONArray) json.getObject().get("death_effects");
 
       for (final Object obj : effectsArray) {
@@ -74,7 +74,7 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
         // Get the effect class from the platform's reviveEffects map
         final Class<? extends ComponentEffect> effectClass = platform.effects().get(type);
 
-        if (effectClass != null) {
+        if(effectClass != null) {
           try {
             // Instantiate the effect dynamically
             final ComponentEffect effect = effectClass.getDeclaredConstructor().newInstance();
@@ -89,8 +89,8 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final DeathProtectionComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final DeathProtectionComponent<?, ?> other)) return false;
 
     return Objects.equals(this.deathEffects, other.deathEffects);
   }
@@ -104,6 +104,7 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
    * Gets the list of death effects.
    *
    * @return A list of `ReviveEffect` objects.
+   * @since 0.2.0.0
    */
   public List<ComponentEffect> deathEffects() {
     return deathEffects;
@@ -113,6 +114,7 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
    * Applies death effects to the component's list of effects.
    *
    * @param deathEffects The list of ComponentEffect to apply as death effects.
+   * @since 0.2.0.0
    */
   public void deathEffects(final List<ComponentEffect> deathEffects) {
     this.deathEffects.clear();
@@ -123,6 +125,7 @@ public abstract class DeathProtectionComponent<I extends AbstractItemStack<T>, T
    * Adds one or more ComponentEffect objects to the list of death effects for this DeathProtectionComponent.
    *
    * @param effects One or more ComponentEffect objects to be added as death effects.
+   * @since 0.2.0.0
    */
   public void deathEffect(final ComponentEffect... effects) {
     this.deathEffects.addAll(Arrays.asList(effects));

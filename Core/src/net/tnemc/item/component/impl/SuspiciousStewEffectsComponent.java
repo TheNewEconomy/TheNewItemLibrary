@@ -76,7 +76,7 @@ public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
 
     effects.clear();
     final JSONArray effectsArray = (JSONArray) json.getObject().get("custom_effects");
@@ -89,8 +89,8 @@ public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final SuspiciousStewEffectsComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final SuspiciousStewEffectsComponent<?, ?> other)) return false;
     return Objects.equals(this.effects, other.effects);
   }
 

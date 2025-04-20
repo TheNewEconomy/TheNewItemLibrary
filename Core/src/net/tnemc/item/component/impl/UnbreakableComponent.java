@@ -50,12 +50,12 @@ public abstract class UnbreakableComponent<I extends AbstractItemStack<T>, T> im
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final UnbreakableComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final UnbreakableComponent<?, ?> other)) return false;
     return true;
   }
 

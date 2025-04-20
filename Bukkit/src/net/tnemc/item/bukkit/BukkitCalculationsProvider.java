@@ -68,7 +68,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     for(final BukkitItemStack stack : left) {
 
-      if(setOwner && VersionUtil.isOneSixteen(BukkitItemPlatform.PLATFORM.version())) {
+      if(setOwner && VersionUtil.isOneSixteen(BukkitItemPlatform.instance().version())) {
 
         final Item it = playerObj.getWorld().dropItemNaturally(playerObj.getLocation(), stack.provider().locale(stack));
         it.setOwner(player);
@@ -215,8 +215,13 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     for(final BukkitItemStack item : items) {
 
-      final Map<Integer, ItemStack> left = inventory.addItem(item.provider().locale(item));
+      if(item == null) {
+        continue;
+      }
+
+      final Map<Integer, ItemStack> left = inventory.addItem(item.provider().locale(item, item.amount()));
       if(left.isEmpty()) {
+
         continue;
       }
 
@@ -248,6 +253,8 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     final ItemStack compare = stack.provider().locale(stack).clone();
     compare.setAmount(1);
+
+    System.out.println("Calc removeItem: Left: " + left);
 
     //TODO: improve this
 

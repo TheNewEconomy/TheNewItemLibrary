@@ -62,13 +62,13 @@ public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> imple
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     itemName = LegacyComponentSerializer.legacySection().deserialize(json.getString("item_name"));
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final ItemNameComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final ItemNameComponent<?, ?> other)) return false;
 
     return Objects.equals(this.itemName, other.itemName);
   }

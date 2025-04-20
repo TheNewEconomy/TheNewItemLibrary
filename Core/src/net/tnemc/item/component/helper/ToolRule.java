@@ -121,4 +121,14 @@ public class ToolRule {
 
     this.drops = drops;
   }
+
+  @Override
+  public ToolRule clone() throws CloneNotSupportedException {
+
+    final ToolRule copy = new ToolRule();
+    copy.setSpeed(this.speed);
+    copy.setDrops(this.drops);
+    copy.setMaterials(new ArrayList<>(this.materials));
+    return copy;
+  }
 }

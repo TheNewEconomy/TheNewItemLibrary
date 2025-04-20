@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
+import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.ItemProvider;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -41,6 +42,7 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
    * @param item       The item to check against.
    *
    * @return True if the serialized item stack applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final AbstractItemStack<? extends ItemStack> serialized, final ItemStack item) {
@@ -55,11 +57,33 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
    * @param compare  The item stack to compare.
    *
    * @return True if the two item stacks are similar, otherwise false.
+   * @since 0.2.0.0
    */
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
 
-    return BukkitItemPlatform.PLATFORM.check((BukkitItemStack)original, new BukkitItemStack().of(compare));
+    final BukkitItemStack compareStack = new BukkitItemStack().of(compare);
+
+    System.out.println("==== Similar call ====");
+
+    System.out.println("original Components");
+
+    for(final SerialComponent component : original.components().values()) {
+
+      System.out.println("Entry: " + component.identifier());
+    }
+
+    System.out.println("Compare Components");
+
+    for(final SerialComponent component : compareStack.components().values()) {
+
+      System.out.println("Entry: " + component.identifier());
+    }
+
+    System.out.println("==== Similar end ====");
+
+
+    return BukkitItemPlatform.instance().check((BukkitItemStack)original, compareStack);
   }
 
   /**
@@ -69,9 +93,12 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
    * @param amount   The amount for the new item stack.
    *
    * @return A new item stack with the specified amount.
+   * @since 0.2.0.0
    */
   @Override
   public ItemStack locale(final AbstractItemStack<? extends ItemStack> original, final int amount) {
+
+    System.out.println("instanceof: " + (original instanceof BukkitItemStack));
 
     if(original instanceof final BukkitItemStack bukkit) {
 
@@ -79,25 +106,30 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
         return bukkit.cacheLocale();
       }
 
+      System.out.println("Material: " + bukkit.material());
+
       Material material = null;
 
       try {
         final NamespacedKey key = NamespacedKey.fromString(bukkit.material());
         if(key != null) {
 
+          System.out.println("Key is not null");
+
           material = Registry.MATERIAL.get(key);
         }
-      } catch(final Exception ignore) {
+      } catch(final NoSuchMethodError ignore) {
         material = Material.matchMaterial(bukkit.material());
       }
 
       if(material == null) {
 
+        System.out.println("Material is null");
         return null;
       }
       ItemStack stack = new ItemStack(material, amount);
 
-      stack = BukkitItemPlatform.PLATFORM.apply(bukkit, stack);
+      stack = BukkitItemPlatform.instance().apply(bukkit, stack);
 
       bukkit.updateCache(stack);
       bukkit.resetDirty();
@@ -109,6 +141,7 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
 
   /**
    * @return the identifier for this check.
+   * @since 0.2.0.0
    */
   @Override
   public String identifier() {

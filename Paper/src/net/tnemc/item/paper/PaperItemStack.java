@@ -136,11 +136,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
   private int slot = 0;
   private String material;
-  private int amount;
+  private int amount = 1;
   private boolean debug = false;
 
   //item providers
-  private String itemProvider = PaperItemPlatform.PLATFORM.defaultProviderIdentifier();
+  private String itemProvider = PaperItemPlatform.instance().defaultProviderIdentifier();
   private String providerItemID = material;
 
   //our locale stack
@@ -186,7 +186,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
       }
     }
 
-    return PaperItemPlatform.PLATFORM.serializer(this.localeStack, this);
+    return PaperItemPlatform.instance().serializer(this.localeStack, this);
   }
 
   /**
@@ -492,9 +492,10 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    * @param itemProvider the string representing the item provider to be set
    */
   @Override
-  public void setItemProvider(final String itemProvider) {
+  public PaperItemStack setItemProvider(final String itemProvider) {
     this.itemProvider = itemProvider;
     this.dirty = true;
+    return this;
   }
 
   /**
@@ -514,10 +515,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    * @param providerItemID the unique ID assigned by the provider for the item
    */
   @Override
-  public void setProviderItemID(final String providerItemID) {
+  public PaperItemStack setProviderItemID(final String providerItemID) {
 
     this.providerItemID = providerItemID;
     this.dirty = true;
+    return this;
   }
 
   /**
@@ -528,7 +530,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public ItemProvider<ItemStack> provider() {
 
-    return PaperItemPlatform.PLATFORM.provider(itemProvider);
+    return PaperItemPlatform.instance().provider(itemProvider);
   }
 
   /**

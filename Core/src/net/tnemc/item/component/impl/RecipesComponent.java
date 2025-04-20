@@ -71,14 +71,14 @@ public abstract class RecipesComponent<I extends AbstractItemStack<T>, T> implem
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     recipes.clear();
     recipes.addAll(json.getStringList("recipes"));
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final RecipesComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final RecipesComponent<?, ?> other)) return false;
     return Objects.equals(this.recipes, other.recipes);
   }
 

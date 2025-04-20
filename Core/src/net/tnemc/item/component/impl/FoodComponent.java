@@ -61,6 +61,7 @@ public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implement
 
   /**
    * @return the type of component this is.
+   * @since 0.2.0.0
    */
   @Override
   public String identifier() {
@@ -72,6 +73,7 @@ public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implement
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
+   * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
@@ -88,9 +90,10 @@ public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implement
    * Reads JSON data and converts it back to a {@link SerialComponent} object.
    *
    * @param json The JSONHelper instance of the json data.
+   * @since 0.2.0.0
    */
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
 
     canAlwaysEat = json.getBoolean("canAlwaysEat");
     saturation = json.getFloat("saturation");
@@ -104,9 +107,10 @@ public abstract class FoodComponent<I extends AbstractItemStack<T>, T> implement
    * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
+   * @since 0.2.0.0
    */
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
 
     if(component instanceof final FoodComponent<?, ?> food) {
 

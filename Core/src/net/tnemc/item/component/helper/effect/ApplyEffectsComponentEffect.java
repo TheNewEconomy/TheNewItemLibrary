@@ -61,7 +61,7 @@ public class ApplyEffectsComponentEffect extends ComponentEffect {
     probability = json.getFloat("probability");
 
     effects.clear();
-    if (json.has("effects")) {
+    if(json.has("effects")) {
       final JSONArray effectsArray = (JSONArray) json.getObject().get("effects");
       for (final Object obj : effectsArray) {
         final EffectInstance effect = new EffectInstance();
@@ -77,7 +77,7 @@ public class ApplyEffectsComponentEffect extends ComponentEffect {
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final ApplyEffectsComponentEffect other)) return false;
+    if(!(obj instanceof final ApplyEffectsComponentEffect other)) return false;
 
     return super.equals(obj) && Objects.equals(this.effects, other.effects);
   }
@@ -85,5 +85,24 @@ public class ApplyEffectsComponentEffect extends ComponentEffect {
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), effects);
+  }
+
+  @Override
+  public ApplyEffectsComponentEffect clone() {
+
+    final ApplyEffectsComponentEffect copy = new ApplyEffectsComponentEffect();
+    copy.probability(this.probability);
+
+    for(final EffectInstance effect : this.effects) {
+      copy.getEffects().add(new EffectInstance(
+              effect.id(),
+              effect.amplifier(),
+              effect.duration(),
+              effect.showParticles(),
+              effect.ambient(),
+              effect.showIcon()
+      ));
+    }
+    return copy;
   }
 }

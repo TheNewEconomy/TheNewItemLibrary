@@ -74,7 +74,7 @@ public abstract class CanPlaceOnComponent<I extends AbstractItemStack<T>, T> imp
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     predicates.clear();
 
     final JSONArray predicatesArray = (JSONArray) json.getObject().get("predicates");
@@ -89,7 +89,7 @@ public abstract class CanPlaceOnComponent<I extends AbstractItemStack<T>, T> imp
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final CanPlaceOnComponent<?, ?> other)) return false;
 
     return Objects.equals(this.predicates, other.predicates);
@@ -104,6 +104,7 @@ public abstract class CanPlaceOnComponent<I extends AbstractItemStack<T>, T> imp
    * Retrieves the list of predicates associated with this CanBreakComponent.
    *
    * @return The list of BlockPredicate objects.
+   * @since 0.2.0.0
    */
   public List<BlockPredicate> predicates() {
 
@@ -114,6 +115,7 @@ public abstract class CanPlaceOnComponent<I extends AbstractItemStack<T>, T> imp
    * Modifies the list of predicates associated with this CanBreakComponent by replacing it with a new list.
    *
    * @param predicates The new list of BlockPredicate objects to replace the existing list with.
+   * @since 0.2.0.0
    */
   public void predicates(final List<BlockPredicate> predicates) {
     this.predicates.clear();
@@ -124,6 +126,7 @@ public abstract class CanPlaceOnComponent<I extends AbstractItemStack<T>, T> imp
    * Add one or more BlockPredicate objects to the list of predicates associated with this component.
    *
    * @param predicates The BlockPredicate objects to add to the list.
+   * @since 0.2.0.0
    */
   public void predicates(final BlockPredicate... predicates) {
     this.predicates.addAll(Arrays.asList(predicates));

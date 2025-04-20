@@ -53,7 +53,7 @@ public class PaperHelper extends BaseHelper {
     registerHandler("enchantments", new SupplierRegistryHandler(() -> {
 
       final LinkedList<String> keys = new LinkedList<>();
-      if(VersionUtil.isVersion(PaperItemPlatform.PLATFORM.version(), "1.21")) {
+      if(VersionUtil.isVersion(PaperItemPlatform.instance().version(), "1.21")) {
 
         RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).forEach((enchantment)->{
           if(enchantment != null) {

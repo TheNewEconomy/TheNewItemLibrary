@@ -61,13 +61,13 @@ public abstract class MaxStackSizeComponent<I extends AbstractItemStack<T>, T> i
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     maxStackSize = json.getInteger("max_stack_size");
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final MaxStackSizeComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final MaxStackSizeComponent<?, ?> other)) return false;
     return this.maxStackSize == other.maxStackSize;
   }
 

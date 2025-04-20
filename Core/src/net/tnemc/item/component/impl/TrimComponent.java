@@ -63,14 +63,14 @@ public abstract class TrimComponent<I extends AbstractItemStack<T>, T> implement
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     pattern = json.getString("pattern");
     material = json.getString("material");
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final TrimComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final TrimComponent<?, ?> other)) return false;
     return Objects.equals(this.pattern, other.pattern) &&
            Objects.equals(this.material, other.material);
   }

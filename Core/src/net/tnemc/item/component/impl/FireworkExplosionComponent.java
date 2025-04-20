@@ -67,15 +67,15 @@ public abstract class FireworkExplosionComponent<I extends AbstractItemStack<T>,
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
-    if (json.has("explosion")) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+    if(json.has("explosion")) {
       explosion.readJSON(json.getHelper("explosion"));
     }
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final FireworkExplosionComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final FireworkExplosionComponent<?, ?> other)) return false;
 
     return Objects.equals(this.explosion, other.explosion);
   }

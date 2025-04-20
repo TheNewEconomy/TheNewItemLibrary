@@ -64,6 +64,7 @@ public class ExplosionData {
    * Converts this explosion data to a JSON object.
    *
    * @return The JSONObject representing this explosion data.
+   * @since 0.2.0.0
    */
   public JSONObject toJSON() {
     final JSONObject json = new JSONObject();
@@ -79,6 +80,7 @@ public class ExplosionData {
    * Reads JSON data and populates this explosion data.
    *
    * @param json The JSONHelper instance of the JSON data.
+   * @since 0.2.0.0
    */
   public void readJSON(final JSONHelper json) {
     shape = json.getString("shape");
@@ -95,7 +97,7 @@ public class ExplosionData {
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final ExplosionData other)) return false;
+    if(!(obj instanceof final ExplosionData other)) return false;
 
     return Objects.equals(this.shape, other.shape) &&
            Objects.equals(this.colors, other.colors) &&
@@ -171,5 +173,17 @@ public class ExplosionData {
   public void hasTwinkle(final boolean hasTwinkle) {
 
     this.hasTwinkle = hasTwinkle;
+  }
+
+  @Override
+  public ExplosionData clone() throws CloneNotSupportedException {
+
+    return new ExplosionData(
+            this.shape,
+            this.hasTrail,
+            this.hasTwinkle,
+            new ArrayList<>(this.colors),
+            new ArrayList<>(this.fadeColors)
+    );
   }
 }

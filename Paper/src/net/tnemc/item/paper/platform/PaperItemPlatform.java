@@ -21,6 +21,13 @@ package net.tnemc.item.paper.platform;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.bukkitbase.platform.providers.ItemAdderProvider;
+import net.tnemc.item.bukkitbase.platform.providers.MMOItemProvider;
+import net.tnemc.item.bukkitbase.platform.providers.NexoProvider;
+import net.tnemc.item.bukkitbase.platform.providers.NovaProvider;
+import net.tnemc.item.bukkitbase.platform.providers.OraxenProvider;
+import net.tnemc.item.bukkitbase.platform.providers.SlimefunProvider;
+import net.tnemc.item.paper.PaperCalculationsProvider;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.VanillaProvider;
 import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;
@@ -48,6 +55,7 @@ import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldProfileComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldShulkerColorComponent;
 import net.tnemc.item.platform.ItemPlatform;
+import net.tnemc.item.providers.CalculationsProvider;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -57,10 +65,7 @@ import org.bukkit.Registry;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.EquipmentSlotGroup;
-import org.bukkit.inventory.ItemRarity;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
@@ -77,19 +82,46 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
+public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, Inventory> {
 
-  public static final PaperItemPlatform PLATFORM = new PaperItemPlatform();
+  private static volatile PaperItemPlatform instance;
+
+  //public static final PaperItemPlatform PLATFORM = new PaperItemPlatform();
 
   protected final VanillaProvider defaultProvider = new VanillaProvider();
+  protected final PaperCalculationsProvider calculationsProvider = new PaperCalculationsProvider();
 
   private PaperItemPlatform() {
 
     super();
   }
 
+  @Override
+  public PaperItemStack createStack(final String material) {
+    return new PaperItemStack().of(material, 1);
+  }
+
+  public static PaperItemPlatform instance() {
+
+    final PaperItemPlatform result = instance;
+    if(result != null) {
+      return result;
+    }
+
+    synchronized(PaperItemPlatform.class) {
+
+      if(instance == null) {
+
+        instance = new PaperItemPlatform();
+        instance.addDefaults();
+      }
+      return instance;
+    }
+  }
+
   /**
    * @return the version that is being used currently
+   * @since 0.2.0.0
    */
   @Override
   public String version() {
@@ -133,12 +165,21 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
       addMulti(new PaperProfileComponent());
       addMulti(new PaperShulkerColorComponent());
     }
+
+    addItemProvider(new ItemAdderProvider());
+    addItemProvider(new MMOItemProvider());
+    addItemProvider(new NexoProvider());
+    addItemProvider(new NovaProvider());
+    addItemProvider(new OraxenProvider());
+    addItemProvider(new SlimefunProvider());
+    addItemProvider(defaultProvider);
   }
 
   /**
    * Retrieves the default provider for the item stack comparison.
    *
    * @return the default provider for the item stack comparison.
+   * @since 0.2.0.0
    */
   @Override
   public @NotNull ItemProvider<ItemStack> defaultProvider() {
@@ -150,11 +191,17 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
    * Retrieves the identifier of the default provider for the item stack comparison.
    *
    * @return The identifier of the default provider for the item stack comparison.
+   * @since 0.2.0.0
    */
   @Override
   public @NotNull String defaultProviderIdentifier() {
 
     return defaultProvider.identifier();
+  }
+
+  @Override
+  public PaperCalculationsProvider calculations() {
+    return calculationsProvider;
   }
 
   /**
@@ -163,6 +210,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
    * @param locale the locale to convert
    *
    * @return the converted locale of type I
+   * @since 0.2.0.0
    */
   @Override
   public PaperItemStack locale(final ItemStack locale) {
@@ -476,6 +524,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack> {
    * @param object the JSON object to deserialize
    *
    * @return an initialized AbstractItemStack object
+   * @since 0.2.0.0
    */
   @Override
   public Optional<PaperItemStack> initSerialized(final JSONObject object) {

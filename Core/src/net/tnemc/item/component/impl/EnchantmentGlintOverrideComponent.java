@@ -60,13 +60,13 @@ public abstract class EnchantmentGlintOverrideComponent<I extends AbstractItemSt
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     glintOverride = json.getBoolean("enchantment_glint_override");
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final EnchantmentGlintOverrideComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final EnchantmentGlintOverrideComponent<?, ?> other)) return false;
     return this.glintOverride == other.glintOverride;
   }
 

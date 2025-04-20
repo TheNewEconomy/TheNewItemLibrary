@@ -28,6 +28,8 @@ public interface Identifiable {
 
   /**
    * @return the identifier for this check.
+   * @since 0.2.0.0
+   * @since 0.2.0.0
    */
   String identifier();
 

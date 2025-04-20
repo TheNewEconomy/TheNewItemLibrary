@@ -39,6 +39,7 @@ public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperIt
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
@@ -51,6 +52,7 @@ public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperIt
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
@@ -62,7 +64,7 @@ public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperIt
 
         try {
 
-          final Enchantment enchant = PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), Enchantment.class);
+          final Enchantment enchant = PaperItemPlatform.instance().converter().convert(entry.getKey(), Enchantment.class);
           if(enchant != null) {
 
             item.addUnsafeEnchantment(enchant, entry.getValue());
@@ -80,13 +82,14 @@ public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperIt
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   * @since 0.2.0.0
    */
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
     for(final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
 
-      levels.put(PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), String.class), entry.getValue());
+      levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
     }
 
     serialized.applyComponent(this);
@@ -99,6 +102,7 @@ public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperIt
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {

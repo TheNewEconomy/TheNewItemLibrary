@@ -60,13 +60,13 @@ public abstract class MapColorComponent<I extends AbstractItemStack<T>, T> imple
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     mapColor = json.getInteger("map_color");
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final MapColorComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final MapColorComponent<?, ?> other)) return false;
     return this.mapColor == other.mapColor;
   }
 

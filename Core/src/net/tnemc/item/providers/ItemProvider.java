@@ -37,6 +37,7 @@ public interface ItemProvider<T> extends Identifiable {
    * @param serialized The serialized item stack to check against the item.
    * @param item The item to check against.
    * @return True if the serialized item stack applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   boolean appliesTo(final AbstractItemStack<? extends T> serialized, final T item);
 
@@ -46,6 +47,7 @@ public interface ItemProvider<T> extends Identifiable {
    * @param original The original item stack to compare against.
    * @param compare The item stack to compare.
    * @return True if the two item stacks are similar, otherwise false.
+   * @since 0.2.0.0
    */
   boolean similar(final AbstractItemStack<? extends T> original, final T compare);
 
@@ -60,6 +62,7 @@ public interface ItemProvider<T> extends Identifiable {
    * @return True if the two are similar, otherwise false.
    * @since 0.2.0.0
    * @author creatorfromhell
+   * @since 0.2.0.0
    */
   default boolean similar(final AbstractItemStack<? extends T> original, final AbstractItemStack<? extends T> compare) {
 
@@ -73,6 +76,7 @@ public interface ItemProvider<T> extends Identifiable {
    * @param original The original item to compare.
    * @param compare The item to compare against the original.
    * @return true if the components of the two items are equal, otherwise false.
+   * @since 0.2.0.0
    */
   default boolean componentsEqual(final AbstractItemStack<? extends T> original, final AbstractItemStack<? extends T> compare) {
 
@@ -86,6 +90,7 @@ public interface ItemProvider<T> extends Identifiable {
    * @param original The original item to compare.
    * @param compare The item to compare against the original.
    * @return true if the components of the two items are equal, otherwise false.
+   * @since 0.2.0.0
    */
   default boolean componentsEqual(final AbstractItemStack<? extends T> original, final T compare) {
 
@@ -99,6 +104,7 @@ public interface ItemProvider<T> extends Identifiable {
    * @param original The original item to compare.
    * @param compare The item to compare against the original.
    * @return true if the components of the two items are equal, otherwise false.
+   * @since 0.2.0.0
    */
   default boolean componentsEqual(final T original, final T compare) {
 
@@ -112,6 +118,7 @@ public interface ItemProvider<T> extends Identifiable {
    * @param original The original item stack to copy.
    * @param amount The amount for the new item stack.
    * @return A new item stack with the specified amount.
+   * @since 0.2.0.0
    */
   T locale(final AbstractItemStack<? extends T> original, final int amount);
 
@@ -119,9 +126,11 @@ public interface ItemProvider<T> extends Identifiable {
    * @return An instance of the implementation's locale version of AbstractItemStack.
    * @since 0.2.0.0
    * @author creatorfromhell
+   * @since 0.2.0.0
+   * @since 0.2.0.0
    */
   default T locale(final AbstractItemStack<? extends T> original) {
 
-    return locale(original, 1);
+    return locale(original, original.amount());
   }
 }

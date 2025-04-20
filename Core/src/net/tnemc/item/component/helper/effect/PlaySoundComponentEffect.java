@@ -54,17 +54,19 @@ public class PlaySoundComponentEffect extends ComponentEffect {
     sound = json.getString("sound");
   }
 
-  public String getSound() {
+  public String sound() {
+
     return sound;
   }
 
-  public void setSound(final String sound) {
+  public void sound(final String sound) {
+
     this.sound = sound;
   }
 
   @Override
   public boolean equals(final Object obj) {
-    if (!(obj instanceof final PlaySoundComponentEffect other)) return false;
+    if(!(obj instanceof final PlaySoundComponentEffect other)) return false;
 
     return super.equals(obj) && Objects.equals(this.sound, other.sound);
   }
@@ -72,5 +74,14 @@ public class PlaySoundComponentEffect extends ComponentEffect {
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), sound);
+  }
+
+  @Override
+  public PlaySoundComponentEffect clone() {
+
+    final PlaySoundComponentEffect copy = new PlaySoundComponentEffect();
+    copy.sound(this.sound);
+    copy.probability(this.probability);
+    return copy;
   }
 }

@@ -24,6 +24,7 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.platform.ItemPlatform;
+import net.tnemc.item.providers.Util;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -77,7 +78,7 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     lore.clear();
 
     for(final String str : json.getStringList("lore")) {
@@ -86,9 +87,16 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final LoreComponent<?, ?> other)) return false;
-    return Objects.equals(this.lore, other.lore);
+  public boolean similar(final SerialComponent<?, ?> component) {
+
+    System.out.println("Lore equals");
+
+    if(!(component instanceof final LoreComponent<?, ?> other)) {
+      System.out.println("incompatible component");
+      return false;
+    }
+
+    return Util.textComponentsEqual(this.lore, other.lore);
   }
 
   @Override

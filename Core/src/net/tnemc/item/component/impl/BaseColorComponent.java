@@ -47,6 +47,7 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
    * Constructs a new BaseColorComponent with the specified color.
    *
    * @param color The base color value for the component.
+   * @since 0.2.0.0
    */
   public BaseColorComponent(final String color) {
 
@@ -55,6 +56,7 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
 
   /**
    * @return the type of component this is.
+   * @since 0.2.0.0
    */
   @Override
   public String identifier() {
@@ -65,6 +67,7 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
    * Converts this component's data to a JSON object.
    *
    * @return The JSONObject representing this component's data.
+   * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
@@ -78,9 +81,10 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
    *
    * @param json The JSONHelper instance of the JSON data.
    * @param platform The ItemPlatform instance.
+   * @since 0.2.0.0
    */
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     if(json.has("color")) {
       color = json.getString("color");
     }
@@ -92,9 +96,10 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
    *
    * @param component The component to compare.
    * @return True if similar, otherwise false.
+   * @since 0.2.0.0
    */
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
+  public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final BaseColorComponent<?, ?> other)) return false;
 
     return Objects.equals(color, other.color);

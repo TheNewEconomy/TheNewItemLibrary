@@ -51,6 +51,7 @@ public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemS
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
@@ -64,6 +65,7 @@ public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemS
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {
@@ -76,6 +78,7 @@ public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemS
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
@@ -91,7 +94,7 @@ public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemS
 
       try {
 
-        final Enchantment enchant = PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), Enchantment.class);
+        final Enchantment enchant = PaperItemPlatform.instance().converter().convert(entry.getKey(), Enchantment.class);
         if(enchant != null) {
 
           builder.add(enchant, entry.getValue());
@@ -111,6 +114,7 @@ public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemS
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   * @since 0.2.0.0
    */
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
@@ -122,7 +126,7 @@ public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemS
 
     for(final Map.Entry<Enchantment, Integer> entry : enchants.enchantments().entrySet()) {
 
-      levels.put(PaperItemPlatform.PLATFORM.converter().convert(entry.getKey(), String.class), entry.getValue());
+      levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
     }
 
     serialized.applyComponent(this);

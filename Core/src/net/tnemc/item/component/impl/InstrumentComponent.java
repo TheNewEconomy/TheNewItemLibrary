@@ -77,15 +77,15 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     soundEvent = json.getString("sound_event");
     useDuration = json.getInteger("use_duration");
     range = json.getInteger("range");
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final InstrumentComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final InstrumentComponent<?, ?> other)) return false;
 
     return Objects.equals(this.soundEvent, other.soundEvent) &&
            this.useDuration == other.useDuration &&

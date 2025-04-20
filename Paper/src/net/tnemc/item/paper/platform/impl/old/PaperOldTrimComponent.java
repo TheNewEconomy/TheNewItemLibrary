@@ -42,6 +42,7 @@ public class PaperOldTrimComponent extends TrimComponent<PaperItemStack, ItemSta
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
@@ -54,6 +55,7 @@ public class PaperOldTrimComponent extends TrimComponent<PaperItemStack, ItemSta
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
@@ -65,8 +67,8 @@ public class PaperOldTrimComponent extends TrimComponent<PaperItemStack, ItemSta
 
         try {
 
-          final TrimMaterial material = PaperItemPlatform.PLATFORM.converter().convert(componentOptional.get().material, TrimMaterial.class);
-          final TrimPattern pattern = PaperItemPlatform.PLATFORM.converter().convert(componentOptional.get().pattern, TrimPattern.class);
+          final TrimMaterial material = PaperItemPlatform.instance().converter().convert(componentOptional.get().material, TrimMaterial.class);
+          final TrimPattern pattern = PaperItemPlatform.instance().converter().convert(componentOptional.get().pattern, TrimPattern.class);
           if(material != null && pattern != null) {
 
             meta.setTrim(new ArmorTrim(material, pattern));
@@ -88,6 +90,7 @@ public class PaperOldTrimComponent extends TrimComponent<PaperItemStack, ItemSta
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   * @since 0.2.0.0
    */
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
@@ -96,8 +99,8 @@ public class PaperOldTrimComponent extends TrimComponent<PaperItemStack, ItemSta
 
       try {
 
-        final String material = PaperItemPlatform.PLATFORM.converter().convert(meta.getTrim().getMaterial(), String.class);
-        final String pattern = PaperItemPlatform.PLATFORM.converter().convert(meta.getTrim().getPattern(), String.class);
+        final String material = PaperItemPlatform.instance().converter().convert(meta.getTrim().getMaterial(), String.class);
+        final String pattern = PaperItemPlatform.instance().converter().convert(meta.getTrim().getPattern(), String.class);
         if(material != null && pattern != null) {
 
           this.material = material;
@@ -119,6 +122,7 @@ public class PaperOldTrimComponent extends TrimComponent<PaperItemStack, ItemSta
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {

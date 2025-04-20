@@ -22,6 +22,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ItemNameComponent;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -48,11 +49,12 @@ public class BukkitItemNameComponent extends ItemNameComponent<BukkitItemStack, 
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    return VersionUtil.isOneTwentyOne(version);
   }
 
   /**
@@ -60,6 +62,7 @@ public class BukkitItemNameComponent extends ItemNameComponent<BukkitItemStack, 
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
@@ -69,6 +72,7 @@ public class BukkitItemNameComponent extends ItemNameComponent<BukkitItemStack, 
     if(meta != null && componentOptional.isPresent()) {
 
       meta.setItemName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().itemName()));
+      item.setItemMeta(meta);
     }
     return item;
   }
@@ -78,12 +82,13 @@ public class BukkitItemNameComponent extends ItemNameComponent<BukkitItemStack, 
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   * @since 0.2.0.0
    */
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasDisplayName()) {
+    if(meta != null && meta.hasItemName()) {
 
       this.itemName = LegacyComponentSerializer.legacySection().deserialize(meta.getItemName());
 
@@ -98,6 +103,7 @@ public class BukkitItemNameComponent extends ItemNameComponent<BukkitItemStack, 
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {

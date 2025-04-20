@@ -38,6 +38,7 @@ public class PaperOldEnchantableComponent extends EnchantableComponent<PaperItem
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
@@ -50,6 +51,7 @@ public class PaperOldEnchantableComponent extends EnchantableComponent<PaperItem
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
@@ -73,6 +75,7 @@ public class PaperOldEnchantableComponent extends EnchantableComponent<PaperItem
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   * @since 0.2.0.0
    */
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
@@ -93,6 +96,7 @@ public class PaperOldEnchantableComponent extends EnchantableComponent<PaperItem
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {

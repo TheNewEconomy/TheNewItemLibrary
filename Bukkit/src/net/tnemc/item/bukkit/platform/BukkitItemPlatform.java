@@ -19,6 +19,7 @@ package net.tnemc.item.bukkit.platform;
  */
 
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.bukkit.BukkitCalculationsProvider;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.VanillaProvider;
 import net.tnemc.item.bukkit.platform.impl.BukkitBundleComponent;
@@ -34,7 +35,14 @@ import net.tnemc.item.bukkit.platform.impl.BukkitModelDataComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitModelDataOldComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitShulkerColorComponent;
+import net.tnemc.item.bukkitbase.platform.providers.ItemAdderProvider;
+import net.tnemc.item.bukkitbase.platform.providers.MMOItemProvider;
+import net.tnemc.item.bukkitbase.platform.providers.NexoProvider;
+import net.tnemc.item.bukkitbase.platform.providers.NovaProvider;
+import net.tnemc.item.bukkitbase.platform.providers.OraxenProvider;
+import net.tnemc.item.bukkitbase.platform.providers.SlimefunProvider;
 import net.tnemc.item.platform.ItemPlatform;
+import net.tnemc.item.providers.CalculationsProvider;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -44,10 +52,7 @@ import org.bukkit.Registry;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.EquipmentSlotGroup;
-import org.bukkit.inventory.ItemRarity;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
@@ -64,20 +69,44 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.1.7.7
  */
-public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack> {
+public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack, Inventory> {
 
-  public static final BukkitItemPlatform PLATFORM = new BukkitItemPlatform();
-  //TODO: make this an actual singleton setup
+  private static volatile BukkitItemPlatform instance;
 
   protected final VanillaProvider defaultProvider = new VanillaProvider();
+  protected final BukkitCalculationsProvider calculationsProvider = new BukkitCalculationsProvider();
 
   private BukkitItemPlatform() {
 
     super();
   }
 
+  @Override
+  public BukkitItemStack createStack(final String material) {
+    return new BukkitItemStack().of(material, 1);
+  }
+
+  public static BukkitItemPlatform instance() {
+
+    final BukkitItemPlatform result = instance;
+    if(result != null) {
+      return result;
+    }
+
+    synchronized(BukkitItemPlatform.class) {
+
+      if(instance == null) {
+
+        instance = new BukkitItemPlatform();
+        instance.addDefaults();
+      }
+      return instance;
+    }
+  }
+
   /**
    * @return the version that is being used currently
+   * @since 0.2.0.0
    */
   @Override
   public String version() {
@@ -104,12 +133,23 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
     addMulti(new BukkitProfileComponent());
     addMulti(new BukkitShulkerColorComponent());
 
+    addItemProvider(new ItemAdderProvider());
+    addItemProvider(new MMOItemProvider());
+    addItemProvider(new NexoProvider());
+    addItemProvider(new NovaProvider());
+    addItemProvider(new OraxenProvider());
+    addItemProvider(new SlimefunProvider());
+    addItemProvider(defaultProvider);
+
+    System.out.println("Item Providers: " + itemProviders.size());
+
   }
 
   /**
    * Retrieves the default provider for the item stack comparison.
    *
    * @return the default provider for the item stack comparison.
+   * @since 0.2.0.0
    */
   @Override
   public @NotNull ItemProvider<ItemStack> defaultProvider() {
@@ -121,11 +161,17 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
    * Retrieves the identifier of the default provider for the item stack comparison.
    *
    * @return The identifier of the default provider for the item stack comparison.
+   * @since 0.2.0.0
    */
   @Override
   public @NotNull String defaultProviderIdentifier() {
 
     return defaultProvider.identifier();
+  }
+
+  @Override
+  public BukkitCalculationsProvider calculations() {
+    return calculationsProvider;
   }
 
   /**
@@ -134,6 +180,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
    * @param locale the locale to convert
    *
    * @return the converted locale of type I
+   * @since 0.2.0.0
    */
   @Override
   public BukkitItemStack locale(final ItemStack locale) {
@@ -432,6 +479,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack>
    * @param object the JSON object to deserialize
    *
    * @return an initialized AbstractItemStack object
+   * @since 0.2.0.0
    */
   @Override
   public Optional<BukkitItemStack> initSerialized(final JSONObject object) {

@@ -108,7 +108,7 @@ public abstract class PotionContentsComponent<I extends AbstractItemStack<T>, T>
   }
 
   @Override
-  public void readJSON(final JSONHelper json, final ItemPlatform<I, T> platform) {
+  public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
     potionId = json.getString("potion");
     customColor = json.getInteger("custom_color");
     customName = json.getString("custom_name");
@@ -123,8 +123,8 @@ public abstract class PotionContentsComponent<I extends AbstractItemStack<T>, T>
   }
 
   @Override
-  public boolean equals(final SerialComponent<I, T> component) {
-    if (!(component instanceof final PotionContentsComponent<?, ?> other)) return false;
+  public boolean similar(final SerialComponent<?, ?> component) {
+    if(!(component instanceof final PotionContentsComponent<?, ?> other)) return false;
     return Objects.equals(this.potionId, other.potionId) &&
            this.customColor == other.customColor &&
            Objects.equals(this.customName, other.customName) &&

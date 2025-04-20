@@ -49,12 +49,12 @@ public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, Item
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
 
-    //TODO: Look up version
-    return VersionUtil.isOneThirteen(version);
+    return VersionUtil.isOneTwentyOne(version);
   }
 
   /**
@@ -62,6 +62,7 @@ public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, Item
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
@@ -73,7 +74,7 @@ public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, Item
       final ItemMeta meta = item.getItemMeta();
       if(meta != null) {
 
-        meta.setRarity(BukkitItemPlatform.PLATFORM.converter().convert(componentOptional.get().rarity,
+        meta.setRarity(BukkitItemPlatform.instance().converter().convert(componentOptional.get().rarity,
                                                                        ItemRarity.class));
         item.setItemMeta(meta);
       }
@@ -86,6 +87,7 @@ public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, Item
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   * @since 0.2.0.0
    */
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
@@ -93,7 +95,7 @@ public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, Item
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasRarity()) {
 
-      rarity = BukkitItemPlatform.PLATFORM.converter().convert(meta.getRarity(), String.class);
+      rarity = BukkitItemPlatform.instance().converter().convert(meta.getRarity(), String.class);
     }
     serialized.applyComponent(this);
     return serialized;
@@ -105,6 +107,7 @@ public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, Item
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {
