@@ -269,7 +269,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
 
         if(item.getAmount() > left) {
           item.setAmount(item.getAmount() - left);
-          inventory.setItem(i, null);
+          inventory.setItem(i, item);
           left = 0;
           break;
         }

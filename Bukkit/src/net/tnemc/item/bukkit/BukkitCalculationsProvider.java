@@ -272,7 +272,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
         if(item.getAmount() > left) {
           item.setAmount(item.getAmount() - left);
-          inventory.setItem(i, null);
+          inventory.setItem(i, item);
           left = 0;
           break;
         }
