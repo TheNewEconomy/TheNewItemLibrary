@@ -35,9 +35,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.BundleMeta;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -142,6 +145,30 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
         item.setItemMeta(meta);
         inventory.setItem(i, item);
       }
+
+      if(item.getItemMeta() instanceof final BundleMeta bundle) {
+
+        final List<ItemStack> items = new ArrayList<>(bundle.getItems());
+        final Iterator<ItemStack> it = items.iterator();
+        while(it.hasNext()) {
+
+          final ItemStack bundleStack = it.next();
+          if(bundleStack == null) {
+
+            continue;
+          }
+
+          if(provider.similar(stack, bundleStack)) {
+
+            amount += item.getAmount();
+            it.remove();
+          }
+        }
+
+        bundle.setItems(items);
+        item.setItemMeta(bundle);
+        inventory.setItem(i, item);
+      }
     }
     return amount;
   }
@@ -194,6 +221,22 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
           if(provider.similar(stack, shulkerStack)) {
 
             amount += shulkerStack.getAmount();
+          }
+        }
+      }
+
+      if(item.getItemMeta() instanceof final BundleMeta bundle) {
+
+        for(final ItemStack bundleItem : bundle.getItems()) {
+
+          if(bundleItem == null) {
+
+            continue;
+          }
+
+          if(provider.similar(stack, bundleItem)) {
+
+            amount += bundleItem.getAmount();
           }
         }
       }
@@ -270,7 +313,6 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     //TODO: improve this
 
-    final BukkitItemStack comp = new BukkitItemStack().of(compare);
     final ItemProvider<ItemStack> provider = stack.provider();
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
@@ -347,6 +389,50 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
         shulker.update(true);
         meta.setBlockState(shulker);
         item.setItemMeta(meta);
+        inventory.setItem(i, item);
+      }
+
+      if(item.getItemMeta() instanceof final BundleMeta bundle) {
+
+        final List<ItemStack> items = new ArrayList<>(bundle.getItems());
+        final Iterator<ItemStack> it = items.iterator();
+        while(it.hasNext()) {
+
+          final ItemStack bundleStack = it.next();
+          if(bundleStack == null) {
+
+            System.out.println("Stack is null");
+            continue;
+          }
+
+          if(!provider.similar(stack, bundleStack)) {
+            System.out.println("Stacks aren't similar");
+            continue;
+          }
+
+          if(bundleStack.getAmount() > left) {
+
+            System.out.println("changing stack size");
+
+            bundleStack.setAmount(bundleStack.getAmount() - left);
+            left = 0;
+            break;
+          }
+
+          if(bundleStack.getAmount() == left) {
+            System.out.println("Removing stack containerStack.getAmount() == left");
+            it.remove();
+            left = 0;
+            break;
+          }
+
+          System.out.println("Removing stack left -= containerStack.getAmount()");
+          left -= bundleStack.getAmount();
+          it.remove();
+        }
+
+        bundle.setItems(items);
+        item.setItemMeta(bundle);
         inventory.setItem(i, item);
       }
     }
