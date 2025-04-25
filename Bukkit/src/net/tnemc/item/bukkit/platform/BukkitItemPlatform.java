@@ -133,12 +133,32 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
     addMulti(new BukkitProfileComponent());
     addMulti(new BukkitShulkerColorComponent());
 
-    addItemProvider(new ItemAdderProvider());
-    addItemProvider(new MMOItemProvider());
-    addItemProvider(new NexoProvider());
-    addItemProvider(new NovaProvider());
-    addItemProvider(new OraxenProvider());
-    addItemProvider(new SlimefunProvider());
+
+    if(Bukkit.getPluginManager().isPluginEnabled("ItemsAdder")) {
+      addItemProvider(new ItemAdderProvider());
+    }
+
+    if(Bukkit.getPluginManager().isPluginEnabled("MythicMobs")) {
+      addItemProvider(new MMOItemProvider());
+    }
+
+    if(Bukkit.getPluginManager().isPluginEnabled("Nexo")) {
+      addItemProvider(new NexoProvider());
+    }
+
+    if(Bukkit.getPluginManager().isPluginEnabled("Nova")) {
+      addItemProvider(new NovaProvider());
+    }
+
+    if(Bukkit.getPluginManager().isPluginEnabled("Oraxen")) {
+      addItemProvider(new OraxenProvider());
+    }
+
+    if(Bukkit.getPluginManager().isPluginEnabled("Slimefun")) {
+      addItemProvider(new SlimefunProvider());
+    }
+
+
     addItemProvider(defaultProvider);
 
     System.out.println("Item Providers: " + itemProviders.size());

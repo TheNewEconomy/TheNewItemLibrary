@@ -29,14 +29,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Container;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.BundleMeta;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -93,7 +97,8 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     compare.setAmount(1);
 
     int amount = 0;
-    final BukkitItemStack comp = new BukkitItemStack().of(compare);
+    //final BukkitItemStack comp = new BukkitItemStack().of(compare);
+    final ItemProvider<ItemStack> provider = stack.provider();
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
 
@@ -102,32 +107,66 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
         continue;
       }
 
-      if(itemsEqual(comp, item)) {
+      if(provider.similar(stack, item)) {
         amount += item.getAmount();
         inventory.setItem(i, null);
         continue;
       }
 
-      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final Container container) {
+      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
 
-        final Inventory containerInventory = container.getInventory();
-        for(int ci = 0; ci < containerInventory.getSize(); ci++) {
+        System.out.println("Entering container");
 
-          final ItemStack containerStack = inventory.getItem(ci);
-          if(containerStack == null) {
+        final Inventory shulkerInventory = shulker.getInventory();
+        for(int shulkerSlot = 0; shulkerSlot < shulkerInventory.getStorageContents().length; shulkerSlot++) {
+
+          System.out.println("Slot: " + shulkerSlot);
+
+          final ItemStack shulkerStack = shulkerInventory.getItem(shulkerSlot);
+          if(shulkerStack == null) {
+
+            System.out.println("Stack is null");
+            continue;
+          }
+
+          if(!provider.similar(stack, shulkerStack)) {
+            System.out.println("Stacks aren't similar");
+            continue;
+          }
+
+          amount += item.getAmount();
+          inventory.setItem(shulkerSlot, null);
+          shulkerInventory.setItem(shulkerSlot, null);
+        }
+
+        System.out.println("Leaving container");
+        shulker.update(true);
+        meta.setBlockState(shulker);
+        item.setItemMeta(meta);
+        inventory.setItem(i, item);
+      }
+
+      if(item.getItemMeta() instanceof final BundleMeta bundle) {
+
+        final List<ItemStack> items = new ArrayList<>(bundle.getItems());
+        final Iterator<ItemStack> it = items.iterator();
+        while(it.hasNext()) {
+
+          final ItemStack bundleStack = it.next();
+          if(bundleStack == null) {
 
             continue;
           }
 
-          if(itemsEqual(comp, containerStack)) {
+          if(provider.similar(stack, bundleStack)) {
 
             amount += item.getAmount();
-            inventory.setItem(ci, null);
+            it.remove();
           }
         }
-        container.update(true);
-        meta.setBlockState(container);
-        item.setItemMeta(meta);
+
+        bundle.setItems(items);
+        item.setItemMeta(bundle);
         inventory.setItem(i, item);
       }
     }
@@ -149,7 +188,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     compare.setAmount(1);
 
     //TODO: make this more efficient
-    final BukkitItemStack comp = new BukkitItemStack().of(compare);
+    final ItemProvider<ItemStack> provider = stack.provider();
     int amount = 0;
 
     for(final ItemStack item : inventory.getStorageContents()) {
@@ -158,30 +197,46 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
         continue;
       }
 
-      if(itemsEqual(comp, item)) {
+      if(provider.similar(stack, item)) {
 
         amount += item.getAmount();
       }
 
-      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final Container container) {
+      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
 
-        final Inventory containerInventory = container.getInventory();
-        if(containerInventory.isEmpty()) {
+        final Inventory shulkerInventory = shulker.getInventory();
+        if(shulkerInventory.isEmpty()) {
 
           continue;
         }
 
-        for(int ci = 0; ci < containerInventory.getSize(); ci++) {
+        for(int ci = 0; ci < shulkerInventory.getStorageContents().length; ci++) {
 
-          final ItemStack containerStack = containerInventory.getItem(ci);
-          if(containerStack == null) {
+          final ItemStack shulkerStack = shulkerInventory.getItem(ci);
+          if(shulkerStack == null) {
 
             continue;
           }
 
-          if(itemsEqual(comp, containerStack)) {
+          if(provider.similar(stack, shulkerStack)) {
 
-            amount += containerStack.getAmount();
+            amount += shulkerStack.getAmount();
+          }
+        }
+      }
+
+      if(item.getItemMeta() instanceof final BundleMeta bundle) {
+
+        for(final ItemStack bundleItem : bundle.getItems()) {
+
+          if(bundleItem == null) {
+
+            continue;
+          }
+
+          if(provider.similar(stack, bundleItem)) {
+
+            amount += bundleItem.getAmount();
           }
         }
       }
@@ -258,7 +313,6 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
     //TODO: improve this
 
-    final BukkitItemStack comp = new BukkitItemStack().of(compare);
     final ItemProvider<ItemStack> provider = stack.provider();
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
@@ -272,7 +326,7 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
         if(item.getAmount() > left) {
           item.setAmount(item.getAmount() - left);
-          inventory.setItem(i, null);
+          inventory.setItem(i, item);
           left = 0;
           break;
         }
@@ -287,43 +341,98 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
         inventory.setItem(i, null);
       }
 
-      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final Container container) {
+      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
 
-        final Inventory containerInventory = container.getInventory();
-        for(int ci = 0; ci < containerInventory.getSize(); ci++) {
+        System.out.println("Entering container");
 
+        final Inventory shulkerInventory = shulker.getInventory();
+        for(int shulkerSlot = 0; shulkerSlot < shulkerInventory.getStorageContents().length; shulkerSlot++) {
+
+          System.out.println("Slot: " + shulkerSlot);
           if(left <= 0) break;
 
-          final ItemStack containerStack = inventory.getItem(ci);
-          if(containerStack == null) {
+          final ItemStack shulkerStack = shulkerInventory.getItem(shulkerSlot);
+          if(shulkerStack == null) {
 
+            System.out.println("Stack is null");
             continue;
           }
 
-          if(!itemsEqual(comp, containerStack)) {
+          if(!provider.similar(stack, shulkerStack)) {
+            System.out.println("Stacks aren't similar");
             continue;
           }
 
-          if(item.getAmount() > left) {
+          if(shulkerStack.getAmount() > left) {
 
-            item.setAmount(item.getAmount() - left);
-            containerInventory.setItem(ci, item);
+            System.out.println("changing stack size");
+
+            shulkerStack.setAmount(shulkerStack.getAmount() - left);
+            shulkerInventory.setItem(shulkerSlot, shulkerStack);
             left = 0;
             break;
           }
 
-          if(item.getAmount() == left) {
-            containerInventory.setItem(ci, null);
+          if(shulkerStack.getAmount() == left) {
+            System.out.println("Removing stack containerStack.getAmount() == left");
+            shulkerInventory.setItem(shulkerSlot, null);
             left = 0;
             break;
           }
 
-          left -= item.getAmount();
-          containerInventory.setItem(ci, null);
+          System.out.println("Removing stack left -= containerStack.getAmount()");
+          left -= shulkerStack.getAmount();
+          shulkerInventory.setItem(shulkerSlot, null);
         }
-        container.update(true);
-        meta.setBlockState(container);
+
+        System.out.println("Leaving container");
+        shulker.update(true);
+        meta.setBlockState(shulker);
         item.setItemMeta(meta);
+        inventory.setItem(i, item);
+      }
+
+      if(item.getItemMeta() instanceof final BundleMeta bundle) {
+
+        final List<ItemStack> items = new ArrayList<>(bundle.getItems());
+        final Iterator<ItemStack> it = items.iterator();
+        while(it.hasNext()) {
+
+          final ItemStack bundleStack = it.next();
+          if(bundleStack == null) {
+
+            System.out.println("Stack is null");
+            continue;
+          }
+
+          if(!provider.similar(stack, bundleStack)) {
+            System.out.println("Stacks aren't similar");
+            continue;
+          }
+
+          if(bundleStack.getAmount() > left) {
+
+            System.out.println("changing stack size");
+
+            bundleStack.setAmount(bundleStack.getAmount() - left);
+            left = 0;
+            break;
+          }
+
+          if(bundleStack.getAmount() == left) {
+            System.out.println("Removing stack containerStack.getAmount() == left");
+            it.remove();
+            left = 0;
+            break;
+          }
+
+          System.out.println("Removing stack left -= containerStack.getAmount()");
+          left -= bundleStack.getAmount();
+          it.remove();
+        }
+
+        bundle.setItems(items);
+        item.setItemMeta(bundle);
         inventory.setItem(i, item);
       }
     }
