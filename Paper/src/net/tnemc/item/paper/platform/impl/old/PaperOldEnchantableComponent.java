@@ -34,6 +34,15 @@ import java.util.Optional;
  */
 public class PaperOldEnchantableComponent extends EnchantableComponent<PaperItemStack, ItemStack> {
 
+  public PaperOldEnchantableComponent() {
+
+  }
+
+  public PaperOldEnchantableComponent(final int value) {
+
+    super(value);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

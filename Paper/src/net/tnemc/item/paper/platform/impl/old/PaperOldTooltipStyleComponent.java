@@ -35,6 +35,15 @@ import java.util.Optional;
  */
 public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperItemStack, ItemStack> {
 
+  public PaperOldTooltipStyleComponent() {
+
+  }
+
+  public PaperOldTooltipStyleComponent(final String style) {
+
+    super(style);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

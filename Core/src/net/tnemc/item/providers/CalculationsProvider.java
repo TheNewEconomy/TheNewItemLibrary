@@ -177,38 +177,4 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    * @return An optional containing the inventory if it works, otherwise false.
    */
   Optional<U> inventory(UUID identifier, InventoryType type);
-
-  /**
-   * Checks to see if two net.tnemc.item stacks are equal.
-   *
-   * @param original The original net.tnemc.item stack.
-   * @param compare  The net.tnemc.item stack you're comparing to the original.
-   *
-   * @return True if the net.tnemc.item stacks are equal, otherwise false.
-   */
-  default boolean itemsEqual(final I original, final S compare) {
-
-    if(!original.provider().similar(original, compare)) {
-      return false;
-    }
-
-    return original.provider().componentsEqual(original, compare);
-  }
-
-  /**
-   * Checks to see if two net.tnemc.item stacks are equal.
-   *
-   * @param original The original net.tnemc.item stack.
-   * @param compare  The net.tnemc.item stack you're comparing to the original.
-   *
-   * @return True if the net.tnemc.item stacks are equal, otherwise false.
-   */
-  default boolean itemsEqual(final I original, final I compare) {
-
-    if(!original.provider().similar(original, compare)) {
-      return false;
-    }
-
-    return original.provider().componentsEqual(original, compare);
-  }
 }

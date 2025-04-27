@@ -105,10 +105,17 @@ import net.tnemc.item.paper.platform.impl.modern.PaperItemNameComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperLoreComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperModelDataComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperProfileComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantableComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldMaxDamageComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldMaxStackSizeComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldTooltipStyleComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.SkullProfile;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -160,8 +167,32 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
     this.material = material;
     this.amount = amount;
+
     this.dirty = true;
-    return this;
+
+    Material materialInstance = null;
+
+    try {
+      final NamespacedKey key = NamespacedKey.fromString(material);
+      if(key != null) {
+
+        materialInstance = Registry.MATERIAL.get(key);
+      }
+    } catch(final NoSuchMethodError ignore) {
+      materialInstance = Material.matchMaterial(material);
+    }
+
+    if(materialInstance == null) {
+
+      return this;
+    }
+
+    this.localeStack = new ItemStack(materialInstance, amount);
+
+    //TODO: Replace with custom solution? or would this be the best solution for the defaults?
+    // custom is kinda overcomplicated but what is the performance hand off of new stack -> serialized,
+    // alternatively we have to do this anyways for the locale cache?
+    return of(new ItemStack(materialInstance, amount));
   }
 
   /**
@@ -839,6 +870,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack enchantable(final int value) {
 
+    applyComponent(new PaperOldEnchantableComponent(value));
     return this;
   }
 
@@ -1177,6 +1209,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack maxDamage(final int maxDamage) {
 
+    applyComponent(new PaperOldMaxDamageComponent(maxDamage));
     return this;
   }
 
@@ -1193,6 +1226,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack maxStackSize(final int maxStackSize) {
 
+    applyComponent(new PaperOldMaxStackSizeComponent(maxStackSize));
     return this;
   }
 
@@ -1530,6 +1564,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack tooltipStyle(final String style) {
 
+    applyComponent(new PaperOldTooltipStyleComponent(style));
     return this;
   }
 

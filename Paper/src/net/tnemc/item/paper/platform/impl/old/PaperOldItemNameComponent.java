@@ -77,7 +77,7 @@ public class PaperOldItemNameComponent extends ItemNameComponent<PaperItemStack,
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.hasDisplayName()) {
+    if(meta != null && meta.hasItemName()) {
 
       this.itemName = LegacyComponentSerializer.legacySection().deserialize(meta.getItemName());
 

@@ -114,8 +114,6 @@ public class BukkitModelDataOldComponent extends ModelDataOldComponent<BukkitIte
       this.modelData = item.getItemMeta().getCustomModelData();
     }
 
-    System.out.println("Old Model Data: " + this.modelData);
-
     serialized.applyComponent(this);
     return serialized;
   }

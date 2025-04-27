@@ -179,8 +179,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
       final NamespacedKey key = NamespacedKey.fromString(material);
       if(key != null) {
 
-        System.out.println("Key is not null");
-
         materialInstance = Registry.MATERIAL.get(key);
       }
     } catch(final NoSuchMethodError ignore) {
@@ -189,50 +187,10 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
     if(materialInstance == null) {
 
-      System.out.println("Material is null");
-
       return this;
     }
 
     this.localeStack = new ItemStack(materialInstance, amount);
-
-    //final ItemMeta meta = localeStack.getItemMeta();
-
-    //TODO: Move default components and default values to the SerialComponent object somehow
-    //Maybe through isDefault and applyDefault methods
-    /*try {
-
-      System.out.println("Checking some values");
-      System.out.println("Item Translation: " + materialInstance.getItemTranslationKey());
-      if(meta != null) {
-        System.out.println("Has model: " + meta.hasItemModel());
-        if(meta.hasLore()) {
-          System.out.println("Model: " + meta.getItemModel());
-        }
-      }
-
-      if(meta != null && meta.hasRarity()) {
-        applyComponent(new BukkitRarityComponent(BukkitItemPlatform.instance().converter().convert(meta.getRarity(), String.class)));
-      }
-    } catch(final NoSuchMethodError ignore) {
-    }
-
-    try {
-
-      if(meta != null && meta.hasItemName()) {
-        System.out.println("Has item name: " + meta.getItemName());
-        applyComponent(new BukkitItemNameComponent(LegacyComponentSerializer.legacySection().deserialize(meta.getItemName())));
-      }
-    } catch(final NoSuchMethodError ignore) {
-    }*/
-
-    //Apply our default components.
-    //applyComponent(new BukkitMaxStackSizeComponent(materialInstance.getMaxStackSize()));
-    //applyComponent(new BukkitEnchantmentsComponent());
-    //applyComponent(new BukkitLoreComponent());
-    //applyComponent(new BukkitRepairCostComponent());
-    //applyComponent(new BukkitAttributeModifiersComponent());
-    //applyComponent(new BukkitItemNameComponent());
 
     //TODO: Replace with custom solution? or would this be the best solution for the defaults?
     // custom is kinda overcomplicated but what is the performance hand off of new stack -> serialized,
@@ -256,8 +214,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
       final NamespacedKey key = locale.getType().getKeyOrNull();
       if(key != null) {
-
-        System.out.println("Key is not null");
 
         material = key.toString();
       }
@@ -288,7 +244,6 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public BukkitItemStack of(final JSONObject json) throws ParseException {
-
 
     return this;
   }

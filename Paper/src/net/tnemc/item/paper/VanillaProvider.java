@@ -61,7 +61,9 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
 
-    return PaperItemPlatform.instance().check((PaperItemStack)original, new PaperItemStack().of(compare));
+    final PaperItemStack compareStack = new PaperItemStack().of(compare);
+
+    return PaperItemPlatform.instance().check((PaperItemStack)original, compareStack);
   }
 
   /**
