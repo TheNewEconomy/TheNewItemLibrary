@@ -47,8 +47,7 @@ public class BukkitUnbreakableComponent extends UnbreakableComponent<BukkitItemS
   @Override
   public boolean enabled(final String version) {
 
-    //TODO: Look up version
-    return VersionUtil.isOneThirteen(version);
+    return VersionUtil.isOneEleven(version);
   }
 
   /**
