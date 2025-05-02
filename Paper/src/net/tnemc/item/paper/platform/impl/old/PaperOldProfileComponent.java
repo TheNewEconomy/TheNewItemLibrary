@@ -36,6 +36,15 @@ import java.util.Optional;
  */
 public class PaperOldProfileComponent extends ProfileComponent<PaperItemStack, ItemStack> {
 
+  public PaperOldProfileComponent() {
+
+  }
+
+  public PaperOldProfileComponent(final SkullProfile profile) {
+
+    super(profile);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *

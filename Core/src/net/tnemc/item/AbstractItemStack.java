@@ -317,6 +317,7 @@ public interface AbstractItemStack<T> extends Cloneable {
   default <C extends SerialComponent<? extends AbstractItemStack<T>, T>> AbstractItemStack<T> applyComponent(final C component) {
 
     components().put(component.identifier(), component);
+    markDirty();
     return this;
   }
 

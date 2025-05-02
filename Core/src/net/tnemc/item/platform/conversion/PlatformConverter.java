@@ -42,7 +42,6 @@ public class PlatformConverter {
    * @param converter The function that performs the conversion from input to output
    * @author creatorfromhell
    * @since 0.2.0.0
-   * @since 0.2.0.0
    */
   public <I, O> void registerConversion(final Class<I> inputClass, final Class<O> outputClass, final Function<I, O> converter) {
     registry.computeIfAbsent(inputClass, k->new HashMap<>())
@@ -59,7 +58,6 @@ public class PlatformConverter {
    * @return The converted output object
    * @throws IllegalArgumentException if the input is null or if no conversion is registered for the specified types
    * @author creatorfromhell
-   * @since 0.2.0.0
    * @since 0.2.0.0
    */
   public <I, O> O convert(final I input, final Class<O> outputClass) {

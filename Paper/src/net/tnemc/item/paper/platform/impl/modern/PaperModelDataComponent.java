@@ -56,7 +56,7 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOneTwo(version);
+    return VersionUtil.isOneTwentyOneFour(version);
   }
 
   /**

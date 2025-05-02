@@ -38,7 +38,6 @@ public interface ItemApplicator<I extends AbstractItemStack<T>, T> extends Ident
    *
    * @return true if this applicator is enabled for the version, otherwise false
    * @since 0.2.0.0
-   * @since 0.2.0.0
    */
   boolean enabled(final String version);
 
@@ -47,7 +46,6 @@ public interface ItemApplicator<I extends AbstractItemStack<T>, T> extends Ident
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
-   * @since 0.2.0.0
    * @since 0.2.0.0
    */
   T apply(final I serialized, T item);

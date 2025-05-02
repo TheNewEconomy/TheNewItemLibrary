@@ -109,10 +109,12 @@ import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantableComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldMaxDamageComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldMaxStackSizeComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldProfileComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldTooltipStyleComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.SkullProfile;
+import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
@@ -1266,7 +1268,6 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   public AbstractItemStack<ItemStack> modelDataOld(final int customModelData) {
 
     applyComponent(new PaperOldModelDataLegacyComponent(customModelData));
-    this.dirty = true;
     return this;
   }
 
@@ -1363,8 +1364,14 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack profile(final SkullProfile profile) {
 
-    applyComponent(new PaperProfileComponent(profile));
-    this.dirty = true;
+    if(VersionUtil.isOneTwentyOneFour(PaperItemPlatform.instance().version())) {
+
+      applyComponent(new PaperProfileComponent(profile));
+
+    } else {
+
+      applyComponent(new PaperOldProfileComponent(profile));
+    }
     return this;
   }
 
@@ -1564,7 +1571,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack tooltipStyle(final String style) {
 
-    applyComponent(new PaperOldTooltipStyleComponent(style));
+    if(VersionUtil.isOneTwentyOneFour(PaperItemPlatform.instance().version())) {
+      //TODO: Modern tooltip
+    } else {
+      applyComponent(new PaperOldTooltipStyleComponent(style));
+    }
     return this;
   }
 

@@ -1,26 +1,26 @@
 package net.tnemc.item.paper.platform.impl.modern;
 /*
- * The New Item Library
- * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
+ * The New Economy
+ * Copyright (C) 2025 Daniel "creatorfromhell" Vidmar
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.key.Key;
 import net.tnemc.item.component.impl.ItemModelComponent;
+import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
@@ -28,20 +28,20 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Optional;
 
 /**
- * PaperOldItemModelComponent
+ * PaperMaxStackComponent
  *
  * @author creatorfromhell
- * @since 0.2.0.0
+ * @since 1.0.0.0
  */
-public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, ItemStack> {
+public class PaperMaxStackComponent extends MaxStackSizeComponent<PaperItemStack, ItemStack> {
 
-  public PaperItemModelComponent() {
+  public PaperMaxStackComponent() {
 
   }
 
-  public PaperItemModelComponent(final String model) {
+  public PaperMaxStackComponent(final int maxStackSize) {
 
-    super(model);
+    super(maxStackSize);
   }
 
   /**
@@ -66,12 +66,12 @@ public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, 
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final Optional<PaperItemModelComponent> componentOptional = serialized.component(identifier());
+    final Optional<PaperMaxStackComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
       return item;
     }
 
-    item.setData(DataComponentTypes.ITEM_MODEL, Key.key(this.model));
+    item.setData(DataComponentTypes.MAX_STACK_SIZE, this.maxStackSize);
     return item;
   }
 
@@ -85,12 +85,12 @@ public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, 
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    final Key key = item.getData(DataComponentTypes.ITEM_MODEL);
-    if(key == null) {
+    final Integer maxStack = item.getData(DataComponentTypes.MAX_STACK_SIZE);
+    if(maxStack == null) {
       return serialized;
     }
 
-    this.model = key.asString();
+    this.maxStackSize = maxStack;
 
     serialized.applyComponent(this);
     return serialized;
