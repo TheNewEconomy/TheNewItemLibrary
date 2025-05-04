@@ -23,9 +23,12 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import net.tnemc.item.component.impl.ProfileComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Optional;
@@ -36,7 +39,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperProfileComponent extends ProfileComponent<PaperItemStack, ItemStack> {
+public class PaperProfileComponent extends ProfileComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
 
   public PaperProfileComponent() {
 
@@ -81,7 +84,7 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperProfileComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
@@ -105,6 +108,39 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
   }
 
   /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+
+    final ItemMeta meta = item.getItemMeta();
+    final Optional<PaperProfileComponent> componentOptional = serialized.component(identifier());
+    if(meta instanceof final SkullMeta skullMeta && componentOptional.isPresent()) {
+
+      if(profile != null) {
+
+        try {
+
+          if(profile.getUuid() != null) {
+            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
+          }
+
+        } catch(final Exception ignore) {
+
+          skullMeta.setOwner(profile.getName());
+        }
+      }
+      item.setItemMeta(meta);
+    }
+    return item;
+  }
+
+  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -112,7 +148,7 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
     final ResolvableProfile resolvableProfile = item.getData(DataComponentTypes.PROFILE);
     if(resolvableProfile == null) {
@@ -131,6 +167,37 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
     }
 
     serialized.applyComponent(this);
+    return serialized;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
+
+    if(item.getItemMeta() instanceof final SkullMeta meta) {
+
+      profile = new SkullProfile();
+
+      try {
+
+        if(meta.getOwningPlayer() != null) {
+
+          profile.setUuid(meta.getOwningPlayer().getUniqueId());
+        }
+
+      } catch(final Exception ignore) {
+
+        profile.setName(meta.getOwner());
+      }
+      serialized.applyComponent(this);
+    }
     return serialized;
   }
 }

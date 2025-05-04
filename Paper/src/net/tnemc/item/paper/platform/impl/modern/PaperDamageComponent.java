@@ -21,8 +21,11 @@ package net.tnemc.item.paper.platform.impl.modern;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
+import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 
 import java.util.Optional;
 
@@ -32,7 +35,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemStack> {
+public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
 
   /**
    * Represents a component that manages damage information. This component stores and provides
@@ -74,7 +77,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperDamageComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
@@ -86,6 +89,35 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
   }
 
   /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+
+    final Optional<PaperDamageComponent> componentOptional = serialized.component(identifier());
+
+    if(componentOptional.isPresent()) {
+      if(VersionUtil.isOneThirteen(PaperItemPlatform.instance().version())) {
+
+        if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
+
+          meta.setDamage(componentOptional.get().damage());
+          item.setItemMeta(meta);
+        }
+      } else {
+
+        item.setDurability((short)componentOptional.get().damage);
+      }
+    }
+    return item;
+  }
+
+  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -93,7 +125,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
     final Integer damageValue = item.getData(DataComponentTypes.DAMAGE);
     if(damageValue == null) {
@@ -101,6 +133,30 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
     }
 
     this.damage = damageValue;
+
+    serialized.applyComponent(this);
+    return serialized;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
+
+    if(VersionUtil.isOneThirteen(PaperItemPlatform.instance().version())) {
+
+      if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
+        this.damage = meta.getDamage();
+      }
+    } else {
+      this.damage = item.getDurability();
+    }
 
     serialized.applyComponent(this);
     return serialized;

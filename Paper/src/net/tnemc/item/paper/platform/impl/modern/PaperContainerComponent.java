@@ -24,9 +24,13 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
+import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Material;
+import org.bukkit.block.Container;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 
 import java.util.Map;
 import java.util.Optional;
@@ -37,7 +41,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperContainerComponent extends ContainerComponent<PaperItemStack, ItemStack> {
+public class PaperContainerComponent extends ContainerComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
 
   public PaperContainerComponent() {
 
@@ -68,7 +72,7 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperContainerComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
@@ -84,6 +88,33 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
   }
 
   /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+
+    final Optional<PaperContainerComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->{
+
+      if(item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
+         && meta.hasBlockState() && meta.getBlockState() instanceof final Container container) {
+
+        componentOptional.get().items.forEach((slot, stack)->container.getInventory().setItem(slot, stack.provider().locale(serialized)));
+        container.update(true);
+        meta.setBlockState(container);
+
+        item.setItemMeta(meta);
+      }
+    });
+    return item;
+  }
+
+  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -91,7 +122,7 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
     final ItemContainerContents contents = item.getData(DataComponentTypes.CONTAINER);
     if(contents == null) {
@@ -113,6 +144,42 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
       PaperItemPlatform.instance().providerApplies(containerSerial, stack);
       items.put(i, containerSerial);
       i++;
+    }
+
+    serialized.applyComponent(this);
+    return serialized;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
+
+    if(item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
+       && meta.hasBlockState() && meta.getBlockState() instanceof final Container container) {
+
+      final Inventory inventory = container.getInventory();
+      for(int i = 0; i < inventory.getSize(); i++) {
+
+        final ItemStack stack = inventory.getItem(i);
+        if(stack == null) {
+          continue;
+        }
+
+        if(stack.getType().equals(Material.AIR)) {
+          continue;
+        }
+
+        final PaperItemStack containerSerial = new PaperItemStack().of(stack);
+        PaperItemPlatform.instance().providerApplies(containerSerial, stack);
+        items.put(i, containerSerial);
+      }
     }
 
     serialized.applyComponent(this);

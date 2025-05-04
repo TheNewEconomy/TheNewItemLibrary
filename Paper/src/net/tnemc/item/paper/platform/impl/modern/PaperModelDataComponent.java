@@ -22,10 +22,14 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.CustomModelData;
 import net.tnemc.item.component.impl.ModelDataComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +40,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, ItemStack> {
+public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
 
   public PaperModelDataComponent() {
 
@@ -81,7 +85,7 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperModelDataComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
@@ -111,6 +115,45 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
   }
 
   /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+
+    final Optional<PaperModelDataComponent> componentOptional = serialized.component(identifier());
+
+    if(componentOptional.isPresent()) {
+
+      final ItemMeta meta = item.getItemMeta();
+      if(meta != null) {
+
+        final CustomModelDataComponent component = meta.getCustomModelDataComponent();
+        final List<Color> colourList = new ArrayList<>();
+        for(final String colourStr : colours) {
+
+          try {
+
+            colourList.add(Color.fromARGB(Integer.parseInt(colourStr)));
+          } catch(final Exception ignore) {}
+        }
+
+        component.setColors(colourList);
+        component.setFlags(flags);
+        component.setFloats(floats);
+        component.setStrings(strings);
+        meta.setCustomModelDataComponent(component);
+        item.setItemMeta(meta);
+      }
+    }
+    return item;
+  }
+
+  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -118,7 +161,7 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
     final CustomModelData color = item.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
     if(color == null) {
@@ -131,6 +174,34 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
 
     for(final Color colorObj : color.colors()) {
       this.colours.add(String.valueOf(colorObj.asARGB()));
+    }
+
+    serialized.applyComponent(this);
+    return serialized;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
+
+    if(item.hasItemMeta()) {
+
+      final CustomModelDataComponent dataComponent = item.getItemMeta().getCustomModelDataComponent();
+      for(final Color color : dataComponent.getColors()) {
+
+        this.colours.add(String.valueOf(color.asARGB()));
+      }
+
+      this.flags.addAll(dataComponent.getFlags());
+      this.floats.addAll(dataComponent.getFloats());
+      this.strings.addAll(dataComponent.getStrings());
     }
 
     serialized.applyComponent(this);

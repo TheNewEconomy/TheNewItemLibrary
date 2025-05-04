@@ -20,10 +20,13 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
@@ -33,7 +36,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, ItemStack> {
+public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
 
   public PaperItemNameComponent() {
 
@@ -64,7 +67,7 @@ public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, It
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperItemNameComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
@@ -76,6 +79,27 @@ public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, It
   }
 
   /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+
+    final ItemMeta meta = item.getItemMeta();
+    final Optional<PaperItemNameComponent> componentOptional = serialized.component(identifier());
+    if(meta != null && componentOptional.isPresent()) {
+
+      meta.setItemName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().itemName()));
+      item.setItemMeta(meta);
+    }
+    return item;
+  }
+
+  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -83,7 +107,7 @@ public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, It
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
     final Component name = item.getData(DataComponentTypes.ITEM_NAME);
     if(name == null) {
@@ -93,6 +117,27 @@ public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, It
     this.itemName = name;
 
     serialized.applyComponent(this);
+    return serialized;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasItemName()) {
+
+      this.itemName = LegacyComponentSerializer.legacySection().deserialize(meta.getItemName());
+
+      serialized.applyComponent(this);
+    }
     return serialized;
   }
 

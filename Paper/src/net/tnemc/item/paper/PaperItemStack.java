@@ -103,13 +103,12 @@ import net.tnemc.item.paper.platform.impl.modern.PaperEnchantmentsComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperItemModelComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperItemNameComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperLoreComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperMaxStackComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperModelDataComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperProfileComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantableComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldMaxDamageComponent;
-import net.tnemc.item.paper.platform.impl.old.PaperOldMaxStackSizeComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
-import net.tnemc.item.paper.platform.impl.old.PaperOldProfileComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldTooltipStyleComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.ItemProvider;
@@ -1228,7 +1227,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack maxStackSize(final int maxStackSize) {
 
-    applyComponent(new PaperOldMaxStackSizeComponent(maxStackSize));
+    applyComponent(new PaperMaxStackComponent(maxStackSize));
     return this;
   }
 
@@ -1363,15 +1362,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack profile(final SkullProfile profile) {
-
-    if(VersionUtil.isOneTwentyOneFour(PaperItemPlatform.instance().version())) {
-
-      applyComponent(new PaperProfileComponent(profile));
-
-    } else {
-
-      applyComponent(new PaperOldProfileComponent(profile));
-    }
+    applyComponent(new PaperProfileComponent(profile));
     return this;
   }
 

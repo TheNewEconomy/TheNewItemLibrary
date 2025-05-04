@@ -22,9 +22,11 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.DyedItemColor;
 import net.tnemc.item.component.impl.DyedColorComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.Optional;
 
@@ -34,7 +36,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, ItemStack> {
+public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
 
   public PaperDyedColorComponent() {
 
@@ -70,7 +72,7 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperDyedColorComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
@@ -87,6 +89,30 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
   }
 
   /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+
+    final Optional<PaperDyedColorComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->{
+
+      if(item.hasItemMeta() && item.getItemMeta() instanceof final LeatherArmorMeta meta) {
+
+        meta.setColor(Color.fromRGB(componentOptional.get().rgb));
+
+        item.setItemMeta(meta);
+      }
+    });
+    return item;
+  }
+
+  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -94,7 +120,7 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
     final DyedItemColor color = item.getData(DataComponentTypes.DYED_COLOR);
     if(color == null) {
@@ -102,6 +128,25 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
     }
 
     this.rgb = color.color().asARGB();
+
+    serialized.applyComponent(this);
+    return serialized;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
+
+    if(item.hasItemMeta() && item.getItemMeta() instanceof final LeatherArmorMeta meta) {
+      this.rgb(meta.getColor().asRGB());
+    }
 
     serialized.applyComponent(this);
     return serialized;

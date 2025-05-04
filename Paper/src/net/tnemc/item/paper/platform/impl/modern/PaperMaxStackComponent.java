@@ -18,12 +18,12 @@ package net.tnemc.item.paper.platform.impl.modern;
  */
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import net.kyori.adventure.key.Key;
-import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
@@ -33,7 +33,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 1.0.0.0
  */
-public class PaperMaxStackComponent extends MaxStackSizeComponent<PaperItemStack, ItemStack> {
+public class PaperMaxStackComponent extends MaxStackSizeComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
 
   public PaperMaxStackComponent() {
 
@@ -64,7 +64,7 @@ public class PaperMaxStackComponent extends MaxStackSizeComponent<PaperItemStack
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperMaxStackComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
@@ -76,6 +76,31 @@ public class PaperMaxStackComponent extends MaxStackSizeComponent<PaperItemStack
   }
 
   /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+
+    final Optional<PaperMaxStackComponent> componentOptional = serialized.component(identifier());
+
+    if(componentOptional.isPresent()) {
+
+      final ItemMeta meta = item.getItemMeta();
+      if(meta != null) {
+
+        meta.setMaxStackSize(componentOptional.get().maxStackSize);
+        item.setItemMeta(meta);
+      }
+    }
+    return item;
+  }
+
+  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -83,7 +108,7 @@ public class PaperMaxStackComponent extends MaxStackSizeComponent<PaperItemStack
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
     final Integer maxStack = item.getData(DataComponentTypes.MAX_STACK_SIZE);
     if(maxStack == null) {
@@ -91,6 +116,27 @@ public class PaperMaxStackComponent extends MaxStackSizeComponent<PaperItemStack
     }
 
     this.maxStackSize = maxStack;
+
+    serialized.applyComponent(this);
+    return serialized;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null) {
+
+      this.maxStackSize = meta.getMaxStackSize();
+    }
 
     serialized.applyComponent(this);
     return serialized;
