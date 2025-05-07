@@ -44,6 +44,7 @@
 - [ ] map_id
 - [ ] max_damage
 - [ ] max_stack_size
+- [ ] model data
 - [ ] note_block_sound
 - [ ] ominous_bottle_amplifier
 - [ ] pot_decorations
@@ -56,10 +57,12 @@
 - [ ] stored_enchantments
 - [ ] suspicious_stew_effects
 - [ ] tool
+- [ ] tooltip display
 - [ ] tooltip_style
 - [ ] trim
 - [ ] unbreakable
 - [ ] use_cooldown
 - [ ] use_remainder
+- [ ] weapon
 - [ ] writable_book_content
 - [ ] written_book_content
