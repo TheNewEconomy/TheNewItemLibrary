@@ -1,9 +1,10 @@
 package net.tnemc.item.example;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
+import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.example.command.TNILCountCommand;
 import net.tnemc.item.example.command.TNILGiveCommand;
 import net.tnemc.item.example.command.TNILTakeCommand;
@@ -11,20 +12,23 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.tnemc.item.example.listeners.PlayerJoinListener;
 
+import java.awt.print.Paper;
 import java.util.Arrays;
 
 public class Example extends JavaPlugin {
 
   private static Example instance;
 
-  BukkitItemPlatform platform;
-  BukkitItemStack item;
-  BukkitItemStack nexoItem;
+  PaperItemPlatform paperPlatform;
+  BukkitItemPlatform bukkitPlatform;
+  PaperItemStack item;
+  PaperItemStack nexoItem;
 
   @Override
   public void onEnable() {
 
-    this.platform = BukkitItemPlatform.instance();
+    this.bukkitPlatform = BukkitItemPlatform.instance();
+    this.paperPlatform = PaperItemPlatform.instance();
     this.item = this.build();
     this.nexoItem = this.buildNexo();
     instance = this;
@@ -41,8 +45,8 @@ public class Example extends JavaPlugin {
     super.onDisable();
   }
 
-  private BukkitItemStack build() {
-    return this.platform.createStack("gold_ingot")
+  private PaperItemStack build() {
+    return this.paperPlatform.createStack("gold_ingot")
             .amount(10)
             .itemName(MiniMessage.miniMessage().deserialize("<gold>Test"))
             .lore(Arrays.asList(
@@ -52,21 +56,21 @@ public class Example extends JavaPlugin {
             .maxStackSize(10);
   }
 
-  private BukkitItemStack buildNexo() {
-    return this.platform.createStack("paper")
+  private PaperItemStack buildNexo() {
+    return this.paperPlatform.createStack("paper")
             .setProviderItemID("forest_axe")
             .setItemProvider("nexo");
   }
 
-  public BukkitItemPlatform getPlatform() {
-    return platform;
+  public PaperItemPlatform getPlatform() {
+    return paperPlatform;
   }
 
-  public BukkitItemStack getItem() {
+  public PaperItemStack getItem() {
     return item;
   }
 
-  public BukkitItemStack getNexoItem() {
+  public PaperItemStack getNexoItem() {
     return nexoItem;
   }
 
