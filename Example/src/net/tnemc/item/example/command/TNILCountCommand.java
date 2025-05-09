@@ -36,7 +36,9 @@ public class TNILCountCommand implements CommandExecutor {
 
   @Override
   public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+
     if(!(sender instanceof Player) && args.length == 0) {
+
       sender.sendMessage("Console must specify a player.");
       return true;
     }
@@ -51,6 +53,7 @@ public class TNILCountCommand implements CommandExecutor {
         return true;
       }
     } else {
+
       target = (Player) sender;
     }
 

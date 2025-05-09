@@ -195,7 +195,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     //TODO: Replace with custom solution? or would this be the best solution for the defaults?
     // custom is kinda overcomplicated but what is the performance hand off of new stack -> serialized,
     // alternatively we have to do this anyways for the locale cache?
-    return of(new ItemStack(materialInstance, amount));
+    return of(this.localeStack);
   }
 
   /**

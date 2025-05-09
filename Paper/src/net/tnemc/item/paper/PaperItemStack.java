@@ -173,17 +173,26 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
     Material materialInstance = null;
 
+    System.out.println("Creating paper stack");
     try {
       final NamespacedKey key = NamespacedKey.fromString(material);
+
+      System.out.println("looking for mat key");
       if(key != null) {
+
+        System.out.println("key found");
 
         materialInstance = Registry.MATERIAL.get(key);
       }
     } catch(final NoSuchMethodError ignore) {
+
+      System.out.println("key not found");
       materialInstance = Material.matchMaterial(material);
     }
 
     if(materialInstance == null) {
+
+      System.out.println("Creating paper stack");
 
       return this;
     }
@@ -193,7 +202,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     //TODO: Replace with custom solution? or would this be the best solution for the defaults?
     // custom is kinda overcomplicated but what is the performance hand off of new stack -> serialized,
     // alternatively we have to do this anyways for the locale cache?
-    return of(new ItemStack(materialInstance, amount));
+    return of(this.localeStack);
   }
 
   /**
