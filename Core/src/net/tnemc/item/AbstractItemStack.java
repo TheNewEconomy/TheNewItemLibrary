@@ -343,6 +343,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    */
   default AbstractItemStack<T> applyPersistent(final PersistentDataType<?> data) {
     persistentHolder().getData().put(data.identifier(), data);
+    markDirty();
     return this;
   }
 
