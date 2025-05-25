@@ -79,10 +79,14 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
   @Override
   public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
+    System.out.println("=== Apply Modern Damage ===");
     final Optional<PaperDamageComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
+      System.out.println("Empty Damage");
+
       return item;
     }
+    System.out.println("Damage: " + this.damage);
 
     item.setData(DataComponentTypes.DAMAGE, this.damage);
     return item;
@@ -98,6 +102,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
    */
   @Override
   public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+    System.out.println("Apply Legacy Damage");
 
     final Optional<PaperDamageComponent> componentOptional = serialized.component(identifier());
 
@@ -110,6 +115,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
           item.setItemMeta(meta);
         }
       } else {
+        System.out.println("Empty Damage");
 
         item.setDurability((short)componentOptional.get().damage);
       }
@@ -126,15 +132,20 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
    */
   @Override
   public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
+    System.out.println("==== Damage ====");
 
     final Integer damageValue = item.getData(DataComponentTypes.DAMAGE);
     if(damageValue == null) {
+
+      System.out.println("No damage value");
       return serialized;
     }
 
+    System.out.println("Damage: " + damageValue);
     this.damage = damageValue;
 
     serialized.applyComponent(this);
+    System.out.println("==== End Damage ====");
     return serialized;
   }
 

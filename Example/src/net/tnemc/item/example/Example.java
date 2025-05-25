@@ -46,7 +46,7 @@ public class Example extends JavaPlugin {
   }
 
   private PaperItemStack build() {
-    return this.paperPlatform.createStack("gold_ingot")
+    return this.paperPlatform.createStack("minecraft:gold_ingot")
             .amount(10)
             .itemName(MiniMessage.miniMessage().deserialize("<gold>Test"))
             .lore(Arrays.asList(

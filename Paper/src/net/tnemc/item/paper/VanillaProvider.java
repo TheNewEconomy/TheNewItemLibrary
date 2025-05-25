@@ -92,7 +92,8 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
 
           material = Registry.MATERIAL.get(key);
         }
-      } catch(final Exception ignore) {
+      } catch(final NoSuchMethodError ignore) {
+
         material = Material.matchMaterial(bukkit.material());
       }
 

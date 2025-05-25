@@ -266,7 +266,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
         continue;
       }
 
-      final Map<Integer, ItemStack> left = inventory.addItem(item.provider().locale(item));
+      final Map<Integer, ItemStack> left = inventory.addItem(item.provider().locale(item, item.amount()));
       if(left.isEmpty()) {
         continue;
       }

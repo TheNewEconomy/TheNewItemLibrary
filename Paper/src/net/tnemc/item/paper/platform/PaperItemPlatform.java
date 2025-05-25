@@ -149,6 +149,8 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
     }
 
     if(Bukkit.getPluginManager().isPluginEnabled("Nexo")) {
+
+      System.out.println("Adding nexo provider");
       addItemProvider(new NexoProvider());
     }
 

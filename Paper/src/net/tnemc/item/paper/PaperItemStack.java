@@ -192,12 +192,14 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
     if(materialInstance == null) {
 
-      System.out.println("Creating paper stack");
+      System.out.println("Creating paper stack v2");
 
       return this;
     }
 
-    this.localeStack = new ItemStack(materialInstance, amount);
+    System.out.println("Material: " + materialInstance.translationKey());
+
+    this.localeStack = ItemStack.of(materialInstance, amount);
 
     //TODO: Replace with custom solution? or would this be the best solution for the defaults?
     // custom is kinda overcomplicated but what is the performance hand off of new stack -> serialized,
@@ -219,6 +221,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     this.material = locale.getType().getKey().toString();
 
     this.amount = locale.getAmount();
+
     final ItemMeta meta = locale.getItemMeta();
     if(meta != null) {
       for(final ItemFlag flag : meta.getItemFlags()) {
