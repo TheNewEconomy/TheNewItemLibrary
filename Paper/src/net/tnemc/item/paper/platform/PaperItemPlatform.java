@@ -165,6 +165,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
     if(Bukkit.getPluginManager().isPluginEnabled("Slimefun")) {
       addItemProvider(new SlimefunProvider());
     }
+
     addItemProvider(defaultProvider);
   }
 

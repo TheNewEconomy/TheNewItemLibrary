@@ -218,7 +218,9 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   public PaperItemStack of(final ItemStack locale) {
 
     this.localeStack = locale;
-    this.material = locale.getType().getKey().toString();
+    this.material = locale.getType().getKey().asString();
+
+    System.out.println("Material String: " + material);
 
     this.amount = locale.getAmount();
 
