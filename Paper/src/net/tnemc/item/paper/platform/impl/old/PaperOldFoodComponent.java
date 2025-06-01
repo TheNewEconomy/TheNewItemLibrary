@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.EnchantableComponent;
 import net.tnemc.item.component.impl.FoodComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import org.bukkit.inventory.ItemStack;
@@ -90,12 +91,15 @@ public class PaperOldFoodComponent extends FoodComponent<PaperItemStack, ItemSta
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasFood()) {
 
-      this.canAlwaysEat = meta.getFood().canAlwaysEat();
-      this.saturation = meta.getFood().getSaturation();
-      this.nutrition = meta.getFood().getNutrition();
-    }
+      final PaperOldFoodComponent component = (serialized.paperComponent(identifier()) instanceof final FoodComponent<?, ?> getComponent)?
+                                                     (PaperOldFoodComponent)getComponent : new PaperOldFoodComponent();
 
-    serialized.applyComponent(this);
+      component.canAlwaysEat = meta.getFood().canAlwaysEat();
+      component.saturation = meta.getFood().getSaturation();
+      component.nutrition = meta.getFood().getNutrition();
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

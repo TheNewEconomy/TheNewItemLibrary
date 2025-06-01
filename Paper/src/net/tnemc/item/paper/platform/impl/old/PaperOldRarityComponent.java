@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.ModelDataOldComponent;
 import net.tnemc.item.component.impl.RarityComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
@@ -87,9 +88,12 @@ public class PaperOldRarityComponent extends RarityComponent<PaperItemStack, Ite
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasRarity()) {
 
-      rarity = PaperItemPlatform.instance().converter().convert(meta.getRarity(), String.class);
+      final PaperOldRarityComponent component = (serialized.paperComponent(identifier()) instanceof final RarityComponent<?, ?> getComponent)?
+                                                         (PaperOldRarityComponent)getComponent : new PaperOldRarityComponent();
+
+      component.rarity = PaperItemPlatform.instance().converter().convert(meta.getRarity(), String.class);
+      serialized.applyComponent(component);
     }
-    serialized.applyComponent(this);
     return serialized;
   }
 

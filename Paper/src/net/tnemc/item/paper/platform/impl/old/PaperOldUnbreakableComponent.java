@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.RepairCostComponent;
 import net.tnemc.item.component.impl.UnbreakableComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
@@ -84,7 +85,10 @@ public class PaperOldUnbreakableComponent extends UnbreakableComponent<PaperItem
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.isUnbreakable()) {
 
-      serialized.applyComponent(this);
+      final PaperOldUnbreakableComponent component = (serialized.paperComponent(identifier()) instanceof final UnbreakableComponent<?, ?> getComponent)?
+                                                    (PaperOldUnbreakableComponent)getComponent : new PaperOldUnbreakableComponent();
+
+      serialized.applyComponent(component);
     }
     return serialized;
   }

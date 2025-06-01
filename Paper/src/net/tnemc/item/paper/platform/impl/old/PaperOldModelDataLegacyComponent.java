@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.MaxDamageComponent;
 import net.tnemc.item.component.impl.ModelDataOldComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
@@ -77,10 +78,10 @@ public class PaperOldModelDataLegacyComponent extends ModelDataOldComponent<Pape
       return item;
     }
 
-    if(modelData == -1) {
+    if(componentOptional.get().modelData == -1) {
       meta.setCustomModelData(null);
     } else {
-      meta.setCustomModelData(modelData);
+      meta.setCustomModelData(componentOptional.get().modelData);
     }
 
     item.setItemMeta(meta);
@@ -111,10 +112,13 @@ public class PaperOldModelDataLegacyComponent extends ModelDataOldComponent<Pape
 
     if(item.hasItemMeta() && item.getItemMeta().hasCustomModelData()) {
 
-      this.modelData = item.getItemMeta().getCustomModelData();
-    }
+      final PaperOldModelDataLegacyComponent component = (serialized.paperComponent(identifier()) instanceof final ModelDataOldComponent<?, ?> getComponent)?
+                                                   (PaperOldModelDataLegacyComponent)getComponent : new PaperOldModelDataLegacyComponent();
 
-    serialized.applyComponent(this);
+      component.modelData = item.getItemMeta().getCustomModelData();
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 }

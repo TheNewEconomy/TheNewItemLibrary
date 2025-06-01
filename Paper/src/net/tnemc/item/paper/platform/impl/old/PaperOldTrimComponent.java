@@ -19,6 +19,7 @@ package net.tnemc.item.paper.platform.impl.old;
  */
 
 import net.tnemc.item.component.impl.TrimComponent;
+import net.tnemc.item.component.impl.UnbreakableComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
@@ -103,16 +104,19 @@ public class PaperOldTrimComponent extends TrimComponent<PaperItemStack, ItemSta
         final String pattern = PaperItemPlatform.instance().converter().convert(meta.getTrim().getPattern(), String.class);
         if(material != null && pattern != null) {
 
-          this.material = material;
-          this.pattern = pattern;
+          final PaperOldTrimComponent component = (serialized.paperComponent(identifier()) instanceof final TrimComponent<?, ?> getComponent)?
+                                                         (PaperOldTrimComponent)getComponent : new PaperOldTrimComponent();
+
+          component.material = material;
+          component.pattern = pattern;
+
+          serialized.applyComponent(component);
         }
 
       } catch(final Exception ignore) {
         //invalid material/pattern
       }
     }
-
-    serialized.applyComponent(this);
     return serialized;
   }
 

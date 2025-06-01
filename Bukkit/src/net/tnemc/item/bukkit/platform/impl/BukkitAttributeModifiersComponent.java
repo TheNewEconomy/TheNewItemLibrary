@@ -84,7 +84,7 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
   public ItemStack apply(final BukkitItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
-    final Optional<AttributeModifiersComponent<AbstractItemStack<ItemStack>, ItemStack>> componentOptional = serialized.attributeModifiers();
+    final Optional<BukkitAttributeModifiersComponent> componentOptional = serialized.component(identifier());
     if(meta != null && componentOptional.isPresent()) {
 
       for(final net.tnemc.item.component.helper.AttributeModifier attribute : componentOptional.get().modifiers()) {

@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.GliderComponent;
 import net.tnemc.item.component.impl.HideTooltipComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
@@ -84,7 +85,10 @@ public class PaperOldHideTooltipComponent extends HideTooltipComponent<PaperItem
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.isHideTooltip()) {
 
-      serialized.applyComponent(this);
+      final PaperOldHideTooltipComponent component = (serialized.paperComponent(identifier()) instanceof final HideTooltipComponent<?, ?> getComponent)?
+                                                (PaperOldHideTooltipComponent)getComponent : new PaperOldHideTooltipComponent();
+
+      serialized.applyComponent(component);
     }
     return serialized;
   }

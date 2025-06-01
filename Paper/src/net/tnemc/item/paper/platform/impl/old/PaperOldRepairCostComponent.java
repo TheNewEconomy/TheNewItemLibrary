@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.RarityComponent;
 import net.tnemc.item.component.impl.RepairCostComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
@@ -81,10 +82,13 @@ public class PaperOldRepairCostComponent extends RepairCostComponent<PaperItemSt
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final Repairable meta) {
 
-      this.repairCost = meta.getRepairCost();
-    }
+      final PaperOldRepairCostComponent component = (serialized.paperComponent(identifier()) instanceof final RepairCostComponent<?, ?> getComponent)?
+                                                (PaperOldRepairCostComponent)getComponent : new PaperOldRepairCostComponent();
 
-    serialized.applyComponent(this);
+      component.repairCost = meta.getRepairCost();
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

@@ -19,6 +19,7 @@ package net.tnemc.item.paper.platform.impl.old;
  */
 
 import net.tnemc.item.component.impl.StoredEnchantmentsComponent;
+import net.tnemc.item.component.impl.SuspiciousStewEffectsComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
 import org.bukkit.enchantments.Enchantment;
@@ -93,13 +94,16 @@ public class PaperOldStoredEnchantmentsComponent extends StoredEnchantmentsCompo
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final EnchantmentStorageMeta meta) {
 
+      final PaperOldStoredEnchantmentsComponent component = (serialized.paperComponent(identifier()) instanceof final StoredEnchantmentsComponent<?, ?> getComponent)?
+                                                               (PaperOldStoredEnchantmentsComponent)getComponent : new PaperOldStoredEnchantmentsComponent();
+
       for(final Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
 
-        levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
+        component.levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

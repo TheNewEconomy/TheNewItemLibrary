@@ -158,7 +158,8 @@ public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemSt
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final BundleMeta meta) {
 
-      final PaperBundleComponent component = (serialized.paperComponent(identifier()) instanceof final BundleComponent<?, ?> getComponent)? (PaperBundleComponent)getComponent : new PaperBundleComponent();
+      final PaperBundleComponent component = (serialized.paperComponent(identifier()) instanceof final BundleComponent<?, ?> getComponent)?
+                                             (PaperBundleComponent)getComponent : new PaperBundleComponent();
 
       int i = 0;
       for(final ItemStack stack : meta.getItems()) {
