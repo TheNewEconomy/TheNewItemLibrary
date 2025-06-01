@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ModelDataOldComponent;
+import net.tnemc.item.component.impl.ProfileComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -77,10 +78,10 @@ public class BukkitModelDataOldComponent extends ModelDataOldComponent<BukkitIte
       return item;
     }
 
-    if(modelData == -1) {
+    if(componentOptional.get().modelData == -1) {
       meta.setCustomModelData(null);
     } else {
-      meta.setCustomModelData(modelData);
+      meta.setCustomModelData(componentOptional.get().modelData);
     }
 
     item.setItemMeta(meta);
@@ -111,10 +112,13 @@ public class BukkitModelDataOldComponent extends ModelDataOldComponent<BukkitIte
 
     if(item.hasItemMeta() && item.getItemMeta().hasCustomModelData()) {
 
-      this.modelData = item.getItemMeta().getCustomModelData();
-    }
+      final BukkitModelDataOldComponent component = (serialized.bukkitComponent(identifier()) instanceof final ModelDataOldComponent<?, ?> getComponent)?
+                                               (BukkitModelDataOldComponent)getComponent : new BukkitModelDataOldComponent();
 
-    serialized.applyComponent(this);
+      component.modelData = item.getItemMeta().getCustomModelData();
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 }

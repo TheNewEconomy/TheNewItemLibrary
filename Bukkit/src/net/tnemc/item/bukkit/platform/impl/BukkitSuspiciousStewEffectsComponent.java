@@ -22,6 +22,7 @@ import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.helper.effect.EffectInstance;
 import net.tnemc.item.component.impl.SuspiciousStewEffectsComponent;
+import net.tnemc.item.component.impl.TooltipStyleComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SuspiciousStewMeta;
@@ -80,7 +81,7 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final SuspiciousStewMeta meta) {
 
-        effects.forEach((effect)->{
+        componentOptional.get().effects.forEach((effect)->{
 
           try {
 
@@ -115,13 +116,16 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final SuspiciousStewMeta meta) {
 
+      final BukkitSuspiciousStewEffectsComponent component = (serialized.bukkitComponent(identifier()) instanceof final SuspiciousStewEffectsComponent<?, ?> getComponent)?
+                                                    (BukkitSuspiciousStewEffectsComponent)getComponent : new BukkitSuspiciousStewEffectsComponent();
+
       for(final PotionEffect effect : meta.getCustomEffects()) {
 
         try {
           final String id = BukkitItemPlatform.instance().converter().convert(effect.getType(), String.class);
           if(id != null) {
 
-            effects.add(new EffectInstance(id,
+            component.effects.add(new EffectInstance(id,
                                            effect.getAmplifier(),
                                            effect.getDuration(),
                                            effect.hasParticles(),
@@ -131,9 +135,9 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
           }
         } catch(final Exception ignore) {}
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

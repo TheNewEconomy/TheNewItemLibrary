@@ -21,6 +21,7 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.StoredEnchantmentsComponent;
+import net.tnemc.item.component.impl.SuspiciousStewEffectsComponent;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
@@ -102,13 +103,16 @@ public class BukkitStoredEnchantmentsComponent extends StoredEnchantmentsCompone
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final EnchantmentStorageMeta meta) {
 
+      final BukkitStoredEnchantmentsComponent component = (serialized.bukkitComponent(identifier()) instanceof final StoredEnchantmentsComponent<?, ?> getComponent)?
+                                                             (BukkitStoredEnchantmentsComponent)getComponent : new BukkitStoredEnchantmentsComponent();
+
       for(final Map.Entry<Enchantment, Integer> entry : meta.getStoredEnchants().entrySet()) {
 
-        levels.put(BukkitItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
+        component.levels.put(BukkitItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

@@ -94,6 +94,9 @@ public class BukkitChargedProjectilesComponent extends ContainerComponent<Bukkit
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final CrossbowMeta meta) {
 
+      final BukkitChargedProjectilesComponent component = (serialized.bukkitComponent(identifier()) instanceof final ContainerComponent<?, ?> getComponent)?
+                                                 (BukkitChargedProjectilesComponent)getComponent : new BukkitChargedProjectilesComponent();
+
       final List<ItemStack> projectiles = meta.getChargedProjectiles();
       for(int i = 0; i < projectiles.size(); i++) {
 
@@ -101,12 +104,12 @@ public class BukkitChargedProjectilesComponent extends ContainerComponent<Bukkit
 
         if(stack != null && !stack.getType().equals(Material.AIR)) {
 
-          items.put(i, new BukkitItemStack().of(stack));
+          component.items.put(i, new BukkitItemStack().of(stack));
         }
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

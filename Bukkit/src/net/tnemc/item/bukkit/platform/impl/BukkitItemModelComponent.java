@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ItemModelComponent;
+import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -95,10 +96,13 @@ public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.getItemModel() != null) {
 
-      this.model = meta.getItemModel().toString();
-    }
+      final BukkitItemModelComponent component = (serialized.bukkitComponent(identifier()) instanceof final ItemModelComponent<?, ?> getComponent)?
+                                                (BukkitItemModelComponent)getComponent : new BukkitItemModelComponent();
 
-    serialized.applyComponent(this);
+      component.model = meta.getItemModel().toString();
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

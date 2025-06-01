@@ -22,6 +22,7 @@ import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.helper.PatternData;
 import net.tnemc.item.component.impl.BannerPatternsComponent;
+import net.tnemc.item.component.impl.BaseColorComponent;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;
@@ -119,10 +120,14 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final BannerMeta meta) {
+
+      final BukkitBannerPatternsComponent component = (serialized.bukkitComponent(identifier()) instanceof final BannerPatternsComponent<?, ?> getComponent)?
+                                                 (BukkitBannerPatternsComponent)getComponent : new BukkitBannerPatternsComponent();
+
       for(final Pattern pattern : meta.getPatterns()) {
 
         try {
-          patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
+          component.patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
                                        BukkitItemPlatform.instance().converter().convert(pattern.getPattern(), String.class)));
         } catch(final Exception ignore) {
 
@@ -130,9 +135,9 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
         }
 
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

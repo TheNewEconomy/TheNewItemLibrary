@@ -21,6 +21,7 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.EnchantmentsComponent;
+import net.tnemc.item.component.impl.FoodComponent;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
@@ -96,12 +97,15 @@ public class BukkitEnchantmentsComponent extends EnchantmentsComponent<BukkitIte
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
+    final BukkitEnchantmentsComponent component = (serialized.bukkitComponent(identifier()) instanceof final EnchantmentsComponent<?, ?> getComponent)?
+                                          (BukkitEnchantmentsComponent)getComponent : new BukkitEnchantmentsComponent();
+
     for(final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
 
-      levels.put(BukkitItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
+      component.levels.put(BukkitItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
     }
 
-    serialized.applyComponent(this);
+    serialized.applyComponent(component);
     return serialized;
   }
 

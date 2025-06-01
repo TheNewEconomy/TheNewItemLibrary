@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.MaxStackSizeComponent;
+import net.tnemc.item.component.impl.ModelDataComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -92,10 +93,13 @@ public class BukkitMaxStackSizeComponent extends MaxStackSizeComponent<BukkitIte
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && item.getItemMeta().hasMaxStackSize()) {
 
-      this.maxStackSize = meta.getMaxStackSize();
-    }
+      final BukkitMaxStackSizeComponent component = (serialized.bukkitComponent(identifier()) instanceof final MaxStackSizeComponent<?, ?> getComponent)?
+                                                 (BukkitMaxStackSizeComponent)getComponent : new BukkitMaxStackSizeComponent();
 
-    serialized.applyComponent(this);
+      component.maxStackSize = meta.getMaxStackSize();
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

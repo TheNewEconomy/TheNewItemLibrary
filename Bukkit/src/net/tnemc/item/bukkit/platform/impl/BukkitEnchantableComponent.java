@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.EnchantableComponent;
+import net.tnemc.item.component.impl.EnchantmentsComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -92,10 +93,13 @@ public class BukkitEnchantableComponent extends EnchantableComponent<BukkitItemS
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
 
-      this.value = item.getItemMeta().getEnchantable();
-    }
+      final BukkitEnchantableComponent component = (serialized.bukkitComponent(identifier()) instanceof final EnchantableComponent<?, ?> getComponent)?
+                                                    (BukkitEnchantableComponent)getComponent : new BukkitEnchantableComponent();
 
-    serialized.applyComponent(this);
+      component.value = item.getItemMeta().getEnchantable();
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

@@ -248,6 +248,11 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
+  public SerialComponent<AbstractItemStack<ItemStack>, ItemStack> bukkitComponent(final String identifier) {
+
+    return components.get(identifier);
+  }
+
   /**
    * Sets the item flags.
    *

@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.TooltipStyleComponent;
+import net.tnemc.item.component.impl.TrimComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -94,9 +95,12 @@ public class BukkitTooltipStyleComponent extends TooltipStyleComponent<BukkitIte
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasTooltipStyle() && meta.getTooltipStyle() != null) {
 
-      style = meta.getTooltipStyle().toString();
+      final BukkitTooltipStyleComponent component = (serialized.bukkitComponent(identifier()) instanceof final TooltipStyleComponent<?, ?> getComponent)?
+                                            (BukkitTooltipStyleComponent)getComponent : new BukkitTooltipStyleComponent();
+
+      component.style = meta.getTooltipStyle().toString();
+      serialized.applyComponent(component);
     }
-    serialized.applyComponent(this);
     return serialized;
   }
 

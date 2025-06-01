@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.HideTooltipComponent;
+import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -87,7 +88,10 @@ public class BukkitHideTooltipComponent extends HideTooltipComponent<BukkitItemS
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.isHideTooltip()) {
 
-      serialized.applyComponent(this);
+      final BukkitHideTooltipComponent component = (serialized.bukkitComponent(identifier()) instanceof final HideTooltipComponent<?, ?> getComponent)?
+                                                 (BukkitHideTooltipComponent)getComponent : new BukkitHideTooltipComponent();
+
+      serialized.applyComponent(component);
     }
     return serialized;
   }

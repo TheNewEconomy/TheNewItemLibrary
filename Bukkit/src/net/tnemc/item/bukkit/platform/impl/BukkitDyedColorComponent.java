@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.DyedColorComponent;
+import net.tnemc.item.component.impl.EnchantableComponent;
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -94,10 +95,14 @@ public class BukkitDyedColorComponent extends DyedColorComponent<BukkitItemStack
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final LeatherArmorMeta meta) {
-      this.rgb(meta.getColor().asRGB());
-    }
 
-    serialized.applyComponent(this);
+      final BukkitDyedColorComponent component = (serialized.bukkitComponent(identifier()) instanceof final DyedColorComponent<?, ?> getComponent)?
+                                                   (BukkitDyedColorComponent)getComponent : new BukkitDyedColorComponent();
+
+      component.rgb(meta.getColor().asRGB());
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

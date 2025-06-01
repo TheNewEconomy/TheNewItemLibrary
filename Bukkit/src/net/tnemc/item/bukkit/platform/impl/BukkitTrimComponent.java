@@ -21,6 +21,7 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.TrimComponent;
+import net.tnemc.item.component.impl.UnbreakableComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ArmorMeta;
@@ -112,16 +113,19 @@ public class BukkitTrimComponent extends TrimComponent<BukkitItemStack, ItemStac
         final String pattern = BukkitItemPlatform.instance().converter().convert(meta.getTrim().getPattern(), String.class);
         if(material != null && pattern != null) {
 
-          this.material = material;
-          this.pattern = pattern;
+          final BukkitTrimComponent component = (serialized.bukkitComponent(identifier()) instanceof final TrimComponent<?, ?> getComponent)?
+                                                (BukkitTrimComponent)getComponent : new BukkitTrimComponent();
+
+          component.material = material;
+          component.pattern = pattern;
+
+          serialized.applyComponent(component);
         }
 
       } catch(final Exception ignore) {
         //invalid material/pattern
       }
     }
-
-    serialized.applyComponent(this);
     return serialized;
   }
 

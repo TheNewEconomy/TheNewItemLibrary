@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.GliderComponent;
+import net.tnemc.item.component.impl.HideTooltipComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -87,7 +88,10 @@ public class BukkitGliderComponent extends GliderComponent<BukkitItemStack, Item
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.isGlider()) {
 
-      serialized.applyComponent(this);
+      final BukkitGliderComponent component = (serialized.bukkitComponent(identifier()) instanceof final GliderComponent<?, ?> getComponent)?
+                                                   (BukkitGliderComponent)getComponent : new BukkitGliderComponent();
+
+      serialized.applyComponent(component);
     }
     return serialized;
   }

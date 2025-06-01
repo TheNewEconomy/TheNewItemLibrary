@@ -22,6 +22,7 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.component.impl.CustomNameComponent;
 import org.bukkit.Material;
 import org.bukkit.block.Container;
 import org.bukkit.inventory.Inventory;
@@ -99,6 +100,9 @@ public class BukkitContainerComponent extends ContainerComponent<BukkitItemStack
     if(item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
        && meta.hasBlockState() && meta.getBlockState() instanceof final Container container) {
 
+      final BukkitContainerComponent component = (serialized.bukkitComponent(identifier()) instanceof final ContainerComponent<?, ?> getComponent)?
+                                                  (BukkitContainerComponent)getComponent : new BukkitContainerComponent();
+
       final Inventory inventory = container.getInventory();
       for(int i = 0; i < inventory.getSize(); i++) {
 
@@ -113,11 +117,11 @@ public class BukkitContainerComponent extends ContainerComponent<BukkitItemStack
 
         final BukkitItemStack containerSerial = new BukkitItemStack().of(stack);
         BukkitItemPlatform.instance().providerApplies(containerSerial, stack);
-        items.put(i, containerSerial);
+        component.items.put(i, containerSerial);
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 
