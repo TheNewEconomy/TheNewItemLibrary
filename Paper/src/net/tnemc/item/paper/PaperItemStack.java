@@ -155,6 +155,18 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   private boolean dirty = false;
   private ItemStack localeStack;
 
+  public PaperItemStack() {
+
+  }
+
+  public PaperItemStack(final String material, final int amount) {
+    this.of(material, amount);
+  }
+
+  public PaperItemStack(final ItemStack locale) {
+    this.of(locale);
+  }
+
   /**
    * Creates a new item stack with the specified material and amount.
    *
@@ -249,6 +261,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
 
     return this;
+  }
+
+  public SerialComponent<AbstractItemStack<ItemStack>, ItemStack> paperComponent(final String identifier) {
+
+    return components.get(identifier);
   }
 
   /**

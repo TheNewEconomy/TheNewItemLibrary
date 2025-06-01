@@ -22,6 +22,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemLore;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.component.impl.LoreComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
@@ -148,9 +149,12 @@ public class PaperLoreComponent extends LoreComponent<PaperItemStack, ItemStack>
       return serialized;
     }
 
-    this.lore.addAll(itemLore.lines());
+    final PaperLoreComponent component = (serialized.paperComponent(identifier()) instanceof final LoreComponent<?, ?> getComponent)?
+                                             (PaperLoreComponent)getComponent : new PaperLoreComponent();
 
-    serialized.applyComponent(this);
+    component.lore.addAll(itemLore.lines());
+
+    serialized.applyComponent(component);
     return serialized;
   }
 
@@ -168,15 +172,18 @@ public class PaperLoreComponent extends LoreComponent<PaperItemStack, ItemStack>
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.getLore() != null) {
 
-      lore.clear();
+      final PaperLoreComponent component = (serialized.paperComponent(identifier()) instanceof final LoreComponent<?, ?> getComponent)?
+                                           (PaperLoreComponent)getComponent : new PaperLoreComponent();
+
+      component.lore.clear();
 
       for(final String str : meta.getLore()) {
 
-        lore.add(LegacyComponentSerializer.legacySection().deserialize(str));
+        component.lore.add(LegacyComponentSerializer.legacySection().deserialize(str));
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 }

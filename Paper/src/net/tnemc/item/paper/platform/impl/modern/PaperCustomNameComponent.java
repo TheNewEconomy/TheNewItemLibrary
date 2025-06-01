@@ -21,6 +21,7 @@ package net.tnemc.item.paper.platform.impl.modern;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
@@ -74,7 +75,7 @@ public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack
       return item;
     }
 
-    item.setData(DataComponentTypes.CUSTOM_NAME, this.customName);
+    item.setData(DataComponentTypes.CUSTOM_NAME, componentOptional.get().customName());
     return item;
   }
 
@@ -113,9 +114,12 @@ public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack
       return serialized;
     }
 
-    this.customName = name;
+    final PaperCustomNameComponent component = (serialized.paperComponent(identifier()) instanceof final CustomNameComponent<?, ?> getComponent)?
+                                              (PaperCustomNameComponent)getComponent : new PaperCustomNameComponent();
 
-    serialized.applyComponent(this);
+    component.customName(name);
+
+    serialized.applyComponent(component);
     return serialized;
   }
 
@@ -133,9 +137,12 @@ public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasDisplayName()) {
 
-      this.customName = LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName());
+      final PaperCustomNameComponent component = (serialized.paperComponent(identifier()) instanceof final CustomNameComponent<?, ?> getComponent)?
+                                                 (PaperCustomNameComponent)getComponent : new PaperCustomNameComponent();
 
-      serialized.applyComponent(this);
+      component.customName(LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName()));
+
+      serialized.applyComponent(component);
     }
     return serialized;
   }

@@ -30,6 +30,7 @@ public class Example extends JavaPlugin {
     this.bukkitPlatform = BukkitItemPlatform.instance();
     this.paperPlatform = PaperItemPlatform.instance();
     this.item = this.build();
+
     this.nexoItem = this.buildNexo();
     instance = this;
 
@@ -47,17 +48,25 @@ public class Example extends JavaPlugin {
 
   private PaperItemStack build() {
     return this.paperPlatform.createStack("minecraft:gold_ingot")
-            .amount(10)
             .itemName(MiniMessage.miniMessage().deserialize("<gold>Test"))
             .lore(Arrays.asList(
                     MiniMessage.miniMessage().deserialize("<gradient:#5e4fa2:#f79459>This is a test item from the new TNIL library"),
                     MiniMessage.miniMessage().deserialize("<gradient:#5e4fa2:#f79459>This currency item can only be stacked to 10")
-                               ))
-            .maxStackSize(10);
+            ))
+            .maxStackSize(10)
+            .amount(10);
+
+
+            //.itemName(MiniMessage.miniMessage().deserialize("<gold>Test"))
+            //.lore(Arrays.asList(
+            //        MiniMessage.miniMessage().deserialize("<gradient:#5e4fa2:#f79459>This is a test item from the new TNIL library"),
+            //        MiniMessage.miniMessage().deserialize("<gradient:#5e4fa2:#f79459>This currency item can only be stacked to 10")
+            //                   ))
+            //.maxStackSize(10)
   }
 
   private PaperItemStack buildNexo() {
-    return this.paperPlatform.createStack("paper")
+    return this.paperPlatform.createStack("diamond")
             .setProviderItemID("forest_axe")
             .setItemProvider("nexo");
   }

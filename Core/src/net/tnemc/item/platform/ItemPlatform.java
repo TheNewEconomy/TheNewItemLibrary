@@ -517,6 +517,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   public I serializer(@NotNull final S item, @NotNull I serialized) {
 
     for(final ItemSerializer<I, S> serializer : serializers.values()) {
+
       if(serializer.enabled(version())) {
 
         System.out.println("Serializer ready to apply: " + serializer.identifier());

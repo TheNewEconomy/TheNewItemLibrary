@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.modern;
  */
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.tnemc.item.component.impl.LoreComponent;
 import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
@@ -75,7 +76,7 @@ public class PaperMaxStackComponent extends MaxStackSizeComponent<PaperItemStack
       return item;
     }
 
-    item.setData(DataComponentTypes.MAX_STACK_SIZE, this.maxStackSize);
+    item.setData(DataComponentTypes.MAX_STACK_SIZE, componentOptional.get().maxStackSize);
     System.out.println("set data max stack");
     return item;
   }
@@ -120,9 +121,12 @@ public class PaperMaxStackComponent extends MaxStackSizeComponent<PaperItemStack
       return serialized;
     }
 
-    this.maxStackSize = maxStack;
+    final PaperMaxStackComponent component = (serialized.paperComponent(identifier()) instanceof final MaxStackSizeComponent<?, ?> getComponent)?
+                                         (PaperMaxStackComponent)getComponent : new PaperMaxStackComponent();
 
-    serialized.applyComponent(this);
+    component.maxStackSize(maxStack);
+
+    serialized.applyComponent(component);
     return serialized;
   }
 
@@ -140,10 +144,13 @@ public class PaperMaxStackComponent extends MaxStackSizeComponent<PaperItemStack
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
 
-      this.maxStackSize = meta.getMaxStackSize();
-    }
+      final PaperMaxStackComponent component = (serialized.paperComponent(identifier()) instanceof final MaxStackSizeComponent<?, ?> getComponent)?
+                                               (PaperMaxStackComponent)getComponent : new PaperMaxStackComponent();
 
-    serialized.applyComponent(this);
+      component.maxStackSize(meta.getMaxStackSize());
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

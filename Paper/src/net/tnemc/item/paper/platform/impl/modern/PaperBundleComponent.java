@@ -21,6 +21,7 @@ package net.tnemc.item.paper.platform.impl.modern;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BundleContents;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
@@ -124,6 +125,9 @@ public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemSt
       return serialized;
     }
 
+    final PaperBundleComponent component = (serialized.paperComponent(identifier()) instanceof final BundleComponent<?, ?> getComponent)?
+                                           (PaperBundleComponent)getComponent : new PaperBundleComponent();
+
     int i = 0;
     for(final ItemStack stack : contents.contents()) {
 
@@ -133,11 +137,11 @@ public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemSt
 
       final PaperItemStack containerSerial = new PaperItemStack().of(stack);
       PaperItemPlatform.instance().providerApplies(containerSerial, stack);
-      items.put(i, containerSerial);
+      component.items.put(i, containerSerial);
       i++;
     }
 
-    serialized.applyComponent(this);
+    serialized.applyComponent(component);
     return serialized;
   }
 
@@ -154,6 +158,8 @@ public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemSt
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final BundleMeta meta) {
 
+      final PaperBundleComponent component = (serialized.paperComponent(identifier()) instanceof final BundleComponent<?, ?> getComponent)? (PaperBundleComponent)getComponent : new PaperBundleComponent();
+
       int i = 0;
       for(final ItemStack stack : meta.getItems()) {
         if(stack == null) {
@@ -166,12 +172,12 @@ public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemSt
 
         final PaperItemStack containerSerial = new PaperItemStack().of(stack);
         PaperItemPlatform.instance().providerApplies(containerSerial, stack);
-        items.put(i, containerSerial);
+        component.items.put(i, containerSerial);
         i++;
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

@@ -19,6 +19,7 @@ package net.tnemc.item.paper.platform.impl.modern;
  */
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
@@ -86,9 +87,9 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
 
       return item;
     }
-    System.out.println("Damage: " + this.damage);
+    System.out.println("Damage: " + componentOptional.get().damage);
 
-    item.setData(DataComponentTypes.DAMAGE, this.damage);
+    item.setData(DataComponentTypes.DAMAGE, componentOptional.get().damage);
     return item;
   }
 
@@ -141,10 +142,13 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
       return serialized;
     }
 
-    System.out.println("Damage: " + damageValue);
-    this.damage = damageValue;
+    final PaperDamageComponent component = (serialized.paperComponent(identifier()) instanceof final DamageComponent<?, ?> getComponent)?
+                                               (PaperDamageComponent)getComponent : new PaperDamageComponent();
 
-    serialized.applyComponent(this);
+    System.out.println("Damage: " + damageValue);
+    component.damage(damageValue);
+
+    serialized.applyComponent(component);
     System.out.println("==== End Damage ====");
     return serialized;
   }
@@ -160,16 +164,22 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
   @Override
   public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
 
+    int damage = 0;
     if(VersionUtil.isOneThirteen(PaperItemPlatform.instance().version())) {
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
-        this.damage = meta.getDamage();
+        damage = meta.getDamage();
       }
     } else {
-      this.damage = item.getDurability();
+      damage = item.getDurability();
     }
 
-    serialized.applyComponent(this);
+    final PaperDamageComponent component = (serialized.paperComponent(identifier()) instanceof final DamageComponent<?, ?> getComponent)?
+                                           (PaperDamageComponent)getComponent : new PaperDamageComponent();
+    component.damage(damage);
+
+
+    serialized.applyComponent(component);
     return serialized;
   }
 

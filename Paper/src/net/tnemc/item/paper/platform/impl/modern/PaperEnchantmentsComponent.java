@@ -20,6 +20,8 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemEnchantments;
+import net.tnemc.item.component.impl.DyedColorComponent;
+import net.tnemc.item.component.impl.EnchantableComponent;
 import net.tnemc.item.component.impl.EnchantmentsComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
@@ -156,12 +158,15 @@ public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemS
       return serialized;
     }
 
+    final PaperEnchantmentsComponent component = (serialized.paperComponent(identifier()) instanceof final EnchantmentsComponent<?, ?> getComponent)?
+                                              (PaperEnchantmentsComponent)getComponent : new PaperEnchantmentsComponent();
+
     for(final Map.Entry<Enchantment, Integer> entry : enchants.enchantments().entrySet()) {
 
-      levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
+      component.levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
     }
 
-    serialized.applyComponent(this);
+    serialized.applyComponent(component);
     return serialized;
   }
 
@@ -176,12 +181,15 @@ public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemS
   @Override
   public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
 
+    final PaperEnchantmentsComponent component = (serialized.paperComponent(identifier()) instanceof final EnchantmentsComponent<?, ?> getComponent)?
+                                                 (PaperEnchantmentsComponent)getComponent : new PaperEnchantmentsComponent();
+
     for(final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
 
-      levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
+      component.levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
     }
 
-    serialized.applyComponent(this);
+    serialized.applyComponent(component);
     return serialized;
   }
 }

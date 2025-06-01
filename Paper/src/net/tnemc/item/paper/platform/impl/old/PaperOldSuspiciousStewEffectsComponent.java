@@ -65,7 +65,7 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final SuspiciousStewMeta meta) {
 
-        effects.forEach((effect)->{
+        componentOptional.get().effects.forEach((effect)->{
 
           try {
 

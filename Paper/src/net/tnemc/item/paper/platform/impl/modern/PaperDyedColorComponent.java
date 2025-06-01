@@ -20,6 +20,7 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.DyedItemColor;
+import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.component.impl.DyedColorComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
@@ -81,7 +82,7 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
 
     final DyedItemColor.Builder builder = DyedItemColor.dyedItemColor();
 
-    builder.color(Color.fromARGB(this.rgb));
+    builder.color(Color.fromARGB(componentOptional.get().rgb));
 
     item.setData(DataComponentTypes.DYED_COLOR, builder);
 
@@ -127,9 +128,12 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
       return serialized;
     }
 
-    this.rgb = color.color().asARGB();
+    final PaperDyedColorComponent component = (serialized.paperComponent(identifier()) instanceof final DyedColorComponent<?, ?> getComponent)?
+                                           (PaperDyedColorComponent)getComponent : new PaperDyedColorComponent();
 
-    serialized.applyComponent(this);
+    component.rgb(color.color().asARGB());
+
+    serialized.applyComponent(component);
     return serialized;
   }
 
@@ -145,10 +149,13 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
   public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final LeatherArmorMeta meta) {
-      this.rgb(meta.getColor().asRGB());
-    }
 
-    serialized.applyComponent(this);
+      final PaperDyedColorComponent component = (serialized.paperComponent(identifier()) instanceof final DyedColorComponent<?, ?> getComponent)?
+                                                (PaperDyedColorComponent)getComponent : new PaperDyedColorComponent();
+
+      component.rgb(meta.getColor().asRGB());
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

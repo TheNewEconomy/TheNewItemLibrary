@@ -20,6 +20,7 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.key.Key;
+import net.tnemc.item.component.impl.EnchantmentsComponent;
 import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
@@ -74,7 +75,7 @@ public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, 
       return item;
     }
 
-    item.setData(DataComponentTypes.ITEM_MODEL, Key.key(this.model));
+    item.setData(DataComponentTypes.ITEM_MODEL, Key.key(componentOptional.get().model));
     return item;
   }
 
@@ -120,9 +121,12 @@ public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, 
       return serialized;
     }
 
-    this.model = key.asString();
+    final PaperItemModelComponent component = (serialized.paperComponent(identifier()) instanceof final ItemModelComponent<?, ?> getComponent)?
+                                                 (PaperItemModelComponent)getComponent : new PaperItemModelComponent();
 
-    serialized.applyComponent(this);
+    component.model(key.asString());
+
+    serialized.applyComponent(component);
     return serialized;
   }
 
@@ -140,10 +144,13 @@ public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.getItemModel() != null) {
 
-      this.model = meta.getItemModel().toString();
-    }
+      final PaperItemModelComponent component = (serialized.paperComponent(identifier()) instanceof final ItemModelComponent<?, ?> getComponent)?
+                                                (PaperItemModelComponent)getComponent : new PaperItemModelComponent();
 
-    serialized.applyComponent(this);
+      component.model(meta.getItemModel().toString());
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

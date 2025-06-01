@@ -21,6 +21,7 @@ package net.tnemc.item.paper.platform.impl.modern;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemContainerContents;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
@@ -129,6 +130,9 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
       return serialized;
     }
 
+    final PaperContainerComponent component = (serialized.paperComponent(identifier()) instanceof final ContainerComponent<?, ?> getComponent)?
+                                           (PaperContainerComponent)getComponent : new PaperContainerComponent();
+
     int i = 0;
     for(final ItemStack stack : contents.contents()) {
 
@@ -142,11 +146,11 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
 
       final PaperItemStack containerSerial = new PaperItemStack().of(stack);
       PaperItemPlatform.instance().providerApplies(containerSerial, stack);
-      items.put(i, containerSerial);
+      component.items.put(i, containerSerial);
       i++;
     }
 
-    serialized.applyComponent(this);
+    serialized.applyComponent(component);
     return serialized;
   }
 
@@ -164,6 +168,9 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
        && meta.hasBlockState() && meta.getBlockState() instanceof final Container container) {
 
+      final PaperContainerComponent component = (serialized.paperComponent(identifier()) instanceof final ContainerComponent<?, ?> getComponent)?
+                                                (PaperContainerComponent)getComponent : new PaperContainerComponent();
+
       final Inventory inventory = container.getInventory();
       for(int i = 0; i < inventory.getSize(); i++) {
 
@@ -178,11 +185,11 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
 
         final PaperItemStack containerSerial = new PaperItemStack().of(stack);
         PaperItemPlatform.instance().providerApplies(containerSerial, stack);
-        items.put(i, containerSerial);
+        component.items.put(i, containerSerial);
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 
