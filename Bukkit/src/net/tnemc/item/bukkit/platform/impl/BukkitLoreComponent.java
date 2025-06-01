@@ -22,7 +22,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.LoreComponent;
-import net.tnemc.item.component.impl.MaxDamageComponent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 

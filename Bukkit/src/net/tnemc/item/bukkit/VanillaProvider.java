@@ -20,7 +20,6 @@ package net.tnemc.item.bukkit;
 
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
-import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.providers.ItemProvider;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

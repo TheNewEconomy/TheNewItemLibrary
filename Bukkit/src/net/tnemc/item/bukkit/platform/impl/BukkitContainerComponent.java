@@ -22,7 +22,6 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.ContainerComponent;
-import net.tnemc.item.component.impl.CustomNameComponent;
 import org.bukkit.Material;
 import org.bukkit.block.Container;
 import org.bukkit.inventory.Inventory;

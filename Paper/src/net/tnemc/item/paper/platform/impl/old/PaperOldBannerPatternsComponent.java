@@ -20,10 +20,8 @@ package net.tnemc.item.paper.platform.impl.old;
 
 import net.tnemc.item.component.helper.PatternData;
 import net.tnemc.item.component.impl.BannerPatternsComponent;
-import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
-import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;

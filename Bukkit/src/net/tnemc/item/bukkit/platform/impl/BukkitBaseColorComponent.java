@@ -21,7 +21,6 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.BaseColorComponent;
-import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.DyeColor;
 import org.bukkit.inventory.ItemStack;

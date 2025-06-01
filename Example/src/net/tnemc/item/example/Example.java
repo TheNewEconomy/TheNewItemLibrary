@@ -1,18 +1,16 @@
 package net.tnemc.item.example;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
-import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.example.command.TNILCountCommand;
 import net.tnemc.item.example.command.TNILGiveCommand;
 import net.tnemc.item.example.command.TNILTakeCommand;
+import net.tnemc.item.example.listeners.PlayerJoinListener;
+import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import net.tnemc.item.example.listeners.PlayerJoinListener;
 
-import java.awt.print.Paper;
 import java.util.Arrays;
 
 public class Example extends JavaPlugin {

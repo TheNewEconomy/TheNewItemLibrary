@@ -21,7 +21,6 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.RarityComponent;
-import net.tnemc.item.component.impl.RepairCostComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;

@@ -20,7 +20,6 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.MaxDamageComponent;
-import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;

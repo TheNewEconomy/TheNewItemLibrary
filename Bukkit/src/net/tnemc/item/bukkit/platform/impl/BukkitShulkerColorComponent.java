@@ -20,7 +20,6 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.DyedColorComponent;
-import net.tnemc.item.component.impl.StoredEnchantmentsComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.ItemStack;

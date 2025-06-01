@@ -21,7 +21,6 @@ package net.tnemc.item.paper.platform.impl.modern;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BundleContents;
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;

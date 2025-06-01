@@ -20,7 +20,6 @@ package net.tnemc.item.paper.platform.impl.old;
 
 import net.tnemc.item.component.helper.effect.EffectInstance;
 import net.tnemc.item.component.impl.SuspiciousStewEffectsComponent;
-import net.tnemc.item.component.impl.TooltipStyleComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;

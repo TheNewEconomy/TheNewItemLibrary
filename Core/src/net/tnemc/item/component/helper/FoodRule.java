@@ -22,8 +22,6 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.helper.effect.EffectInstance;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-
 /**
  * FoodRule
  *

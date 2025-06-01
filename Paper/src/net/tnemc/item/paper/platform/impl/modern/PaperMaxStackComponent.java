@@ -18,7 +18,6 @@ package net.tnemc.item.paper.platform.impl.modern;
  */
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import net.tnemc.item.component.impl.LoreComponent;
 import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.impl.PaperSerialComponent;

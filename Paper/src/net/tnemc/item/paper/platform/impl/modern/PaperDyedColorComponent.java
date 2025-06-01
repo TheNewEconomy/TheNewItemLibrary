@@ -20,7 +20,6 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.DyedItemColor;
-import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.component.impl.DyedColorComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.impl.PaperSerialComponent;

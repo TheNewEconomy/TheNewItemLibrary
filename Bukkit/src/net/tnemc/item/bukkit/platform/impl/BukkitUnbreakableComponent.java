@@ -19,7 +19,6 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
-import net.tnemc.item.component.impl.HideTooltipComponent;
 import net.tnemc.item.component.impl.UnbreakableComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;

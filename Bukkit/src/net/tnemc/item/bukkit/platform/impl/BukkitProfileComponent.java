@@ -20,7 +20,6 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ProfileComponent;
-import net.tnemc.item.component.impl.RarityComponent;
 import net.tnemc.item.providers.SkullProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;

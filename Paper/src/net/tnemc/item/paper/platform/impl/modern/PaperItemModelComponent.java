@@ -20,7 +20,6 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.key.Key;
-import net.tnemc.item.component.impl.EnchantmentsComponent;
 import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.impl.PaperSerialComponent;

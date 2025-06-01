@@ -19,7 +19,6 @@ package net.tnemc.item.paper.platform.impl.old;
  */
 
 import net.tnemc.item.component.impl.StoredEnchantmentsComponent;
-import net.tnemc.item.component.impl.SuspiciousStewEffectsComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
 import org.bukkit.enchantments.Enchantment;
