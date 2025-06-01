@@ -20,6 +20,7 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.CustomModelData;
+import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.component.impl.ModelDataComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
@@ -94,12 +95,12 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
 
     final CustomModelData.Builder builder = CustomModelData.customModelData();
 
-    builder.addFlags(this.flags);
-    builder.addFloats(this.floats);
-    builder.addStrings(this.strings);
+    builder.addFlags(componentOptional.get().flags);
+    builder.addFloats(componentOptional.get().floats);
+    builder.addStrings(componentOptional.get().strings);
 
     final List<Color> colorList = new LinkedList<>();
-    for(final String colorStr : this.colours) {
+    for(final String colorStr : componentOptional.get().colours) {
 
       try {
 
@@ -134,7 +135,7 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
 
         final CustomModelDataComponent component = meta.getCustomModelDataComponent();
         final List<Color> colourList = new ArrayList<>();
-        for(final String colourStr : colours) {
+        for(final String colourStr : componentOptional.get().colours) {
 
           try {
 
@@ -143,9 +144,9 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
         }
 
         component.setColors(colourList);
-        component.setFlags(flags);
-        component.setFloats(floats);
-        component.setStrings(strings);
+        component.setFlags(componentOptional.get().flags);
+        component.setFloats(componentOptional.get().floats);
+        component.setStrings(componentOptional.get().strings);
         meta.setCustomModelDataComponent(component);
         item.setItemMeta(meta);
       }
@@ -168,15 +169,18 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
       return serialized;
     }
 
-    this.flags.addAll(color.flags());
-    this.floats.addAll(color.floats());
-    this.strings.addAll(color.strings());
+    final PaperModelDataComponent component = (serialized.paperComponent(identifier()) instanceof final ModelDataComponent<?, ?> getComponent)?
+                                             (PaperModelDataComponent)getComponent : new PaperModelDataComponent();
+
+    component.flags.addAll(color.flags());
+    component.floats.addAll(color.floats());
+    component.strings.addAll(color.strings());
 
     for(final Color colorObj : color.colors()) {
-      this.colours.add(String.valueOf(colorObj.asARGB()));
+      component.colours.add(String.valueOf(colorObj.asARGB()));
     }
 
-    serialized.applyComponent(this);
+    serialized.applyComponent(component);
     return serialized;
   }
 
@@ -193,18 +197,21 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
 
     if(item.hasItemMeta()) {
 
+      final PaperModelDataComponent component = (serialized.paperComponent(identifier()) instanceof final ModelDataComponent<?, ?> getComponent)?
+                                                (PaperModelDataComponent)getComponent : new PaperModelDataComponent();
+
       final CustomModelDataComponent dataComponent = item.getItemMeta().getCustomModelDataComponent();
       for(final Color color : dataComponent.getColors()) {
 
-        this.colours.add(String.valueOf(color.asARGB()));
+        component.colours.add(String.valueOf(color.asARGB()));
       }
 
-      this.flags.addAll(dataComponent.getFlags());
-      this.floats.addAll(dataComponent.getFloats());
-      this.strings.addAll(dataComponent.getStrings());
-    }
+      component.flags.addAll(dataComponent.getFlags());
+      component.floats.addAll(dataComponent.getFloats());
+      component.strings.addAll(dataComponent.getStrings());
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 }

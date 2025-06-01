@@ -21,6 +21,7 @@ package net.tnemc.item.paper.platform.impl.modern;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ResolvableProfile;
+import net.tnemc.item.component.impl.ModelDataComponent;
 import net.tnemc.item.component.impl.ProfileComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
@@ -122,6 +123,8 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
     final Optional<PaperProfileComponent> componentOptional = serialized.component(identifier());
     if(meta instanceof final SkullMeta skullMeta && componentOptional.isPresent()) {
 
+      final SkullProfile profile = componentOptional.get().profile;
+
       if(profile != null) {
 
         try {
@@ -155,6 +158,9 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
       return serialized;
     }
 
+    final PaperProfileComponent component = (serialized.paperComponent(identifier()) instanceof final ProfileComponent<?, ?> getComponent)?
+                                              (PaperProfileComponent)getComponent : new PaperProfileComponent();
+
     final SkullProfile skull = new SkullProfile();
     skull.setUuid(resolvableProfile.uuid());
     skull.setName(resolvableProfile.name());
@@ -166,7 +172,9 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
       }
     }
 
-    serialized.applyComponent(this);
+    component.profile(skull);
+
+    serialized.applyComponent(component);
     return serialized;
   }
 
@@ -183,7 +191,7 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
 
     if(item.getItemMeta() instanceof final SkullMeta meta) {
 
-      profile = new SkullProfile();
+      final SkullProfile profile = new SkullProfile();
 
       try {
 
@@ -196,7 +204,13 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
 
         profile.setName(meta.getOwner());
       }
-      serialized.applyComponent(this);
+
+      final PaperProfileComponent component = (serialized.paperComponent(identifier()) instanceof final ProfileComponent<?, ?> getComponent)?
+                                              (PaperProfileComponent)getComponent : new PaperProfileComponent();
+
+      component.profile(profile);
+
+      serialized.applyComponent(component);
     }
     return serialized;
   }
