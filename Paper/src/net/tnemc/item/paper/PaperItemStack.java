@@ -103,12 +103,20 @@ import net.tnemc.item.paper.platform.impl.modern.PaperEnchantmentsComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperItemModelComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperItemNameComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperLoreComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperMaxStackComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperModelDataComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperProfileComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantableComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldMaxDamageComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldTooltipStyleComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.SkullProfile;
+import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -147,6 +155,18 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   private boolean dirty = false;
   private ItemStack localeStack;
 
+  public PaperItemStack() {
+
+  }
+
+  public PaperItemStack(final String material, final int amount) {
+    this.of(material, amount);
+  }
+
+  public PaperItemStack(final ItemStack locale) {
+    this.of(locale);
+  }
+
   /**
    * Creates a new item stack with the specified material and amount.
    *
@@ -160,8 +180,43 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
     this.material = material;
     this.amount = amount;
+
     this.dirty = true;
-    return this;
+
+    Material materialInstance = null;
+
+    System.out.println("Creating paper stack");
+    try {
+      final NamespacedKey key = NamespacedKey.fromString(material);
+
+      System.out.println("looking for mat key");
+      if(key != null) {
+
+        System.out.println("key found");
+
+        materialInstance = Registry.MATERIAL.get(key);
+      }
+    } catch(final NoSuchMethodError ignore) {
+
+      System.out.println("key not found");
+      materialInstance = Material.matchMaterial(material);
+    }
+
+    if(materialInstance == null) {
+
+      System.out.println("Creating paper stack v2");
+
+      return this;
+    }
+
+    System.out.println("Material: " + materialInstance.translationKey());
+
+    this.localeStack = ItemStack.of(materialInstance, amount);
+
+    //TODO: Replace with custom solution? or would this be the best solution for the defaults?
+    // custom is kinda overcomplicated but what is the performance hand off of new stack -> serialized,
+    // alternatively we have to do this anyways for the locale cache?
+    return of(this.localeStack);
   }
 
   /**
@@ -175,9 +230,12 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   public PaperItemStack of(final ItemStack locale) {
 
     this.localeStack = locale;
-    this.material = locale.getType().getKey().toString();
+    this.material = locale.getType().getKey().asString();
+
+    System.out.println("Material String: " + material);
 
     this.amount = locale.getAmount();
+
     final ItemMeta meta = locale.getItemMeta();
     if(meta != null) {
       for(final ItemFlag flag : meta.getItemFlags()) {
@@ -203,6 +261,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
 
     return this;
+  }
+
+  public SerialComponent<AbstractItemStack<ItemStack>, ItemStack> paperComponent(final String identifier) {
+
+    return components.get(identifier);
   }
 
   /**
@@ -839,6 +902,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack enchantable(final int value) {
 
+    applyComponent(new PaperOldEnchantableComponent(value));
     return this;
   }
 
@@ -1177,6 +1241,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack maxDamage(final int maxDamage) {
 
+    applyComponent(new PaperOldMaxDamageComponent(maxDamage));
     return this;
   }
 
@@ -1193,6 +1258,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack maxStackSize(final int maxStackSize) {
 
+    applyComponent(new PaperMaxStackComponent(maxStackSize));
     return this;
   }
 
@@ -1232,7 +1298,6 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   public AbstractItemStack<ItemStack> modelDataOld(final int customModelData) {
 
     applyComponent(new PaperOldModelDataLegacyComponent(customModelData));
-    this.dirty = true;
     return this;
   }
 
@@ -1328,9 +1393,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack profile(final SkullProfile profile) {
-
     applyComponent(new PaperProfileComponent(profile));
-    this.dirty = true;
     return this;
   }
 
@@ -1530,6 +1593,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack tooltipStyle(final String style) {
 
+    if(VersionUtil.isOneTwentyOneFour(PaperItemPlatform.instance().version())) {
+      //TODO: Modern tooltip
+    } else {
+      applyComponent(new PaperOldTooltipStyleComponent(style));
+    }
     return this;
   }
 

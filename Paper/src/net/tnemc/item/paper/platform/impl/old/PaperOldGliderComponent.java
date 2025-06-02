@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.FoodComponent;
 import net.tnemc.item.component.impl.GliderComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
@@ -83,7 +84,10 @@ public class PaperOldGliderComponent extends GliderComponent<PaperItemStack, Ite
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.isGlider()) {
 
-      serialized.applyComponent(this);
+      final PaperOldGliderComponent component = (serialized.paperComponent(identifier()) instanceof final GliderComponent<?, ?> getComponent)?
+                                              (PaperOldGliderComponent)getComponent : new PaperOldGliderComponent();
+
+      serialized.applyComponent(component);
     }
     return serialized;
   }

@@ -22,6 +22,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.LoreComponent;
+import net.tnemc.item.component.impl.MaxDamageComponent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -105,15 +106,18 @@ public class BukkitLoreComponent extends LoreComponent<BukkitItemStack, ItemStac
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.getLore() != null) {
 
-      lore.clear();
+      final BukkitLoreComponent component = (serialized.bukkitComponent(identifier()) instanceof final LoreComponent<?, ?> getComponent)?
+                                                 (BukkitLoreComponent)getComponent : new BukkitLoreComponent();
+
+      component.lore.clear();
 
       for(final String str : meta.getLore()) {
 
-        lore.add(LegacyComponentSerializer.legacySection().deserialize(str));
+        component.lore.add(LegacyComponentSerializer.legacySection().deserialize(str));
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

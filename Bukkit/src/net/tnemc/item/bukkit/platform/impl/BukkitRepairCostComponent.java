@@ -19,6 +19,7 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.component.impl.DyedColorComponent;
 import net.tnemc.item.component.impl.RepairCostComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
@@ -90,10 +91,13 @@ public class BukkitRepairCostComponent extends RepairCostComponent<BukkitItemSta
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final Repairable meta) {
 
-      this.repairCost = meta.getRepairCost();
-    }
+      final BukkitRepairCostComponent component = (serialized.bukkitComponent(identifier()) instanceof final RepairCostComponent<?, ?> getComponent)?
+                                                    (BukkitRepairCostComponent)getComponent : new BukkitRepairCostComponent();
 
-    serialized.applyComponent(this);
+      component.repairCost = meta.getRepairCost();
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

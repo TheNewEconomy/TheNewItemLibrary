@@ -97,7 +97,6 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     compare.setAmount(1);
 
     int amount = 0;
-    //final BukkitItemStack comp = new BukkitItemStack().of(compare);
     final ItemProvider<ItemStack> provider = stack.provider();
 
     for(int i = 0; i < inventory.getStorageContents().length; i++) {
@@ -115,22 +114,16 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
       if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
 
-        System.out.println("Entering container");
-
         final Inventory shulkerInventory = shulker.getInventory();
         for(int shulkerSlot = 0; shulkerSlot < shulkerInventory.getStorageContents().length; shulkerSlot++) {
-
-          System.out.println("Slot: " + shulkerSlot);
 
           final ItemStack shulkerStack = shulkerInventory.getItem(shulkerSlot);
           if(shulkerStack == null) {
 
-            System.out.println("Stack is null");
             continue;
           }
 
           if(!provider.similar(stack, shulkerStack)) {
-            System.out.println("Stacks aren't similar");
             continue;
           }
 
@@ -139,7 +132,6 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
           shulkerInventory.setItem(shulkerSlot, null);
         }
 
-        System.out.println("Leaving container");
         shulker.update(true);
         meta.setBlockState(shulker);
         item.setItemMeta(meta);
@@ -309,8 +301,6 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
     final ItemStack compare = stack.provider().locale(stack).clone();
     compare.setAmount(1);
 
-    System.out.println("Calc removeItem: Left: " + left);
-
     //TODO: improve this
 
     final ItemProvider<ItemStack> provider = stack.provider();
@@ -343,29 +333,24 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
 
       if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
 
-        System.out.println("Entering container");
 
         final Inventory shulkerInventory = shulker.getInventory();
         for(int shulkerSlot = 0; shulkerSlot < shulkerInventory.getStorageContents().length; shulkerSlot++) {
 
-          System.out.println("Slot: " + shulkerSlot);
           if(left <= 0) break;
 
           final ItemStack shulkerStack = shulkerInventory.getItem(shulkerSlot);
           if(shulkerStack == null) {
 
-            System.out.println("Stack is null");
             continue;
           }
 
           if(!provider.similar(stack, shulkerStack)) {
-            System.out.println("Stacks aren't similar");
             continue;
           }
 
           if(shulkerStack.getAmount() > left) {
 
-            System.out.println("changing stack size");
 
             shulkerStack.setAmount(shulkerStack.getAmount() - left);
             shulkerInventory.setItem(shulkerSlot, shulkerStack);
@@ -374,18 +359,15 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
           }
 
           if(shulkerStack.getAmount() == left) {
-            System.out.println("Removing stack containerStack.getAmount() == left");
             shulkerInventory.setItem(shulkerSlot, null);
             left = 0;
             break;
           }
 
-          System.out.println("Removing stack left -= containerStack.getAmount()");
           left -= shulkerStack.getAmount();
           shulkerInventory.setItem(shulkerSlot, null);
         }
 
-        System.out.println("Leaving container");
         shulker.update(true);
         meta.setBlockState(shulker);
         item.setItemMeta(meta);
@@ -401,18 +383,15 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
           final ItemStack bundleStack = it.next();
           if(bundleStack == null) {
 
-            System.out.println("Stack is null");
             continue;
           }
 
           if(!provider.similar(stack, bundleStack)) {
-            System.out.println("Stacks aren't similar");
             continue;
           }
 
           if(bundleStack.getAmount() > left) {
 
-            System.out.println("changing stack size");
 
             bundleStack.setAmount(bundleStack.getAmount() - left);
             left = 0;
@@ -420,13 +399,11 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
           }
 
           if(bundleStack.getAmount() == left) {
-            System.out.println("Removing stack containerStack.getAmount() == left");
             it.remove();
             left = 0;
             break;
           }
 
-          System.out.println("Removing stack left -= containerStack.getAmount()");
           left -= bundleStack.getAmount();
           it.remove();
         }

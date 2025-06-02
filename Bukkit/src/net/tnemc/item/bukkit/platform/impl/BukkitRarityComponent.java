@@ -21,6 +21,7 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.RarityComponent;
+import net.tnemc.item.component.impl.RepairCostComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
@@ -95,9 +96,12 @@ public class BukkitRarityComponent extends RarityComponent<BukkitItemStack, Item
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasRarity()) {
 
-      rarity = BukkitItemPlatform.instance().converter().convert(meta.getRarity(), String.class);
+      final BukkitRarityComponent component = (serialized.bukkitComponent(identifier()) instanceof final RarityComponent<?, ?> getComponent)?
+                                                  (BukkitRarityComponent)getComponent : new BukkitRarityComponent();
+
+      component.rarity = BukkitItemPlatform.instance().converter().convert(meta.getRarity(), String.class);
+      serialized.applyComponent(component);
     }
-    serialized.applyComponent(this);
     return serialized;
   }
 

@@ -21,6 +21,7 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.DamageComponent;
+import net.tnemc.item.component.impl.DyedColorComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -105,21 +106,24 @@ public class BukkitDamageComponent extends DamageComponent<BukkitItemStack, Item
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
+    final BukkitDamageComponent component = (serialized.bukkitComponent(identifier()) instanceof final DamageComponent<?, ?> getComponent)?
+                                               (BukkitDamageComponent)getComponent : new BukkitDamageComponent();
+
     if(VersionUtil.isOneThirteen(BukkitItemPlatform.instance().version())) {
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
 
         if(meta.hasDamage()) {
 
-          this.damage = meta.getDamage();
+          component.damage = meta.getDamage();
 
-          serialized.applyComponent(this);
+          serialized.applyComponent(component);
         }
       }
     } else {
-      this.damage = item.getDurability();
+      component.damage = item.getDurability();
 
-      serialized.applyComponent(this);
+      serialized.applyComponent(component);
     }
     return serialized;
   }

@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.DyedColorComponent;
+import net.tnemc.item.component.impl.StoredEnchantmentsComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.inventory.ItemStack;
@@ -88,11 +89,14 @@ public class BukkitShulkerColorComponent extends DyedColorComponent<BukkitItemSt
 
       if(box.getColor() != null) {
 
-        rgb = box.getColor().getColor().asRGB();
+        final BukkitShulkerColorComponent component = (serialized.bukkitComponent(identifier()) instanceof final DyedColorComponent<?, ?> getComponent)?
+                                                            (BukkitShulkerColorComponent)getComponent : new BukkitShulkerColorComponent();
+
+        component.rgb = box.getColor().getColor().asRGB();
+
+        serialized.applyComponent(component);
       }
     }
-
-    serialized.applyComponent(this);
     return serialized;
   }
 

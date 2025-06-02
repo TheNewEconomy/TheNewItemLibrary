@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ProfileComponent;
+import net.tnemc.item.component.impl.RarityComponent;
 import net.tnemc.item.providers.SkullProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -71,6 +72,8 @@ public class BukkitProfileComponent extends ProfileComponent<BukkitItemStack, It
     final Optional<BukkitProfileComponent> componentOptional = serialized.component(identifier());
     if(meta instanceof final SkullMeta skullMeta && componentOptional.isPresent()) {
 
+      final SkullProfile profile = componentOptional.get().profile;
+
       if(profile != null) {
 
         try {
@@ -101,7 +104,10 @@ public class BukkitProfileComponent extends ProfileComponent<BukkitItemStack, It
 
     if(item.getItemMeta() instanceof final SkullMeta meta) {
 
-      profile = new SkullProfile();
+      final BukkitProfileComponent component = (serialized.bukkitComponent(identifier()) instanceof final ProfileComponent<?, ?> getComponent)?
+                                              (BukkitProfileComponent)getComponent : new BukkitProfileComponent();
+
+      final SkullProfile profile = new SkullProfile();
 
       try {
 
@@ -114,7 +120,10 @@ public class BukkitProfileComponent extends ProfileComponent<BukkitItemStack, It
 
         profile.setName(meta.getOwner());
       }
-      serialized.applyComponent(this);
+
+      component.profile(profile);
+
+      serialized.applyComponent(component);
     }
     return serialized;
   }

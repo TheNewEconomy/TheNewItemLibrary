@@ -21,11 +21,16 @@ package net.tnemc.item.paper.platform.impl.modern;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemLore;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.component.impl.LoreComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +40,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperLoreComponent extends LoreComponent<PaperItemStack, ItemStack> {
+public class PaperLoreComponent extends LoreComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
 
   public PaperLoreComponent() {
 
@@ -85,7 +90,7 @@ public class PaperLoreComponent extends LoreComponent<PaperItemStack, ItemStack>
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperLoreComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
@@ -100,6 +105,36 @@ public class PaperLoreComponent extends LoreComponent<PaperItemStack, ItemStack>
   }
 
   /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+
+    final Optional<PaperLoreComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->{
+
+      final ItemMeta meta = item.getItemMeta();
+      if(meta != null) {
+
+        final LinkedList<String> newLore = new LinkedList<>();
+        for(final Component comp : componentOptional.get().lore) {
+
+          newLore.add(LegacyComponentSerializer.legacySection().serialize(comp));
+        }
+        meta.setLore(newLore);
+
+        item.setItemMeta(meta);
+      }
+    });
+    return item;
+  }
+
+  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -107,16 +142,48 @@ public class PaperLoreComponent extends LoreComponent<PaperItemStack, ItemStack>
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
     final ItemLore itemLore = item.getData(DataComponentTypes.LORE);
     if(itemLore == null) {
       return serialized;
     }
 
-    this.lore.addAll(itemLore.lines());
+    final PaperLoreComponent component = (serialized.paperComponent(identifier()) instanceof final LoreComponent<?, ?> getComponent)?
+                                             (PaperLoreComponent)getComponent : new PaperLoreComponent();
 
-    serialized.applyComponent(this);
+    component.lore.addAll(itemLore.lines());
+
+    serialized.applyComponent(component);
+    return serialized;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.getLore() != null) {
+
+      final PaperLoreComponent component = (serialized.paperComponent(identifier()) instanceof final LoreComponent<?, ?> getComponent)?
+                                           (PaperLoreComponent)getComponent : new PaperLoreComponent();
+
+      component.lore.clear();
+
+      for(final String str : meta.getLore()) {
+
+        component.lore.add(LegacyComponentSerializer.legacySection().deserialize(str));
+      }
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 }

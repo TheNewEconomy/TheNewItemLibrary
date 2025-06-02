@@ -21,6 +21,7 @@ package net.tnemc.item.bukkit.platform.impl;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.impl.BaseColorComponent;
+import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.DyeColor;
 import org.bukkit.inventory.ItemStack;
@@ -105,11 +106,14 @@ public class BukkitBaseColorComponent extends BaseColorComponent<BukkitItemStack
 
       if(meta.getBaseColor() != null) {
 
-        this.color = BukkitItemPlatform.instance().converter().convert(meta.getBaseColor(), String.class);
+        final BukkitBaseColorComponent component = (serialized.bukkitComponent(identifier()) instanceof final BaseColorComponent<?, ?> getComponent)?
+                                                (BukkitBaseColorComponent)getComponent : new BukkitBaseColorComponent();
+
+        component.color = BukkitItemPlatform.instance().converter().convert(meta.getBaseColor(), String.class);
+
+        serialized.applyComponent(component);
       }
     }
-
-    serialized.applyComponent(this);
     return serialized;
   }
 

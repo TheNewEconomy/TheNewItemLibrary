@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.BaseColorComponent;
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
@@ -83,6 +84,9 @@ public class PaperOldChargedProjectilesComponent extends ContainerComponent<Pape
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final CrossbowMeta meta) {
 
+      final PaperOldChargedProjectilesComponent component = (serialized.paperComponent(identifier()) instanceof final ContainerComponent<?, ?> getComponent)?
+                                                   (PaperOldChargedProjectilesComponent)getComponent : new PaperOldChargedProjectilesComponent();
+
       final List<ItemStack> projectiles = meta.getChargedProjectiles();
       for(int i = 0; i < projectiles.size(); i++) {
 
@@ -90,12 +94,12 @@ public class PaperOldChargedProjectilesComponent extends ContainerComponent<Pape
 
         if(stack != null && !stack.getType().equals(Material.AIR)) {
 
-          items.put(i, new PaperItemStack().of(stack));
+          component.items.put(i, new PaperItemStack().of(stack));
         }
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

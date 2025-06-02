@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.HideTooltipComponent;
 import net.tnemc.item.component.impl.MaxDamageComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
@@ -33,6 +34,15 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStack, ItemStack> {
+
+  public PaperOldMaxDamageComponent() {
+
+  }
+
+  public PaperOldMaxDamageComponent(final int maxDamage) {
+
+    super(maxDamage);
+  }
 
   /**
    * @param version the version being used when this check is called.
@@ -81,10 +91,13 @@ public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStac
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
 
-      this.maxDamage = meta.getMaxDamage();
-    }
+      final PaperOldMaxDamageComponent component = (serialized.paperComponent(identifier()) instanceof final MaxDamageComponent<?, ?> getComponent)?
+                                                     (PaperOldMaxDamageComponent)getComponent : new PaperOldMaxDamageComponent();
 
-    serialized.applyComponent(this);
+      component.maxDamage = meta.getMaxDamage();
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

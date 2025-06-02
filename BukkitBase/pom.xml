@@ -7,7 +7,7 @@
     <parent>
         <groupId>net.tnemc</groupId>
         <artifactId>TNIL</artifactId>
-        <version>0.1.2.0-SNAPSHOT-2</version>
+        <version>0.1.2.0-SNAPSHOT-3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -147,6 +147,7 @@
             <groupId>com.github.Slimefun</groupId>
             <artifactId>Slimefun4</artifactId>
             <version>RC-37</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>xyz.xenondevs.nova</groupId>
@@ -297,7 +298,7 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-Core</artifactId>
-            <version>0.1.2.0-SNAPSHOT-2</version>
+            <version>0.1.2.0-SNAPSHOT-3</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>

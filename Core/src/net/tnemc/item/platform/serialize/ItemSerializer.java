@@ -35,7 +35,6 @@ public interface ItemSerializer<I extends AbstractItemStack<T>, T> extends Ident
    *
    * @return true if this deserializer is enabled for the version, otherwise false
    * @since 0.2.0.0
-   * @since 0.2.0.0
    */
   boolean enabled(final String version);
 
@@ -44,7 +43,6 @@ public interface ItemSerializer<I extends AbstractItemStack<T>, T> extends Ident
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
-   * @since 0.2.0.0
    * @since 0.2.0.0
    */
   I serialize(final T item, I serialized);

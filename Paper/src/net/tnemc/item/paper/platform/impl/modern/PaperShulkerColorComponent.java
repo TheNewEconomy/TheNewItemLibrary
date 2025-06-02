@@ -57,33 +57,6 @@ public class PaperShulkerColorComponent extends PaperDyedColorComponent {
   }
 
   /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   * @since 0.2.0.0
-   */
-  @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
-
-    //no need to update the color, this is just for serialization purposes.
-    return super.apply(serialized, item);
-  }
-
-  /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   * @since 0.2.0.0
-   */
-  @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
-
-    return super.serialize(item, serialized);
-  }
-
-  /**
    * Checks if this component applies to the specified item.
    *
    * @param item The item to check against.

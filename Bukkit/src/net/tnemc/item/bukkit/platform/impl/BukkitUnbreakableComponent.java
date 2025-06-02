@@ -19,6 +19,7 @@ package net.tnemc.item.bukkit.platform.impl;
  */
 
 import net.tnemc.item.bukkit.BukkitItemStack;
+import net.tnemc.item.component.impl.HideTooltipComponent;
 import net.tnemc.item.component.impl.UnbreakableComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
@@ -47,8 +48,7 @@ public class BukkitUnbreakableComponent extends UnbreakableComponent<BukkitItemS
   @Override
   public boolean enabled(final String version) {
 
-    //TODO: Look up version
-    return VersionUtil.isOneThirteen(version);
+    return VersionUtil.isOneEleven(version);
   }
 
   /**
@@ -88,7 +88,10 @@ public class BukkitUnbreakableComponent extends UnbreakableComponent<BukkitItemS
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.isUnbreakable()) {
 
-      serialized.applyComponent(this);
+      final BukkitUnbreakableComponent component = (serialized.bukkitComponent(identifier()) instanceof final UnbreakableComponent<?, ?> getComponent)?
+                                                     (BukkitUnbreakableComponent)getComponent : new BukkitUnbreakableComponent();
+
+      serialized.applyComponent(component);
     }
     return serialized;
   }

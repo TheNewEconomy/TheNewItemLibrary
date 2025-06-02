@@ -22,6 +22,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ItemNameComponent;
+import net.tnemc.item.component.impl.LoreComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -90,9 +91,12 @@ public class BukkitItemNameComponent extends ItemNameComponent<BukkitItemStack, 
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasItemName()) {
 
-      this.itemName = LegacyComponentSerializer.legacySection().deserialize(meta.getItemName());
+      final BukkitItemNameComponent component = (serialized.bukkitComponent(identifier()) instanceof final ItemNameComponent<?, ?> getComponent)?
+                                            (BukkitItemNameComponent)getComponent : new BukkitItemNameComponent();
 
-      serialized.applyComponent(this);
+      component.itemName = LegacyComponentSerializer.legacySection().deserialize(meta.getItemName());
+
+      serialized.applyComponent(component);
     }
     return serialized;
   }

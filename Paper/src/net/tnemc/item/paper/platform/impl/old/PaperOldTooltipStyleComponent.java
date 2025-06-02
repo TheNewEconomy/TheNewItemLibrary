@@ -19,6 +19,7 @@ package net.tnemc.item.paper.platform.impl.old;
  */
 
 import net.tnemc.item.component.impl.TooltipStyleComponent;
+import net.tnemc.item.component.impl.TrimComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.NamespacedKey;
@@ -34,6 +35,15 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperItemStack, ItemStack> {
+
+  public PaperOldTooltipStyleComponent() {
+
+  }
+
+  public PaperOldTooltipStyleComponent(final String style) {
+
+    super(style);
+  }
 
   /**
    * @param version the version being used when this check is called.
@@ -85,9 +95,12 @@ public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperIt
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasTooltipStyle() && meta.getTooltipStyle() != null) {
 
-      style = meta.getTooltipStyle().toString();
+      final PaperOldTooltipStyleComponent component = (serialized.paperComponent(identifier()) instanceof final TooltipStyleComponent<?, ?> getComponent)?
+                                              (PaperOldTooltipStyleComponent)getComponent : new PaperOldTooltipStyleComponent();
+
+      component.style = meta.getTooltipStyle().toString();
+      serialized.applyComponent(component);
     }
-    serialized.applyComponent(this);
     return serialized;
   }
 

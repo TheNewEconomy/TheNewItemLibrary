@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.MaxDamageComponent;
+import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -90,10 +91,13 @@ public class BukkitMaxDamageComponent extends MaxDamageComponent<BukkitItemStack
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
 
-      this.maxDamage = meta.getMaxDamage();
-    }
+      final BukkitMaxDamageComponent component = (serialized.bukkitComponent(identifier()) instanceof final MaxDamageComponent<?, ?> getComponent)?
+                                                    (BukkitMaxDamageComponent)getComponent : new BukkitMaxDamageComponent();
 
-    serialized.applyComponent(this);
+      component.maxDamage = meta.getMaxDamage();
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

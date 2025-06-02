@@ -20,10 +20,14 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
@@ -33,7 +37,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, ItemStack> {
+public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
 
   public PaperItemNameComponent() {
 
@@ -64,14 +68,39 @@ public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, It
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
+    System.out.println("=== Apply ItemName Modern ===");
     final Optional<PaperItemNameComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
+
+      System.out.println("No component found");
       return item;
     }
 
-    item.setData(DataComponentTypes.ITEM_NAME, this.itemName);
+    System.out.println("applying");
+    item.setData(DataComponentTypes.ITEM_NAME, componentOptional.get().itemName());
+    return item;
+  }
+
+  /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+
+    final ItemMeta meta = item.getItemMeta();
+    final Optional<PaperItemNameComponent> componentOptional = serialized.component(identifier());
+    if(meta != null && componentOptional.isPresent()) {
+
+      meta.setItemName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().itemName()));
+      item.setItemMeta(meta);
+    }
     return item;
   }
 
@@ -83,16 +112,46 @@ public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, It
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
+
+    System.out.println("=== Serialize ItemName Modern ===");
 
     final Component name = item.getData(DataComponentTypes.ITEM_NAME);
     if(name == null) {
+      System.out.println("item name is null");
       return serialized;
     }
 
-    this.itemName = name;
+    final PaperItemNameComponent component = (serialized.paperComponent(identifier()) instanceof final ItemNameComponent<?, ?> getComponent)?
+                                              (PaperItemNameComponent)getComponent : new PaperItemNameComponent();
 
-    serialized.applyComponent(this);
+    component.itemName(name);
+
+    serialized.applyComponent(component);
+    return serialized;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasItemName()) {
+
+      final PaperItemNameComponent component = (serialized.paperComponent(identifier()) instanceof final ItemNameComponent<?, ?> getComponent)?
+                                               (PaperItemNameComponent)getComponent : new PaperItemNameComponent();
+
+      component.itemName(LegacyComponentSerializer.legacySection().deserialize(meta.getItemName()));
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

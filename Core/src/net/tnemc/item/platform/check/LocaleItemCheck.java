@@ -36,7 +36,6 @@ public interface LocaleItemCheck<T> extends ItemCheck<T> {
    *
    * @return true if the LocaleItemCheck applies, false otherwise
    * @since 0.2.0.0
-   * @since 0.2.0.0
    */
   boolean applies(final T original, final T check);
 
@@ -46,7 +45,6 @@ public interface LocaleItemCheck<T> extends ItemCheck<T> {
    *
    * @return True if the check passes, otherwise false.
    * @since 0.2.0.0
-   * @since 0.2.0.0
    */
   boolean check(final T original, final T check);
 
@@ -55,7 +53,6 @@ public interface LocaleItemCheck<T> extends ItemCheck<T> {
    * @param check    the stack to use for the check
    *
    * @return True if the check passes, otherwise false.
-   * @since 0.2.0.0
    * @since 0.2.0.0
    */
   @Override

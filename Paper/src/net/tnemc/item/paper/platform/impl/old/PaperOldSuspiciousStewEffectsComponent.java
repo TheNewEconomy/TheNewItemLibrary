@@ -20,6 +20,7 @@ package net.tnemc.item.paper.platform.impl.old;
 
 import net.tnemc.item.component.helper.effect.EffectInstance;
 import net.tnemc.item.component.impl.SuspiciousStewEffectsComponent;
+import net.tnemc.item.component.impl.TooltipStyleComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
@@ -65,7 +66,7 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final SuspiciousStewMeta meta) {
 
-        effects.forEach((effect)->{
+        componentOptional.get().effects.forEach((effect)->{
 
           try {
 
@@ -100,13 +101,16 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final SuspiciousStewMeta meta) {
 
+      final PaperOldSuspiciousStewEffectsComponent component = (serialized.paperComponent(identifier()) instanceof final SuspiciousStewEffectsComponent<?, ?> getComponent)?
+                                                      (PaperOldSuspiciousStewEffectsComponent)getComponent : new PaperOldSuspiciousStewEffectsComponent();
+
       for(final PotionEffect effect : meta.getCustomEffects()) {
 
         try {
           final String id = PaperItemPlatform.instance().converter().convert(effect.getType(), String.class);
           if(id != null) {
 
-            effects.add(new EffectInstance(id,
+            component.effects.add(new EffectInstance(id,
                                            effect.getAmplifier(),
                                            effect.getDuration(),
                                            effect.hasParticles(),
@@ -116,9 +120,9 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
           }
         } catch(final Exception ignore) {}
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

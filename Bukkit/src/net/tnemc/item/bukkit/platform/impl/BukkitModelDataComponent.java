@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.ModelDataComponent;
+import net.tnemc.item.component.impl.ModelDataOldComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
@@ -80,7 +81,7 @@ public class BukkitModelDataComponent extends ModelDataComponent<BukkitItemStack
 
         final CustomModelDataComponent component = meta.getCustomModelDataComponent();
         final List<Color> colourList = new ArrayList<>();
-        for(final String colourStr : colours) {
+        for(final String colourStr : componentOptional.get().colours) {
 
           try {
 
@@ -89,9 +90,9 @@ public class BukkitModelDataComponent extends ModelDataComponent<BukkitItemStack
         }
 
         component.setColors(colourList);
-        component.setFlags(flags);
-        component.setFloats(floats);
-        component.setStrings(strings);
+        component.setFlags(componentOptional.get().flags);
+        component.setFloats(componentOptional.get().floats);
+        component.setStrings(componentOptional.get().strings);
         meta.setCustomModelDataComponent(component);
         item.setItemMeta(meta);
       }
@@ -123,18 +124,21 @@ public class BukkitModelDataComponent extends ModelDataComponent<BukkitItemStack
 
     if(item.hasItemMeta()) {
 
+      final BukkitModelDataComponent component = (serialized.bukkitComponent(identifier()) instanceof final ModelDataComponent<?, ?> getComponent)?
+                                                    (BukkitModelDataComponent)getComponent : new BukkitModelDataComponent();
+
       final CustomModelDataComponent dataComponent = item.getItemMeta().getCustomModelDataComponent();
       for(final Color color : dataComponent.getColors()) {
 
-        this.colours.add(String.valueOf(color.asARGB()));
+        component.colours.add(String.valueOf(color.asARGB()));
       }
 
-      this.flags.addAll(dataComponent.getFlags());
-      this.floats.addAll(dataComponent.getFloats());
-      this.strings.addAll(dataComponent.getStrings());
-    }
+      component.flags.addAll(dataComponent.getFlags());
+      component.floats.addAll(dataComponent.getFloats());
+      component.strings.addAll(dataComponent.getStrings());
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 }

@@ -20,6 +20,7 @@ package net.tnemc.item.bukkit.platform.impl;
 
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.component.impl.FoodComponent;
+import net.tnemc.item.component.impl.GliderComponent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -109,12 +110,15 @@ public class BukkitFoodComponent extends FoodComponent<BukkitItemStack, ItemStac
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasFood()) {
 
-      this.canAlwaysEat = meta.getFood().canAlwaysEat();
-      this.saturation = meta.getFood().getSaturation();
-      this.nutrition = meta.getFood().getNutrition();
-    }
+      final BukkitFoodComponent component = (serialized.bukkitComponent(identifier()) instanceof final FoodComponent<?, ?> getComponent)?
+                                              (BukkitFoodComponent)getComponent : new BukkitFoodComponent();
 
-    serialized.applyComponent(this);
+      component.canAlwaysEat = meta.getFood().canAlwaysEat();
+      component.saturation = meta.getFood().getSaturation();
+      component.nutrition = meta.getFood().getNutrition();
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

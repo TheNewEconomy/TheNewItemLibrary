@@ -20,10 +20,14 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Optional;
 
@@ -33,7 +37,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack, ItemStack> {
+public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
 
   public PaperCustomNameComponent() {
 
@@ -64,14 +68,34 @@ public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperCustomNameComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
       return item;
     }
 
-    item.setData(DataComponentTypes.CUSTOM_NAME, this.customName);
+    item.setData(DataComponentTypes.CUSTOM_NAME, componentOptional.get().customName());
+    return item;
+  }
+
+  /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+
+    final ItemMeta meta = item.getItemMeta();
+    final Optional<PaperCustomNameComponent> componentOptional = serialized.component(identifier());
+    if(meta != null && componentOptional.isPresent()) {
+
+      meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().customName()));
+    }
     return item;
   }
 
@@ -83,16 +107,43 @@ public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
     final Component name = item.getData(DataComponentTypes.CUSTOM_NAME);
     if(name == null) {
       return serialized;
     }
 
-    this.customName = name;
+    final PaperCustomNameComponent component = (serialized.paperComponent(identifier()) instanceof final CustomNameComponent<?, ?> getComponent)?
+                                              (PaperCustomNameComponent)getComponent : new PaperCustomNameComponent();
 
-    serialized.applyComponent(this);
+    component.customName(name);
+
+    serialized.applyComponent(component);
+    return serialized;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
+
+    final ItemMeta meta = item.getItemMeta();
+    if(meta != null && meta.hasDisplayName()) {
+
+      final PaperCustomNameComponent component = (serialized.paperComponent(identifier()) instanceof final CustomNameComponent<?, ?> getComponent)?
+                                                 (PaperCustomNameComponent)getComponent : new PaperCustomNameComponent();
+
+      component.customName(LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName()));
+
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 

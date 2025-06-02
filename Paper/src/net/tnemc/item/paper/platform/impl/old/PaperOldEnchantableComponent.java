@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.component.impl.EnchantableComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
@@ -33,6 +34,15 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class PaperOldEnchantableComponent extends EnchantableComponent<PaperItemStack, ItemStack> {
+
+  public PaperOldEnchantableComponent() {
+
+  }
+
+  public PaperOldEnchantableComponent(final int value) {
+
+    super(value);
+  }
 
   /**
    * @param version the version being used when this check is called.
@@ -83,10 +93,13 @@ public class PaperOldEnchantableComponent extends EnchantableComponent<PaperItem
     final ItemMeta meta = item.getItemMeta();
     if(meta != null) {
 
-      this.value = item.getItemMeta().getEnchantable();
-    }
+      final PaperOldEnchantableComponent component = (serialized.paperComponent(identifier()) instanceof final EnchantableComponent<?, ?> getComponent)?
+                                                            (PaperOldEnchantableComponent)getComponent : new PaperOldEnchantableComponent();
 
-    serialized.applyComponent(this);
+      component.value = item.getItemMeta().getEnchantable();
+
+      serialized.applyComponent(this);
+    }
     return serialized;
   }
 

@@ -127,7 +127,6 @@ public interface ItemProvider<T> extends Identifiable {
    * @since 0.2.0.0
    * @author creatorfromhell
    * @since 0.2.0.0
-   * @since 0.2.0.0
    */
   default T locale(final AbstractItemStack<? extends T> original) {
 

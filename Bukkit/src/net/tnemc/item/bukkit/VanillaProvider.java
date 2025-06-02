@@ -64,25 +64,6 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
 
     final BukkitItemStack compareStack = new BukkitItemStack().of(compare);
 
-    System.out.println("==== Similar call ====");
-
-    System.out.println("original Components");
-
-    for(final SerialComponent component : original.components().values()) {
-
-      System.out.println("Entry: " + component.identifier());
-    }
-
-    System.out.println("Compare Components");
-
-    for(final SerialComponent component : compareStack.components().values()) {
-
-      System.out.println("Entry: " + component.identifier());
-    }
-
-    System.out.println("==== Similar end ====");
-
-
     return BukkitItemPlatform.instance().check((BukkitItemStack)original, compareStack);
   }
 
@@ -98,23 +79,17 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
   @Override
   public ItemStack locale(final AbstractItemStack<? extends ItemStack> original, final int amount) {
 
-    System.out.println("instanceof: " + (original instanceof BukkitItemStack));
-
     if(original instanceof final BukkitItemStack bukkit) {
 
       if(!bukkit.isDirty()) {
         return bukkit.cacheLocale();
       }
 
-      System.out.println("Material: " + bukkit.material());
-
       Material material = null;
 
       try {
         final NamespacedKey key = NamespacedKey.fromString(bukkit.material());
         if(key != null) {
-
-          System.out.println("Key is not null");
 
           material = Registry.MATERIAL.get(key);
         }
@@ -124,7 +99,6 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
 
       if(material == null) {
 
-        System.out.println("Material is null");
         return null;
       }
       ItemStack stack = new ItemStack(material, amount);

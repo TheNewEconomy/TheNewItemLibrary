@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.BannerPatternsComponent;
 import net.tnemc.item.component.impl.BaseColorComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
@@ -90,11 +91,14 @@ public class PaperOldBaseColorComponent extends BaseColorComponent<PaperItemStac
 
       if(meta.getBaseColor() != null) {
 
-        this.color = PaperItemPlatform.instance().converter().convert(meta.getBaseColor(), String.class);
+        final PaperOldBaseColorComponent component = (serialized.paperComponent(identifier()) instanceof final BaseColorComponent<?, ?> getComponent)?
+                                                          (PaperOldBaseColorComponent)getComponent : new PaperOldBaseColorComponent();
+
+        component.color = PaperItemPlatform.instance().converter().convert(meta.getBaseColor(), String.class);
+
+        serialized.applyComponent(component);
       }
     }
-
-    serialized.applyComponent(this);
     return serialized;
   }
 

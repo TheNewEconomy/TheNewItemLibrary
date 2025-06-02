@@ -27,6 +27,7 @@ import net.tnemc.item.bukkit.platform.impl.BukkitContainerComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitCustomNameComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitDamageComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitEnchantmentsComponent;
+import net.tnemc.item.bukkit.platform.impl.BukkitHideTooltipComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemModelComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitItemNameComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitLoreComponent;
@@ -124,6 +125,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
     addMulti(new BukkitCustomNameComponent());
     addMulti(new BukkitDamageComponent());
     addMulti(new BukkitEnchantmentsComponent());
+    addMulti(new BukkitHideTooltipComponent());
     addMulti(new BukkitItemModelComponent());
     addMulti(new BukkitItemNameComponent());
     addMulti(new BukkitLoreComponent());
@@ -160,8 +162,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
 
 
     addItemProvider(defaultProvider);
-
-    System.out.println("Item Providers: " + itemProviders.size());
 
   }
 

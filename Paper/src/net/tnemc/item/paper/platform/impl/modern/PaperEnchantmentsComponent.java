@@ -20,9 +20,12 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemEnchantments;
+import net.tnemc.item.component.impl.DyedColorComponent;
+import net.tnemc.item.component.impl.EnchantableComponent;
 import net.tnemc.item.component.impl.EnchantmentsComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
+import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -36,7 +39,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemStack, ItemStack> {
+public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
 
   public PaperEnchantmentsComponent() {
 
@@ -81,7 +84,7 @@ public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemS
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperEnchantmentsComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
@@ -110,6 +113,37 @@ public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemS
   }
 
   /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
+
+    final Optional<PaperEnchantmentsComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->{
+
+      for(final Map.Entry<String, Integer> entry : componentOptional.get().levels.entrySet()) {
+
+        try {
+
+          final Enchantment enchant = PaperItemPlatform.instance().converter().convert(entry.getKey(), Enchantment.class);
+          if(enchant != null) {
+
+            item.addUnsafeEnchantment(enchant, entry.getValue());
+          }
+        } catch(final Exception ignore) {
+          //enchantment couldn't be found.
+        }
+      }
+    });
+    return item;
+  }
+
+  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -117,19 +151,45 @@ public class PaperEnchantmentsComponent extends EnchantmentsComponent<PaperItemS
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
     final ItemEnchantments enchants = item.getData(DataComponentTypes.ENCHANTMENTS);
     if(enchants == null) {
       return serialized;
     }
 
+    final PaperEnchantmentsComponent component = (serialized.paperComponent(identifier()) instanceof final EnchantmentsComponent<?, ?> getComponent)?
+                                              (PaperEnchantmentsComponent)getComponent : new PaperEnchantmentsComponent();
+
     for(final Map.Entry<Enchantment, Integer> entry : enchants.enchantments().entrySet()) {
 
-      levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
+      component.levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
     }
 
-    serialized.applyComponent(this);
+    serialized.applyComponent(component);
+    return serialized;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
+
+    final PaperEnchantmentsComponent component = (serialized.paperComponent(identifier()) instanceof final EnchantmentsComponent<?, ?> getComponent)?
+                                                 (PaperEnchantmentsComponent)getComponent : new PaperEnchantmentsComponent();
+
+    for(final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
+
+      component.levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
+    }
+
+    serialized.applyComponent(component);
     return serialized;
   }
 }

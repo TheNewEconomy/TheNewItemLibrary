@@ -20,8 +20,10 @@ package net.tnemc.item.paper.platform.impl.old;
 
 import net.tnemc.item.component.helper.PatternData;
 import net.tnemc.item.component.impl.BannerPatternsComponent;
+import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
+import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;
@@ -99,10 +101,14 @@ public class PaperOldBannerPatternsComponent extends BannerPatternsComponent<Pap
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
     if(item.hasItemMeta() && item.getItemMeta() instanceof final BannerMeta meta) {
+
+      final PaperOldBannerPatternsComponent component = (serialized.paperComponent(identifier()) instanceof final BannerPatternsComponent<?, ?> getComponent)?
+                                             (PaperOldBannerPatternsComponent)getComponent : new PaperOldBannerPatternsComponent();
+
       for(final Pattern pattern : meta.getPatterns()) {
 
         try {
-          patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
+          component.patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
                                        PaperItemPlatform.instance().converter().convert(pattern.getPattern(), String.class)));
         } catch(final Exception ignore) {
 
@@ -110,9 +116,9 @@ public class PaperOldBannerPatternsComponent extends BannerPatternsComponent<Pap
         }
 
       }
-    }
 
-    serialized.applyComponent(this);
+      serialized.applyComponent(component);
+    }
     return serialized;
   }
 
