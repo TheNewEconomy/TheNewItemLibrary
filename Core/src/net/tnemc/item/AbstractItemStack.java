@@ -21,7 +21,6 @@ package net.tnemc.item;
  */
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.BlockPredicate;
@@ -102,12 +101,9 @@ import net.tnemc.item.providers.SkullProfile;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 /**

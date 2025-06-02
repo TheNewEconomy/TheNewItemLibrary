@@ -43,7 +43,6 @@ import net.tnemc.item.bukkitbase.platform.providers.NovaProvider;
 import net.tnemc.item.bukkitbase.platform.providers.OraxenProvider;
 import net.tnemc.item.bukkitbase.platform.providers.SlimefunProvider;
 import net.tnemc.item.platform.ItemPlatform;
-import net.tnemc.item.providers.CalculationsProvider;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
@@ -53,7 +52,11 @@ import org.bukkit.Registry;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemRarity;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
@@ -238,15 +241,19 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
     });
 
     //RegisterConversion for EquipmentSlotGroup
-    converter.registerConversion(String.class, EquipmentSlotGroup.class, input -> {
-      final EquipmentSlotGroup group = EquipmentSlotGroup.getByName(input);
-      if(group == null) {
-        throw new IllegalArgumentException("Unknown input: " + input);
-      }
-      return group;
-    });
+    try {
+      converter.registerConversion(String.class, EquipmentSlotGroup.class, input->{
+        final EquipmentSlotGroup group = EquipmentSlotGroup.getByName(input);
+        if(group == null) {
+          throw new IllegalArgumentException("Unknown input: " + input);
+        }
+        return group;
+      });
 
-    converter.registerConversion(EquipmentSlotGroup.class, String.class, EquipmentSlotGroup::toString);
+      converter.registerConversion(EquipmentSlotGroup.class, String.class, EquipmentSlotGroup::toString);
+    } catch(final NoClassDefFoundError ignore) {
+
+    }
 
     //Register Conversions for AttributeModifier
     converter.registerConversion(String.class, AttributeModifier.Operation.class, input->switch(input.toLowerCase()) {
@@ -339,11 +346,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
         });
       }
 
-    } else {
-
-      converter.registerConversion(String.class, PatternType.class, PatternType::valueOf);
-
-      converter.registerConversion(PatternType.class, String.class, PatternType::getIdentifier);
     }
 
     //Register Conversions for Enchantment, which will be dependent on versions
@@ -423,19 +425,23 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
     //Register Conversions for NamespacedKey, which will be dependent on versions
     //We'll separate the legacy find methods from the modern ones in order to maintain one component
     // class for both.
-    converter.registerConversion(ItemRarity.class, String.class, input->switch(input) {
-      case EPIC -> "epic";
-      case RARE -> "rare";
-      case UNCOMMON -> "uncommon";
-      default -> "common";
-    });
+    try {
+      converter.registerConversion(ItemRarity.class, String.class, input->switch(input) {
+        case EPIC -> "epic";
+        case RARE -> "rare";
+        case UNCOMMON -> "uncommon";
+        default -> "common";
+      });
 
-    converter.registerConversion(String.class, ItemRarity.class, input->switch(input.toLowerCase()) {
-      case "epic" -> ItemRarity.EPIC;
-      case "rare" -> ItemRarity.RARE;
-      case "uncommon" -> ItemRarity.UNCOMMON;
-      default -> ItemRarity.COMMON;
-    });
+      converter.registerConversion(String.class, ItemRarity.class, input->switch(input.toLowerCase()) {
+        case "epic" -> ItemRarity.EPIC;
+        case "rare" -> ItemRarity.RARE;
+        case "uncommon" -> ItemRarity.UNCOMMON;
+        default -> ItemRarity.COMMON;
+      });
+    } catch(final NoClassDefFoundError ignore) {
+
+    }
 
     //Register Conversions for Trim Pattern, which will be dependent on versions
     //We'll separate the legacy find methods from the modern ones in order to maintain one component

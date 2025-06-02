@@ -22,7 +22,6 @@ import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.helper.PatternData;
 import net.tnemc.item.component.impl.BannerPatternsComponent;
-import net.tnemc.item.component.impl.BaseColorComponent;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;

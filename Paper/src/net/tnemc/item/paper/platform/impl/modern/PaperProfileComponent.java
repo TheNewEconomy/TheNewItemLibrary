@@ -21,7 +21,6 @@ package net.tnemc.item.paper.platform.impl.modern;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ResolvableProfile;
-import net.tnemc.item.component.impl.ModelDataComponent;
 import net.tnemc.item.component.impl.ProfileComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.impl.PaperSerialComponent;

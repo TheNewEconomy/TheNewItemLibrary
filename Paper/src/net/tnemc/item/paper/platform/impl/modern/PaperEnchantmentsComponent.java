@@ -20,8 +20,6 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemEnchantments;
-import net.tnemc.item.component.impl.DyedColorComponent;
-import net.tnemc.item.component.impl.EnchantableComponent;
 import net.tnemc.item.component.impl.EnchantmentsComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;

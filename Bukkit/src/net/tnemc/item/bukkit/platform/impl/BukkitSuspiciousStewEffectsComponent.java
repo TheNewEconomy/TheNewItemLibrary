@@ -22,7 +22,6 @@ import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
 import net.tnemc.item.component.helper.effect.EffectInstance;
 import net.tnemc.item.component.impl.SuspiciousStewEffectsComponent;
-import net.tnemc.item.component.impl.TooltipStyleComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SuspiciousStewMeta;

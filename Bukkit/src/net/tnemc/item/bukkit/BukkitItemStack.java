@@ -19,10 +19,8 @@ package net.tnemc.item.bukkit;
  */
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
-import net.tnemc.item.bukkit.platform.impl.BukkitAttributeModifiersComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitBundleComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitContainerComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitCustomNameComponent;
@@ -38,8 +36,6 @@ import net.tnemc.item.bukkit.platform.impl.BukkitMaxStackSizeComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitModelDataComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitModelDataOldComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
-import net.tnemc.item.bukkit.platform.impl.BukkitRarityComponent;
-import net.tnemc.item.bukkit.platform.impl.BukkitRepairCostComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitTooltipStyleComponent;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;

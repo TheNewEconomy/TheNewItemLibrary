@@ -19,7 +19,6 @@ package net.tnemc.item.component.helper.effect;
  */
 
 import net.tnemc.item.JSONHelper;
-import net.tnemc.item.component.helper.ItemDamage;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;

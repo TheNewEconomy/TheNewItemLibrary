@@ -18,10 +18,8 @@ package net.tnemc.item.bukkit.platform.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitItemPlatform;
-import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.impl.AttributeModifiersComponent;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;

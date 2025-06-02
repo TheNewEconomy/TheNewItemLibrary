@@ -19,7 +19,6 @@ package net.tnemc.item.paper.platform.impl.old;
  */
 
 import net.tnemc.item.component.impl.TooltipStyleComponent;
-import net.tnemc.item.component.impl.TrimComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.NamespacedKey;

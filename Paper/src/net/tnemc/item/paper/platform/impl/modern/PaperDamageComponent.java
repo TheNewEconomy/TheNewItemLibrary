@@ -19,7 +19,6 @@ package net.tnemc.item.paper.platform.impl.modern;
  */
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
