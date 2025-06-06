@@ -23,10 +23,13 @@ import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.item.inventory.Slot;
 import org.spongepowered.api.tag.ItemTypeTags;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
@@ -92,7 +95,17 @@ public class SpongeBundleComponent extends BundleComponent<SpongeItemStack, Item
     final Optional<SpongeBundleComponent> componentOptional = serialized.component(identifier());
     componentOptional.ifPresent(component->{
 
+      final Optional<Inventory> inventory = item.get(Key.from(ResourceKey.sponge("inventory"), Inventory.class));
+      if(inventory.isPresent()) {
 
+        for(final Map.Entry<Integer, AbstractItemStack<ItemStack>> entry : componentOptional.get().items.entrySet()) {
+
+          if(entry.getValue() instanceof final SpongeItemStack spongeStack) {
+
+            inventory.get().set(entry.getKey(), spongeStack.cacheLocale());
+          }
+        }
+      }
     });
     return item;
   }
@@ -107,6 +120,32 @@ public class SpongeBundleComponent extends BundleComponent<SpongeItemStack, Item
    */
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
+
+    final Optional<Inventory> inventory = item.get(Key.from(ResourceKey.sponge("inventory"), Inventory.class));
+    if(inventory.isPresent()) {
+
+      final SpongeBundleComponent component = (serialized.spongeComponent(identifier()) instanceof final BundleComponent<?, ?> getComponent)?
+                                              (SpongeBundleComponent)getComponent : new SpongeBundleComponent();
+
+      final int i = 0;
+      for(final Slot slot : inventory.get().slots()) {
+
+
+        final ItemStack slotItem = slot.peek();
+        if(slotItem == null) {
+
+          continue;
+        }
+
+        final int index = slot.getInt(Keys.SLOT_INDEX).orElse(-1);
+        if(index <= -1) {
+
+          continue;
+        }
+
+        component.items.put(index, new SpongeItemStack(slotItem));
+      }
+    }
 
     return serialized;
   }

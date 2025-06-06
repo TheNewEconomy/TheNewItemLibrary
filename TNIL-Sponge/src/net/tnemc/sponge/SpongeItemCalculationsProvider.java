@@ -51,7 +51,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
         final Location<?, ?> location = player.get().location();
         final Item item = location.world().createEntity(EntityTypes.ITEM, player.get().position());
 
-        item.offer(Keys.ITEM_STACK_SNAPSHOT, stack.cacheLocale().asImmutable());
+        item.offer(Keys.ITEM_STACK_SNAPSHOT, stack.provider().locale(stack, stack.amount()).asImmutable());
         location.world().spawnEntity(item);
       }
     }
@@ -61,7 +61,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   @Override
   public int removeAll(final SpongeItemStack stack, final Inventory inventory) {
 
-    final ItemStack compare = stack.cacheLocale().copy();
+    final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
     compare.setQuantity(1);
 
     int amount = 0;
@@ -72,7 +72,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
 
         final ItemStack compareI = slotItem.copy();
         compareI.setQuantity(1);
-        if(compareI.equalTo(stack.cacheLocale())) {
+        if(compareI.equalTo(stack.provider().locale(stack, stack.amount()))) {
           amount += slotItem.quantity();
           slot.clear();
         }
@@ -84,7 +84,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   @Override
   public int count(final SpongeItemStack stack, final Inventory inventory) {
 
-    final ItemStack compare = stack.cacheLocale().copy();
+    final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
     compare.setQuantity(1);
     int count = 0;
 
@@ -95,7 +95,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
 
         final ItemStack compareI = slotItem.copy();
         compareI.setQuantity(1);
-        if(compareI.equalTo(stack.cacheLocale())) {
+        if(compareI.equalTo(stack.provider().locale(stack, stack.amount()))) {
           count += slot.totalQuantity();
         }
       }
@@ -120,7 +120,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
         continue;
       }
 
-      final InventoryTransactionResult result = inventory.offer(stack.cacheLocale());
+      final InventoryTransactionResult result = inventory.offer(stack.provider().locale(stack, stack.amount()));
       final List<ItemStackSnapshot> rejected = result.rejectedItems();
       if(!rejected.isEmpty()) {
 
@@ -133,9 +133,9 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   @Override
   public int removeItem(final SpongeItemStack stack, final Inventory inventory) {
 
-    int left = stack.cacheLocale().copy().quantity();
+    int left = stack.provider().locale(stack, stack.amount()).copy().quantity();
 
-    final ItemStack compare = stack.cacheLocale().copy();
+    final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
     compare.setQuantity(1);
     for(final Inventory slot : inventory.slots()) {
       if(left <= 0) break;

@@ -220,7 +220,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     return this;
   }
 
-  public SerialComponent<AbstractItemStack<ItemStack>, ItemStack> paperComponent(final String identifier) {
+  public SerialComponent<AbstractItemStack<ItemStack>, ItemStack> spongeComponent(final String identifier) {
 
     return components.get(identifier);
   }
