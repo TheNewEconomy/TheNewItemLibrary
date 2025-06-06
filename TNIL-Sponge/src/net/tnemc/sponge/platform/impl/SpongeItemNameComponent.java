@@ -24,6 +24,8 @@ import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
 import org.spongepowered.api.item.inventory.ItemStack;
 
+import java.util.Optional;
+
 /**
  * SpongeItemNameComponent
  *
@@ -54,17 +56,17 @@ public class SpongeItemNameComponent extends ItemNameComponent<SpongeItemStack, 
   }
 
   /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
+   * Checks if this component applies to the specified item.
    *
-   * @return the updated serialized item.
+   * @param item The item to check against.
    *
+   * @return True if this component applies to the item, false otherwise.
    * @since 0.2.0.0
    */
   @Override
-  public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
+  public boolean appliesTo(final ItemStack item) {
 
-    return null;
+    return item.supports(Key.from(ResourceKey.sponge("item_name"), Component.class));
   }
 
   /**
@@ -78,20 +80,25 @@ public class SpongeItemNameComponent extends ItemNameComponent<SpongeItemStack, 
   @Override
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
-    return null;
+    final Optional<SpongeItemNameComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->{
+
+
+    });
+    return item;
   }
 
   /**
-   * Checks if this component applies to the specified item.
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
    *
-   * @param item The item to check against.
+   * @return the updated serialized item.
    *
-   * @return True if this component applies to the item, false otherwise.
    * @since 0.2.0.0
    */
   @Override
-  public boolean appliesTo(final ItemStack item) {
+  public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
-    return item.supports(Key.from(ResourceKey.sponge("item_name"), Component.class));
+    return serialized;
   }
 }

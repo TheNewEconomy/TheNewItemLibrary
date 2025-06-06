@@ -25,6 +25,7 @@ import org.spongepowered.api.data.Key;
 import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * SpongeLoreComponent
@@ -61,6 +62,20 @@ public class SpongeLoreComponent extends LoreComponent<SpongeItemStack, ItemStac
   }
 
   /**
+   * Checks if this component applies to the specified item.
+   *
+   * @param item The item to check against.
+   *
+   * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
+   */
+  @Override
+  public boolean appliesTo(final ItemStack item) {
+
+    return item.supports(Key.fromList(ResourceKey.sponge("lore"), Component.class));
+  }
+
+  /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
    *
@@ -71,7 +86,12 @@ public class SpongeLoreComponent extends LoreComponent<SpongeItemStack, ItemStac
   @Override
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
-    return null;
+    final Optional<SpongeLoreComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->{
+
+
+    });
+    return item;
   }
 
   /**
@@ -85,20 +105,6 @@ public class SpongeLoreComponent extends LoreComponent<SpongeItemStack, ItemStac
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
-    return null;
-  }
-
-  /**
-   * Checks if this component applies to the specified item.
-   *
-   * @param item The item to check against.
-   *
-   * @return True if this component applies to the item, false otherwise.
-   * @since 0.2.0.0
-   */
-  @Override
-  public boolean appliesTo(final ItemStack item) {
-
-    return item.supports(Key.fromList(ResourceKey.sponge("lore"), Component.class));
+    return serialized;
   }
 }

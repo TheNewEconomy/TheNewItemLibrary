@@ -25,6 +25,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.util.Color;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * SpongeModelDataComponent
@@ -56,34 +57,6 @@ public class SpongeModelDataComponent extends ModelDataComponent<SpongeItemStack
   }
 
   /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   *
-   * @since 0.2.0.0
-   */
-  @Override
-  public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
-
-    return null;
-  }
-
-  /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   *
-   * @since 0.2.0.0
-   */
-  @Override
-  public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
-
-    return null;
-  }
-
-  /**
    * Checks if this component applies to the specified item.
    *
    * @param item The item to check against.
@@ -98,5 +71,38 @@ public class SpongeModelDataComponent extends ModelDataComponent<SpongeItemStack
            || item.supports(Key.fromList(ResourceKey.sponge("custom_model_data_flags"), Boolean.class))
            || item.supports(Key.fromList(ResourceKey.sponge("custom_model_data_strings"), String.class))
            || item.supports(Key.fromList(ResourceKey.sponge("custom_model_data_colors"), Color.class));
+  }
+
+  /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
+
+    final Optional<SpongeModelDataComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->{
+
+
+    });
+    return item;
+  }
+
+  /**
+   * @param item       the item that we should use to deserialize.
+   * @param serialized the serialized item stack we should use to apply this deserializer to
+   *
+   * @return the updated serialized item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
+
+    return serialized;
   }
 }

@@ -28,6 +28,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.tag.ItemTypeTags;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * SpongeBundleComponent
@@ -64,20 +65,6 @@ public class SpongeBundleComponent extends BundleComponent<SpongeItemStack, Item
   }
 
   /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   *
-   * @since 0.2.0.0
-   */
-  @Override
-  public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
-
-    return null;
-  }
-
-  /**
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
@@ -92,6 +79,25 @@ public class SpongeBundleComponent extends BundleComponent<SpongeItemStack, Item
   }
 
   /**
+   * @param serialized the serialized item stack to use
+   * @param item       the item that we should use to apply this applicator to.
+   *
+   * @return the updated item.
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
+
+    final Optional<SpongeBundleComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->{
+
+
+    });
+    return item;
+  }
+
+  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -102,6 +108,6 @@ public class SpongeBundleComponent extends BundleComponent<SpongeItemStack, Item
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
-    return null;
+    return serialized;
   }
 }

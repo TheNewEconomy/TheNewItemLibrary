@@ -24,6 +24,8 @@ import org.spongepowered.api.data.Key;
 import org.spongepowered.api.data.type.DyeColor;
 import org.spongepowered.api.item.inventory.ItemStack;
 
+import java.util.Optional;
+
 /**
  * SpongeDyedColorComponent
  *
@@ -59,6 +61,20 @@ public class SpongeDyedColorComponent extends DyedColorComponent<SpongeItemStack
   }
 
   /**
+   * Checks if this component applies to the specified item.
+   *
+   * @param item The item to check against.
+   *
+   * @return True if this component applies to the item, false otherwise.
+   * @since 0.2.0.0
+   */
+  @Override
+  public boolean appliesTo(final ItemStack item) {
+
+    return item.supports(Key.from(ResourceKey.sponge("dye_color"), DyeColor.class));
+  }
+
+  /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
    *
@@ -69,7 +85,12 @@ public class SpongeDyedColorComponent extends DyedColorComponent<SpongeItemStack
   @Override
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
-    return null;
+    final Optional<SpongeDyedColorComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->{
+
+
+    });
+    return item;
   }
 
   /**
@@ -83,20 +104,6 @@ public class SpongeDyedColorComponent extends DyedColorComponent<SpongeItemStack
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
-    return null;
-  }
-
-  /**
-   * Checks if this component applies to the specified item.
-   *
-   * @param item The item to check against.
-   *
-   * @return True if this component applies to the item, false otherwise.
-   * @since 0.2.0.0
-   */
-  @Override
-  public boolean appliesTo(final ItemStack item) {
-
-    return item.supports(Key.from(ResourceKey.sponge("dye_color"), DyeColor.class));
+    return serialized;
   }
 }

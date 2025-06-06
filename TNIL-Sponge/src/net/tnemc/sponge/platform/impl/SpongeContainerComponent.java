@@ -65,6 +65,20 @@ public class SpongeContainerComponent extends ContainerComponent<SpongeItemStack
   }
 
   /**
+   * @param version the version being used when this check is called.
+   *
+   * @return true if this check is enabled for the version, otherwise false
+   *
+   * @since 0.2.0.0
+   */
+  @Override
+  public boolean enabled(final String version) {
+
+    //11.0.0
+    return true;
+  }
+
+  /**
    * @param serialized the serialized item stack to use
    * @param item       the item that we should use to apply this applicator to.
    *
@@ -84,20 +98,6 @@ public class SpongeContainerComponent extends ContainerComponent<SpongeItemStack
   }
 
   /**
-   * @param version the version being used when this check is called.
-   *
-   * @return true if this check is enabled for the version, otherwise false
-   *
-   * @since 0.2.0.0
-   */
-  @Override
-  public boolean enabled(final String version) {
-
-    //11.0.0
-    return true;
-  }
-
-  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -108,6 +108,6 @@ public class SpongeContainerComponent extends ContainerComponent<SpongeItemStack
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
-    return null;
+    return serialized;
   }
 }
