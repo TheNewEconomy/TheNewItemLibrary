@@ -42,7 +42,7 @@ import java.util.UUID;
 public class SpongeItemCalculationsProvider implements CalculationsProvider<SpongeItemStack, ItemStack, Inventory> {
 
   @Override
-  public boolean drop(final Collection<SpongeItemStack> left, final UUID identifier) {
+  public boolean drop(final Collection<SpongeItemStack> left, final UUID identifier, final boolean setOwner) {
 
     final Optional<ServerPlayer> player = Sponge.game().server().player(identifier);
 
@@ -51,7 +51,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
         final Location<?, ?> location = player.get().location();
         final Item item = location.world().createEntity(EntityTypes.ITEM, player.get().position());
 
-        item.offer(Keys.ITEM_STACK_SNAPSHOT, stack.locale().createSnapshot());
+        item.offer(Keys.ITEM_STACK_SNAPSHOT, stack.cacheLocale().createSnapshot());
         location.world().spawnEntity(item);
       }
     }
@@ -61,7 +61,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   @Override
   public int removeAll(final SpongeItemStack stack, final Inventory inventory) {
 
-    final ItemStack compare = stack.locale().copy();
+    final ItemStack compare = stack.cacheLocale().copy();
     compare.setQuantity(1);
 
     int amount = 0;
@@ -72,7 +72,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
 
         final ItemStack compareI = slotItem.copy();
         compareI.setQuantity(1);
-        if(compareI.equalTo(stack.locale())) {
+        if(compareI.equalTo(stack.cacheLocale())) {
           amount += slotItem.quantity();
           slot.clear();
         }
@@ -84,7 +84,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   @Override
   public int count(final SpongeItemStack stack, final Inventory inventory) {
 
-    final ItemStack compare = stack.locale().copy();
+    final ItemStack compare = stack.cacheLocale().copy();
     compare.setQuantity(1);
     int count = 0;
 
@@ -95,7 +95,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
 
         final ItemStack compareI = slotItem.copy();
         compareI.setQuantity(1);
-        if(compareI.equalTo(stack.locale())) {
+        if(compareI.equalTo(stack.cacheLocale())) {
           count += slot.totalQuantity();
         }
       }
@@ -120,7 +120,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
         continue;
       }
 
-      final InventoryTransactionResult result = inventory.offer(stack.locale());
+      final InventoryTransactionResult result = inventory.offer(stack.cacheLocale());
       final List<ItemStackSnapshot> rejected = result.rejectedItems();
       if(!rejected.isEmpty()) {
 
@@ -133,9 +133,9 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   @Override
   public int removeItem(final SpongeItemStack stack, final Inventory inventory) {
 
-    int left = stack.locale().copy().quantity();
+    int left = stack.cacheLocale().copy().quantity();
 
-    final ItemStack compare = stack.locale().copy();
+    final ItemStack compare = stack.cacheLocale().copy();
     compare.setQuantity(1);
     for(final Inventory slot : inventory.slots()) {
       if(left <= 0) break;
@@ -163,8 +163,16 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
     return left;
   }
 
+  /**
+   * Used to locate an invetory for a UUID identifier.
+   *
+   * @param identifier The identifier to use for the search.
+   * @param type       The inventory type to return.
+   *
+   * @return An optional containing the inventory if it works, otherwise false.
+   */
   @Override
-  public Optional<Inventory> getInventory(final UUID identifier, final InventoryType type) {
+  public Optional<Inventory> inventory(final UUID identifier, final InventoryType type) {
 
     final Optional<ServerPlayer> player = Sponge.game().server().player(identifier);
     if(player.isPresent() && player.get().isOnline()) {
