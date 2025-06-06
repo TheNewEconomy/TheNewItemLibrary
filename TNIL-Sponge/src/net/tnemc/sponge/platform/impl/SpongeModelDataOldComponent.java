@@ -17,10 +17,12 @@ package net.tnemc.sponge.platform.impl;/*
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.component.impl.ModelDataOldComponent;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.Optional;
@@ -82,7 +84,7 @@ public class SpongeModelDataOldComponent extends ModelDataOldComponent<SpongeIte
     final Optional<SpongeModelDataOldComponent> componentOptional = serialized.component(identifier());
     componentOptional.ifPresent(component->{
 
-
+      item.offer(Key.from(ResourceKey.sponge("custom_model_data"), Integer.class), component.modelData);
     });
     return item;
   }
@@ -98,6 +100,14 @@ public class SpongeModelDataOldComponent extends ModelDataOldComponent<SpongeIte
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
+    final Optional<Integer> keyOptional = item.get(Key.from(ResourceKey.sponge("custom_model_data"), Integer.class));
+    keyOptional.ifPresent(key->{
+
+      final SpongeModelDataOldComponent component = (serialized.spongeComponent(identifier()) instanceof final ModelDataOldComponent<?, ?> getComponent)?
+                                                    (SpongeModelDataOldComponent)getComponent : new SpongeModelDataOldComponent();
+
+      component.modelData = key;
+    });
     return serialized;
   }
 }

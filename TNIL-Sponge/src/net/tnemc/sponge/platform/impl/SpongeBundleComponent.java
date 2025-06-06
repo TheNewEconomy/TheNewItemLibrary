@@ -95,14 +95,14 @@ public class SpongeBundleComponent extends BundleComponent<SpongeItemStack, Item
     final Optional<SpongeBundleComponent> componentOptional = serialized.component(identifier());
     componentOptional.ifPresent(component->{
 
-      final Optional<Inventory> inventory = item.get(Key.from(ResourceKey.sponge("inventory"), Inventory.class));
-      if(inventory.isPresent()) {
+      final Optional<Inventory> key = item.get(Key.from(ResourceKey.sponge("inventory"), Inventory.class));
+      if(key.isPresent()) {
 
         for(final Map.Entry<Integer, AbstractItemStack<ItemStack>> entry : componentOptional.get().items.entrySet()) {
 
           if(entry.getValue() instanceof final SpongeItemStack spongeStack) {
 
-            inventory.get().set(entry.getKey(), spongeStack.cacheLocale());
+            key.get().set(entry.getKey(), spongeStack.cacheLocale());
           }
         }
       }
@@ -121,14 +121,13 @@ public class SpongeBundleComponent extends BundleComponent<SpongeItemStack, Item
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
-    final Optional<Inventory> inventory = item.get(Key.from(ResourceKey.sponge("inventory"), Inventory.class));
-    if(inventory.isPresent()) {
+    final Optional<Inventory> key = item.get(Key.from(ResourceKey.sponge("inventory"), Inventory.class));
+    if(key.isPresent()) {
 
       final SpongeBundleComponent component = (serialized.spongeComponent(identifier()) instanceof final BundleComponent<?, ?> getComponent)?
                                               (SpongeBundleComponent)getComponent : new SpongeBundleComponent();
 
-      final int i = 0;
-      for(final Slot slot : inventory.get().slots()) {
+      for(final Slot slot : key.get().slots()) {
 
 
         final ItemStack slotItem = slot.peek();
@@ -142,7 +141,6 @@ public class SpongeBundleComponent extends BundleComponent<SpongeItemStack, Item
 
           continue;
         }
-
         component.items.put(index, new SpongeItemStack(slotItem));
       }
     }

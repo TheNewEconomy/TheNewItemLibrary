@@ -17,12 +17,19 @@ package net.tnemc.sponge.platform.impl;/*
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.data.value.Value;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -51,7 +58,14 @@ public class SpongeMaxStackComponent extends MaxStackSizeComponent<SpongeItemSta
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    try {
+
+      final Key<Value<Integer>> stackSize = Keys.MAX_STACK_SIZE;
+      return true;
+    } catch(final NoSuchElementException ignore) {
+
+      return false;
+    }
   }
 
   /**
@@ -65,7 +79,7 @@ public class SpongeMaxStackComponent extends MaxStackSizeComponent<SpongeItemSta
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.supports(Key.from(ResourceKey.sponge("max_stack_size"), Integer.class));
+    return item.supports(Keys.MAX_STACK_SIZE);
   }
 
   /**
@@ -80,10 +94,8 @@ public class SpongeMaxStackComponent extends MaxStackSizeComponent<SpongeItemSta
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
     final Optional<SpongeMaxStackComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    componentOptional.ifPresent(component->item.offer(Keys.MAX_STACK_SIZE, component.maxStackSize));
 
-
-    });
     return item;
   }
 
@@ -98,6 +110,14 @@ public class SpongeMaxStackComponent extends MaxStackSizeComponent<SpongeItemSta
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
+    final Optional<Integer> keyOptional = item.get(Keys.MAX_STACK_SIZE);
+    keyOptional.ifPresent((key->{
+
+      final SpongeMaxStackComponent component = (serialized.spongeComponent(identifier()) instanceof final MaxStackSizeComponent<?, ?> getComponent)?
+                                                (SpongeMaxStackComponent)getComponent : new SpongeMaxStackComponent();
+
+      component.maxStackSize = key;
+    }));
     return serialized;
   }
 }

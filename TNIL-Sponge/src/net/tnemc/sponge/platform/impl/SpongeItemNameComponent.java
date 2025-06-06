@@ -18,12 +18,18 @@ package net.tnemc.sponge.platform.impl;/*
  */
 
 import net.kyori.adventure.text.Component;
+import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.data.value.Value;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -52,7 +58,14 @@ public class SpongeItemNameComponent extends ItemNameComponent<SpongeItemStack, 
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    try {
+
+      final Key<Value<Component>> name = Keys.ITEM_NAME;
+      return true;
+    } catch(final NoSuchElementException ignore) {
+
+      return false;
+    }
   }
 
   /**
@@ -66,7 +79,7 @@ public class SpongeItemNameComponent extends ItemNameComponent<SpongeItemStack, 
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.supports(Key.from(ResourceKey.sponge("item_name"), Component.class));
+    return item.supports(Keys.ITEM_NAME);
   }
 
   /**
@@ -81,10 +94,8 @@ public class SpongeItemNameComponent extends ItemNameComponent<SpongeItemStack, 
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
     final Optional<SpongeItemNameComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    componentOptional.ifPresent(component->item.offer(Keys.ITEM_NAME, component.itemName));
 
-
-    });
     return item;
   }
 
@@ -99,6 +110,14 @@ public class SpongeItemNameComponent extends ItemNameComponent<SpongeItemStack, 
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
+    final Optional<Component> keyOptional = item.get(Keys.ITEM_NAME);
+    keyOptional.ifPresent((key->{
+
+      final SpongeItemNameComponent component = (serialized.spongeComponent(identifier()) instanceof final ItemNameComponent<?, ?> getComponent)?
+                                                 (SpongeItemNameComponent)getComponent : new SpongeItemNameComponent();
+
+      component.itemName = key;
+    }));
     return serialized;
   }
 }

@@ -17,14 +17,22 @@ package net.tnemc.sponge.platform.impl;/*
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.component.impl.ModelDataComponent;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.data.value.ListValue;
+import org.spongepowered.api.data.value.Value;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.util.Color;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -53,7 +61,17 @@ public class SpongeModelDataComponent extends ModelDataComponent<SpongeItemStack
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    try {
+
+      final Key<ListValue<Color>> colors = Keys.CUSTOM_MODEL_DATA_COLORS;
+      final Key<ListValue<Boolean>> flags = Keys.CUSTOM_MODEL_DATA_FLAGS;
+      final Key<ListValue<Float>> floats = Keys.CUSTOM_MODEL_DATA_FLOATS;
+      final Key<ListValue<String>> strings = Keys.CUSTOM_MODEL_DATA_STRINGS;
+      return true;
+    } catch(final NoSuchElementException ignore) {
+
+      return false;
+    }
   }
 
   /**
@@ -67,10 +85,8 @@ public class SpongeModelDataComponent extends ModelDataComponent<SpongeItemStack
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.supports(Key.fromList(ResourceKey.sponge("custom_model_data_floats"), Float.class))
-           || item.supports(Key.fromList(ResourceKey.sponge("custom_model_data_flags"), Boolean.class))
-           || item.supports(Key.fromList(ResourceKey.sponge("custom_model_data_strings"), String.class))
-           || item.supports(Key.fromList(ResourceKey.sponge("custom_model_data_colors"), Color.class));
+    return item.supports(Keys.CUSTOM_MODEL_DATA_COLORS) || item.supports(Keys.CUSTOM_MODEL_DATA_FLAGS)
+           || item.supports(Keys.CUSTOM_MODEL_DATA_FLOATS) || item.supports(Keys.CUSTOM_MODEL_DATA_STRINGS);
   }
 
   /**
@@ -85,10 +101,11 @@ public class SpongeModelDataComponent extends ModelDataComponent<SpongeItemStack
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
     final Optional<SpongeModelDataComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    componentOptional.ifPresent(component->item.offer(Keys.CUSTOM_MODEL_DATA_COLORS, fromStrings(component.colours)));
+    componentOptional.ifPresent(component->item.offer(Keys.CUSTOM_MODEL_DATA_FLAGS, component.flags));
+    componentOptional.ifPresent(component->item.offer(Keys.CUSTOM_MODEL_DATA_FLOATS, component.floats));
+    componentOptional.ifPresent(component->item.offer(Keys.CUSTOM_MODEL_DATA_STRINGS, component.strings));
 
-
-    });
     return item;
   }
 
@@ -103,6 +120,35 @@ public class SpongeModelDataComponent extends ModelDataComponent<SpongeItemStack
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
+    final SpongeModelDataComponent component = (serialized.spongeComponent(identifier()) instanceof final ModelDataComponent<?, ?> getComponent)?
+                                               (SpongeModelDataComponent)getComponent : new SpongeModelDataComponent();
+
+    final Optional<List<Color>> colorsOptional = item.get(Keys.CUSTOM_MODEL_DATA_COLORS);
+    colorsOptional.ifPresent((key->{
+
+      for(final Color value : key) {
+
+        component.colours.add(String.valueOf(value.rgb()));
+      }
+    }));
+
+    final Optional<List<Boolean>> flagsOptional = item.get(Keys.CUSTOM_MODEL_DATA_FLAGS);
+    flagsOptional.ifPresent((component.flags::addAll));
+
+    final Optional<List<Float>> floatsOptional = item.get(Keys.CUSTOM_MODEL_DATA_FLOATS);
+    floatsOptional.ifPresent((component.floats::addAll));
+
+    final Optional<List<String>> stringsOptional = item.get(Keys.CUSTOM_MODEL_DATA_STRINGS);
+    stringsOptional.ifPresent((component.strings::addAll));
     return serialized;
+  }
+
+  private List<Color> fromStrings(final List<String> strings) {
+    final List<Color> colors = new ArrayList<>();
+    for(final String string : strings) {
+
+      colors.add(Color.ofRgb(Integer.parseInt(string)));
+    }
+    return colors;
   }
 }

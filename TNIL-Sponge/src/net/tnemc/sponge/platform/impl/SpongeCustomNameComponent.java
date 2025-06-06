@@ -18,12 +18,21 @@ package net.tnemc.sponge.platform.impl;/*
  */
 
 import net.kyori.adventure.text.Component;
+import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.component.impl.CustomNameComponent;
+import net.tnemc.item.component.impl.ProfileComponent;
+import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.data.value.Value;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.profile.GameProfile;
+import org.spongepowered.api.profile.property.ProfileProperty;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -52,7 +61,14 @@ public class SpongeCustomNameComponent extends CustomNameComponent<SpongeItemSta
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    try {
+
+      final Key<Value<Component>> name = Keys.CUSTOM_NAME;
+      return true;
+    } catch(final NoSuchElementException ignore) {
+
+      return false;
+    }
   }
 
   /**
@@ -66,7 +82,7 @@ public class SpongeCustomNameComponent extends CustomNameComponent<SpongeItemSta
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.supports(Key.from(ResourceKey.sponge("custom_name"), Component.class));
+    return item.supports(Keys.CUSTOM_NAME);
   }
 
   /**
@@ -81,10 +97,8 @@ public class SpongeCustomNameComponent extends CustomNameComponent<SpongeItemSta
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
     final Optional<SpongeCustomNameComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    componentOptional.ifPresent(component->item.offer(Keys.CUSTOM_NAME, component.customName));
 
-
-    });
     return item;
   }
 
@@ -99,6 +113,14 @@ public class SpongeCustomNameComponent extends CustomNameComponent<SpongeItemSta
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
+    final Optional<Component> keyOptional = item.get(Keys.CUSTOM_NAME);
+    keyOptional.ifPresent((key->{
+
+      final SpongeCustomNameComponent component = (serialized.spongeComponent(identifier()) instanceof final CustomNameComponent<?, ?> getComponent)?
+                                                  (SpongeCustomNameComponent)getComponent : new SpongeCustomNameComponent();
+
+      component.customName = key;
+    }));
     return serialized;
   }
 }

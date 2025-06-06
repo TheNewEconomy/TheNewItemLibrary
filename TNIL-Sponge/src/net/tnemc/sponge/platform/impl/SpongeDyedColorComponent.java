@@ -17,13 +17,21 @@ package net.tnemc.sponge.platform.impl;/*
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.component.impl.DyedColorComponent;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.data.type.DyeColor;
+import org.spongepowered.api.data.type.DyeColors;
+import org.spongepowered.api.data.value.Value;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.util.Color;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -57,7 +65,14 @@ public class SpongeDyedColorComponent extends DyedColorComponent<SpongeItemStack
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    try {
+
+      final Key<Value<DyeColor>> color = Keys.DYE_COLOR;
+      return true;
+    } catch(final NoSuchElementException ignore) {
+
+      return false;
+    }
   }
 
   /**
@@ -71,7 +86,7 @@ public class SpongeDyedColorComponent extends DyedColorComponent<SpongeItemStack
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.supports(Key.from(ResourceKey.sponge("dye_color"), DyeColor.class));
+    return item.supports(Keys.DYE_COLOR);
   }
 
   /**
@@ -86,10 +101,8 @@ public class SpongeDyedColorComponent extends DyedColorComponent<SpongeItemStack
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
     final Optional<SpongeDyedColorComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    componentOptional.ifPresent(component->item.offer(Keys.DYE_COLOR, colorFromRGB(component.rgb)));
 
-
-    });
     return item;
   }
 
@@ -104,6 +117,23 @@ public class SpongeDyedColorComponent extends DyedColorComponent<SpongeItemStack
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
+    final Optional<DyeColor> keyOptional = item.get(Keys.DYE_COLOR);
+    keyOptional.ifPresent((key->{
+
+      final SpongeDyedColorComponent component = (serialized.spongeComponent(identifier()) instanceof final DyedColorComponent<?, ?> getComponent)?
+                                              (SpongeDyedColorComponent)getComponent : new SpongeDyedColorComponent();
+
+      component.rgb = key.color().rgb();
+    }));
     return serialized;
+  }
+
+  private DyeColor colorFromRGB(final int rgb) {
+
+    for(final DyeColor color : DyeColors.registry().stream().toList()) {
+
+      if(color.color().rgb() == rgb) return color;
+    }
+    return DyeColors.BLACK.get();
   }
 }

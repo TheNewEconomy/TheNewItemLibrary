@@ -17,14 +17,27 @@ package net.tnemc.sponge.platform.impl;/*
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.component.impl.DyedColorComponent;
 import net.tnemc.item.component.impl.EnchantmentsComponent;
 import net.tnemc.sponge.SpongeItemStack;
+import org.checkerframework.checker.units.qual.A;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.data.type.DyeColor;
+import org.spongepowered.api.data.value.ListValue;
+import org.spongepowered.api.data.value.Value;
 import org.spongepowered.api.item.enchantment.Enchantment;
+import org.spongepowered.api.item.enchantment.EnchantmentType;
+import org.spongepowered.api.item.enchantment.EnchantmentTypes;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -53,7 +66,14 @@ public class SpongeEnchantmentsComponent extends EnchantmentsComponent<SpongeIte
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    try {
+
+      final Key<ListValue<Enchantment>> enchantments = Keys.APPLIED_ENCHANTMENTS;
+      return true;
+    } catch(final NoSuchElementException ignore) {
+
+      return false;
+    }
   }
 
   /**
@@ -67,7 +87,7 @@ public class SpongeEnchantmentsComponent extends EnchantmentsComponent<SpongeIte
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.supports(Key.fromList(ResourceKey.sponge("applied_enchantments"), Enchantment.class));
+    return item.supports(Keys.APPLIED_ENCHANTMENTS);
   }
 
   /**
@@ -84,8 +104,19 @@ public class SpongeEnchantmentsComponent extends EnchantmentsComponent<SpongeIte
     final Optional<SpongeEnchantmentsComponent> componentOptional = serialized.component(identifier());
     componentOptional.ifPresent(component->{
 
+      final List<Enchantment> enchants = new ArrayList<>();
+      for(final Map.Entry<String, Integer> entry : component.levels.entrySet()) {
 
+        final Optional<EnchantmentType> type = EnchantmentTypes.registry().findValue(ResourceKey.resolve(entry.getKey()));
+        type.ifPresent(enchantmentType->{
+
+          enchants.add(Enchantment.of(enchantmentType, entry.getValue()));
+        });
+      }
+
+      item.offer(Keys.APPLIED_ENCHANTMENTS, enchants);
     });
+
     return item;
   }
 
@@ -100,6 +131,18 @@ public class SpongeEnchantmentsComponent extends EnchantmentsComponent<SpongeIte
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
+    final Optional<List<Enchantment>> keyOptional = item.get(Keys.APPLIED_ENCHANTMENTS);
+    keyOptional.ifPresent((key->{
+
+      final SpongeEnchantmentsComponent component = (serialized.spongeComponent(identifier()) instanceof final EnchantmentsComponent<?, ?> getComponent)?
+                                                 (SpongeEnchantmentsComponent)getComponent : new SpongeEnchantmentsComponent();
+
+
+      for(final Enchantment enchantment : key) {
+
+        component.levels.put(enchantment.type().key(enchantment.type().registryType()).asString(), enchantment.level());
+      }
+    }));
     return serialized;
   }
 }

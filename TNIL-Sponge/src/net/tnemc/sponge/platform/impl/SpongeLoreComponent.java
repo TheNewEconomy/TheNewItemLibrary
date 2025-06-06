@@ -18,13 +18,20 @@ package net.tnemc.sponge.platform.impl;/*
  */
 
 import net.kyori.adventure.text.Component;
+import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.component.impl.LoreComponent;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.data.value.ListValue;
+import org.spongepowered.api.data.value.Value;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -58,7 +65,14 @@ public class SpongeLoreComponent extends LoreComponent<SpongeItemStack, ItemStac
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    try {
+
+      final Key<ListValue<Component>> lore = Keys.LORE;
+      return true;
+    } catch(final NoSuchElementException ignore) {
+
+      return false;
+    }
   }
 
   /**
@@ -72,7 +86,7 @@ public class SpongeLoreComponent extends LoreComponent<SpongeItemStack, ItemStac
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.supports(Key.fromList(ResourceKey.sponge("lore"), Component.class));
+    return item.supports(Keys.LORE);
   }
 
   /**
@@ -87,10 +101,8 @@ public class SpongeLoreComponent extends LoreComponent<SpongeItemStack, ItemStac
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
     final Optional<SpongeLoreComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    componentOptional.ifPresent(component->item.offer(Keys.LORE, component.lore));
 
-
-    });
     return item;
   }
 
@@ -105,6 +117,14 @@ public class SpongeLoreComponent extends LoreComponent<SpongeItemStack, ItemStac
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
+    final Optional<List<Component>> keyOptional = item.get(Keys.LORE);
+    keyOptional.ifPresent((key->{
+
+      final SpongeLoreComponent component = (serialized.spongeComponent(identifier()) instanceof final LoreComponent<?, ?> getComponent)?
+                                                (SpongeLoreComponent)getComponent : new SpongeLoreComponent();
+
+      component.lore(key);
+    }));
     return serialized;
   }
 }

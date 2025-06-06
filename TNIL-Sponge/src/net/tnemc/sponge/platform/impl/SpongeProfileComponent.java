@@ -22,9 +22,14 @@ import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.data.value.Value;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.profile.GameProfile;
+import org.spongepowered.api.profile.property.ProfileProperty;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -52,8 +57,15 @@ public class SpongeProfileComponent extends ProfileComponent<SpongeItemStack, It
    */
   @Override
   public boolean enabled(final String version) {
+    
+    try {
 
-    return true;
+      final Key<Value<GameProfile>> gameProfile = Keys.GAME_PROFILE;
+      return true;
+    } catch(final NoSuchElementException ignore) {
+
+      return false;
+    }
   }
 
   /**
@@ -67,7 +79,7 @@ public class SpongeProfileComponent extends ProfileComponent<SpongeItemStack, It
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.supports(Key.from(ResourceKey.sponge("game_profile"), GameProfile.class));
+    return item.supports(Keys.GAME_PROFILE);
   }
 
   /**
@@ -84,7 +96,8 @@ public class SpongeProfileComponent extends ProfileComponent<SpongeItemStack, It
     final Optional<SpongeProfileComponent> componentOptional = serialized.component(identifier());
     componentOptional.ifPresent(component->{
 
-
+      final SkullProfile profile = component.profile;
+      item.offer(Keys.GAME_PROFILE, GameProfile.of(profile.uuid(), profile.name()).withProperty(ProfileProperty.of("textures", profile.texture())));
     });
     return item;
   }
@@ -100,6 +113,22 @@ public class SpongeProfileComponent extends ProfileComponent<SpongeItemStack, It
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
+    final Optional<GameProfile> keyOptional = item.get(Keys.GAME_PROFILE);
+    keyOptional.ifPresent(key->{
+
+      final SpongeProfileComponent component = (serialized.spongeComponent(identifier()) instanceof final ProfileComponent<?, ?> getComponent)?
+                                               (SpongeProfileComponent)getComponent : new SpongeProfileComponent();
+
+      final SkullProfile profile = new SkullProfile(key.name().get(), key.uuid());
+      for(final ProfileProperty property : key.properties()) {
+
+        if(property.name().equalsIgnoreCase("textures")) {
+
+          profile.texture(property.value());
+        }
+      }
+      component.profile = profile;
+    });
     return serialized;
   }
 }

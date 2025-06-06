@@ -17,12 +17,19 @@ package net.tnemc.sponge.platform.impl;/*
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.data.value.Value;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -51,7 +58,14 @@ public class SpongeItemModelComponent extends ItemModelComponent<SpongeItemStack
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    try {
+
+      final Key<Value<ResourceKey>> model = Keys.MODEL;
+      return true;
+    } catch(final NoSuchElementException ignore) {
+
+      return false;
+    }
   }
 
   /**
@@ -65,7 +79,7 @@ public class SpongeItemModelComponent extends ItemModelComponent<SpongeItemStack
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.supports(Key.from(ResourceKey.sponge("model"), ResourceKey.class));
+    return item.supports(Keys.MODEL);
   }
 
   /**
@@ -80,10 +94,8 @@ public class SpongeItemModelComponent extends ItemModelComponent<SpongeItemStack
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
     final Optional<SpongeItemModelComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    componentOptional.ifPresent(component->item.offer(Keys.MODEL, ResourceKey.resolve(component.model)));
 
-
-    });
     return item;
   }
 
@@ -98,6 +110,14 @@ public class SpongeItemModelComponent extends ItemModelComponent<SpongeItemStack
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
+    final Optional<ResourceKey> keyOptional = item.get(Keys.MODEL);
+    keyOptional.ifPresent((key->{
+
+      final SpongeItemModelComponent component = (serialized.spongeComponent(identifier()) instanceof final ItemModelComponent<?, ?> getComponent)?
+                                                  (SpongeItemModelComponent)getComponent : new SpongeItemModelComponent();
+
+      component.model = key.formatted();
+    }));
     return serialized;
   }
 }

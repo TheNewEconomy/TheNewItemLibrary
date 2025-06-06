@@ -17,12 +17,19 @@ package net.tnemc.sponge.platform.impl;/*
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.tnemc.item.component.impl.ContainerComponent;
+import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
+import org.spongepowered.api.data.Keys;
+import org.spongepowered.api.data.value.Value;
+import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -62,7 +69,14 @@ public class SpongeDamageComponent extends DamageComponent<SpongeItemStack, Item
   @Override
   public boolean enabled(final String version) {
 
-    return true;
+    try {
+
+      final Key<Value<Integer>> damage = Keys.ITEM_DURABILITY;
+      return true;
+    } catch(final NoSuchElementException ignore) {
+
+      return false;
+    }
   }
 
   /**
@@ -76,7 +90,7 @@ public class SpongeDamageComponent extends DamageComponent<SpongeItemStack, Item
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.supports(Key.from(ResourceKey.sponge("item_durability"), Integer.class));
+    return item.supports(Keys.ITEM_DURABILITY);
   }
 
   /**
@@ -91,10 +105,8 @@ public class SpongeDamageComponent extends DamageComponent<SpongeItemStack, Item
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
     final Optional<SpongeDamageComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
+    componentOptional.ifPresent(component->item.offer(Keys.ITEM_DURABILITY, component.damage()));
 
-
-    });
     return item;
   }
 
@@ -109,6 +121,14 @@ public class SpongeDamageComponent extends DamageComponent<SpongeItemStack, Item
   @Override
   public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
 
+    final Optional<Integer> keyOptional = item.get(Keys.ITEM_DURABILITY);
+    keyOptional.ifPresent((key->{
+
+      final SpongeDamageComponent component = (serialized.spongeComponent(identifier()) instanceof final DamageComponent<?, ?> getComponent)?
+                                                  (SpongeDamageComponent)getComponent : new SpongeDamageComponent();
+
+      component.damage = key;
+    }));
     return serialized;
   }
 }
