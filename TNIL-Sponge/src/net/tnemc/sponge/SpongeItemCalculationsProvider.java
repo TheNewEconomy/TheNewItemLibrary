@@ -51,7 +51,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
         final Location<?, ?> location = player.get().location();
         final Item item = location.world().createEntity(EntityTypes.ITEM, player.get().position());
 
-        item.offer(Keys.ITEM_STACK_SNAPSHOT, stack.cacheLocale().createSnapshot());
+        item.offer(Keys.ITEM_STACK_SNAPSHOT, stack.cacheLocale().asImmutable());
         location.world().spawnEntity(item);
       }
     }
@@ -124,7 +124,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
       final List<ItemStackSnapshot> rejected = result.rejectedItems();
       if(!rejected.isEmpty()) {
 
-        rejected.forEach(snapshot->leftOver.add(new SpongeItemStack().of(snapshot.createStack())));
+        rejected.forEach(snapshot->leftOver.add(new SpongeItemStack().of(snapshot.asMutable())));
       }
     }
     return leftOver;
