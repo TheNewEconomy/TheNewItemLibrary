@@ -50,40 +50,40 @@ public class SkullProfile {
     this.texture = texture;
   }
 
-  public String getName() {
+  public String name() {
 
     return name;
   }
 
-  public void setName(final String name) {
+  public void name(final String name) {
 
     this.name = name;
   }
 
-  public UUID getUuid() {
+  public UUID uuid() {
 
     return uuid;
   }
 
-  public void setUuid(final UUID uuid) {
+  public void uuid(final UUID uuid) {
 
     this.uuid = uuid;
   }
 
-  public String getTexture() {
+  public String texture() {
 
     return texture;
   }
 
-  public void setTexture(final String texture) {
+  public void texture(final String texture) {
 
     this.texture = texture;
   }
 
   public boolean equals(final SkullProfile profile) {
 
-    return Objects.equals(profile.getName(), name)
-           && profile.getUuid() == uuid
-           && Objects.equals(profile.getTexture(), texture);
+    return Objects.equals(profile.name(), name)
+           && profile.uuid() == uuid
+           && Objects.equals(profile.texture(), texture);
   }
 }

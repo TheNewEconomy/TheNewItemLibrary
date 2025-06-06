@@ -70,9 +70,9 @@ public abstract class ProfileComponent<I extends AbstractItemStack<T>, T> implem
 
     final JSONObject json = new JSONObject();
     if(profile != null) {
-      if(profile.getName() != null) json.put("name", profile.getName());
-      if(profile.getUuid() != null) json.put("uuid", profile.getUuid());
-      if(profile.getTexture() != null) json.put("texture", profile.getTexture());
+      if(profile.name() != null) json.put("name", profile.name());
+      if(profile.uuid() != null) json.put("uuid", profile.uuid());
+      if(profile.texture() != null) json.put("texture", profile.texture());
     }
     return json;
   }
@@ -87,15 +87,15 @@ public abstract class ProfileComponent<I extends AbstractItemStack<T>, T> implem
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
 
     profile = new SkullProfile();
-    if(json.has("name")) profile.setName(json.getString("name"));
+    if(json.has("name")) profile.name(json.getString("name"));
 
     try {
 
-      if(json.has("uuid")) profile.setUuid(UUID.fromString(json.getString("uuid")));
+      if(json.has("uuid")) profile.uuid(UUID.fromString(json.getString("uuid")));
 
     } catch(final Exception ignore) { }
 
-    if(json.has("texture")) profile.setTexture(json.getString("texture"));
+    if(json.has("texture")) profile.texture(json.getString("texture"));
   }
 
   /**

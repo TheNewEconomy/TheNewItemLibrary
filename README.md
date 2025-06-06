@@ -1,8 +1,12 @@
 # TheNewItemLibrary [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a71ad7ab19c14a7190fdb7a4ffe0e947)](https://app.codacy.com/gh/TheNewEconomy/TheNewItemLibrary?utm_source=github.com&utm_medium=referral&utm_content=TheNewEconomy/TheNewItemLibrary&utm_campaign=Badge_Grade_Settings)[![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://theneweconomy.github.io/TheNewItemLibrary/javadoc/)
 
+<p align="center">
+    <img src="logo.png" width="500"  alt="tnil logo"/>
+</p>
+
 A library used by The New Economy for item-based operations, including calculations, removal, comparisons, and serialization of any items,
 including potions, shulker boxes, and other "special" items. This library serializes the items into JSON-valid Strings. This library has also
-been rewritten to be platform agnostic, and will include sponge support shortly.
+been rewritten to be platform-agnostic, and will include sponge support shortly.
 
 ## Maven
 TheNewItemLibrary uses maven for dependency management.
