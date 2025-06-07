@@ -92,15 +92,15 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
     }
 
     final SkullProfile profile = componentOptional.get().profile;
-    if(profile.getTexture() == null) {
+    if(profile.texture() == null) {
       return item;
     }
 
     final ResolvableProfile.Builder builder = ResolvableProfile.resolvableProfile();
 
-    builder.name(profile.getName());
-    builder.uuid(profile.getUuid());
-    builder.addProperty(new ProfileProperty("textures", profile.getTexture()));
+    builder.name(profile.name());
+    builder.uuid(profile.uuid());
+    builder.addProperty(new ProfileProperty("textures", profile.texture()));
 
     item.setData(DataComponentTypes.PROFILE, builder);
 
@@ -128,13 +128,13 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
 
         try {
 
-          if(profile.getUuid() != null) {
-            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
+          if(profile.uuid() != null) {
+            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(profile.uuid()));
           }
 
         } catch(final Exception ignore) {
 
-          skullMeta.setOwner(profile.getName());
+          skullMeta.setOwner(profile.name());
         }
       }
       item.setItemMeta(meta);
@@ -161,13 +161,13 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
                                               (PaperProfileComponent)getComponent : new PaperProfileComponent();
 
     final SkullProfile skull = new SkullProfile();
-    skull.setUuid(resolvableProfile.uuid());
-    skull.setName(resolvableProfile.name());
+    skull.uuid(resolvableProfile.uuid());
+    skull.name(resolvableProfile.name());
 
     for(final ProfileProperty property : resolvableProfile.properties()) {
       if(property.getName().equalsIgnoreCase("textures")) {
 
-        skull.setTexture(property.getValue());
+        skull.texture(property.getValue());
       }
     }
 
@@ -196,12 +196,12 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
 
         if(meta.getOwningPlayer() != null) {
 
-          profile.setUuid(meta.getOwningPlayer().getUniqueId());
+          profile.uuid(meta.getOwningPlayer().getUniqueId());
         }
 
       } catch(final Exception ignore) {
 
-        profile.setName(meta.getOwner());
+        profile.name(meta.getOwner());
       }
 
       final PaperProfileComponent component = (serialized.paperComponent(identifier()) instanceof final ProfileComponent<?, ?> getComponent)?

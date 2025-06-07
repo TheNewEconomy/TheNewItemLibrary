@@ -77,13 +77,13 @@ public class BukkitProfileComponent extends ProfileComponent<BukkitItemStack, It
 
         try {
 
-          if(profile.getUuid() != null) {
-            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
+          if(profile.uuid() != null) {
+            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(profile.uuid()));
           }
 
         } catch(final Exception ignore) {
 
-          skullMeta.setOwner(profile.getName());
+          skullMeta.setOwner(profile.name());
         }
       }
       item.setItemMeta(meta);
@@ -112,12 +112,12 @@ public class BukkitProfileComponent extends ProfileComponent<BukkitItemStack, It
 
         if(meta.getOwningPlayer() != null) {
 
-          profile.setUuid(meta.getOwningPlayer().getUniqueId());
+          profile.uuid(meta.getOwningPlayer().getUniqueId());
         }
 
       } catch(final Exception ignore) {
 
-        profile.setName(meta.getOwner());
+        profile.name(meta.getOwner());
       }
 
       component.profile(profile);
