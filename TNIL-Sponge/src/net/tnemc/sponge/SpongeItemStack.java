@@ -397,6 +397,10 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
 
   public ItemStack cacheLocale() {
 
+    if(this.dirty) {
+      this.localeStack = provider().locale(this);
+    }
+
     return this.localeStack;
   }
 
