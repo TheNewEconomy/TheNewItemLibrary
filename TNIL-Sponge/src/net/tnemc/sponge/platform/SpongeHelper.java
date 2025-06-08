@@ -1,4 +1,4 @@
-package net.tnemc.item.paper.platform.registry;
+package net.tnemc.sponge.platform;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -18,69 +18,48 @@ package net.tnemc.item.paper.platform.registry;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
-import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.platform.registry.BaseHelper;
 import net.tnemc.item.platform.registry.SupplierRegistryHandler;
-import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.Registry;
-import org.bukkit.inventory.ItemFlag;
+import org.spongepowered.api.Sponge;
+import org.spongepowered.api.registry.RegistryTypes;
 
 import java.util.LinkedList;
 
 /**
- * PaperHelper
+ * SpongeHelper
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperHelper extends BaseHelper {
+public class SpongeHelper extends BaseHelper {
 
-  public PaperHelper() {
+  public SpongeHelper() {
     registerHandler("materials", new SupplierRegistryHandler(() -> {
 
       final LinkedList<String> keys = new LinkedList<>();
 
-      Registry.MATERIAL.forEach(material -> {
-        if(material.isItem()) {
-          keys.add(material.getKey().getKey());
-        }
-      });
+      Sponge.game().registry(RegistryTypes.ITEM_TYPE).stream().forEach(itemType->keys.add(Sponge.game().registry(RegistryTypes.ITEM_TYPE).valueKey(itemType).asString()));;
       return keys;
     }));
 
     registerHandler("enchantments", new SupplierRegistryHandler(() -> {
 
       final LinkedList<String> keys = new LinkedList<>();
-      if(VersionUtil.isVersion(PaperItemPlatform.instance().version(), "1.21")) {
+      Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).stream().forEach(enchantment->keys.add(Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).valueKey(enchantment).asString()));
 
-        RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).forEach((enchantment)->{
-          if(enchantment != null) {
-
-            keys.add(enchantment.getKey().toString());
-          }
-        });
-
-
-      } else {
-
-        Registry.ENCHANTMENT.forEach((enchantment) -> {
-          if(enchantment != null) {
-
-            keys.add(enchantment.getKey().toString());
-          }
-        });
-      }
       return keys;
     }));
 
     registerHandler("flags", new SupplierRegistryHandler(() -> {
       final LinkedList<String> keys = new LinkedList<>();
 
-      for(final ItemFlag itemFlag : ItemFlag.values()) {
-        keys.add(itemFlag.name());
-      }
+      keys.add("HIDE_ATTRIBUTES");
+      keys.add("HIDE_DESTROYS");
+      keys.add("HIDE_ENCHANTS");
+      keys.add("HIDE_MISCELLANEOUS");
+      keys.add("HIDE_UNBREAKABLE");
+      keys.add("HIDE_PLACES");
+
       return keys;
     }));
 

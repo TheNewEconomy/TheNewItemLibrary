@@ -1,8 +1,6 @@
-package net.tnemc.item.paper;
-
+package net.tnemc.item.paper.platform;
 /*
- * The New Item Library Minecraft Server Plugin
- *
+ * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +22,8 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import net.tnemc.item.paper.platform.PaperItemPlatform;
-import net.tnemc.item.providers.HelperMethods;
+import net.tnemc.item.platform.registry.BaseHelper;
+import net.tnemc.item.platform.registry.SupplierRegistryHandler;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Registry;
@@ -35,67 +33,61 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 /**
- * BukkitHelper
+ * PaperHelper
  *
  * @author creatorfromhell
- * @since 0.1.7.5-Pre-5
+ * @since 0.2.0.0
  */
-public class PaperHelper implements HelperMethods {
-
-  final LinkedList<String> materialKeys = new LinkedList<>();
-  final LinkedList<String> enchantmentKeys = new LinkedList<>();
-  final LinkedList<String> itemFlagKeys = new LinkedList<>();
+public class PaperHelper extends BaseHelper {
 
   public PaperHelper() {
+    registerHandler("materials", new SupplierRegistryHandler(() -> {
 
-    Registry.MATERIAL.forEach((material)->{
+      final LinkedList<String> keys = new LinkedList<>();
 
-      if(material.isItem()) {
-        materialKeys.add(material.getKey().getKey());
+      Registry.MATERIAL.forEach(material -> {
+        if(material.isItem()) {
+          keys.add(material.getKey().getKey());
+        }
+      });
+      return keys;
+    }));
+
+    registerHandler("enchantments", new SupplierRegistryHandler(() -> {
+
+      final LinkedList<String> keys = new LinkedList<>();
+      if(VersionUtil.isVersion(PaperItemPlatform.instance().version(), "1.21")) {
+
+        RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).forEach((enchantment)->{
+          if(enchantment != null) {
+
+            keys.add(enchantment.getKey().toString());
+          }
+        });
+
+
+      } else {
+
+        Registry.ENCHANTMENT.forEach((enchantment) -> {
+          if(enchantment != null) {
+
+            keys.add(enchantment.getKey().toString());
+          }
+        });
       }
-    });
+      return keys;
+    }));
 
-    if(VersionUtil.isVersion(PaperItemPlatform.instance().version(), "1.21")) {
+    registerHandler("flags", new SupplierRegistryHandler(() -> {
+      final LinkedList<String> keys = new LinkedList<>();
 
-      RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).forEach((enchantment)->{
-        if(enchantment != null) {
+      for(final ItemFlag itemFlag : ItemFlag.values()) {
+        keys.add(itemFlag.name());
+      }
+      return keys;
+    }));
 
-          enchantmentKeys.add(enchantment.getKey().toString());
-        }
-      });
-
-
-    } else {
-
-      Registry.ENCHANTMENT.forEach((enchantment) -> {
-        if(enchantment != null) {
-
-          enchantmentKeys.add(enchantment.getKey().toString());
-        }
-      });
-    }
-
-    for(final ItemFlag itemFlag : ItemFlag.values()) {
-      itemFlagKeys.add(itemFlag.name());
-    }
-  }
-
-  @Override
-  public LinkedList<String> materials() {
-
-    return materialKeys;
-  }
-
-  @Override
-  public LinkedList<String> enchantments() {
-
-    return enchantmentKeys;
-  }
-
-  @Override
-  public LinkedList<String> flags() {
-
-    return itemFlagKeys;
+    initializeHandlers();
   }
 
   public PlayerProfile base64(final String base64) {
