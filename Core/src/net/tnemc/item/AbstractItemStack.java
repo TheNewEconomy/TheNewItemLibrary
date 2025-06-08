@@ -292,6 +292,20 @@ public interface AbstractItemStack<T> extends Cloneable {
   AbstractItemStack<T> debug(boolean debug);
 
   /**
+   * Used to grab the cached locale item.
+   *
+   * @return the cached locale object.
+   */
+  T cacheLocale();
+
+  /**
+   * Updates the cache with the provided locale stack.
+   *
+   * @param localeStack the locale stack to update the cache with
+   */
+  void updateCache(final T localeStack);
+
+  /**
    * Checks if a component with the specified identifier is present.
    *
    * @param identifier The identifier of the component to check.
