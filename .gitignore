@@ -19,3 +19,5 @@
 /Example/target/
 /Example/TNIL-Example.iml
 /BukkitBase/TNIL-BukkitBase.iml
+/buildSrc/
+/gradle/
