@@ -47,6 +47,11 @@ subprojects {
         compileOnly("net.kyori:adventure-text-serializer-json:$adventureVersion")
         compileOnly("net.kyori:adventure-text-serializer-legacy:$adventureVersion")
         compileOnly("net.kyori:adventure-text-serializer-plain:$adventureVersion")
+
+        api("com.googlecode.json-simple:json-simple:1.1.1") {
+            exclude("junit", "junit")
+        }
+        api("com.vdurmont:semver4j:3.1.0")
     }
 
     java {

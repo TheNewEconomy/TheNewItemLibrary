@@ -17,10 +17,6 @@ java {
 }
 
 dependencies {
-    api("com.googlecode.json-simple:json-simple:1.1.1") {
-        exclude("junit", "junit")
-    }
-    api("com.vdurmont:semver4j:3.1.0")
 }
 
 tasks {
