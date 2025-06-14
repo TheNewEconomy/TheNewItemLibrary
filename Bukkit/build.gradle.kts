@@ -29,8 +29,8 @@ repositories {
 
 val spigotApiVersion = property("org-spigotmc-spigot-api")!!
 dependencies {
-    api(project(":TNIL-Core"))
-    api(project(":TNIL-BukkitBase"))
+    implementation(project(":TNIL-Core"))
+    implementation(project(":TNIL-BukkitBase"))
     compileOnly("org.spigotmc:spigot-api:$spigotApiVersion")
 }
 

@@ -19,7 +19,6 @@ package net.tnemc.sponge.platform.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.sponge.SpongeItemStack;
 import org.spongepowered.api.ResourceKey;

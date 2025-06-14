@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkitbase.platform.providers;
+package net.tnemc.item.paper.platform.providers;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -18,19 +18,19 @@ package net.tnemc.item.bukkitbase.platform.providers;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import io.th0rgal.oraxen.api.OraxenItems;
+import io.th0rgal.oraxen.items.ItemBuilder;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.providers.ItemProvider;
 import org.bukkit.inventory.ItemStack;
-import xyz.xenondevs.nova.api.Nova;
-import xyz.xenondevs.nova.api.item.NovaItem;
 
 /**
- * NovaProvider
+ * OraxenAddon
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class NovaProvider implements ItemProvider<ItemStack> {
+public class OraxenProvider implements ItemProvider<ItemStack> {
 
   /**
    * Checks if the given serialized item stack applies to the specified item.
@@ -43,13 +43,13 @@ public class NovaProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean appliesTo(final AbstractItemStack<? extends ItemStack> serialized, final ItemStack item) {
 
-    final NovaItem stack = Nova.getNova().getItemRegistry().getOrNull(item);
-    if(stack == null) {
+    final String id = OraxenItems.getIdByItem(item);
+    if(id == null) {
       return false;
     }
 
     serialized.setItemProvider(identifier());
-    serialized.setProviderItemID(stack.getId().toString());
+    serialized.setProviderItemID(id);
 
     return true;
   }
@@ -65,13 +65,12 @@ public class NovaProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
 
-    final NovaItem compareStack = Nova.getNova().getItemRegistry().getOrNull(compare);
-    if(compareStack == null) {
-
+    final String compareID = OraxenItems.getIdByItem(compare);
+    if(compareID == null) {
       return false;
     }
 
-    return compareStack.getId().toString().equals(original.providerItemID());
+    return original.providerItemID().equals(compareID);
   }
 
   /**
@@ -85,13 +84,16 @@ public class NovaProvider implements ItemProvider<ItemStack> {
   @Override
   public ItemStack locale(final AbstractItemStack<? extends ItemStack> original, final int amount) {
 
-    final NovaItem originalStack = Nova.getNova().getItemRegistry().getOrNull(original.providerItemID());
+    final ItemBuilder originalStack = OraxenItems.getItemById(original.providerItemID());
     if(originalStack == null) {
 
       return null;
     }
 
-    return originalStack.createItemStack(amount);
+    final ItemStack stack = originalStack.build();
+    stack.setAmount(amount);
+
+    return stack;
   }
 
   /**
@@ -100,6 +102,6 @@ public class NovaProvider implements ItemProvider<ItemStack> {
   @Override
   public String identifier() {
 
-    return "nova";
+    return "oraxen";
   }
 }

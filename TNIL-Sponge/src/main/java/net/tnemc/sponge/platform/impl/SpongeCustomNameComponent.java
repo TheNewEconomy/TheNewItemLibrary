@@ -18,19 +18,12 @@ package net.tnemc.sponge.platform.impl;/*
  */
 
 import net.kyori.adventure.text.Component;
-import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.component.impl.CustomNameComponent;
-import net.tnemc.item.component.impl.ProfileComponent;
-import net.tnemc.item.providers.SkullProfile;
 import net.tnemc.sponge.SpongeItemStack;
-import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
 import org.spongepowered.api.data.Keys;
 import org.spongepowered.api.data.value.Value;
-import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.profile.GameProfile;
-import org.spongepowered.api.profile.property.ProfileProperty;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;

@@ -38,9 +38,6 @@ import net.tnemc.item.bukkit.platform.impl.BukkitProfileComponent;
 import net.tnemc.item.bukkit.platform.impl.BukkitShulkerColorComponent;
 import net.tnemc.item.bukkitbase.platform.providers.ItemAdderProvider;
 import net.tnemc.item.bukkitbase.platform.providers.MMOItemProvider;
-import net.tnemc.item.bukkitbase.platform.providers.NexoProvider;
-import net.tnemc.item.bukkitbase.platform.providers.NovaProvider;
-import net.tnemc.item.bukkitbase.platform.providers.OraxenProvider;
 import net.tnemc.item.bukkitbase.platform.providers.SlimefunProvider;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.ItemProvider;
@@ -145,18 +142,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
 
     if(Bukkit.getPluginManager().isPluginEnabled("MythicMobs")) {
       addItemProvider(new MMOItemProvider());
-    }
-
-    if(Bukkit.getPluginManager().isPluginEnabled("Nexo")) {
-      addItemProvider(new NexoProvider());
-    }
-
-    if(Bukkit.getPluginManager().isPluginEnabled("Nova")) {
-      addItemProvider(new NovaProvider());
-    }
-
-    if(Bukkit.getPluginManager().isPluginEnabled("Oraxen")) {
-      addItemProvider(new OraxenProvider());
     }
 
     if(Bukkit.getPluginManager().isPluginEnabled("Slimefun")) {

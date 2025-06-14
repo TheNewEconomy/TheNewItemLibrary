@@ -17,21 +17,15 @@ package net.tnemc.sponge.platform.impl;/*
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.impl.ContainerComponent;
-import net.tnemc.item.component.impl.DyedColorComponent;
 import net.tnemc.item.component.impl.EnchantmentsComponent;
 import net.tnemc.sponge.SpongeItemStack;
-import org.checkerframework.checker.units.qual.A;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.data.Key;
 import org.spongepowered.api.data.Keys;
-import org.spongepowered.api.data.type.DyeColor;
 import org.spongepowered.api.data.value.ListValue;
-import org.spongepowered.api.data.value.Value;
 import org.spongepowered.api.item.enchantment.Enchantment;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.enchantment.EnchantmentTypes;
-import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
 
 import java.util.ArrayList;

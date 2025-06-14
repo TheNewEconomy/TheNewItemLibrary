@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkitbase.platform.providers;
+package net.tnemc.item.paper.platform.providers;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -18,19 +18,19 @@ package net.tnemc.item.bukkitbase.platform.providers;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import com.nexomc.nexo.api.NexoItems;
-import com.nexomc.nexo.items.ItemBuilder;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.providers.ItemProvider;
 import org.bukkit.inventory.ItemStack;
+import xyz.xenondevs.nova.api.Nova;
+import xyz.xenondevs.nova.api.item.NovaItem;
 
 /**
- * NexoProvider
+ * NovaProvider
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class NexoProvider implements ItemProvider<ItemStack> {
+public class NovaProvider implements ItemProvider<ItemStack> {
 
   /**
    * Checks if the given serialized item stack applies to the specified item.
@@ -43,13 +43,13 @@ public class NexoProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean appliesTo(final AbstractItemStack<? extends ItemStack> serialized, final ItemStack item) {
 
-    final String id = NexoItems.idFromItem(item);
-    if(id == null) {
+    final NovaItem stack = Nova.getNova().getItemRegistry().getOrNull(item);
+    if(stack == null) {
       return false;
     }
 
     serialized.setItemProvider(identifier());
-    serialized.setProviderItemID(id);
+    serialized.setProviderItemID(stack.getId().toString());
 
     return true;
   }
@@ -65,12 +65,13 @@ public class NexoProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
 
-    final ItemBuilder originalStack = NexoItems.itemFromId(original.providerItemID());
-    if(originalStack == null) {
+    final NovaItem compareStack = Nova.getNova().getItemRegistry().getOrNull(compare);
+    if(compareStack == null) {
+
       return false;
     }
 
-    return originalStack.build().isSimilar(compare);
+    return compareStack.getId().toString().equals(original.providerItemID());
   }
 
   /**
@@ -84,19 +85,13 @@ public class NexoProvider implements ItemProvider<ItemStack> {
   @Override
   public ItemStack locale(final AbstractItemStack<? extends ItemStack> original, final int amount) {
 
-    final ItemBuilder originalStack = NexoItems.itemFromId(original.providerItemID());
-    System.out.println("Nexo locale");
+    final NovaItem originalStack = Nova.getNova().getItemRegistry().getOrNull(original.providerItemID());
     if(originalStack == null) {
-      System.out.println("Nexo locale null");
 
       return null;
     }
 
-    final ItemStack stack = originalStack.build();
-    stack.setAmount(amount);
-    System.out.println("Nexo locale returning");
-
-    return stack;
+    return originalStack.createItemStack(amount);
   }
 
   /**
@@ -105,6 +100,6 @@ public class NexoProvider implements ItemProvider<ItemStack> {
   @Override
   public String identifier() {
 
-    return "nexo";
+    return "nova";
   }
 }

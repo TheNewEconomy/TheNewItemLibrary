@@ -29,7 +29,6 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.Slot;
 import org.spongepowered.api.tag.ItemTypeTags;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 

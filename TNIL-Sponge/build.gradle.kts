@@ -12,13 +12,16 @@ plugins {
 val spongeApiVersion = property("org-spongepowered-spongeapi")!!
 
 dependencies {
-    api(project(":TNIL-Core"))
+    implementation(project(":TNIL-Core"))
     compileOnly("org.spongepowered:spongeapi:$spongeApiVersion")
 }
 
 repositories {
     mavenCentral()
-    maven("https://repo.spongepowered.org/repository/maven-public/")
+    maven {
+        name = "sponge-repo"
+        url = uri("https://repo.spongepowered.org/repository/maven-public/")
+    }
 }
 
 java {

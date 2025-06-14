@@ -16,16 +16,12 @@ java {
 
 repositories {
 
-    maven("https://maven.fabricmc.net")
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
     maven("https://jitpack.io")
     maven("https://plugins.gradle.org/m2/")
     maven("https://repo.codemc.io/repository/maven-public/")
     maven("https://maven.devs.beer/")
-    maven("https://repo.nexomc.com/releases")
-    maven("https://repo.oraxen.com/releases")
-    maven("https://repo.xenondevs.xyz/releases")
     maven("https://nexus.phoenixdevt.fr/repository/maven-public/")
     maven("https://repo.auxilor.io/repository/maven-public/")
     maven("https://mvn.lumine.io/repository/maven-public/")
@@ -35,22 +31,16 @@ val ecoItemsVersion = property("com-willfp-ecoitems")!!
 val itemsAdderVersion = property("dev-lone-api-itemsadder")!!
 val mmoItemsVersion = property("net-indyuce-mmoitems-api")!!
 val mythicLibVersion = property("io-lumine-mythiclib-dist")!!
-val nexoVersion = property("com-nexomc-nexo")!!
-val novaApiVersion = property("xyz-xenondevs-nova-nova-api")!!
-val oraxenVersion = property("io-th0rgal-oraxen")!!
 val slimefunVersion = property("com-github-slimefun-slimefun4")!!
 val spigotApiVersion = property("org-spigotmc-spigot-api")!!
 
 dependencies {
     api(project(":TNIL-Core"))
-    compileOnly("dev.lone.api:ItemsAdder:$itemsAdderVersion")
+    compileOnly("dev.lone:api-itemsadder:$itemsAdderVersion")
     compileOnly("com.github.Slimefun:Slimefun4:$slimefunVersion")
-    compileOnly("xyz.xenondevs.nova:nova-api:$novaApiVersion")
     compileOnly("io.lumine:MythicLib-dist:$mythicLibVersion")
-    compileOnly("net.indyuce:mmoitems-api:$mmoItemsVersion")
+    compileOnly("net.Indyuce:MMOItems-API:$mmoItemsVersion")
     compileOnly("com.willfp:ecoitems:$ecoItemsVersion")
-    compileOnly("com.nexomc:nexo:$nexoVersion")
-    compileOnly("io.th0rgal:oraxen:$oraxenVersion")
     compileOnly("org.spigotmc:spigot-api:$spigotApiVersion")
 }
 

@@ -21,3 +21,9 @@
 /BukkitBase/TNIL-BukkitBase.iml
 /buildSrc/
 /gradle/
+*.class
+*.MF
+*.zip
+*.jar
+*.html
+*.bin

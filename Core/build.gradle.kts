@@ -17,10 +17,10 @@ java {
 }
 
 dependencies {
-    implementation("com.googlecode.json-simple:json-simple:1.1.1") {
+    api("com.googlecode.json-simple:json-simple:1.1.1") {
         exclude("junit", "junit")
     }
-    implementation("com.vdurmont:semver4j:3.1.0")
+    api("com.vdurmont:semver4j:3.1.0")
 }
 
 tasks {

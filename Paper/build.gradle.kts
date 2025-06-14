@@ -9,12 +9,29 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1" apply true
 }
 
+repositories {
+
+    maven("https://repo.nexomc.com/releases")
+    maven("https://repo.xenondevs.xyz/releases")
+    maven("https://repo.oraxen.com/releases")
+    maven {
+        name = "papermc"
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
+}
+
 val paperApiVersion = property("io-papermc-paper-paper-api")!!
+val nexoVersion = property("com-nexomc-nexo")!!
+val novaApiVersion = property("xyz-xenondevs-nova-nova-api")!!
+val oraxenVersion = property("io-th0rgal-oraxen")!!
 
 dependencies {
-    api(project(":TNIL-Core"))
-    api(project(":TNIL-BukkitBase"))
+    implementation(project(":TNIL-Core"))
+    implementation(project(":TNIL-BukkitBase"))
     compileOnly("io.papermc.paper:paper-api:$paperApiVersion")
+    compileOnly("xyz.xenondevs.nova:nova-api:$novaApiVersion")
+    compileOnly("com.nexomc:nexo:$nexoVersion")
+    compileOnly("io.th0rgal:oraxen:$oraxenVersion")
 }
 
 java {

@@ -1,4 +1,4 @@
-package net.tnemc.item.bukkitbase.platform.providers;
+package net.tnemc.item.paper.platform.providers;
 /*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
@@ -18,19 +18,19 @@ package net.tnemc.item.bukkitbase.platform.providers;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import io.th0rgal.oraxen.api.OraxenItems;
-import io.th0rgal.oraxen.items.ItemBuilder;
+import com.nexomc.nexo.api.NexoItems;
+import com.nexomc.nexo.items.ItemBuilder;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.providers.ItemProvider;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * OraxenAddon
+ * NexoProvider
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class OraxenProvider implements ItemProvider<ItemStack> {
+public class NexoProvider implements ItemProvider<ItemStack> {
 
   /**
    * Checks if the given serialized item stack applies to the specified item.
@@ -43,7 +43,7 @@ public class OraxenProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean appliesTo(final AbstractItemStack<? extends ItemStack> serialized, final ItemStack item) {
 
-    final String id = OraxenItems.getIdByItem(item);
+    final String id = NexoItems.idFromItem(item);
     if(id == null) {
       return false;
     }
@@ -65,12 +65,12 @@ public class OraxenProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
 
-    final String compareID = OraxenItems.getIdByItem(compare);
-    if(compareID == null) {
+    final ItemBuilder originalStack = NexoItems.itemFromId(original.providerItemID());
+    if(originalStack == null) {
       return false;
     }
 
-    return original.providerItemID().equals(compareID);
+    return originalStack.build().isSimilar(compare);
   }
 
   /**
@@ -84,14 +84,17 @@ public class OraxenProvider implements ItemProvider<ItemStack> {
   @Override
   public ItemStack locale(final AbstractItemStack<? extends ItemStack> original, final int amount) {
 
-    final ItemBuilder originalStack = OraxenItems.getItemById(original.providerItemID());
+    final ItemBuilder originalStack = NexoItems.itemFromId(original.providerItemID());
+    System.out.println("Nexo locale");
     if(originalStack == null) {
+      System.out.println("Nexo locale null");
 
       return null;
     }
 
     final ItemStack stack = originalStack.build();
     stack.setAmount(amount);
+    System.out.println("Nexo locale returning");
 
     return stack;
   }
@@ -102,6 +105,6 @@ public class OraxenProvider implements ItemProvider<ItemStack> {
   @Override
   public String identifier() {
 
-    return "oraxen";
+    return "nexo";
   }
 }

@@ -31,9 +31,9 @@ repositories {
 val spigotApiVersion = property("org-spigotmc-spigot-api")!!
 val adventureVersion = property("adventure_version")!!
 dependencies {
-    api(project(":TNIL-Paper"))
-    api(project(":TNIL-Bukkit"))
-    api(project(":TNIL-Core"))
+    implementation(project(":TNIL-Paper"))
+    implementation(project(":TNIL-Bukkit"))
+    implementation(project(":TNIL-Core"))
     compileOnly("net.kyori:adventure-text-minimessage:$adventureVersion")
     compileOnly("org.spigotmc:spigot-api:$spigotApiVersion")
 }
@@ -41,14 +41,14 @@ dependencies {
 java {
 
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
 tasks {
     compileJava {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
+        sourceCompatibility = "21"
+        targetCompatibility = "21"
     }
 
     jar {
