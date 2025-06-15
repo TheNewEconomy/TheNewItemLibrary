@@ -97,10 +97,10 @@ public class JSONHelper {
   }
 
   /**
-   * Parses a JSON array into a List<String>.
+   * Parses a JSON array into a String list.
    *
    * @param identifier The key of the JSON array.
-   * @return A List<String> containing the elements of the JSON array.
+   * @return A String list containing the elements of the JSON array.
    */
   public List<String> getStringList(final String identifier) {
     final List<String> result = new ArrayList<>();
@@ -116,10 +116,10 @@ public class JSONHelper {
   }
 
   /**
-   * Parses a JSON array into a List<Integer>.
+   * Parses a JSON array into a Integer List.
    *
    * @param identifier The key of the JSON array.
-   * @return A List<Integer> containing the elements of the JSON array.
+   * @return An Integer List containing the elements of the JSON array.
    */
   public List<Integer> getIntegerList(final String identifier) {
     final List<Integer> result = new ArrayList<>();
@@ -135,10 +135,10 @@ public class JSONHelper {
   }
 
   /**
-   * Parses a JSON array into a List<Float>.
+   * Parses a JSON array into a Float List.
    *
    * @param identifier The key of the JSON array.
-   * @return A List<Float> containing the elements of the JSON array.
+   * @return A Float List containing the elements of the JSON array.
    */
   public List<Float> getFloatList(final String identifier) {
     final List<Float> result = new ArrayList<>();
@@ -154,10 +154,10 @@ public class JSONHelper {
   }
 
   /**
-   * Parses a JSON array into a List<Boolean>.
+   * Parses a JSON array into a Boolean List.
    *
    * @param identifier The key of the JSON array.
-   * @return A List<Boolean> containing the elements of the JSON array.
+   * @return A Boolean List containing the elements of the JSON array.
    */
   public List<Boolean> getBooleanList(final String identifier) {
     final List<Boolean> result = new ArrayList<>();

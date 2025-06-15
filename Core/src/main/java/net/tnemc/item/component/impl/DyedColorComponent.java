@@ -29,7 +29,7 @@ import java.util.Objects;
 /**
  * DyedColorComponent -The color applied of this leather armor piece. Color codes are the hex code of
  * the color converted to a decimal number, or can be calculated from the Red, Green and Blue components
- * using this formula: R << 16 + G << 8 + B
+ * using this formula: "R &lt;&lt; 16 + G &lt;&lt; 8 + B"
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#dyed_color">Reference</a>
