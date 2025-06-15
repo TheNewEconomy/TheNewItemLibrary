@@ -19,3 +19,10 @@
 /Example/target/
 /Example/TNIL-Example.iml
 /BukkitBase/TNIL-BukkitBase.iml
+/buildSrc/
+**/build/*
+*.class
+*.MF
+*.zip
+*.html
+*.bin

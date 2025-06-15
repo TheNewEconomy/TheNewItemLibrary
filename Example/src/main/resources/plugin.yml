@@ -1,0 +1,26 @@
+name: TNIL-Example
+description: 'An example usage of the revamped TNIL platform.'
+version: '0.1.2.0'
+main: net.tnemc.item.example.Example
+api-version: '1.20'
+authors: [creatorfromhell]
+website: https://tnemc.net
+softdepend:
+  - Nexo
+  - Oraxen
+  - Nova
+  - ItemsAdder
+
+commands:
+  tnilcount:
+    description: Check TNIL token balance
+    usage: /<command> [player]
+    permission: tnil.count
+  tniltake:
+    description: Take TNIL tokens from a player
+    usage: /<command> <player> <amount>
+    permission: tnil.take
+  tnilgive:
+    description: Give TNIL tokens to a player
+    usage: /<command> <player> <amount>
+    permission: tnil.give
