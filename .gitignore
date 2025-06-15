@@ -20,10 +20,9 @@
 /Example/TNIL-Example.iml
 /BukkitBase/TNIL-BukkitBase.iml
 /buildSrc/
-/gradle/
+**/build/*
 *.class
 *.MF
 *.zip
-*.jar
 *.html
 *.bin
