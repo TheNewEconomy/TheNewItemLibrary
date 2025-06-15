@@ -24,12 +24,11 @@ jobs:
       - name: List subfolders
         uses: Drafteame/list-folders-action@main
         with:
-          paths: "/"
+          paths: |
+            /
 
       - name: Output folders with base path
-        run:
-          echo "Folders with base path: ${{ steps.list-subfolders.outputs.folders }}"
+        run: echo "Folders with base path ${{ steps.list-subfolders.outputs.folders }}"
 
       - name: Output folders by path
-        run:
-          echo "Folders by path: ${{ steps.list-subfolders.outputs.folders_by_path }}"
+        run: echo "Folders by path ${{ steps.list-subfolders.outputs.folders_by_path }}"
