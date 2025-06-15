@@ -36,7 +36,7 @@ val spigotApiVersion = property("org-spigotmc-spigot-api")!!
 
 dependencies {
     api(project(":TNIL-Core"))
-    compileOnly("dev.lone:api-itemsadder:$itemsAdderVersion")
+    compileOnly("com.github.LoneDev6:api-itemsadder:$itemsAdderVersion")
     compileOnly("com.github.Slimefun:Slimefun4:$slimefunVersion")
     compileOnly("io.lumine:MythicLib-dist:$mythicLibVersion")
     compileOnly("net.Indyuce:MMOItems-API:$mmoItemsVersion")
