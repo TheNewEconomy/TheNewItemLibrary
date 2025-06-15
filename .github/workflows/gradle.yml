@@ -11,10 +11,13 @@ name: Java CI with Gradle
 on:
   push:
     branches:
-      - feat/gradle-impl
+      - master
+      - main
+
   pull_request:
     branches:
-      - feat/gradle-impl
+      - master
+      - main
 
 jobs:
   build:

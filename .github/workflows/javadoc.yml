@@ -3,7 +3,8 @@ name: Deploy Javadoc
 on:
   push:
     branches:
-      - feat/gradle-impl
+      - master
+      - main
 
 jobs:
   publish:
