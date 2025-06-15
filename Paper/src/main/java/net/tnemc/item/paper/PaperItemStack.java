@@ -1297,6 +1297,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    * @deprecated Since MC 1.21.3 Use {@link ItemModelComponent} and {@link ModelDataComponent}.
    */
+  @Deprecated(forRemoval = true)
   @Override
   public AbstractItemStack<ItemStack> modelDataOld(final int customModelData) {
 

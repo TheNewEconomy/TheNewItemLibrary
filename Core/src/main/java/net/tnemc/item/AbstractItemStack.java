@@ -1403,6 +1403,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @author creatorfromhell
    * @see ModelDataComponent
    */
+  @Deprecated(forRemoval = true)
   default Optional<ModelDataOldComponent<AbstractItemStack<T>, T>> modelDataOld() {
     return Optional.ofNullable((ModelDataOldComponent<AbstractItemStack<T>, T>) components().get("model-data-old"));
   }
@@ -1417,6 +1418,7 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @author creatorfromhell
    * @see ModelDataOldComponent
    */
+  @Deprecated(forRemoval = true)
   AbstractItemStack<T> modelDataOld(int customModelData);
 
   /**
