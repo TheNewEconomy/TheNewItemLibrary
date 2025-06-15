@@ -21,7 +21,6 @@ repositories {
     maven("https://jitpack.io")
     maven("https://plugins.gradle.org/m2/")
     maven("https://repo.codemc.io/repository/maven-public/")
-    maven("https://maven.devs.beer/")
     maven("https://nexus.phoenixdevt.fr/repository/maven-public/")
     maven("https://repo.auxilor.io/repository/maven-public/")
     maven("https://mvn.lumine.io/repository/maven-public/")
