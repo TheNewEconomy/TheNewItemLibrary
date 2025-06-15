@@ -19,5 +19,6 @@ jobs:
           javadoc-branch: gh-pages
           java-version: 21
           target-folder: javadoc # url will be https://<username>.github.io/<repo>/javadoc, This can be left as nothing to generate javadocs in the root folder.
+          javadoc-source-folder: TheNewItemLibrary/build/docs/javadoc
           project: gradle
           custom-command: ./gradlew javadoc
