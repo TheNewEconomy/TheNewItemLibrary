@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write  # if you have a protection rule on your repository, you'll need to give write permission to the workflow.
+
     steps:
       - name: Deploy JavaDoc 🚀
         uses: MathieuSoysal/Javadoc-publisher.yml@v3.0.2
@@ -19,3 +20,16 @@ jobs:
           java-version: 21
           target-folder: javadoc # url will be https://<username>.github.io/<repo>/javadoc, This can be left as nothing to generate javadocs in the root folder.
           project: gradle
+
+      - name: List subfolders
+        uses: Drafteame/list-folders-action@main
+        with:
+          paths: "/"
+
+      - name: Output folders with base path
+        run:
+          echo "Folders with base path: ${{ steps.list-subfolders.outputs.folders }}"
+
+      - name: Output folders by path
+        run:
+          echo "Folders by path: ${{ steps.list-subfolders.outputs.folders_by_path }}"
