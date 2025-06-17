@@ -21,7 +21,6 @@ package net.tnemc.item.fabric;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.fabric.platform.FabricItemPlatform;
 import net.tnemc.item.providers.ItemProvider;

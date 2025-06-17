@@ -17,15 +17,11 @@ package net.tnemc.item.fabric.platform.impl;/*
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.kyori.adventure.text.Component;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.item.fabric.FabricItemStack;
-import net.tnemc.item.fabric.Utils;
 
 import java.util.Optional;
 
