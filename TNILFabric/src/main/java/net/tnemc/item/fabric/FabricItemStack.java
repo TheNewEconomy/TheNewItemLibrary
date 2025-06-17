@@ -152,7 +152,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> of(final String material, final int amount) {
+  public FabricItemStack of(final String material, final int amount) {
 
     this.namespace = (material.contains(":"))? material.split(":")[0] : Identifier.DEFAULT_NAMESPACE;
     final String modifiedMaterial = (material.contains(":"))? material.split(":")[1] : material;
@@ -174,11 +174,9 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> of(final ItemStack locale) {
+  public FabricItemStack of(final ItemStack locale) {
 
     this.localeStack = locale;
-
-    final Item item = locale.getItem();
 
     final Identifier id = Registries.ITEM.getId(locale.getItem());
     this.namespace = id.getNamespace();
@@ -189,6 +187,11 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
     this.amount = locale.getCount();
 
     return FabricItemPlatform.instance().serializer(this.localeStack, this);
+  }
+
+  public Identifier id() {
+
+    return Identifier.of(namespace, material);
   }
 
   /**
@@ -202,7 +205,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> of(final JSONObject json) throws ParseException {
+  public FabricItemStack of(final JSONObject json) throws ParseException {
 
     return null;
   }
