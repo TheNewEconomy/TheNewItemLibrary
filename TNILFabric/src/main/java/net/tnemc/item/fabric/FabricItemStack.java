@@ -207,6 +207,11 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
     return null;
   }
 
+  public SerialComponent<AbstractItemStack<ItemStack>, ItemStack> fabricComponent(final String identifier) {
+
+    return components.get(identifier);
+  }
+
   /**
    * Sets the item flags.
    *

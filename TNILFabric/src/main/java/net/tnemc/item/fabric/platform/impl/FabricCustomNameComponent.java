@@ -1,4 +1,4 @@
-package net.tnemc.sponge.platform.impl;/*
+package net.tnemc.item.fabric.platform.impl;/*
  * The New Item Library
  * Copyright (C) 2022 - 2025 Daniel "creatorfromhell" Vidmar
  *
@@ -18,29 +18,29 @@ package net.tnemc.sponge.platform.impl;/*
  */
 
 import net.kyori.adventure.text.Component;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.tnemc.item.component.impl.CustomNameComponent;
-import net.tnemc.sponge.SpongeItemStack;
-import org.spongepowered.api.data.Key;
-import org.spongepowered.api.data.Keys;
-import org.spongepowered.api.data.value.Value;
-import org.spongepowered.api.item.inventory.ItemStack;
+import net.tnemc.item.fabric.FabricItemStack;
+import net.tnemc.item.fabric.Utils;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
- * SpongeCustomNameComponent
+ * FabricCustomNameComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class SpongeCustomNameComponent extends CustomNameComponent<SpongeItemStack, ItemStack> {
+public class FabricCustomNameComponent extends CustomNameComponent<FabricItemStack, ItemStack> {
 
-  public SpongeCustomNameComponent() {
+  public FabricCustomNameComponent() {
 
   }
 
-  public SpongeCustomNameComponent(final Component customName) {
+  public FabricCustomNameComponent(final Component customName) {
 
     super(customName);
   }
@@ -54,14 +54,7 @@ public class SpongeCustomNameComponent extends CustomNameComponent<SpongeItemSta
   @Override
   public boolean enabled(final String version) {
 
-    try {
-
-      final Key<Value<Component>> name = Keys.CUSTOM_NAME;
-      return true;
-    } catch(final NoSuchElementException ignore) {
-
-      return false;
-    }
+    return true;
   }
 
   /**
@@ -75,7 +68,7 @@ public class SpongeCustomNameComponent extends CustomNameComponent<SpongeItemSta
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.supports(Keys.CUSTOM_NAME);
+    return item.hasChangedComponent(DataComponentTypes.CUSTOM_NAME);
   }
 
   /**
@@ -87,10 +80,10 @@ public class SpongeCustomNameComponent extends CustomNameComponent<SpongeItemSta
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
+  public ItemStack apply(final FabricItemStack serialized, final ItemStack item) {
 
-    final Optional<SpongeCustomNameComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->item.offer(Keys.CUSTOM_NAME, component.customName));
+    final Optional<FabricCustomNameComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->item.set(DataComponentTypes.CUSTOM_NAME, Utils.toText(componentOptional.get().customName())));
 
     return item;
   }
@@ -104,15 +97,15 @@ public class SpongeCustomNameComponent extends CustomNameComponent<SpongeItemSta
    * @since 0.2.0.0
    */
   @Override
-  public SpongeItemStack serialize(final ItemStack item, final SpongeItemStack serialized) {
+  public FabricItemStack serialize(final ItemStack item, final FabricItemStack serialized) {
 
-    final Optional<Component> keyOptional = item.get(Keys.CUSTOM_NAME);
+    final Optional<Text> keyOptional = Optional.ofNullable(item.get(DataComponentTypes.CUSTOM_NAME));
     keyOptional.ifPresent((key->{
 
-      final SpongeCustomNameComponent component = (serialized.spongeComponent(identifier()) instanceof final CustomNameComponent<?, ?> getComponent)?
-                                                  (SpongeCustomNameComponent)getComponent : new SpongeCustomNameComponent();
+      final FabricCustomNameComponent component = (serialized.fabricComponent(identifier()) instanceof final CustomNameComponent<?, ?> getComponent)?
+                                                  (FabricCustomNameComponent)getComponent : new FabricCustomNameComponent();
 
-      component.customName = key;
+      component.customName = Utils.toComponent(key);
     }));
     return serialized;
   }
