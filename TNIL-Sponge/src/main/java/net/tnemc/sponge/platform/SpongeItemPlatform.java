@@ -63,11 +63,6 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack,
     super();
   }
 
-  @Override
-  public SpongeItemStack createStack(final String material) {
-    return new SpongeItemStack().of(material, 1);
-  }
-
   public static SpongeItemPlatform instance() {
 
     final SpongeItemPlatform result = instance;
@@ -85,6 +80,11 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack,
       }
       return instance;
     }
+  }
+
+  @Override
+  public SpongeItemStack createStack(final String material) {
+    return new SpongeItemStack().of(material, 1);
   }
 
   /**

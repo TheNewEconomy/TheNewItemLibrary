@@ -7,9 +7,8 @@ plugins {
     `java-library`
     `maven-publish`
     id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1" apply true
+    id("com.gradleup.shadow") version "9.0.0-beta16" apply true
 }
-
 
 val adventureVersion = property("adventure_version")!!
 
@@ -17,7 +16,7 @@ subprojects {
 
     apply(plugin = "java-library")
     apply(plugin = "java")
-    apply(plugin = "com.github.johnrengelman.shadow")
+    apply(plugin = "com.gradleup.shadow")
     apply(plugin = "maven-publish")
 
     //our properties
