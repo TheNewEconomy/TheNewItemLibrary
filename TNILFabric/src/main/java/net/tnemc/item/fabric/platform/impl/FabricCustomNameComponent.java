@@ -82,7 +82,7 @@ public class FabricCustomNameComponent extends CustomNameComponent<FabricItemSta
   public ItemStack apply(final FabricItemStack serialized, final ItemStack item) {
 
     final Optional<FabricCustomNameComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->item.set(DataComponentTypes.CUSTOM_NAME, Utils.toText(componentOptional.get().customName())));
+    componentOptional.ifPresent(component->item.set(DataComponentTypes.CUSTOM_NAME, Utils.toText(component.customName())));
 
     return item;
   }

@@ -22,27 +22,27 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.tnemc.item.component.impl.CustomNameComponent;
-import net.tnemc.item.component.impl.ItemNameComponent;
+import net.tnemc.item.component.impl.MaxStackSizeComponent;
 import net.tnemc.item.fabric.FabricItemStack;
 import net.tnemc.item.fabric.Utils;
 
 import java.util.Optional;
 
 /**
- * FabricItemNameComponent
+ * FabricMaxStackComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class FabricItemNameComponent extends ItemNameComponent<FabricItemStack, ItemStack> {
+public class FabricMaxStackComponent extends MaxStackSizeComponent<FabricItemStack, ItemStack> {
 
-  public FabricItemNameComponent() {
+  public FabricMaxStackComponent() {
 
   }
 
-  public FabricItemNameComponent(final Component itemName) {
+  public FabricMaxStackComponent(final int maxStackSize) {
 
-    super(itemName);
+    super(maxStackSize);
   }
 
   /**
@@ -68,7 +68,7 @@ public class FabricItemNameComponent extends ItemNameComponent<FabricItemStack, 
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasChangedComponent(DataComponentTypes.ITEM_NAME);
+    return item.hasChangedComponent(DataComponentTypes.MAX_STACK_SIZE);
   }
 
   /**
@@ -82,8 +82,8 @@ public class FabricItemNameComponent extends ItemNameComponent<FabricItemStack, 
   @Override
   public ItemStack apply(final FabricItemStack serialized, final ItemStack item) {
 
-    final Optional<FabricItemNameComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->item.set(DataComponentTypes.ITEM_NAME, Utils.toText(component.itemName())));
+    final Optional<FabricMaxStackComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->item.set(DataComponentTypes.MAX_STACK_SIZE, component.maxStackSize));
 
     return item;
   }
@@ -99,13 +99,13 @@ public class FabricItemNameComponent extends ItemNameComponent<FabricItemStack, 
   @Override
   public FabricItemStack serialize(final ItemStack item, final FabricItemStack serialized) {
 
-    final Optional<Text> keyOptional = Optional.ofNullable(item.get(DataComponentTypes.ITEM_NAME));
+    final Optional<Integer> keyOptional = Optional.ofNullable(item.get(DataComponentTypes.MAX_STACK_SIZE));
     keyOptional.ifPresent((key->{
 
-      final FabricItemNameComponent component = (serialized.fabricComponent(identifier()) instanceof final ItemNameComponent<?, ?> getComponent)?
-                                                  (FabricItemNameComponent)getComponent : new FabricItemNameComponent();
+      final FabricMaxStackComponent component = (serialized.fabricComponent(identifier()) instanceof final MaxStackSizeComponent<?, ?> getComponent)?
+                                                  (FabricMaxStackComponent)getComponent : new FabricMaxStackComponent();
 
-      component.itemName = Utils.toComponent(key);
+      component.maxStackSize = key;
     }));
     return serialized;
   }
