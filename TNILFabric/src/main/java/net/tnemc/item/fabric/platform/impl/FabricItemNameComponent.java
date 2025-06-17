@@ -22,26 +22,27 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.tnemc.item.component.impl.CustomNameComponent;
+import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.fabric.FabricItemStack;
 import net.tnemc.item.fabric.Utils;
 
 import java.util.Optional;
 
 /**
- * FabricCustomNameComponent
+ * FabricItemNameComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class FabricCustomNameComponent extends CustomNameComponent<FabricItemStack, ItemStack> {
+public class FabricItemNameComponent extends ItemNameComponent<FabricItemStack, ItemStack> {
 
-  public FabricCustomNameComponent() {
+  public FabricItemNameComponent() {
 
   }
 
-  public FabricCustomNameComponent(final Component customName) {
+  public FabricItemNameComponent(final Component itemName) {
 
-    super(customName);
+    super(itemName);
   }
 
   /**
@@ -67,7 +68,7 @@ public class FabricCustomNameComponent extends CustomNameComponent<FabricItemSta
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasChangedComponent(DataComponentTypes.CUSTOM_NAME);
+    return item.hasChangedComponent(DataComponentTypes.ITEM_NAME);
   }
 
   /**
@@ -81,8 +82,8 @@ public class FabricCustomNameComponent extends CustomNameComponent<FabricItemSta
   @Override
   public ItemStack apply(final FabricItemStack serialized, final ItemStack item) {
 
-    final Optional<FabricCustomNameComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->item.set(DataComponentTypes.CUSTOM_NAME, Utils.toText(componentOptional.get().customName())));
+    final Optional<FabricItemNameComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->item.set(DataComponentTypes.ITEM_NAME, Utils.toText(componentOptional.get().itemName())));
 
     return item;
   }
@@ -98,13 +99,13 @@ public class FabricCustomNameComponent extends CustomNameComponent<FabricItemSta
   @Override
   public FabricItemStack serialize(final ItemStack item, final FabricItemStack serialized) {
 
-    final Optional<Text> keyOptional = Optional.ofNullable(item.get(DataComponentTypes.CUSTOM_NAME));
+    final Optional<Text> keyOptional = Optional.ofNullable(item.get(DataComponentTypes.ITEM_NAME));
     keyOptional.ifPresent((key->{
 
-      final FabricCustomNameComponent component = (serialized.fabricComponent(identifier()) instanceof final CustomNameComponent<?, ?> getComponent)?
-                                                  (FabricCustomNameComponent)getComponent : new FabricCustomNameComponent();
+      final FabricItemNameComponent component = (serialized.fabricComponent(identifier()) instanceof final ItemNameComponent<?, ?> getComponent)?
+                                                  (FabricItemNameComponent)getComponent : new FabricItemNameComponent();
 
-      component.customName = Utils.toComponent(key);
+      component.itemName = Utils.toComponent(key);
     }));
     return serialized;
   }
