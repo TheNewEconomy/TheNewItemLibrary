@@ -20,6 +20,7 @@ package net.tnemc.item.fabric.platform;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.fabric.FabricItemCalculationsProvider;
 import net.tnemc.item.fabric.FabricItemStack;
@@ -29,6 +30,7 @@ import net.tnemc.item.providers.CalculationsProvider;
 import net.tnemc.item.providers.ItemProvider;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import java.util.Optional;
 
@@ -80,7 +82,7 @@ public class FabricItemPlatform extends ItemPlatform<FabricItemStack, ItemStack,
   @Override
   public FabricItemStack createStack(final String material) {
 
-    return null;
+    return new FabricItemStack().of(material, 1);
   }
 
   /**
@@ -91,7 +93,7 @@ public class FabricItemPlatform extends ItemPlatform<FabricItemStack, ItemStack,
   @Override
   public String version() {
 
-    return "";
+    return "1.21.5";
   }
 
   /**
@@ -102,6 +104,9 @@ public class FabricItemPlatform extends ItemPlatform<FabricItemStack, ItemStack,
   @Override
   public void addDefaults() {
 
+    registerConversions();
+
+    addItemProvider(defaultProvider);
   }
 
   /**
@@ -114,7 +119,7 @@ public class FabricItemPlatform extends ItemPlatform<FabricItemStack, ItemStack,
   @Override
   public @NotNull ItemProvider<ItemStack> defaultProvider() {
 
-    return null;
+    return defaultProvider;
   }
 
   /**
@@ -127,7 +132,7 @@ public class FabricItemPlatform extends ItemPlatform<FabricItemStack, ItemStack,
   @Override
   public @NotNull String defaultProviderIdentifier() {
 
-    return "";
+    return defaultProvider.identifier();
   }
 
   /**
@@ -142,7 +147,7 @@ public class FabricItemPlatform extends ItemPlatform<FabricItemStack, ItemStack,
   @Override
   public CalculationsProvider<FabricItemStack, ItemStack, Inventory> calculations() {
 
-    return null;
+    return calculationsProvider;
   }
 
   /**
@@ -157,7 +162,13 @@ public class FabricItemPlatform extends ItemPlatform<FabricItemStack, ItemStack,
   @Override
   public FabricItemStack locale(final ItemStack locale) {
 
-    return null;
+
+    return new FabricItemStack().of(locale);
+  }
+
+  private void registerConversions() {
+
+    //TODO: Convert over conversions.
   }
 
   /**
@@ -172,6 +183,11 @@ public class FabricItemPlatform extends ItemPlatform<FabricItemStack, ItemStack,
   @Override
   public Optional<FabricItemStack> initSerialized(final JSONObject object) {
 
-    return Optional.empty();
+    try {
+      return Optional.ofNullable(new FabricItemStack().of(object));
+
+    } catch(final ParseException e) {
+      return Optional.empty();
+    }
   }
 }
