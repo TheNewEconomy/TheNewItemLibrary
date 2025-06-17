@@ -18,11 +18,17 @@ package net.tnemc.item.fabric;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.Vec3d;
 import net.tnemc.item.InventoryType;
 import net.tnemc.item.providers.CalculationsProvider;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +42,10 @@ import java.util.UUID;
  */
 public class FabricItemCalculationsProvider implements CalculationsProvider<FabricItemStack, ItemStack, Inventory> {
 
+
+  //TODO: this
+  private final MinecraftServer server = null;
+
   /**
    * Removes items from a collection based on certain criteria.
    *
@@ -48,8 +58,37 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    */
   @Override
   public boolean drop(final Collection<FabricItemStack> left, final UUID player, final boolean setOwner) {
+    
+    final ServerPlayerEntity serverPlayer = getPlayer(player);
+    if(serverPlayer == null) {
+      return false;
+    }
 
-    return false;
+    final ServerWorld world = serverPlayer.getServerWorld();
+    final Vec3d pos = serverPlayer.getPos().add(0, 1, 0);
+
+    for(final FabricItemStack fabricStack : left) {
+
+      final ItemStack stack = fabricStack.provider().locale(fabricStack, fabricStack.amount()).copy();
+      if(stack.isEmpty()) {
+        continue;
+      }
+
+      final ItemEntity itemEntity = new ItemEntity(world, pos.x, pos.y, pos.z, stack.copy());
+      itemEntity.setVelocity(
+              world.random.nextFloat() * 0.2 - 0.1,
+              world.random.nextFloat() * 0.2,
+              world.random.nextFloat() * 0.2);
+
+      if(setOwner) {
+
+        itemEntity.setThrower(serverPlayer);
+      }
+
+      world.spawnEntity(itemEntity);
+    }
+
+    return true;
   }
 
   /**
@@ -63,7 +102,27 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
   @Override
   public int removeAll(final FabricItemStack stack, final Inventory inventory) {
 
-    return 0;
+    final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
+    compare.setCount(1);
+
+    int amount = 0;
+
+    for(int i = 0; i < inventory.size(); i++) {
+      final ItemStack slotItem = inventory.getStack(i);
+
+      if(!slotItem.isEmpty()) {
+        final ItemStack compareI = slotItem.copy();
+        compareI.setCount(1);
+
+        if(ItemStack.areItemsAndComponentsEqual(compare, compareI)) {
+
+          amount += slotItem.getCount();
+          inventory.setStack(i, ItemStack.EMPTY);
+        }
+      }
+    }
+
+    return amount;
   }
 
   /**
@@ -76,8 +135,25 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    */
   @Override
   public int count(final FabricItemStack stack, final Inventory inventory) {
+    final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
+    compare.setCount(1);
 
-    return 0;
+    int count = 0;
+
+    for(int i = 0; i < inventory.size(); i++) {
+      final ItemStack slotItem = inventory.getStack(i);
+
+      if(!slotItem.isEmpty()) {
+        final ItemStack compareI = slotItem.copy();
+        compareI.setCount(1);
+
+        if(ItemStack.areItemsAndComponentsEqual(compare, compareI)) {
+          count += slotItem.getCount();
+        }
+      }
+    }
+
+    return count;
   }
 
   /**
@@ -88,7 +164,9 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    */
   @Override
   public void takeItems(final Collection<FabricItemStack> items, final Inventory inventory) {
-
+    for(final FabricItemStack stack : items) {
+      removeItem(stack, inventory);
+    }
   }
 
   /**
@@ -102,8 +180,42 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    */
   @Override
   public Collection<FabricItemStack> giveItems(final Collection<FabricItemStack> items, final Inventory inventory) {
+    final Collection<FabricItemStack> leftovers = new ArrayList<>();
 
-    return List.of();
+    for(final FabricItemStack fabricStack : items) {
+      if(fabricStack == null) continue;
+
+      final ItemStack toInsert = fabricStack.provider().locale(fabricStack, fabricStack.amount()).copy();
+      int remaining = toInsert.getCount();
+
+      for(int i = 0; i < inventory.size(); i++) {
+        if(remaining <= 0) break;
+
+        final ItemStack slot = inventory.getStack(i);
+
+        if(slot.isEmpty()) {
+          inventory.setStack(i, toInsert.copy());
+          remaining = 0;
+          break;
+
+        } else if(ItemStack.areItemsAndComponentsEqual(slot, toInsert)) {
+          final int space = Math.min(slot.getMaxCount() - slot.getCount(), remaining);
+          if (space > 0) {
+            slot.increment(space);
+            remaining -= space;
+          }
+        }
+      }
+
+      if(remaining > 0) {
+        final ItemStack leftoverStack = toInsert.copy();
+        leftoverStack.setCount(remaining);
+        leftovers.add(new FabricItemStack().of(leftoverStack));
+
+      }
+    }
+
+    return leftovers;
   }
 
   /**
@@ -116,8 +228,38 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    */
   @Override
   public int removeItem(final FabricItemStack stack, final Inventory inventory) {
+    int left = stack.provider().locale(stack, stack.amount()).copy().getCount();
+    final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
+    compare.setCount(1); // Normalize
 
-    return 0;
+    for(int i = 0; i < inventory.size(); i++) {
+      if(left <= 0) break;
+
+      final ItemStack slotItem = inventory.getStack(i);
+      if(!slotItem.isEmpty()) {
+
+        final ItemStack compareI = slotItem.copy();
+        compareI.setCount(1);
+
+        if(ItemStack.areItemsAndComponentsEqual(compare, compareI)) {
+
+          final int quantity = slotItem.getCount();
+
+          if(quantity > left) {
+
+            slotItem.setCount(quantity - left);
+            inventory.setStack(i, slotItem);
+            left = 0;
+          } else {
+
+            left -= quantity;
+            inventory.setStack(i, ItemStack.EMPTY);
+          }
+        }
+      }
+    }
+
+    return left;
   }
 
   /**
@@ -130,7 +272,19 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    */
   @Override
   public Optional<Inventory> inventory(final UUID identifier, final InventoryType type) {
+    final ServerPlayerEntity serverPlayer = getPlayer(identifier);
 
-    return Optional.empty();
+    if(serverPlayer == null) {
+      return Optional.empty();
+    }
+
+    if(type.equals(InventoryType.ENDER_CHEST)) {
+      return Optional.of(serverPlayer.getEnderChestInventory());
+    }
+    return Optional.of(serverPlayer.getInventory());
+  }
+
+  private ServerPlayerEntity getPlayer(final UUID uuid) {
+    return server.getPlayerManager().getPlayer(uuid);
   }
 }
