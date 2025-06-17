@@ -19,7 +19,14 @@ package net.tnemc.item.fabric;
  */
 
 import net.kyori.adventure.text.Component;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.Identifier;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
@@ -104,6 +111,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * FabricItemStack
@@ -126,6 +134,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
 
   //item providers
   private String itemProvider = FabricItemPlatform.instance().defaultProviderIdentifier();
+  private String namespace = Identifier.DEFAULT_NAMESPACE;
   private String providerItemID = material;
 
   //our locale stack
@@ -145,7 +154,14 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> of(final String material, final int amount) {
 
-    return null;
+    this.namespace = (material.contains(":"))? material.split(":")[0] : Identifier.DEFAULT_NAMESPACE;
+    final String modifiedMaterial = (material.contains(":"))? material.split(":")[1] : material;
+
+    final Item item = Registries.ITEM.get(Identifier.of(namespace, modifiedMaterial));
+
+    final ItemStack stack = new ItemStack(item, amount);
+
+    return of(stack);
   }
 
   /**
@@ -160,7 +176,19 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> of(final ItemStack locale) {
 
-    return null;
+    this.localeStack = locale;
+
+    final Item item = locale.getItem();
+
+    final Identifier id = Registries.ITEM.getId(locale.getItem());
+    this.namespace = id.getNamespace();
+    this.material = id.getPath();
+
+    System.out.println("Material String: " + material);
+
+    this.amount = locale.getCount();
+
+    return FabricItemPlatform.instance().serializer(this.localeStack, this);
   }
 
   /**
