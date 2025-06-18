@@ -97,6 +97,18 @@ import net.tnemc.item.component.impl.WeaponComponent;
 import net.tnemc.item.component.impl.WritableBookContentComponent;
 import net.tnemc.item.component.impl.WrittenBookContentComponent;
 import net.tnemc.item.fabric.platform.FabricItemPlatform;
+import net.tnemc.item.fabric.platform.impl.FabricBundleComponent;
+import net.tnemc.item.fabric.platform.impl.FabricContainerComponent;
+import net.tnemc.item.fabric.platform.impl.FabricCustomNameComponent;
+import net.tnemc.item.fabric.platform.impl.FabricDamageComponent;
+import net.tnemc.item.fabric.platform.impl.FabricDyedColorComponent;
+import net.tnemc.item.fabric.platform.impl.FabricEnchantmentsComponent;
+import net.tnemc.item.fabric.platform.impl.FabricItemModelComponent;
+import net.tnemc.item.fabric.platform.impl.FabricItemNameComponent;
+import net.tnemc.item.fabric.platform.impl.FabricLoreComponent;
+import net.tnemc.item.fabric.platform.impl.FabricMaxStackComponent;
+import net.tnemc.item.fabric.platform.impl.FabricModelDataComponent;
+import net.tnemc.item.fabric.platform.impl.FabricProfileComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.SkullProfile;
@@ -156,6 +168,8 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
 
     final ItemStack stack = new ItemStack(item, amount);
 
+    this.dirty = true;
+
     return of(stack);
   }
 
@@ -202,7 +216,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public FabricItemStack of(final JSONObject json) throws ParseException {
 
-    return null;
+    return this;
   }
 
   public SerialComponent<AbstractItemStack<ItemStack>, ItemStack> fabricComponent(final String identifier) {
@@ -222,7 +236,8 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> flags(final List<String> flags) {
 
-    return null;
+    this.flags.addAll(flags);
+    return this;
   }
 
   /**
@@ -237,7 +252,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> loreComponent(final List<Component> lore) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -253,7 +268,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> enchant(final String enchantment, final int level) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -268,7 +283,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> enchant(final Map<String, Integer> enchantments) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -283,7 +298,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> enchant(final List<String> enchantments) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -311,7 +326,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> material(final String material) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -339,7 +354,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> amount(final int amount) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -367,7 +382,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> slot(final int slot) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -382,7 +397,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> debug(final boolean debug) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -393,7 +408,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public ItemStack cacheLocale() {
 
-    return null;
+    return localeStack;
   }
 
   /**
@@ -404,6 +419,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public void updateCache(final ItemStack localeStack) {
 
+    this.localeStack = localeStack;
   }
 
   /**
@@ -419,7 +435,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> applyPersistentHolder(final PersistentDataHolder newHolder, final boolean replaceOld) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -432,7 +448,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public List<String> flags() {
 
-    return List.of();
+    return flags;
   }
 
   /**
@@ -443,9 +459,9 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public <C extends SerialComponent<? extends AbstractItemStack<ItemStack>, ItemStack>> Map<String, C> components() {
+  public Map<String, SerialComponent<AbstractItemStack<ItemStack>, ItemStack>> components() {
 
-    return Map.of();
+    return components;
   }
 
   /**
@@ -458,7 +474,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PersistentDataHolder persistentHolder() {
 
-    return null;
+    return holder;
   }
 
   /**
@@ -467,7 +483,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public void resetDirty() {
-
+    this.dirty = false;
   }
 
   /**
@@ -486,7 +502,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public boolean isDirty() {
 
-    return false;
+    return this.dirty;
   }
 
   /**
@@ -499,7 +515,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public String itemProvider() {
 
-    return "";
+    return this.itemProvider;
   }
 
   /**
@@ -508,9 +524,9 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param itemProvider the string representing the item provider to be set
    */
   @Override
-  public AbstractItemStack<ItemStack> setItemProvider(final String itemProvider) {
-
-    return null;
+  public FabricItemStack setItemProvider(final String itemProvider) {
+    this.itemProvider = itemProvider;
+    return this;
   }
 
   /**
@@ -521,7 +537,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public String providerItemID() {
 
-    return "";
+    return this.providerItemID;
   }
 
   /**
@@ -530,9 +546,10 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param providerItemID the unique ID assigned by the provider for the item
    */
   @Override
-  public AbstractItemStack<ItemStack> setProviderItemID(final String providerItemID) {
+  public FabricItemStack setProviderItemID(final String providerItemID) {
 
-    return null;
+    this.providerItemID = providerItemID;
+    return this;
   }
 
   /**
@@ -543,15 +560,13 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public ItemProvider<ItemStack> provider() {
 
-    return null;
+    return FabricItemPlatform.instance().provider(itemProvider);
   }
 
   /**
    * Converts the object to a JSONObject representation.
    *
    * @return A JSONObject representing the object data.
-   *
-   * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
@@ -565,15 +580,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param modifiers     a list of attribute modifiers
    * @param showInTooltip whether to display the modifiers in the tooltip
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see AttributeModifiersComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> attributeModifiers(final List<AttributeModifier> modifiers, final boolean showInTooltip) {
+  public FabricItemStack attributeModifiers(final List<AttributeModifier> modifiers, final boolean showInTooltip) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -581,15 +596,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param patterns a list of pattern data
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see BannerPatternsComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> bannerPatterns(final List<PatternData> patterns) {
+  public FabricItemStack bannerPatterns(final List<PatternData> patterns) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -597,15 +612,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param color the new base color
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see BaseColorComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> baseColor(final String color) {
+  public FabricItemStack baseColor(final String color) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -621,7 +636,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> blocksAttacks(final ItemDamage damage) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -637,7 +652,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> breakSound(final String sound) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -655,15 +670,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param bucketVariantTag the variant tag of the bucket
    * @param type             the type of the entity
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see BucketEntityDataComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> bucketEntityData(final boolean noAI, final boolean silent, final boolean noGravity, final boolean glowing, final boolean invulnerable, final float health, final int age, final int variant, final long huntingCooldown, final int bucketVariantTag, final String type) {
+  public FabricItemStack bucketEntityData(final boolean noAI, final boolean silent, final boolean noGravity, final boolean glowing, final boolean invulnerable, final float health, final int age, final int variant, final long huntingCooldown, final int bucketVariantTag, final String type) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -678,9 +693,10 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> bundle(final Map<Integer, AbstractItemStack<ItemStack>> items) {
+  public FabricItemStack bundle(final Map<Integer, AbstractItemStack<ItemStack>> items) {
 
-    return null;
+    applyComponent(new FabricBundleComponent(items));
+    return this;
   }
 
   /**
@@ -688,15 +704,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param predicates a list of block predicates
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see CanBreakComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> canBreak(final List<BlockPredicate> predicates) {
+  public FabricItemStack canBreak(final List<BlockPredicate> predicates) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -704,15 +720,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param predicates a list of block predicates
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see CanPlaceOnComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> canPlaceOn(final List<BlockPredicate> predicates) {
+  public FabricItemStack canPlaceOn(final List<BlockPredicate> predicates) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -724,15 +740,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param hasConsumeParticles whether to show consume particles
    * @param effects             a list of effects applied on consumption
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see ConsumableComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> consumable(final float consumeSeconds, final String animation, final String sound, final boolean hasConsumeParticles, final List<ComponentEffect> effects) {
+  public FabricItemStack consumable(final float consumeSeconds, final String animation, final String sound, final boolean hasConsumeParticles, final List<ComponentEffect> effects) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -747,9 +763,10 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> container(final Map<Integer, AbstractItemStack<ItemStack>> items) {
+  public FabricItemStack container(final Map<Integer, AbstractItemStack<ItemStack>> items) {
 
-    return null;
+    applyComponent(new FabricContainerComponent(items));
+    return this;
   }
 
   /**
@@ -757,15 +774,16 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param customName the custom name to set
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see CustomNameComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> customName(final Component customName) {
+  public FabricItemStack customName(final Component customName) {
 
-    return null;
+    applyComponent(new FabricCustomNameComponent(customName));
+    return this;
   }
 
   /**
@@ -773,15 +791,16 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param damage the damage value to set
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see DamageComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> damage(final int damage) {
+  public FabricItemStack damage(final int damage) {
 
-    return null;
+    applyComponent(new FabricDamageComponent(damage));
+    return this;
   }
 
   /**
@@ -789,15 +808,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param types a list of damage-resistant types
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see DamageResistantComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> damageResistant(final List<String> types) {
+  public FabricItemStack damageResistant(final List<String> types) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -805,15 +824,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param deathEffects a list of death protection effects
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see DeathProtectionComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> deathProtection(final List<ComponentEffect> deathEffects) {
+  public FabricItemStack deathProtection(final List<ComponentEffect> deathEffects) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -821,15 +840,16 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param rgb the RGB color value to set
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see DyedColorComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> dyedColor(final int rgb) {
+  public FabricItemStack dyedColor(final int rgb) {
 
-    return null;
+    applyComponent(new FabricDyedColorComponent(rgb));
+    return this;
   }
 
   /**
@@ -837,15 +857,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param value the enchantability value to set
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see EnchantableComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> enchantable(final int value) {
+  public FabricItemStack enchantable(final int value) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -853,15 +873,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param glintOverride whether the enchantment glint should be overridden
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see EnchantmentGlintOverrideComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> enchantmentGlintOverride(final boolean glintOverride) {
+  public FabricItemStack enchantmentGlintOverride(final boolean glintOverride) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -869,15 +889,16 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param levels a map of enchantments and their levels
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see EnchantmentsComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> enchantments(final Map<String, Integer> levels) {
+  public FabricItemStack enchantments(final Map<String, Integer> levels) {
 
-    return null;
+    applyComponent(new FabricEnchantmentsComponent(levels));
+    return this;
   }
 
   /**
@@ -894,7 +915,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> entityVariant(final String entity, final String variant) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -910,15 +931,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param equipOnInteract flag indicating if the item should be equipped on interact
    * @param entities        a list of entities to be equipped
    *
-   * @return an AbstractItemStack object representing the equipped item
+   * @return an FabricItemStack object representing the equipped item
    *
    * @see EquipComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> equip(final String cameraKey, final String equipSound, final String modelKey, final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable, final boolean swappable, final boolean equipOnInteract, final List<String> entities) {
+  public FabricItemStack equip(final String cameraKey, final String equipSound, final String modelKey, final EquipSlot slot, final boolean damageOnHurt, final boolean dispensable, final boolean swappable, final boolean equipOnInteract, final List<String> entities) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -926,15 +947,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param explosion the explosion data to set
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see FireworkExplosionComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> fireworkExplosion(final ExplosionData explosion) {
+  public FabricItemStack fireworkExplosion(final ExplosionData explosion) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -943,15 +964,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param flightDuration the flight duration of the fireworks
    * @param explosions     a list of explosion data
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see FireworksComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> fireworks(final byte flightDuration, final List<ExplosionData> explosions) {
+  public FabricItemStack fireworks(final byte flightDuration, final List<ExplosionData> explosions) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -961,57 +982,57 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param saturation the saturation value
    * @param nutrition  the nutrition value
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see FoodComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> food(final boolean noHunger, final float saturation, final int nutrition) {
+  public FabricItemStack food(final boolean noHunger, final float saturation, final int nutrition) {
 
-    return null;
+    return this;
   }
 
   /**
    * Updates the item stack to enable glider functionality.
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see GliderComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> gliderTag() {
+  public FabricItemStack gliderTag() {
 
-    return null;
+    return this;
   }
 
   /**
    * Updates the item stack to hide additional tooltip.
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see HideAdditionalTooltipComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> hideAdditionalTooltipTag() {
+  public FabricItemStack hideAdditionalTooltipTag() {
 
-    return null;
+    return this;
   }
 
   /**
    * Updates the item stack to hide its tooltip.
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see HideTooltipComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> hideTooltipTag() {
+  public FabricItemStack hideTooltipTag() {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1021,29 +1042,29 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param useDuration the duration of the sound in ticks
    * @param range       the range of the sound
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see InstrumentComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> instrument(final String soundEvent, final int useDuration, final int range) {
+  public FabricItemStack instrument(final String soundEvent, final int useDuration, final int range) {
 
-    return null;
+    return this;
   }
 
   /**
    * Updates the item stack as an intangible projectile.
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see IntangibleProjectileComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> intangibleProjectileTag() {
+  public FabricItemStack intangibleProjectileTag() {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1051,15 +1072,16 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param model the model identifier
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see ItemModelComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> itemModel(final String model) {
+  public FabricItemStack itemModel(final String model) {
 
-    return null;
+    applyComponent(new FabricItemModelComponent(model));
+    return this;
   }
 
   /**
@@ -1067,15 +1089,16 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param itemName the name of the item
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see ItemNameComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> itemName(final Component itemName) {
+  public FabricItemStack itemName(final Component itemName) {
 
-    return null;
+    applyComponent(new FabricItemNameComponent(itemName));
+    return this;
   }
 
   /**
@@ -1084,15 +1107,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param song          the song identifier
    * @param showInTooltip whether to display the song in the tooltip
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see JukeBoxComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> jukebox(final String song, final boolean showInTooltip) {
+  public FabricItemStack jukebox(final String song, final boolean showInTooltip) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1103,15 +1126,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param dimension the dimension identifier
    * @param tracked   whether the lodestone is tracked
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see LodestoneTrackerComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> lodestoneTracker(final String target, final int[] pos, final String dimension, final boolean tracked) {
+  public FabricItemStack lodestoneTracker(final String target, final int[] pos, final String dimension, final boolean tracked) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1119,15 +1142,16 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param lore a list of lore strings
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see LoreComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> lore(final List<Component> lore) {
+  public FabricItemStack lore(final List<Component> lore) {
 
-    return null;
+    applyComponent(new FabricLoreComponent(lore));
+    return this;
   }
 
   /**
@@ -1135,15 +1159,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param mapColor the map color value
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see MapColorComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> mapColor(final int mapColor) {
+  public FabricItemStack mapColor(final int mapColor) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1151,15 +1175,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param mapId the map ID value
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see MapIDComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> mapId(final int mapId) {
+  public FabricItemStack mapId(final int mapId) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1167,15 +1191,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param maxDamage the maximum damage value
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see MaxDamageComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> maxDamage(final int maxDamage) {
+  public FabricItemStack maxDamage(final int maxDamage) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1183,15 +1207,16 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param maxStackSize the maximum stack size value
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see MaxStackSizeComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> maxStackSize(final int maxStackSize) {
+  public FabricItemStack maxStackSize(final int maxStackSize) {
 
-    return null;
+    applyComponent(new FabricMaxStackComponent(maxStackSize));
+    return this;
   }
 
   /**
@@ -1202,15 +1227,16 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param flags   a list of boolean flags
    * @param strings a list of string identifiers
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see ModelDataComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> modelData(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
+  public FabricItemStack modelData(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
 
-    return null;
+    applyComponent(new FabricModelDataComponent(colours, floats, flags, strings));
+    return this;
   }
 
   /**
@@ -1229,7 +1255,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> modelDataOld(final int customModelData) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1237,15 +1263,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param soundId the identifier of the sound
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see NoteBlockSoundComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> noteBlockSound(final String soundId) {
+  public FabricItemStack noteBlockSound(final String soundId) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1253,15 +1279,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param amplifier the amplifier value
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see OminousBottleAmplifierComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> ominousBottleAmplifier(final int amplifier) {
+  public FabricItemStack ominousBottleAmplifier(final int amplifier) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1269,15 +1295,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param decorations a list of decorations
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see PotDecorationsComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> potDecorations(final List<String> decorations) {
+  public FabricItemStack potDecorations(final List<String> decorations) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1288,15 +1314,15 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    * @param customName  the custom name of the potion
    * @param effects     a list of effect instances
    *
-   * @return the updated AbstractItemStack instance
+   * @return the updated FabricItemStack instance
    *
    * @see PotionContentsComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> potionContents(final String potionId, final int customColor, final String customName, final List<EffectInstance> effects) {
+  public FabricItemStack potionContents(final String potionId, final int customColor, final String customName, final List<EffectInstance> effects) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1304,28 +1330,28 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    *
    * @param potionDuration the duration of the potion effect in seconds
    *
-   * @return the modified AbstractItemStack object with the updated potion duration
+   * @return the modified FabricItemStack object with the updated potion duration
    *
    * @see PotionDurationScaleComponent
    * @since 0.2.0.0
    */
   @Override
-  public AbstractItemStack<ItemStack> potionDuration(final float potionDuration) {
+  public FabricItemStack potionDuration(final float potionDuration) {
 
-    return null;
+    return this;
   }
 
   /**
-   * Profiles the given SkullProfile to the AbstractItemStack object.
+   * Profiles the given SkullProfile to the FabricItemStack object.
    *
    * @param profile the SkullProfile to be assigned
    *
-   * @return an AbstractItemStack object with the provided profile
+   * @return an FabricItemStack object with the provided profile
    */
   @Override
-  public AbstractItemStack<ItemStack> profile(final SkullProfile profile) {
-
-    return null;
+  public FabricItemStack profile(final SkullProfile profile) {
+    applyComponent(new FabricProfileComponent(profile));
+    return this;
   }
 
   /**
@@ -1342,7 +1368,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> providesPattern(final String patternTag) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1358,7 +1384,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> providesTrim(final String material) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1374,7 +1400,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> rarity(final String rarity) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1390,7 +1416,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> recipes(final List<String> recipes) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1406,7 +1432,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> repairable(final List<String> repairItems) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1422,7 +1448,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> repairCost(final int repairCost) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1438,7 +1464,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> storedEnchantments(final Map<String, Integer> enchantments) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1455,7 +1481,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> suspiciousStewEffects(final List<EffectInstance> effects) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1472,7 +1498,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> suspiciousStewEffects(final EffectInstance... effects) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1491,7 +1517,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> tool(final float defaultSpeed, final int blockDamage, final boolean canDestroyBlocksCreative, final List<ToolRule> rules) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1508,7 +1534,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> tooltipDisplay(final boolean hideTooltip, final String... hiddenComponents) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1524,7 +1550,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> tooltipStyle(final String style) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1542,7 +1568,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> trim(final String pattern, final String material, final boolean showInTooltip) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1558,7 +1584,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> unbreakable(final boolean showInTooltip) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1575,7 +1601,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> useCooldown(final String cooldownGroup, final float seconds) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1590,7 +1616,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> weapon(final int damagePerAttack, final boolean canDisableBlocking) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1606,7 +1632,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> writableBookContent(final List<String> pages) {
 
-    return null;
+    return this;
   }
 
   /**
@@ -1626,6 +1652,6 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> writtenBookContent(final String title, final String author, final int generation, final boolean resolved, final List<String> pages) {
 
-    return null;
+    return this;
   }
 }

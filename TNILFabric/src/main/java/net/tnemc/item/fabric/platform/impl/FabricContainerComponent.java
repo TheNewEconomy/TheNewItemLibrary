@@ -18,10 +18,8 @@ package net.tnemc.item.fabric.platform.impl;/*
  */
 
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BundleContentsComponent;
 import net.minecraft.item.ItemStack;
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.component.impl.ContainerComponent;
 import net.tnemc.item.fabric.FabricItemStack;
 

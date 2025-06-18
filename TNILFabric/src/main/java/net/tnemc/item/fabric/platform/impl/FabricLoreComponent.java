@@ -20,8 +20,6 @@ package net.tnemc.item.fabric.platform.impl;/*
 import net.kyori.adventure.text.Component;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.component.impl.LoreComponent;
 import net.tnemc.item.fabric.FabricItemStack;
 import net.tnemc.item.fabric.Utils;

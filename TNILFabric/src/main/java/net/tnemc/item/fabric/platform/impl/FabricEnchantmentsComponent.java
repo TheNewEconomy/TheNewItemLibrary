@@ -17,20 +17,13 @@ package net.tnemc.item.fabric.platform.impl;/*
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.kyori.adventure.text.Component;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.text.Text;
-import net.tnemc.item.component.impl.CustomNameComponent;
 import net.tnemc.item.component.impl.EnchantmentsComponent;
 import net.tnemc.item.fabric.FabricItemStack;
-import net.tnemc.item.fabric.Utils;
 
 import java.util.Map;
 import java.util.Optional;

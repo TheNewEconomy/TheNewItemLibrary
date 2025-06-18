@@ -17,41 +17,31 @@ package net.tnemc.item.fabric.platform.impl;/*
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
-import net.tnemc.item.component.impl.DamageComponent;
+import net.tnemc.item.component.impl.ProfileComponent;
 import net.tnemc.item.fabric.FabricItemStack;
+import net.tnemc.item.providers.SkullProfile;
 
 import java.util.Optional;
 
 /**
- * FabricDamageComponent
+ * FabricProfileComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class FabricDamageComponent extends DamageComponent<FabricItemStack, ItemStack> {
+public class FabricProfileComponent extends ProfileComponent<FabricItemStack, ItemStack> {
 
-  /**
-   * Represents a component that manages damage information. This component stores and provides
-   * methods for handling damage values.
-   *
-   * @since 0.2.0.0
-   */
-  public FabricDamageComponent() {
+  public FabricProfileComponent() {
 
   }
 
-  /**
-   * Constructs a new DamageComponent with the specified damage amount.
-   *
-   * @param damage the amount of damage for the component
-   *
-   * @since 0.2.0.0
-   */
-  public FabricDamageComponent(final int damage) {
+  public FabricProfileComponent(final SkullProfile profile) {
 
-    super(damage);
+    super(profile);
   }
 
   /**
@@ -77,7 +67,7 @@ public class FabricDamageComponent extends DamageComponent<FabricItemStack, Item
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasChangedComponent(DataComponentTypes.DAMAGE);
+    return item.hasChangedComponent(DataComponentTypes.PROFILE);
   }
 
   /**
@@ -91,8 +81,20 @@ public class FabricDamageComponent extends DamageComponent<FabricItemStack, Item
   @Override
   public ItemStack apply(final FabricItemStack serialized, final ItemStack item) {
 
-    final Optional<FabricDamageComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->item.set(DataComponentTypes.DAMAGE, component.damage));
+    final Optional<FabricProfileComponent> componentOptional = serialized.component(identifier());
+    componentOptional.ifPresent(component->{
+
+      if(component.profile.uuid() != null && component.profile.name() != null) {
+
+        final GameProfile profile = new GameProfile(component.profile.uuid(), component.profile.name());
+        if(component.profile.texture() != null) {
+
+          profile.getProperties().put("textures", new Property("textures", component.profile.texture()));
+        }
+
+        item.set(DataComponentTypes.PROFILE, new net.minecraft.component.type.ProfileComponent(profile));
+      }
+    });
 
     return item;
   }
@@ -108,13 +110,21 @@ public class FabricDamageComponent extends DamageComponent<FabricItemStack, Item
   @Override
   public FabricItemStack serialize(final ItemStack item, final FabricItemStack serialized) {
 
-    final Optional<Integer> keyOptional = Optional.ofNullable(item.get(DataComponentTypes.DAMAGE));
+    final Optional<net.minecraft.component.type.ProfileComponent> keyOptional = Optional.ofNullable(item.get(DataComponentTypes.PROFILE));
     keyOptional.ifPresent((key->{
 
-      final FabricDamageComponent component = (serialized.fabricComponent(identifier()) instanceof final DamageComponent<?, ?> getComponent)?
-                                                  (FabricDamageComponent)getComponent : new FabricDamageComponent();
+      final FabricProfileComponent component = (serialized.fabricComponent(identifier()) instanceof final ProfileComponent<?, ?> getComponent)?
+                                                  (FabricProfileComponent)getComponent : new FabricProfileComponent();
 
-      component.damage = key;
+      final SkullProfile profile = new SkullProfile();
+      profile.uuid(key.gameProfile().getId());
+      profile.name(key.gameProfile().getName());
+      if(key.gameProfile().getProperties().containsKey("textures")) {
+
+        profile.texture(key.gameProfile().getProperties().get("textures").toString());
+      }
+
+      component.profile = profile;
     }));
     return serialized;
   }

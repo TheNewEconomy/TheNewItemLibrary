@@ -170,6 +170,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     this.material = material;
     this.amount = amount;
 
+
     this.dirty = true;
 
     final ItemType type = ItemTypes.registry().value(fromString(material));
@@ -236,7 +237,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack flags(final List<String> flags) {
 
     this.flags.addAll(flags);
-    this.dirty = true;
     return this;
   }
 
@@ -325,7 +325,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack material(final String material) {
 
     this.material = material;
-    this.dirty = true;
     return this;
   }
 
@@ -351,7 +350,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack amount(final int amount) {
 
     this.amount = amount;
-    this.dirty = true;
     return this;
   }
 
@@ -377,7 +375,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack slot(final int slot) {
 
     this.slot = slot;
-    this.dirty = true;
     return this;
   }
 
@@ -427,7 +424,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     }
 
     this.holder.getData().putAll(newHolder.getData());
-    this.dirty = true;
     return this;
   }
 
@@ -483,7 +479,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public void markDirty() {
 
-    this.dirty = true;
   }
 
   /**
@@ -518,7 +513,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public SpongeItemStack setItemProvider(final String itemProvider) {
     this.itemProvider = itemProvider;
-    this.dirty = true;
     return this;
   }
 
@@ -542,7 +536,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack setProviderItemID(final String providerItemID) {
 
     this.providerItemID = providerItemID;
-    this.dirty = true;
     return this;
   }
 
@@ -760,7 +753,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack container(final Map<Integer, AbstractItemStack<ItemStack>> items) {
 
     applyComponent(new SpongeContainerComponent(items));
-    this.dirty = true;
     return this;
   }
 
@@ -778,7 +770,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack customName(final Component customName) {
 
     applyComponent(new SpongeCustomNameComponent(customName));
-    this.dirty = true;
     return this;
   }
 
@@ -796,7 +787,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack damage(final int damage) {
 
     applyComponent(new SpongeDamageComponent(damage));
-    this.dirty = true;
     return this;
   }
 
@@ -846,7 +836,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack dyedColor(final int rgb) {
 
     applyComponent(new SpongeDyedColorComponent(rgb));
-    this.dirty = true;
     return this;
   }
 
@@ -896,7 +885,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack enchantments(final Map<String, Integer> levels) {
 
     applyComponent(new SpongeEnchantmentsComponent(levels));
-    this.dirty = true;
     return this;
   }
 
@@ -1080,7 +1068,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack itemModel(final String model) {
 
     applyComponent(new SpongeItemModelComponent(model));
-    this.dirty = true;
     return this;
   }
 
@@ -1098,7 +1085,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack itemName(final Component itemName) {
 
     applyComponent(new SpongeItemNameComponent(itemName));
-    this.dirty = true;
     return this;
   }
 
@@ -1152,7 +1138,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack lore(final List<Component> lore) {
 
     applyComponent(new SpongeLoreComponent(lore));
-    this.dirty = true;
     return this;
   }
 
@@ -1238,7 +1223,6 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   public SpongeItemStack modelData(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
 
     applyComponent(new SpongeModelDataComponent(colours, floats, flags, strings));
-    this.dirty = true;
     return this;
   }
 

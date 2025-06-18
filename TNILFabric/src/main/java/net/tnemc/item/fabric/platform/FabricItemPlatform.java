@@ -20,11 +20,21 @@ package net.tnemc.item.fabric.platform;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.fabric.FabricItemCalculationsProvider;
 import net.tnemc.item.fabric.FabricItemStack;
 import net.tnemc.item.fabric.VanillaProvider;
+import net.tnemc.item.fabric.platform.impl.FabricBundleComponent;
+import net.tnemc.item.fabric.platform.impl.FabricContainerComponent;
+import net.tnemc.item.fabric.platform.impl.FabricCustomNameComponent;
+import net.tnemc.item.fabric.platform.impl.FabricDamageComponent;
+import net.tnemc.item.fabric.platform.impl.FabricEnchantmentsComponent;
+import net.tnemc.item.fabric.platform.impl.FabricItemModelComponent;
+import net.tnemc.item.fabric.platform.impl.FabricItemNameComponent;
+import net.tnemc.item.fabric.platform.impl.FabricLoreComponent;
+import net.tnemc.item.fabric.platform.impl.FabricMaxStackComponent;
+import net.tnemc.item.fabric.platform.impl.FabricModelDataComponent;
+import net.tnemc.item.fabric.platform.impl.FabricProfileComponent;
 import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.CalculationsProvider;
 import net.tnemc.item.providers.ItemProvider;
@@ -105,6 +115,18 @@ public class FabricItemPlatform extends ItemPlatform<FabricItemStack, ItemStack,
   public void addDefaults() {
 
     registerConversions();
+
+    addMulti(new FabricBundleComponent());
+    addMulti(new FabricContainerComponent());
+    addMulti(new FabricCustomNameComponent());
+    addMulti(new FabricDamageComponent());
+    addMulti(new FabricEnchantmentsComponent());
+    addMulti(new FabricItemModelComponent());
+    addMulti(new FabricItemNameComponent());
+    addMulti(new FabricLoreComponent());
+    addMulti(new FabricMaxStackComponent());
+    addMulti(new FabricModelDataComponent());
+    addMulti(new FabricProfileComponent());
 
     addItemProvider(defaultProvider);
   }
