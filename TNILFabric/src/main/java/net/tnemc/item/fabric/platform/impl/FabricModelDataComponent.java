@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.tnemc.item.component.impl.ModelDataComponent;
 import net.tnemc.item.fabric.FabricItemStack;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,7 +67,7 @@ public class FabricModelDataComponent extends ModelDataComponent<FabricItemStack
   @Override
   public boolean appliesTo(final ItemStack item) {
 
-    return item.hasChangedComponent(DataComponentTypes.CUSTOM_NAME);
+    return item.hasChangedComponent(DataComponentTypes.CUSTOM_MODEL_DATA);
   }
 
   /**
@@ -81,7 +82,22 @@ public class FabricModelDataComponent extends ModelDataComponent<FabricItemStack
   public ItemStack apply(final FabricItemStack serialized, final ItemStack item) {
 
     final Optional<FabricModelDataComponent> componentOptional = serialized.component(identifier());
-    //componentOptional.ifPresent(component->item.set(DataComponentTypes.CUSTOM_MODEL_DATA, Utils.toText(component.customName())));
+    componentOptional.ifPresent(component->{
+
+      final LinkedList<Integer> colors = new LinkedList<>();
+      for(final String str : component.colours) {
+        colors.add(Integer.parseInt(str));
+      }
+
+      final CustomModelDataComponent customModelDataComponent = new CustomModelDataComponent(component.floats,
+                                                                                             component.flags,
+                                                                                             component.strings,
+                                                                                             colors);
+
+      item.set(DataComponentTypes.CUSTOM_MODEL_DATA, customModelDataComponent);
+
+
+    });
 
     return item;
   }
@@ -103,7 +119,19 @@ public class FabricModelDataComponent extends ModelDataComponent<FabricItemStack
       final FabricModelDataComponent component = (serialized.fabricComponent(identifier()) instanceof final ModelDataComponent<?, ?> getComponent)?
                                                   (FabricModelDataComponent)getComponent : new FabricModelDataComponent();
 
-      //component.colours = key.colors();
+      component.floats.clear();
+      component.floats.addAll(key.floats());
+
+      component.flags.clear();
+      component.flags.addAll(key.flags());
+
+      component.strings.clear();
+      component.strings.addAll(key.strings());
+
+      component.colours.clear();
+      for(final Integer i : key.colors()) {
+        component.colours.add(String.valueOf(i));
+      }
     }));
     return serialized;
   }
