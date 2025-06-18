@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "tnilfabric",
+  "version": "${version}",
+
+  "name": "TNILFabric",
+  "description": "",
+  "authors": [],
+  "contact": {},
+
+  "license": "LGPL-3.0",
+  "icon": "assets/tnilfabric/icon.png",
+
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "net.tnemc.item.fabric.TNILFabric"
+    ]
+  },
+
+  "mixins": [
+    "tnilfabric.mixins.json"
+    ,{
+      "config": "tnilfabric.mixins.json",
+      "environment": "client"
+    }
+  ],
+
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

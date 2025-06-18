@@ -91,7 +91,7 @@ public class SpongeContainerComponent extends ContainerComponent<SpongeItemStack
   @Override
   public ItemStack apply(final SpongeItemStack serialized, final ItemStack item) {
 
-    final Optional<SpongeBundleComponent> componentOptional = serialized.component(identifier());
+    final Optional<SpongeContainerComponent> componentOptional = serialized.component(identifier());
     componentOptional.ifPresent(component->{
 
       final Optional<Inventory> key = item.get(Key.from(ResourceKey.sponge("inventory"), Inventory.class));
