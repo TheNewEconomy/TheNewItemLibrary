@@ -22,6 +22,9 @@ import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.text.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Utils
  *
@@ -38,5 +41,25 @@ public class Utils {
   public static Text toText(final Component component) {
     final String json = GsonComponentSerializer.gson().serialize(component);
     return Text.Serialization.fromJson(json, DynamicRegistryManager.EMPTY);
+  }
+
+  public static List<Component> toComponent(final List<Text> text) {
+
+    final List<Component> components = new ArrayList<>();
+    for(final Text t : text) {
+
+      components.add(toComponent(t));
+    }
+    return components;
+  }
+
+  public static List<Text> toText(final List<Component> components) {
+
+    final List<Text> texts = new ArrayList<>();
+    for(final Component component : components) {
+
+      texts.add(toText(component));
+    }
+    return texts;
   }
 }

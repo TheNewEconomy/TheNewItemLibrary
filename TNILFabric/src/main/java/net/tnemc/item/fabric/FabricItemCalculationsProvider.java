@@ -30,7 +30,6 @@ import net.tnemc.item.providers.CalculationsProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
