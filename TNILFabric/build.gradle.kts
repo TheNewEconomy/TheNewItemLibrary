@@ -2,6 +2,7 @@ plugins {
     id("fabric-loom") version "1.10-SNAPSHOT"
     id("maven-publish")
     id("java")
+    id("com.gradleup.shadow") version "9.0.0-beta16" apply true
 }
 
 group = property("maven_group")!!
@@ -31,7 +32,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:0.16.14")
     modImplementation(include("net.kyori:adventure-platform-fabric:6.4.0")!!) // for Minecraft 1.21.5
     modImplementation("net.fabricmc.fabric-api:fabric-api:0.127.0+1.21.5")
-    implementation(project(":TNIL-Core"))
+    shadow(project(":TNIL-Core"))
 }
 
 java {
@@ -71,6 +72,8 @@ tasks {
         archiveFileName = "TNIL-Fabric-${project.version}.jar"
 
         isZip64 = true
+
+        configurations = listOf(project.configurations.shadow.get())
     }
 
     publishing {

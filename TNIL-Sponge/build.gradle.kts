@@ -12,7 +12,7 @@ plugins {
 val spongeApiVersion = property("org-spongepowered-spongeapi")!!
 
 dependencies {
-    implementation(project(":TNIL-Core"))
+    shadow(project(":TNIL-Core"))
     compileOnly("org.spongepowered:spongeapi:$spongeApiVersion")
 }
 
@@ -45,9 +45,7 @@ tasks {
     shadowJar {
         archiveFileName = "TNIL-Sponge-${project.version}.jar"
 
-        dependencies {
-            include(dependency(":TNIL-Core"))
-        }
+        configurations = listOf(project.configurations.shadow.get())
     }
 }
 

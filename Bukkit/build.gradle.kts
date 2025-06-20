@@ -30,8 +30,8 @@ repositories {
 
 val spigotApiVersion = property("org-spigotmc-spigot-api")!!
 dependencies {
-    implementation(project(":TNIL-Core"))
-    implementation(project(":TNIL-BukkitBase"))
+    shadow(project(":TNIL-Core"))
+    shadow(project(":TNIL-BukkitBase"))
     compileOnly("org.spigotmc:spigot-api:$spigotApiVersion")
 }
 
@@ -56,10 +56,7 @@ tasks {
     shadowJar {
         archiveFileName = "TNIL-Bukkit-${project.version}.jar"
 
-        dependencies {
-            include(dependency(":TNIL-BukkitBase"))
-            include(dependency(":TNIL-Core"))
-        }
+        configurations = listOf(project.configurations.shadow.get())
     }
 }
 

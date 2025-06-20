@@ -27,8 +27,8 @@ val novaApiVersion = property("xyz-xenondevs-nova-nova-api")!!
 val oraxenVersion = property("io-th0rgal-oraxen")!!
 
 dependencies {
-    implementation(project(":TNIL-Core"))
-    implementation(project(":TNIL-BukkitBase"))
+    shadow(project(":TNIL-Core"))
+    shadow(project(":TNIL-BukkitBase"))
     compileOnly("io.papermc.paper:paper-api:$paperApiVersion")
     compileOnly("xyz.xenondevs.nova:nova-api:$novaApiVersion")
     compileOnly("com.nexomc:nexo:$nexoVersion")
@@ -56,10 +56,7 @@ tasks {
     shadowJar {
         archiveFileName = "TNIL-Paper-${project.version}.jar"
 
-        dependencies {
-            include(dependency(":TNIL-BukkitBase"))
-            include(dependency(":TNIL-Core"))
-        }
+        configurations = listOf(project.configurations.shadow.get())
     }
 }
 

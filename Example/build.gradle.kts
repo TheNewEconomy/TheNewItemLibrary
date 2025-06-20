@@ -32,9 +32,9 @@ repositories {
 val spigotApiVersion = property("org-spigotmc-spigot-api")!!
 val adventureVersion = property("adventure_version")!!
 dependencies {
-    implementation(project(":TNIL-Paper"))
-    implementation(project(":TNIL-Bukkit"))
-    implementation(project(":TNIL-Core"))
+    shadow(project(":TNIL-Paper"))
+    shadow(project(":TNIL-Bukkit"))
+    shadow(project(":TNIL-Core"))
     compileOnly("net.kyori:adventure-text-minimessage:$adventureVersion")
     compileOnly("org.spigotmc:spigot-api:$spigotApiVersion")
 }
@@ -60,11 +60,7 @@ tasks {
     shadowJar {
         archiveFileName = "TNIL-Example-${project.version}.jar"
 
-        dependencies {
-            include(dependency(":TNIL-Paper"))
-            include(dependency(":TNIL-Bukkit"))
-            include(dependency(":TNIL-Core"))
-        }
+        configurations = listOf(project.configurations.shadow.get())
     }
 }
 
