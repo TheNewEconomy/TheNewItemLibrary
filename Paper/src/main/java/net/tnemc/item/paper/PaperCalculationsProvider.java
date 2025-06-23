@@ -88,9 +88,11 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
    *
    * @param stack     The stack to compare to for removal from the inventory.
    * @param inventory The inventory to remove the items from.
+   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
    */
   @Override
-  public int removeAll(final PaperItemStack stack, final Inventory inventory) {
+  public int removeAll(final PaperItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
 
     final ItemStack compare = stack.provider().locale(stack).clone();
     compare.setAmount(1);
@@ -111,7 +113,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
         continue;
       }
 
-      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
+      if(useShulker && item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
 
         final Inventory shulkerInventory = shulker.getInventory();
         for(int shulkerSlot = 0; shulkerSlot < shulkerInventory.getStorageContents().length; shulkerSlot++) {
@@ -137,7 +139,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
         inventory.setItem(i, item);
       }
 
-      if(item.getItemMeta() instanceof final BundleMeta bundle) {
+      if(useBundles && item.getItemMeta() instanceof final BundleMeta bundle) {
 
         final List<ItemStack> items = new ArrayList<>(bundle.getItems());
         final Iterator<ItemStack> it = items.iterator();
@@ -169,11 +171,13 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
    *
    * @param stack     The stack to get a count of.
    * @param inventory The inventory to check.
+   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The total count of items in the inventory.
    */
   @Override
-  public int count(final PaperItemStack stack, final Inventory inventory) {
+  public int count(final PaperItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
 
     final ItemStack compare = stack.provider().locale(stack).clone();
     compare.setAmount(1);
@@ -193,7 +197,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
         amount += item.getAmount();
       }
 
-      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
+      if(useShulker && item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
 
         final Inventory shulkerInventory = shulker.getInventory();
         if(shulkerInventory.isEmpty()) {
@@ -216,7 +220,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
         }
       }
 
-      if(item.getItemMeta() instanceof final BundleMeta bundle) {
+      if(useBundles && item.getItemMeta() instanceof final BundleMeta bundle) {
 
         for(final ItemStack bundleItem : bundle.getItems()) {
 
@@ -240,11 +244,13 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
    *
    * @param items     The collection of items to remove.
    * @param inventory The inventory to remove the items from.
+   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
    */
   @Override
-  public void takeItems(final Collection<PaperItemStack> items, final Inventory inventory) {
+  public void takeItems(final Collection<PaperItemStack> items, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
 
-    items.forEach(itemStack->removeItem(itemStack, inventory));
+    items.forEach(itemStack->removeItem(itemStack, inventory, useShulker, useBundles));
   }
 
   /**
@@ -253,9 +259,11 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
    *
    * @param items     The collection of items to add to the inventory.
    * @param inventory The inventory to add the collection of items to.
+   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
    */
   @Override
-  public Collection<PaperItemStack> giveItems(final Collection<PaperItemStack> items, final Inventory inventory) {
+  public Collection<PaperItemStack> giveItems(final Collection<PaperItemStack> items, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
 
     final Collection<PaperItemStack> leftOver = new ArrayList<>();
 
@@ -288,11 +296,13 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
    *
    * @param stack     The stack, with the correct amount, to remove.
    * @param inventory The inventory to return the net.tnemc.item stack from.
+   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The remaining amount of items to remove.
    */
   @Override
-  public int removeItem(final PaperItemStack stack, final Inventory inventory) {
+  public int removeItem(final PaperItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
 
     int left = stack.provider().locale(stack).clone().getAmount();
 
@@ -329,7 +339,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
         inventory.setItem(i, null);
       }
 
-      if(item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
+      if(useShulker && item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
 
 
         final Inventory shulkerInventory = shulker.getInventory();
@@ -372,7 +382,7 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
         inventory.setItem(i, item);
       }
 
-      if(item.getItemMeta() instanceof final BundleMeta bundle) {
+      if(useBundles && item.getItemMeta() instanceof final BundleMeta bundle) {
 
         final List<ItemStack> items = new ArrayList<>(bundle.getItems());
         final Iterator<ItemStack> it = items.iterator();

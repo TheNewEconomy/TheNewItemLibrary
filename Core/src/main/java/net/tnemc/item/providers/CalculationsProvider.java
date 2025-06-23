@@ -58,7 +58,20 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    *
    * @return The amount of items removed.
    */
-  int removeAll(I stack, U inventory);
+  default int removeAll(final I stack, final U inventory) {
+    return removeAll(stack, inventory, true, true);
+  }
+
+  /**
+   * Removes all items from the inventory that match the specified stack, with additional options to consider useShulker boxes and useBundles.
+   *
+   * @param stack     The stack to compare against for removal.
+   * @param inventory The inventory from which to remove items.
+   * @param useShulker   A boolean flag indicating whether to include useShulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include useBundles in the removal process.
+   * @return The count of items that were successfully removed from the inventory.
+   */
+  int removeAll(I stack, U inventory, boolean useShulker, boolean useBundles);
 
   /**
    * Removes all items that are equal to the stack from an inventory.
@@ -71,7 +84,23 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
   default int removeAll(final I stack, final UUID identifier) {
 
     final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
-    return inventory.map(u->removeAll(stack, u)).orElse(0);
+    return inventory.map(u->removeAll(stack, u, true, true)).orElse(0);
+  }
+
+  /**
+   * Removes all items that are equal to the stack from an inventory.
+   *
+   * @param stack      The stack to compare to for removal from the inventory.
+   * @param identifier The identifier of the player to remove the items from.
+   * @param useShulker   A boolean flag indicating whether to include useShulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include useBundles in the removal process.
+   *
+   * @return The amount of items removed.
+   */
+  default int removeAll(final I stack, final UUID identifier, final boolean useShulker, final boolean useBundles) {
+
+    final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
+    return inventory.map(u->removeAll(stack, u, useShulker, useBundles)).orElse(0);
   }
 
   /**
@@ -82,7 +111,21 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    *
    * @return The total count of items in the inventory.
    */
-  int count(I stack, U inventory);
+  default int count(final I stack, final U inventory) {
+    return count(stack, inventory, true, true);
+  }
+
+  /**
+   * Returns a count of items equal to the specific stack in an inventory.
+   *
+   * @param stack     The stack to get a count of.
+   * @param inventory The inventory to check.
+   * @param useShulker   A boolean flag indicating whether to include useShulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include useBundles in the removal process.
+   *
+   * @return The total count of items in the inventory.
+   */
+  int count(I stack, U inventory, boolean useShulker, boolean useBundles);
 
   /**
    * Returns a count of items equal to the specific stack in an inventory.
@@ -95,7 +138,23 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
   default int count(final I stack, final UUID identifier) {
 
     final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
-    return inventory.map(u->count(stack, u)).orElse(0);
+    return inventory.map(u->count(stack, u, true, true)).orElse(0);
+  }
+
+  /**
+   * Returns a count of items equal to the specific stack in an inventory.
+   *
+   * @param stack      The stack to get a count of.
+   * @param identifier The identifier of the player to check.
+   * @param useShulker   A boolean flag indicating whether to include useShulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include useBundles in the removal process.
+   *
+   * @return The total count of items in the inventory.
+   */
+  default int count(final I stack, final UUID identifier, final boolean useShulker, final boolean useBundles) {
+
+    final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
+    return inventory.map(u->count(stack, u, useShulker, useBundles)).orElse(0);
   }
 
   /**
@@ -104,7 +163,19 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    * @param items     The collection of items to remove.
    * @param inventory The inventory to remove the items from.
    */
-  void takeItems(Collection<I> items, U inventory);
+  default void takeItems(final Collection<I> items, final U inventory) {
+    takeItems(items, inventory, true, true);
+  }
+
+  /**
+   * Takes a collection of items from an inventory.
+   *
+   * @param items     The collection of items to remove.
+   * @param inventory The inventory to remove the items from.
+   * @param useShulker   A boolean flag indicating whether to include useShulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include useBundles in the removal process.
+   */
+  void takeItems(Collection<I> items, U inventory, boolean useShulker, boolean useBundles);
 
   /**
    * Takes a collection of items from an inventory.
@@ -115,7 +186,21 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
   default void takeItems(final Collection<I> items, final UUID identifier) {
 
     final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
-    inventory.ifPresent(u->takeItems(items, u));
+    inventory.ifPresent(u->takeItems(items, u, true, true));
+  }
+
+  /**
+   * Takes a collection of items from an inventory.
+   *
+   * @param items      The collection of items to remove.
+   * @param identifier The identifier of the player to remove the items from.
+   * @param useShulker   A boolean flag indicating whether to include useShulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include useBundles in the removal process.
+   */
+  default void takeItems(final Collection<I> items, final UUID identifier, final boolean useShulker, final boolean useBundles) {
+
+    final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
+    inventory.ifPresent(u->takeItems(items, u, useShulker, useBundles));
   }
 
   /**
@@ -127,7 +212,22 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    *
    * @return The collection of items that won't fit in the inventory.
    */
-  Collection<I> giveItems(Collection<I> items, U inventory);
+  default Collection<I> giveItems(final Collection<I> items, final U inventory) {
+    return giveItems(items, inventory, true, true);
+  }
+
+  /**
+   * Adds a collection of item stacks to an inventory, returns the leftover items that won't fit in
+   * the inventory.
+   *
+   * @param items     The collection of items to add to the inventory.
+   * @param inventory The inventory to add the collection of items to.
+   * @param useShulker   A boolean flag indicating whether to include useShulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include useBundles in the removal process.
+   *
+   * @return The collection of items that won't fit in the inventory.
+   */
+  Collection<I> giveItems(Collection<I> items, U inventory, final boolean useShulker, final boolean useBundles);
 
   /**
    * Adds a collection of item stacks to an inventory, returns the leftover items that won't fit in
@@ -141,7 +241,24 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
   default Collection<I> giveItems(final Collection<I> items, final UUID identifier) {
 
     final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
-    return inventory.map(u->giveItems(items, u)).orElse(items);
+    return inventory.map(u->giveItems(items, u, true, true)).orElse(items);
+  }
+
+  /**
+   * Adds a collection of item stacks to an inventory, returns the leftover items that won't fit in
+   * the inventory.
+   *
+   * @param items      The collection of items to add to the inventory.
+   * @param identifier The identifier of the player to add the collection of items to.
+   * @param useShulker   A boolean flag indicating whether to include useShulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include useBundles in the removal process.
+   *
+   * @return The collection of items that won't fit in the inventory.
+   */
+  default Collection<I> giveItems(final Collection<I> items, final UUID identifier, final boolean useShulker, final boolean useBundles) {
+
+    final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
+    return inventory.map(u->giveItems(items, u, useShulker, useBundles)).orElse(items);
   }
 
   /**
@@ -152,7 +269,21 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
    *
    * @return The remaining amount of items to remove.
    */
-  int removeItem(I stack, U inventory);
+  default int removeItem(final I stack, final U inventory) {
+    return removeItem(stack, inventory, true, true);
+  }
+
+  /**
+   * Removes an net.tnemc.item stack with a specific amount from an inventory.
+   *
+   * @param stack     The stack, with the correct amount, to remove.
+   * @param inventory The inventory to remove the net.tnemc.item stack from.
+   * @param useShulker   A boolean flag indicating whether to include useShulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include useBundles in the removal process.
+   *
+   * @return The remaining amount of items to remove.
+   */
+  int removeItem(I stack, U inventory, final boolean useShulker, final boolean useBundles);
 
   /**
    * Removes an net.tnemc.item stack with a specific amount from an inventory.
@@ -165,7 +296,23 @@ public interface CalculationsProvider<I extends AbstractItemStack<S>, S, U> {
   default int removeItem(final I stack, final UUID identifier) {
 
     final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
-    return inventory.map(u->removeItem(stack, u)).orElseGet(stack::amount);
+    return inventory.map(u->removeItem(stack, u, true, true)).orElseGet(stack::amount);
+  }
+
+  /**
+   * Removes an net.tnemc.item stack with a specific amount from an inventory.
+   *
+   * @param stack      The stack, with the correct amount, to remove.
+   * @param identifier The identifier of the player to remove the net.tnemc.item stack from.
+   * @param useShulker   A boolean flag indicating whether to include useShulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include useBundles in the removal process.
+   *
+   * @return The remaining amount of items to remove.
+   */
+  default int removeItem(final I stack, final UUID identifier, final boolean useShulker, final boolean useBundles) {
+
+    final Optional<U> inventory = inventory(identifier, InventoryType.PLAYER);
+    return inventory.map(u->removeItem(stack, u, useShulker, useBundles)).orElseGet(stack::amount);
   }
 
   /**

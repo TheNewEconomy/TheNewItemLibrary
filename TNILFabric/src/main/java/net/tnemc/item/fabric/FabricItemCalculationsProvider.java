@@ -95,11 +95,13 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    *
    * @param stack     The stack to compare to for removal from the inventory.
    * @param inventory The inventory to remove the items from.
+   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The amount of items removed.
    */
   @Override
-  public int removeAll(final FabricItemStack stack, final Inventory inventory) {
+  public int removeAll(final FabricItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
 
     final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
     compare.setCount(1);
@@ -129,11 +131,13 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    *
    * @param stack     The stack to get a count of.
    * @param inventory The inventory to check.
+   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The total count of items in the inventory.
    */
   @Override
-  public int count(final FabricItemStack stack, final Inventory inventory) {
+  public int count(final FabricItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
     final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
     compare.setCount(1);
 
@@ -160,11 +164,13 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    *
    * @param items     The collection of items to remove.
    * @param inventory The inventory to remove the items from.
+   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
    */
   @Override
-  public void takeItems(final Collection<FabricItemStack> items, final Inventory inventory) {
+  public void takeItems(final Collection<FabricItemStack> items, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
     for(final FabricItemStack stack : items) {
-      removeItem(stack, inventory);
+      removeItem(stack, inventory, useShulker, useBundles);
     }
   }
 
@@ -174,11 +180,13 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    *
    * @param items     The collection of items to add to the inventory.
    * @param inventory The inventory to add the collection of items to.
+   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The collection of items that won't fit in the inventory.
    */
   @Override
-  public Collection<FabricItemStack> giveItems(final Collection<FabricItemStack> items, final Inventory inventory) {
+  public Collection<FabricItemStack> giveItems(final Collection<FabricItemStack> items, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
     final Collection<FabricItemStack> leftovers = new ArrayList<>();
 
     for(final FabricItemStack fabricStack : items) {
@@ -218,15 +226,17 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
   }
 
   /**
-   * Removes an net.tnemc.item stack with a specific amount from an inventory.
+   * Removes a net.tnemc.item stack with a specific amount from an inventory.
    *
    * @param stack     The stack, with the correct amount, to remove.
    * @param inventory The inventory to remove the net.tnemc.item stack from.
+   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
+   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The remaining amount of items to remove.
    */
   @Override
-  public int removeItem(final FabricItemStack stack, final Inventory inventory) {
+  public int removeItem(final FabricItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
     int left = stack.provider().locale(stack, stack.amount()).copy().getCount();
     final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
     compare.setCount(1); // Normalize
