@@ -185,31 +185,31 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
     Material materialInstance = null;
 
-    System.out.println("Creating paper stack");
+    //System.out.println("Creating paper stack");
     try {
       final NamespacedKey key = NamespacedKey.fromString(material);
 
-      System.out.println("looking for mat key");
+      //System.out.println("looking for mat key");
       if(key != null) {
 
-        System.out.println("key found");
+        //System.out.println("key found");
 
         materialInstance = Registry.MATERIAL.get(key);
       }
     } catch(final NoSuchMethodError ignore) {
 
-      System.out.println("key not found");
+      //System.out.println("key not found");
       materialInstance = Material.matchMaterial(material);
     }
 
     if(materialInstance == null) {
 
-      System.out.println("Creating paper stack v2");
+      //System.out.println("Creating paper stack v2");
 
       return this;
     }
 
-    System.out.println("Material: " + materialInstance.translationKey());
+    //System.out.println("Material: " + materialInstance.translationKey());
 
     this.localeStack = ItemStack.of(materialInstance, amount);
 
@@ -232,7 +232,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     this.localeStack = locale;
     this.material = locale.getType().getKey().asString();
 
-    System.out.println("Material String: " + material);
+    //System.out.println("Material String: " + material);
 
     this.amount = locale.getAmount();
 

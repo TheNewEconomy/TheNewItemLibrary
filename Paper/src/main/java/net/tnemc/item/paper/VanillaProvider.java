@@ -86,42 +86,42 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
 
       Material material = null;
 
-      System.out.println("Creating paper locale");
+      //System.out.println("Creating paper locale");
       try {
         final NamespacedKey key = NamespacedKey.fromString(bukkit.material());
 
-        System.out.println("looking for locale mat key");
+        //System.out.println("looking for locale mat key");
         if(key != null) {
 
-          System.out.println("locale key found");
+          //System.out.println("locale key found");
 
           material = Registry.MATERIAL.get(key);
         }
       } catch(final NoSuchMethodError ignore) {
 
-        System.out.println("locale key not found");
+        //System.out.println("locale key not found");
 
         material = Material.matchMaterial(bukkit.material());
       }
 
       if(material == null) {
 
-        System.out.println("locale material null");
+        //System.out.println("locale material null");
 
         return null;
       }
       ItemStack stack = new ItemStack(material, amount);
 
-      System.out.println("locale Material: " + material.translationKey());
+      //System.out.println("locale Material: " + material.translationKey());
 
       stack = PaperItemPlatform.instance().apply(bukkit, stack);
 
-      System.out.println("locale Material v2: " + stack.getType().translationKey());
+      //System.out.println("locale Material v2: " + stack.getType().translationKey());
 
       bukkit.updateCache(stack);
       bukkit.resetDirty();
 
-      System.out.println("locale Material v3: " + stack.getType().translationKey());
+      //System.out.println("locale Material v3: " + stack.getType().translationKey());
 
       return stack;
     }

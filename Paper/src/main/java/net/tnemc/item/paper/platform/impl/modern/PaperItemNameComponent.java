@@ -69,15 +69,15 @@ public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, It
   @Override
   public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
 
-    System.out.println("=== Apply ItemName Modern ===");
+    //System.out.println("=== Apply ItemName Modern ===");
     final Optional<PaperItemNameComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
 
-      System.out.println("No component found");
+      //System.out.println("No component found");
       return item;
     }
 
-    System.out.println("applying");
+    //System.out.println("applying");
     item.setData(DataComponentTypes.ITEM_NAME, componentOptional.get().itemName());
     return item;
   }
@@ -113,11 +113,11 @@ public class PaperItemNameComponent extends ItemNameComponent<PaperItemStack, It
   @Override
   public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
-    System.out.println("=== Serialize ItemName Modern ===");
+    //System.out.println("=== Serialize ItemName Modern ===");
 
     final Component name = item.getData(DataComponentTypes.ITEM_NAME);
     if(name == null) {
-      System.out.println("item name is null");
+      //System.out.println("item name is null");
       return serialized;
     }
 

@@ -68,15 +68,15 @@ public class PaperMaxStackComponent extends MaxStackSizeComponent<PaperItemStack
 
     final Optional<PaperMaxStackComponent> componentOptional = serialized.component(identifier());
 
-    System.out.println("=== ApplyModernMaxStack ===");
+    //System.out.println("=== ApplyModernMaxStack ===");
     if(componentOptional.isEmpty()) {
-      System.out.println("max stack empty");
+      //System.out.println("max stack empty");
 
       return item;
     }
 
     item.setData(DataComponentTypes.MAX_STACK_SIZE, componentOptional.get().maxStackSize);
-    System.out.println("set data max stack");
+    //System.out.println("set data max stack");
     return item;
   }
 

@@ -84,12 +84,12 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
   public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final DamageComponent<?, ?> other)) {
 
-      System.out.println("mismatch damage component");
+      //System.out.println("mismatch damage component");
       return false;
     }
 
-    System.out.println("This damage: " + this.damage);
-    System.out.println("other damage: " + other.damage);
+    //System.out.println("This damage: " + this.damage);
+    //System.out.println("other damage: " + other.damage);
 
     return this.damage == other.damage;
   }

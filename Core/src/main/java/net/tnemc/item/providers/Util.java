@@ -83,14 +83,14 @@ public class Util {
 
     if(debug) {
 
-      System.out.println("List 1");
+      //System.out.println("List 1");
       for(final V item : list1) {
-        System.out.println("Item: " + item);
+        //System.out.println("Item: " + item);
       }
 
-      System.out.println("List 2");
+      //System.out.println("List 2");
       for(final V item : list2) {
-        System.out.println("Item: " + item);
+        //System.out.println("Item: " + item);
       }
     }
 

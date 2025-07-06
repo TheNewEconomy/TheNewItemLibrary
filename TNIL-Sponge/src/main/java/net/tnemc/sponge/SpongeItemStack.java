@@ -198,7 +198,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
     final Optional<ResourceKey> type = ItemTypes.registry().findValueKey(locale.type());
     type.ifPresent(resourceKey->this.material = resourceKey.asString());
 
-    System.out.println("Material String: " + material);
+    //System.out.println("Material String: " + material);
 
     this.amount = locale.quantity();
 

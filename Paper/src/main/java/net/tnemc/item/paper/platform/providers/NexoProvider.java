@@ -85,16 +85,16 @@ public class NexoProvider implements ItemProvider<ItemStack> {
   public ItemStack locale(final AbstractItemStack<? extends ItemStack> original, final int amount) {
 
     final ItemBuilder originalStack = NexoItems.itemFromId(original.providerItemID());
-    System.out.println("Nexo locale");
+    //System.out.println("Nexo locale");
     if(originalStack == null) {
-      System.out.println("Nexo locale null");
+      //System.out.println("Nexo locale null");
 
       return null;
     }
 
     final ItemStack stack = originalStack.build();
     stack.setAmount(amount);
-    System.out.println("Nexo locale returning");
+    //System.out.println("Nexo locale returning");
 
     return stack;
   }

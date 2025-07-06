@@ -139,6 +139,10 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
     return converter;
   }
+  
+  public void debug(final String message) {
+    //TODO: debug
+  }
 
   /**
    * Retrieves the default provider for the item stack comparison.
@@ -422,7 +426,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
     final List<String> disabled = Arrays.asList(disabledChecks);
     for(final ItemCheck<S> checkItem : checks.values()) {
 
-      System.out.println("Check: " + checkItem.identifier());
+      //System.out.println("Check: " + checkItem.identifier());
 
       if(disabled.contains(checkItem.identifier())) {
         continue;
@@ -438,7 +442,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
       if(!checkItem.check(original, check)) {
 
-        System.out.println("Failed check: " + checkItem.identifier());
+        //System.out.println("Failed check: " + checkItem.identifier());
         return false;
       }
     }
@@ -493,11 +497,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
     for(final ItemApplicator<I, S> applicator : applicators.values()) {
 
-      System.out.println("Try applicator: " + applicator.identifier());
+      //System.out.println("Try applicator: " + applicator.identifier());
 
       if(applicator.enabled(version())) {
 
-        System.out.println("Applicator ready to apply");
+        //System.out.println("Applicator ready to apply");
 
         item = applicator.apply(serialized, item);
       }
@@ -520,14 +524,14 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
       if(serializer.enabled(version())) {
 
-        System.out.println("Serializer ready to apply: " + serializer.identifier());
+        //System.out.println("Serializer ready to apply: " + serializer.identifier());
 
         if(serializer instanceof final SerialComponent<I,S> component) {
 
-          System.out.println("Serializer is component");
+          //System.out.println("Serializer is component");
           if(!component.appliesTo(item)) {
 
-            System.out.println("Serializer doesn't apply");
+            //System.out.println("Serializer doesn't apply");
 
             continue;
           }
