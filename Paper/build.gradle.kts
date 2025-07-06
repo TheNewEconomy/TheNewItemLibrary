@@ -63,8 +63,8 @@ publishing {
     publications {
         create<MavenPublication>("shadow") {
             from(components["shadow"])
-            groupId = "net.tnemc"
-            version = "0.1.2.0-SNAPSHOT-12"
+            groupId = property("tnil_group") as String
+            version = property("tnil_version") as String
             artifactId = "TNIL-Paper"
         }
     }
