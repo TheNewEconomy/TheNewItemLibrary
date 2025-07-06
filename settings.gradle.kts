@@ -7,7 +7,7 @@ include(":TNIL-Core")
 include(":TNIL-Bukkit")
 include(":TNIL-BukkitBase")
 include(":TNIL-Example")
-include(":TNIL-Fabric")
+//include(":TNIL-Fabric")
 include(":TNIL-Paper")
 include(":TNIL-Sponge")
 project(":TNIL-Core").projectDir = file("Core")
@@ -15,7 +15,7 @@ project(":TNIL-Bukkit").projectDir = file("Bukkit")
 project(":TNIL-BukkitBase").projectDir = file("BukkitBase")
 project(":TNIL-Example").projectDir = file("Example")
 project(":TNIL-Paper").projectDir = file("Paper")
-project(":TNIL-Fabric").projectDir = file("TNILFabric")
+//project(":TNIL-Fabric").projectDir = file("TNILFabric")
 
 pluginManagement {
     repositories {
