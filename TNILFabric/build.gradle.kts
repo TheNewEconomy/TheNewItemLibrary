@@ -75,13 +75,15 @@ tasks {
 
         configurations = listOf(project.configurations.shadow.get())
     }
+}
 
-    publishing {
-
-        // select the repositories you want to publish to
-        repositories {
-            // uncomment to publish to the local maven
-            // mavenLocal()
+publishing {
+    publications {
+        create<MavenPublication>("shadow") {
+            from(components["shadow"])
         }
+    }
+    repositories {
+        maven("https://repo.codemc.io/repository/maven-releases/")
     }
 }

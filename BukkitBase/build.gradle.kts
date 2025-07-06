@@ -44,4 +44,15 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:$spigotApiVersion")
 }
 
+publishing {
+    publications {
+        create<MavenPublication>("shadow") {
+            from(components["shadow"])
+        }
+    }
+    repositories {
+        maven("https://repo.codemc.io/repository/maven-releases/")
+    }
+}
+
 description = "The New Item Library Bukkit Base"
