@@ -52,11 +52,10 @@ tasks {
 publishing {
     publications {
         create<MavenPublication>("shadow") {
+            from(components["shadow"])
             groupId = property("tnil_group")!! as String?
             artifactId = "TNIL-Sponge"
             version = property("tnil_version")!! as String?
-
-            from(components["shadow"])
         }
     }
 
