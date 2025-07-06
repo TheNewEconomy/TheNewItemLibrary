@@ -44,6 +44,7 @@ tasks {
 
     shadowJar {
         archiveFileName = "TNIL-Sponge-${project.version}.jar"
+        archiveClassifier = ""
 
         configurations = listOf(project.configurations.shadow.get())
     }

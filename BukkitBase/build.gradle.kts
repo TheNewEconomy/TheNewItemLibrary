@@ -59,6 +59,7 @@ tasks {
 
     shadowJar {
         archiveFileName = "TNIL-BukkitBase-${project.version}.jar"
+        archiveClassifier = ""
     }
 }
 

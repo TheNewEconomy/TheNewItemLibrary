@@ -55,6 +55,7 @@ tasks {
 
     shadowJar {
         archiveFileName = "TNIL-Bukkit-${project.version}.jar"
+        archiveClassifier = ""
 
         configurations = listOf(project.configurations.shadow.get())
     }

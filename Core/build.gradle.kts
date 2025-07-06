@@ -34,6 +34,7 @@ tasks {
 
     shadowJar {
         archiveFileName = "TNIL-Core-${project.version}.jar"
+        archiveClassifier = ""
     }
 }
 
