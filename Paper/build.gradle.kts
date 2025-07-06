@@ -65,8 +65,7 @@ publishing {
             artifactId = "TNIL-Paper"
             version = property("tnil_version")!! as String?
 
-            from(components["java"])
-            artifact(tasks["shadowJar"])
+            from(components["shadow"])
         }
     }
 
