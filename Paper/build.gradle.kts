@@ -63,7 +63,8 @@ tasks {
 publishing {
     publications {
         create<MavenPublication>("shadow") {
-            from(components["shadow"])
+            from(components["java"])
+            artifact(tasks["shadowJar"])
         }
     }
     repositories {
