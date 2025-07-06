@@ -89,7 +89,7 @@ subprojects {
             create<MavenPublication>("shadow") {
                 from(components["shadow"])
                 groupId = "net.tnemc"
-                version = "0.1.2.0-SNAPSHOT-11"
+                version = "0.1.2.0-SNAPSHOT-12"
             }
         }
 
