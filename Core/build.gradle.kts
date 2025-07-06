@@ -38,12 +38,13 @@ tasks {
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
+        create<MavenPublication>("shadow") {
             groupId = property("tnil_group")!! as String?
             artifactId = "TNIL-Core"
             version = property("tnil_version")!! as String?
 
             from(components["java"])
+            artifact(tasks["shadowJar"])
         }
     }
 

@@ -58,26 +58,15 @@ tasks {
         configurations = listOf(project.configurations.shadow.get())
     }
 }
-
 publishing {
     publications {
         create<MavenPublication>("shadow") {
-            from(components["java"])
-            artifact(tasks["shadowJar"])
-        }
-    }
-    repositories {
-        maven("https://repo.codemc.io/repository/maven-releases/")
-    }
-}
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
             groupId = property("tnil_group")!! as String?
             artifactId = "TNIL-Paper"
             version = property("tnil_version")!! as String?
 
             from(components["java"])
+            artifact(tasks["shadowJar"])
         }
     }
 
