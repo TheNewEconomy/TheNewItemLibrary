@@ -49,4 +49,33 @@ tasks {
     }
 }
 
+publishing {
+    publications {
+        create<MavenPublication>("shadow") {
+            from(components["shadow"])
+            groupId = "net.tnemc"
+            version = "0.1.2.0-SNAPSHOT-12"
+            artifactId = "TNIL-Sponge"
+        }
+    }
+
+    repositories {
+        val mavenUrl: String? by project
+        val mavenSnapshotUrl: String? by project
+
+        (if(version.toString().endsWith("SNAPSHOT")) mavenSnapshotUrl else mavenUrl)?.let { url ->
+            maven(url) {
+                val mavenUsername: String? by project
+                val mavenPassword: String? by project
+                if(mavenUsername != null && mavenPassword != null) {
+                    credentials {
+                        username = mavenUsername
+                        password = mavenPassword
+                    }
+                }
+            }
+        }
+    }
+}
+
 description = "The New Item Library Sponge"
