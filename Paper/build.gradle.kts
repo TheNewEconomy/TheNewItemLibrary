@@ -70,5 +70,34 @@ publishing {
         maven("https://repo.codemc.io/repository/maven-releases/")
     }
 }
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            groupId = property("tnil_group")!! as String?
+            artifactId = "TNIL-Paper"
+            version = property("tnil_version")!! as String?
+
+            from(components["java"])
+        }
+    }
+
+    repositories {
+        val mavenUrl = "https://repo.codemc.io/repository/maven-releases/"
+        val mavenSnapshotUrl = "https://repo.codemc.io/repository/maven-snapshots/"
+
+        (if(version.toString().endsWith("SNAPSHOT")) mavenSnapshotUrl else mavenUrl)?.let { url ->
+            maven(url) {
+                val mavenUsername: String? by project
+                val mavenPassword: String? by project
+                if(mavenUsername != null && mavenPassword != null) {
+                    credentials {
+                        username = mavenUsername
+                        password = mavenPassword
+                    }
+                }
+            }
+        }
+    }
+}
 
 description = "The New Item Library Paper"

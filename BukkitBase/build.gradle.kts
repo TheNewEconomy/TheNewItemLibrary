@@ -46,13 +46,31 @@ dependencies {
 
 publishing {
     publications {
-        create<MavenPublication>("shadow") {
+        create<MavenPublication>("mavenJava") {
+            groupId = property("tnil_group")!! as String?
+            artifactId = "TNIL-BukkitBase"
+            version = property("tnil_version")!! as String?
+
             from(components["java"])
-            artifact(tasks["shadowJar"])
         }
     }
+
     repositories {
-        maven("https://repo.codemc.io/repository/maven-releases/")
+        val mavenUrl = "https://repo.codemc.io/repository/maven-releases/"
+        val mavenSnapshotUrl = "https://repo.codemc.io/repository/maven-snapshots/"
+
+        (if(version.toString().endsWith("SNAPSHOT")) mavenSnapshotUrl else mavenUrl)?.let { url ->
+            maven(url) {
+                val mavenUsername: String? by project
+                val mavenPassword: String? by project
+                if(mavenUsername != null && mavenPassword != null) {
+                    credentials {
+                        username = mavenUsername
+                        password = mavenPassword
+                    }
+                }
+            }
+        }
     }
 }
 
