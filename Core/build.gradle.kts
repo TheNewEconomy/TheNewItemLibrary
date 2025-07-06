@@ -28,11 +28,13 @@ tasks {
     }
 
     jar {
+        artifacts.add("archives", this)
         dependsOn(shadowJar)
         archiveFileName = "original-TNIL-Core-${project.version}.jar"
     }
 
     shadowJar {
+        artifacts.add("archives", this)
         archiveFileName = "TNIL-Core-${project.version}.jar"
     }
 }

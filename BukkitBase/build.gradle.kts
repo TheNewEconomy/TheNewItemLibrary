@@ -53,8 +53,14 @@ tasks {
     }
 
     jar {
+        artifacts.add("archives", this)
         dependsOn(shadowJar)
         archiveFileName = "original-TNIL-BukkitBase-${project.version}.jar"
+    }
+
+    shadowJar {
+        artifacts.add("archives", this)
+        archiveFileName = "TNIL-BukkitBase-${project.version}.jar"
     }
 }
 
