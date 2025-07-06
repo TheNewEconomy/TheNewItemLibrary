@@ -88,8 +88,8 @@ subprojects {
         publications {
             create<MavenPublication>("shadow") {
                 from(components["shadow"])
-                groupId = findProperty("tnil_group") as String?
-                version = findProperty("tnil_version") as String?
+                groupId = "net.tnemc"
+                version = "0.1.2.0-SNAPSHOT-11"
             }
         }
 
