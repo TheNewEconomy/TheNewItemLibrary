@@ -38,8 +38,7 @@ tasks {
     }
 
     jar {
-        dependsOn(shadowJar)
-        archiveFileName = "original-TNIL-Sponge-${project.version}.jar"
+        enabled = false
     }
 
     shadowJar {

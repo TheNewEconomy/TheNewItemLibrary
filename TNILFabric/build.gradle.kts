@@ -64,8 +64,7 @@ tasks {
     }
 
     jar {
-        dependsOn(shadowJar)
-        archiveFileName = "original-TNIL-Fabric-${project.version}.jar"
+        enabled = false
     }
 
     shadowJar {
