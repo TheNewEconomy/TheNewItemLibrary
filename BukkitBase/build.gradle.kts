@@ -44,6 +44,20 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:$spigotApiVersion")
 }
 
+tasks {
+
+    compileJava {
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
+
+    }
+
+    jar {
+        dependsOn(shadowJar)
+        archiveFileName = "original-TNIL-BukkitBase-${project.version}.jar"
+    }
+}
+
 publishing {
     publications {
         create<MavenPublication>("shadow") {

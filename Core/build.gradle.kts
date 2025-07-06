@@ -28,7 +28,8 @@ tasks {
     }
 
     jar {
-        enabled = false
+        dependsOn(shadowJar)
+        archiveFileName = "original-TNIL-Core-${project.version}.jar"
     }
 
     shadowJar {

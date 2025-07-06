@@ -49,7 +49,8 @@ tasks {
     }
 
     jar {
-        enabled = false
+        dependsOn(shadowJar)
+        archiveFileName = "original-TNIL-Bukkit-${project.version}.jar"
     }
 
     shadowJar {
