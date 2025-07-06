@@ -38,13 +38,11 @@ tasks {
     }
 
     jar {
-        artifacts.add("archives", this)
         dependsOn(shadowJar)
         archiveFileName = "original-TNIL-Sponge-${project.version}.jar"
     }
 
     shadowJar {
-        artifacts.add("archives", this)
         archiveFileName = "TNIL-Sponge-${project.version}.jar"
 
         configurations = listOf(project.configurations.shadow.get())

@@ -49,13 +49,11 @@ tasks {
     }
 
     jar {
-        artifacts.add("archives", this)
         dependsOn(shadowJar)
         archiveFileName = "original-TNIL-Bukkit-${project.version}.jar"
     }
 
     shadowJar {
-        artifacts.add("archives", this)
         archiveFileName = "TNIL-Bukkit-${project.version}.jar"
 
         configurations = listOf(project.configurations.shadow.get())
