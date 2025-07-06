@@ -70,9 +70,11 @@ publishing {
         }
     }
     repositories {
-        maven("https://repo.codemc.io/repository/creatorfromhell/") {
-            val mavenUsername: String? by project
-            val mavenPassword: String? by project
+        maven {
+            url = uri("https://repo.codemc.io/repository/creatorfromhell/")
+
+            val mavenUsername = System.getenv("GRADLE_PROJECT_MAVEN_USERNAME")
+            val mavenPassword = System.getenv("GRADLE_PROJECT_MAVEN_PASSWORD")
             if(mavenUsername != null && mavenPassword != null) {
                 credentials {
                     username = mavenUsername
