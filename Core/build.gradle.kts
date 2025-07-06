@@ -48,8 +48,8 @@ publishing {
     }
 
     repositories {
-        val mavenUrl = "https://repo.codemc.io/repository/maven-releases/"
-        val mavenSnapshotUrl = "https://repo.codemc.io/repository/maven-snapshots/"
+        val mavenUrl: String? by project
+        val mavenSnapshotUrl: String? by project
 
         (if(version.toString().endsWith("SNAPSHOT")) mavenSnapshotUrl else mavenUrl)?.let { url ->
             maven(url) {
