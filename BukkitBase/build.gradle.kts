@@ -35,7 +35,7 @@ val slimefunVersion = property("com-github-slimefun-slimefun4")!!
 val spigotApiVersion = property("org-spigotmc-spigot-api")!!
 
 dependencies {
-    api(project(":TNIL-Core"))
+    shadow(project(":TNIL-Core"))
     compileOnly("com.github.LoneDev6:api-itemsadder:$itemsAdderVersion")
     compileOnly("com.github.Slimefun:Slimefun4:$slimefunVersion")
     compileOnly("io.lumine:MythicLib-dist:$mythicLibVersion")
