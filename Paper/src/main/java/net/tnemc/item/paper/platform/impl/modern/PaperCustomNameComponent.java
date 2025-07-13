@@ -109,7 +109,7 @@ public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack
   public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
 
     final Component name = item.getData(DataComponentTypes.CUSTOM_NAME);
-    if(name == null) {
+    if(name == null || !(Component.IS_NOT_EMPTY.test(name))) {
       return serialized;
     }
 

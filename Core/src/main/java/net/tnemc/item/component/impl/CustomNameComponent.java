@@ -72,7 +72,7 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
   public boolean similar(final SerialComponent<?, ?> component) {
     if(!(component instanceof final CustomNameComponent<?, ?> other)) return false;
 
-    return Objects.equals(this.customName, other.customName);
+    return Component.EQUALS.test(this.customName, other.customName);
   }
 
   @Override
