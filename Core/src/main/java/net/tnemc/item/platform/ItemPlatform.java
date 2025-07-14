@@ -362,18 +362,31 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
     for(final LocaleItemCheck<S> localeCheck : localeChecks.values()) {
 
+      System.out.println("LocaleCheck: " + localeCheck.identifier());
+
       if(disabled.contains(localeCheck.identifier())) {
+
+        System.out.println("LocaleCheck Disabled: " + localeCheck.identifier());
         continue;
       }
 
       if(!localeCheck.enabled(version())) {
+
+        System.out.println("LocaleCheck Not Enabled: " + localeCheck.identifier());
         continue;
       }
 
       if(!localeCheck.applies(original, check)) {
+
+        System.out.println("LocaleCheck Doesn't Apply: " + localeCheck.identifier());
         continue;
       }
-      return localeCheck.check(original, check);
+
+      if(!localeCheck.check(original, check)) {
+
+        System.out.println("Failed LocaleCheck: " + localeCheck.identifier());
+        return false;
+      }
     }
     return true;
   }
@@ -405,7 +418,12 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
       if(!localeCheck.applies(original, check)) {
         continue;
       }
-      return localeCheck.check(original, check);
+
+      if(!localeCheck.check(original, check)) {
+
+        //System.out.println("Failed check: " + localeCheck.identifier());
+        return false;
+      }
     }
     return true;
   }
@@ -426,23 +444,29 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
     final List<String> disabled = Arrays.asList(disabledChecks);
     for(final ItemCheck<S> checkItem : checks.values()) {
 
-      //System.out.println("Check: " + checkItem.identifier());
+      System.out.println("Check: " + checkItem.identifier());
 
       if(disabled.contains(checkItem.identifier())) {
+
+        System.out.println("Check Disabled: " + checkItem.identifier());
         continue;
       }
 
       if(!checkItem.enabled(version())) {
+
+        System.out.println("Check Not Enabled: " + checkItem.identifier());
         continue;
       }
 
       if(!checkItem.applies(original, check)) {
+
+        System.out.println("Check Doesn't Apply: " + checkItem.identifier());
         continue;
       }
 
       if(!checkItem.check(original, check)) {
 
-        //System.out.println("Failed check: " + checkItem.identifier());
+        System.out.println("Failed check: " + checkItem.identifier());
         return false;
       }
     }
@@ -497,11 +521,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
     for(final ItemApplicator<I, S> applicator : applicators.values()) {
 
-      //System.out.println("Try applicator: " + applicator.identifier());
+      System.out.println("Try applicator: " + applicator.identifier());
 
       if(applicator.enabled(version())) {
 
-        //System.out.println("Applicator ready to apply");
+        System.out.println("Applicator ready to apply");
 
         item = applicator.apply(serialized, item);
       }
