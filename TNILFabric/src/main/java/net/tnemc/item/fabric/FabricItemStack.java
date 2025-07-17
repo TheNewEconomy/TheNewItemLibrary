@@ -483,6 +483,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public void resetDirty() {
+
     this.dirty = false;
   }
 
@@ -525,6 +526,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public FabricItemStack setItemProvider(final String itemProvider) {
+
     this.itemProvider = itemProvider;
     return this;
   }
@@ -1350,6 +1352,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public FabricItemStack profile(final SkullProfile profile) {
+
     applyComponent(new FabricProfileComponent(profile));
     return this;
   }

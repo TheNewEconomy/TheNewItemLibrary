@@ -40,6 +40,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
   /**
    * Represents a component that manages damage information. This component stores and provides
    * methods for handling damage values.
+   *
    * @since 0.2.0.0
    */
   public PaperDamageComponent() {
@@ -50,6 +51,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
    * Constructs a new DamageComponent with the specified damage amount.
    *
    * @param damage the amount of damage for the component
+   *
    * @since 0.2.0.0
    */
   public PaperDamageComponent(final int damage) {
@@ -61,6 +63,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -74,6 +77,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -128,6 +132,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -142,7 +147,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
     }
 
     final PaperDamageComponent component = (serialized.paperComponent(identifier()) instanceof final DamageComponent<?, ?> getComponent)?
-                                               (PaperDamageComponent)getComponent : new PaperDamageComponent();
+                                           (PaperDamageComponent)getComponent : new PaperDamageComponent();
 
     //System.out.println("Damage: " + damageValue);
     component.damage(damageValue);
@@ -188,6 +193,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

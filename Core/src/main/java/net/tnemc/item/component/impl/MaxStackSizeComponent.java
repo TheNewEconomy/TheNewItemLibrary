@@ -50,11 +50,13 @@ public abstract class MaxStackSizeComponent<I extends AbstractItemStack<T>, T> i
 
   @Override
   public String identifier() {
+
     return "max_stack_size";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("max_stack_size", maxStackSize);
     return json;
@@ -62,17 +64,20 @@ public abstract class MaxStackSizeComponent<I extends AbstractItemStack<T>, T> i
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     maxStackSize = json.getInteger("max_stack_size");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final MaxStackSizeComponent<?, ?> other)) return false;
     return this.maxStackSize == other.maxStackSize;
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(maxStackSize);
   }
 

@@ -56,11 +56,13 @@ public abstract class FireworkExplosionComponent<I extends AbstractItemStack<T>,
 
   @Override
   public String identifier() {
+
     return "firework_explosion";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("explosion", explosion.toJSON());
     return json;
@@ -68,6 +70,7 @@ public abstract class FireworkExplosionComponent<I extends AbstractItemStack<T>,
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     if(json.has("explosion")) {
       explosion.readJSON(json.getHelper("explosion"));
     }
@@ -75,6 +78,7 @@ public abstract class FireworkExplosionComponent<I extends AbstractItemStack<T>,
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final FireworkExplosionComponent<?, ?> other)) return false;
 
     return Objects.equals(this.explosion, other.explosion);
@@ -82,6 +86,7 @@ public abstract class FireworkExplosionComponent<I extends AbstractItemStack<T>,
 
   @Override
   public int hashCode() {
+
     return Objects.hash(explosion);
   }
 

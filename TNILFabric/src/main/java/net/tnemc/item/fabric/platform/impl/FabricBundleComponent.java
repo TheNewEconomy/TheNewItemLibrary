@@ -49,6 +49,7 @@ public class FabricBundleComponent extends BundleComponent<FabricItemStack, Item
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -63,6 +64,7 @@ public class FabricBundleComponent extends BundleComponent<FabricItemStack, Item
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -117,7 +119,7 @@ public class FabricBundleComponent extends BundleComponent<FabricItemStack, Item
     keyOptional.ifPresent((key->{
 
       final FabricBundleComponent component = (serialized.fabricComponent(identifier()) instanceof final BundleComponent<?, ?> getComponent)?
-                                                  (FabricBundleComponent)getComponent : new FabricBundleComponent();
+                                              (FabricBundleComponent)getComponent : new FabricBundleComponent();
 
 
       for(int i = 0; i < key.size(); i++) {

@@ -57,7 +57,7 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    */
   @Override
   public boolean drop(final Collection<FabricItemStack> left, final UUID player, final boolean setOwner) {
-    
+
     final ServerPlayerEntity serverPlayer = getPlayer(player);
     if(serverPlayer == null) {
       return false;
@@ -93,10 +93,11 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
   /**
    * Removes all items that are equal to the stack from an inventory.
    *
-   * @param stack     The stack to compare to for removal from the inventory.
-   * @param inventory The inventory to remove the items from.
-   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
-   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
+   * @param stack      The stack to compare to for removal from the inventory.
+   * @param inventory  The inventory to remove the items from.
+   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
+   *                   process.
+   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The amount of items removed.
    */
@@ -129,15 +130,17 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
   /**
    * Returns a count of items equal to the specific stack in an inventory.
    *
-   * @param stack     The stack to get a count of.
-   * @param inventory The inventory to check.
-   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
-   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
+   * @param stack      The stack to get a count of.
+   * @param inventory  The inventory to check.
+   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
+   *                   process.
+   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The total count of items in the inventory.
    */
   @Override
   public int count(final FabricItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
+
     final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
     compare.setCount(1);
 
@@ -162,13 +165,15 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
   /**
    * Takes a collection of items from an inventory.
    *
-   * @param items     The collection of items to remove.
-   * @param inventory The inventory to remove the items from.
-   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
-   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
+   * @param items      The collection of items to remove.
+   * @param inventory  The inventory to remove the items from.
+   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
+   *                   process.
+   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
    */
   @Override
   public void takeItems(final Collection<FabricItemStack> items, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
+
     for(final FabricItemStack stack : items) {
       removeItem(stack, inventory, useShulker, useBundles);
     }
@@ -178,15 +183,17 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    * Adds a collection of item stacks to an inventory, returns the leftover items that won't fit in
    * the inventory.
    *
-   * @param items     The collection of items to add to the inventory.
-   * @param inventory The inventory to add the collection of items to.
-   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
-   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
+   * @param items      The collection of items to add to the inventory.
+   * @param inventory  The inventory to add the collection of items to.
+   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
+   *                   process.
+   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The collection of items that won't fit in the inventory.
    */
   @Override
   public Collection<FabricItemStack> giveItems(final Collection<FabricItemStack> items, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
+
     final Collection<FabricItemStack> leftovers = new ArrayList<>();
 
     for(final FabricItemStack fabricStack : items) {
@@ -207,7 +214,7 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
 
         } else if(ItemStack.areItemsAndComponentsEqual(slot, toInsert)) {
           final int space = Math.min(slot.getMaxCount() - slot.getCount(), remaining);
-          if (space > 0) {
+          if(space > 0) {
             slot.increment(space);
             remaining -= space;
           }
@@ -228,15 +235,17 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
   /**
    * Removes a net.tnemc.item stack with a specific amount from an inventory.
    *
-   * @param stack     The stack, with the correct amount, to remove.
-   * @param inventory The inventory to remove the net.tnemc.item stack from.
-   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
-   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
+   * @param stack      The stack, with the correct amount, to remove.
+   * @param inventory  The inventory to remove the net.tnemc.item stack from.
+   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
+   *                   process.
+   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The remaining amount of items to remove.
    */
   @Override
   public int removeItem(final FabricItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
+
     int left = stack.provider().locale(stack, stack.amount()).copy().getCount();
     final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
     compare.setCount(1); // Normalize
@@ -281,6 +290,7 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
    */
   @Override
   public Optional<Inventory> inventory(final UUID identifier, final InventoryType type) {
+
     final ServerPlayerEntity serverPlayer = getPlayer(identifier);
 
     if(serverPlayer == null) {
@@ -294,6 +304,7 @@ public class FabricItemCalculationsProvider implements CalculationsProvider<Fabr
   }
 
   private ServerPlayerEntity getPlayer(final UUID uuid) {
+
     return server.getPlayerManager().getPlayer(uuid);
   }
 }

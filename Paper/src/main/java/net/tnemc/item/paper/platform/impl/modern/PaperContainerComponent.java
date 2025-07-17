@@ -56,6 +56,7 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -69,6 +70,7 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -119,6 +121,7 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -130,7 +133,7 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
     }
 
     final PaperContainerComponent component = (serialized.paperComponent(identifier()) instanceof final ContainerComponent<?, ?> getComponent)?
-                                           (PaperContainerComponent)getComponent : new PaperContainerComponent();
+                                              (PaperContainerComponent)getComponent : new PaperContainerComponent();
 
     int i = 0;
     for(final ItemStack stack : contents.contents()) {
@@ -198,6 +201,7 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * TooltipDisplayComponent - Allows the tooltips provided specifically by any given item component to
- * be surpressed. As of MC 1.21.5.
+ * TooltipDisplayComponent - Allows the tooltips provided specifically by any given item component
+ * to be surpressed. As of MC 1.21.5.
  *
  * @author creatorfromhell
  * @since 0.2.0.0
@@ -66,11 +66,13 @@ public abstract class TooltipDisplayComponent<I extends AbstractItemStack<T>, T>
 
   @Override
   public String identifier() {
+
     return "tooltip_display";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     final JSONArray componentArray = new JSONArray();
 
@@ -86,6 +88,7 @@ public abstract class TooltipDisplayComponent<I extends AbstractItemStack<T>, T>
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     hideTooltip = json.getBoolean("hideTooltip");
 
     hiddenComponents.clear();
@@ -97,12 +100,14 @@ public abstract class TooltipDisplayComponent<I extends AbstractItemStack<T>, T>
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final TooltipDisplayComponent<?, ?> other)) return false;
     return Objects.equals(this.hiddenComponents, other.hiddenComponents) && Objects.equals(this.hideTooltip, other.hideTooltip);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(identifier(), hiddenComponents, hideTooltip);
   }
 

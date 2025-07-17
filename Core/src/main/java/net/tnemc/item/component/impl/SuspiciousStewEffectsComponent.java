@@ -35,7 +35,8 @@ import java.util.Objects;
  * SuspiciousStewEffectsComponent - The effects applied when consuming this suspicious stew.
  *
  * @author creatorfromhell
- * @see <a href="https://minecraft.wiki/w/Data_component_format#suspicious_stew_effects">Reference</a>
+ * @see <a
+ * href="https://minecraft.wiki/w/Data_component_format#suspicious_stew_effects">Reference</a>
  * @see <a href="https://minecraft.wiki/w/Suspicious_Stew">Suspicious_Stew</a>
  * <p>
  * @since 0.2.0.0
@@ -60,15 +61,17 @@ public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack
 
   @Override
   public String identifier() {
+
     return "suspicious_stew_effects";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
 
     final JSONArray effectsArray = new JSONArray();
-    for (final EffectInstance effect : effects) {
+    for(final EffectInstance effect : effects) {
       effectsArray.add(effect.toJSON());
     }
     json.put("custom_effects", effectsArray);
@@ -79,23 +82,25 @@ public abstract class SuspiciousStewEffectsComponent<I extends AbstractItemStack
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
 
     effects.clear();
-    final JSONArray effectsArray = (JSONArray) json.getObject().get("custom_effects");
-    for (final Object obj : effectsArray) {
+    final JSONArray effectsArray = (JSONArray)json.getObject().get("custom_effects");
+    for(final Object obj : effectsArray) {
 
       final EffectInstance effect = new EffectInstance();
-      effect.readJSON(new JSONHelper((JSONObject) obj));
+      effect.readJSON(new JSONHelper((JSONObject)obj));
       effects.add(effect);
     }
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final SuspiciousStewEffectsComponent<?, ?> other)) return false;
     return Objects.equals(this.effects, other.effects);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(effects);
   }
 

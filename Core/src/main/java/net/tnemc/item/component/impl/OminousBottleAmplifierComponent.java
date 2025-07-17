@@ -30,7 +30,8 @@ import java.util.Objects;
  * OminousBottleAmplifierComponent
  *
  * @author creatorfromhell
- * @see <a href="https://minecraft.wiki/w/Data_component_format#ominous_bottle_amplifier">Reference</a>
+ * @see <a
+ * href="https://minecraft.wiki/w/Data_component_format#ominous_bottle_amplifier">Reference</a>
  * <p>
  * @since 0.2.0.0
  */
@@ -49,11 +50,13 @@ public abstract class OminousBottleAmplifierComponent<I extends AbstractItemStac
 
   @Override
   public String identifier() {
+
     return "ominous_bottle_amplifier";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("amplifier", amplifier);
     return json;
@@ -61,17 +64,20 @@ public abstract class OminousBottleAmplifierComponent<I extends AbstractItemStac
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     amplifier = json.getInteger("amplifier");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final OminousBottleAmplifierComponent<?, ?> other)) return false;
     return this.amplifier == other.amplifier;
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(amplifier);
   }
 

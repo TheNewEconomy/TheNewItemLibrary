@@ -291,7 +291,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack enchant(final String enchantment, final int level) {
 
-    applyComponent(new BukkitEnchantmentsComponent(new HashMap<>(){{
+    applyComponent(new BukkitEnchantmentsComponent(new HashMap<>() {{
       put(enchantment, level);
     }}));
     return this;
@@ -500,6 +500,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public void resetDirty() {
+
     this.dirty = false;
   }
 
@@ -543,6 +544,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public BukkitItemStack setItemProvider(final String itemProvider) {
+
     this.itemProvider = itemProvider;
     this.dirty = true;
     return this;
@@ -596,6 +598,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
   @Override
   public BukkitItemStack clone() {
+
     final BukkitItemStack copy = new BukkitItemStack();
 
     //Basics
@@ -942,6 +945,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public BukkitItemStack enchantmentGlintOverride(final boolean glintOverride) {
+
     return this;
   }
 

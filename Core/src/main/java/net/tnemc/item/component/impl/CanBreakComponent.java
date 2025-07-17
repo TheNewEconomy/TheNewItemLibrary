@@ -34,9 +34,8 @@ import java.util.Objects;
 /**
  * CanBreakComponent
  *
- * @see <a href="https://minecraft.wiki/w/Data_component_format#can_break">Reference</a>
- *
  * @author creatorfromhell
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#can_break">Reference</a>
  * @since 0.2.0.0
  */
 public abstract class CanBreakComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
@@ -48,20 +47,24 @@ public abstract class CanBreakComponent<I extends AbstractItemStack<T>, T> imple
   }
 
   public CanBreakComponent(final BlockPredicate predicate) {
+
     this.predicates.add(predicate);
   }
 
   public CanBreakComponent(final List<BlockPredicate> predicates) {
+
     this.predicates.addAll(predicates);
   }
 
   @Override
   public String identifier() {
+
     return "can_break";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
 
     final JSONArray predicatesArray = new JSONArray();
@@ -75,12 +78,13 @@ public abstract class CanBreakComponent<I extends AbstractItemStack<T>, T> imple
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     predicates.clear();
 
-    final JSONArray predicatesArray = (JSONArray) json.getObject().get("predicates");
+    final JSONArray predicatesArray = (JSONArray)json.getObject().get("predicates");
     if(predicatesArray != null) {
       for(final Object obj : predicatesArray) {
-        final JSONObject predicateJson = (JSONObject) obj;
+        final JSONObject predicateJson = (JSONObject)obj;
         final BlockPredicate predicate = new BlockPredicate();
         predicate.readJSON(new JSONHelper(predicateJson));
         predicates.add(predicate);
@@ -90,6 +94,7 @@ public abstract class CanBreakComponent<I extends AbstractItemStack<T>, T> imple
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final CanBreakComponent<?, ?> other)) return false;
 
     return Objects.equals(this.predicates, other.predicates);
@@ -97,6 +102,7 @@ public abstract class CanBreakComponent<I extends AbstractItemStack<T>, T> imple
 
   @Override
   public int hashCode() {
+
     return Objects.hash(predicates);
   }
 
@@ -104,6 +110,7 @@ public abstract class CanBreakComponent<I extends AbstractItemStack<T>, T> imple
    * Retrieves the list of predicates associated with this CanBreakComponent.
    *
    * @return The list of BlockPredicate objects.
+   *
    * @since 0.2.0.0
    */
   public List<BlockPredicate> predicates() {
@@ -112,23 +119,29 @@ public abstract class CanBreakComponent<I extends AbstractItemStack<T>, T> imple
   }
 
   /**
-   * Modifies the list of predicates associated with this CanBreakComponent by replacing it with a new list.
+   * Modifies the list of predicates associated with this CanBreakComponent by replacing it with a
+   * new list.
    *
    * @param predicates The new list of BlockPredicate objects to replace the existing list with.
+   *
    * @since 0.2.0.0
    */
   public void predicates(final List<BlockPredicate> predicates) {
+
     this.predicates.clear();
     this.predicates.addAll(predicates);
   }
 
   /**
-   * Add one or more BlockPredicate objects to the list of predicates associated with this component.
+   * Add one or more BlockPredicate objects to the list of predicates associated with this
+   * component.
    *
    * @param predicates The BlockPredicate objects to add to the list.
+   *
    * @since 0.2.0.0
    */
   public void predicates(final BlockPredicate... predicates) {
+
     this.predicates.addAll(Arrays.asList(predicates));
   }
 }

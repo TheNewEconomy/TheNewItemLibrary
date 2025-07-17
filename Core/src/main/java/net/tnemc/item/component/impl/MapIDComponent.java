@@ -49,11 +49,13 @@ public abstract class MapIDComponent<I extends AbstractItemStack<T>, T> implemen
 
   @Override
   public String identifier() {
+
     return "map_id";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("map_id", mapId);
     return json;
@@ -61,17 +63,20 @@ public abstract class MapIDComponent<I extends AbstractItemStack<T>, T> implemen
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     mapId = json.getInteger("map_id");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final MapIDComponent<?, ?> other)) return false;
     return this.mapId == other.mapId;
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(mapId);
   }
 

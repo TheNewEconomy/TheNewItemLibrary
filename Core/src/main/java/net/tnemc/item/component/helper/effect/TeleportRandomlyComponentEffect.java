@@ -35,11 +35,13 @@ public class TeleportRandomlyComponentEffect extends ComponentEffect {
 
   @Override
   public String getType() {
+
     return "teleport_randomly";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("type", getType());
     json.put("probability", probability);
@@ -50,20 +52,24 @@ public class TeleportRandomlyComponentEffect extends ComponentEffect {
 
   @Override
   public void readJSON(final JSONHelper json) {
+
     probability = json.getFloat("probability");
     diameter = json.getFloat("diameter");
   }
 
   public float getDiameter() {
+
     return diameter;
   }
 
   public void setDiameter(final float diameter) {
+
     this.diameter = diameter;
   }
 
   @Override
   public boolean equals(final Object obj) {
+
     if(!(obj instanceof final TeleportRandomlyComponentEffect other)) return false;
 
     return super.equals(obj) && Float.compare(this.diameter, other.diameter) == 0;
@@ -71,11 +77,13 @@ public class TeleportRandomlyComponentEffect extends ComponentEffect {
 
   @Override
   public int hashCode() {
+
     return Objects.hash(super.hashCode(), diameter);
   }
 
   @Override
   public TeleportRandomlyComponentEffect clone() {
+
     final TeleportRandomlyComponentEffect copy = new TeleportRandomlyComponentEffect();
     copy.probability(this.probability);
     copy.setDiameter(this.getDiameter());

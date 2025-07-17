@@ -43,15 +43,6 @@ public class FoodRule {
     this.chance = chance;
   }
 
-  public JSONObject toJSON() {
-
-    final JSONObject rule = new JSONObject();
-    rule.put("effect", potionEffect.toJSON());
-    rule.put("chance", chance);
-
-    return rule;
-  }
-
   public static FoodRule readJSON(final JSONHelper json) {
 
     final FoodRule rule = new FoodRule();
@@ -65,6 +56,15 @@ public class FoodRule {
     if(json.has("chance")) {
       rule.setChance(json.getFloat("chance"));
     }
+
+    return rule;
+  }
+
+  public JSONObject toJSON() {
+
+    final JSONObject rule = new JSONObject();
+    rule.put("effect", potionEffect.toJSON());
+    rule.put("chance", chance);
 
     return rule;
   }

@@ -23,7 +23,8 @@ import net.tnemc.item.AbstractItemStack;
 import java.util.Map;
 
 /**
- * ChargedProjectilesComponent - The items loaded as projectiles into this crossbow. If not present, this crossbow is not charged.
+ * ChargedProjectilesComponent - The items loaded as projectiles into this crossbow. If not present,
+ * this crossbow is not charged.
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#charged_projectiles">Reference</a>
@@ -33,6 +34,7 @@ import java.util.Map;
 public abstract class ChargedProjectilesComponent<I extends AbstractItemStack<T>, T> extends ContainerComponent<I, T> {
 
   public ChargedProjectilesComponent() {
+
     super();
   }
 
@@ -43,6 +45,7 @@ public abstract class ChargedProjectilesComponent<I extends AbstractItemStack<T>
 
   /**
    * @return the type of component this is.
+   *
    * @since 0.2.0.0
    */
   @Override

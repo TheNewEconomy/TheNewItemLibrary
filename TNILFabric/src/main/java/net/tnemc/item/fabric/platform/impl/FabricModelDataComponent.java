@@ -48,6 +48,7 @@ public class FabricModelDataComponent extends ModelDataComponent<FabricItemStack
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -62,6 +63,7 @@ public class FabricModelDataComponent extends ModelDataComponent<FabricItemStack
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -96,7 +98,6 @@ public class FabricModelDataComponent extends ModelDataComponent<FabricItemStack
 
       item.set(DataComponentTypes.CUSTOM_MODEL_DATA, customModelDataComponent);
 
-
     });
 
     return item;
@@ -117,7 +118,7 @@ public class FabricModelDataComponent extends ModelDataComponent<FabricItemStack
     keyOptional.ifPresent((key->{
 
       final FabricModelDataComponent component = (serialized.fabricComponent(identifier()) instanceof final ModelDataComponent<?, ?> getComponent)?
-                                                  (FabricModelDataComponent)getComponent : new FabricModelDataComponent();
+                                                 (FabricModelDataComponent)getComponent : new FabricModelDataComponent();
 
       component.floats.clear();
       component.floats.addAll(key.floats());

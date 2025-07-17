@@ -27,8 +27,9 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * RepairCostComponent - The number of experience levels to add to the base level cost when repairing,
- * combining, or renaming this item with an anvil. Must be a non-negative integer, defaults to 0.
+ * RepairCostComponent - The number of experience levels to add to the base level cost when
+ * repairing, combining, or renaming this item with an anvil. Must be a non-negative integer,
+ * defaults to 0.
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#repair_cost">Reference</a>
@@ -50,11 +51,13 @@ public abstract class RepairCostComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public String identifier() {
+
     return "repair_cost";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("repair_cost", repairCost);
     return json;
@@ -62,17 +65,20 @@ public abstract class RepairCostComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     repairCost = json.getInteger("repair_cost");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final RepairCostComponent<?, ?> other)) return false;
     return this.repairCost == other.repairCost;
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(repairCost);
   }
 

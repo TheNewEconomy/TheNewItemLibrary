@@ -84,11 +84,13 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack,
 
   @Override
   public SpongeItemStack createStack(final String material) {
+
     return new SpongeItemStack().of(material, 1);
   }
 
   /**
    * @return the version that is being used currently
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -122,6 +124,7 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack,
    * Retrieves the default provider for the item stack comparison.
    *
    * @return the default provider for the item stack comparison.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -134,6 +137,7 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack,
    * Retrieves the identifier of the default provider for the item stack comparison.
    *
    * @return The identifier of the default provider for the item stack comparison.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -144,6 +148,7 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack,
 
   @Override
   public SpongeItemCalculationsProvider calculations() {
+
     return calculationsProvider;
   }
 
@@ -153,6 +158,7 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack,
    * @param locale the locale to convert
    *
    * @return the converted locale of type I
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -172,6 +178,7 @@ public class SpongeItemPlatform extends ItemPlatform<SpongeItemStack, ItemStack,
    * @param object the JSON object to deserialize
    *
    * @return an initialized AbstractItemStack object
+   *
    * @since 0.2.0.0
    */
   @Override

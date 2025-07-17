@@ -89,11 +89,13 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
 
   @Override
   public String identifier() {
+
     return "written_book_content";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     final JSONArray pagesArray = new JSONArray();
     pagesArray.addAll(pages);
@@ -107,6 +109,7 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     pages.clear();
     pages.addAll(json.getStringList("pages"));
     if(json.has("title")) title = json.getString("title");
@@ -117,6 +120,7 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final WrittenBookContentComponent<?, ?> other)) return false;
     return Objects.equals(this.pages, other.pages) &&
            Objects.equals(this.title, other.title) &&
@@ -127,6 +131,7 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
 
   @Override
   public int hashCode() {
+
     return Objects.hash(pages, title, author, generation, resolved);
   }
 

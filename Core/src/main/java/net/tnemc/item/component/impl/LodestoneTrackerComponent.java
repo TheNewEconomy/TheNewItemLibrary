@@ -73,11 +73,13 @@ public abstract class LodestoneTrackerComponent<I extends AbstractItemStack<T>, 
 
   @Override
   public String identifier() {
+
     return "lodestone_tracker";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("target", target);
     json.put("pos", pos);
@@ -88,6 +90,7 @@ public abstract class LodestoneTrackerComponent<I extends AbstractItemStack<T>, 
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     if(json.has("target")) target = json.getString("target");
     if(json.has("pos")) pos = json.getIntArray("pos");
     if(json.has("dimension")) dimension = json.getString("dimension");
@@ -96,6 +99,7 @@ public abstract class LodestoneTrackerComponent<I extends AbstractItemStack<T>, 
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final LodestoneTrackerComponent<?, ?> other)) return false;
     return Objects.equals(this.target, other.target) &&
            Objects.equals(this.pos, other.pos) &&
@@ -105,6 +109,7 @@ public abstract class LodestoneTrackerComponent<I extends AbstractItemStack<T>, 
 
   @Override
   public int hashCode() {
+
     return Objects.hash(target, pos, dimension, tracked);
   }
 

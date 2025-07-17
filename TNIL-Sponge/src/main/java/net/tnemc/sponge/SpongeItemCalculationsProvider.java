@@ -44,10 +44,10 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   /**
    * Removes items from a collection based on certain criteria.
    *
-   * @param left     The collection of items from which to remove items.
-   * @param identifier   The UUID of the player associated with the removal operation.
-   * @param setOwner Indicates whether to set the owner of the removed items.(supports spigot/paper
-   *                 1.16.5+)
+   * @param left       The collection of items from which to remove items.
+   * @param identifier The UUID of the player associated with the removal operation.
+   * @param setOwner   Indicates whether to set the owner of the removed items.(supports
+   *                   spigot/paper 1.16.5+)
    *
    * @return True if the removal operation was successful, false otherwise.
    */
@@ -71,10 +71,11 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   /**
    * Removes all items that are equal to the stack from an inventory.
    *
-   * @param stack     The stack to compare to for removal from the inventory.
-   * @param inventory The inventory to remove the items from.
-   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
-   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
+   * @param stack      The stack to compare to for removal from the inventory.
+   * @param inventory  The inventory to remove the items from.
+   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
+   *                   process.
+   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The amount of items removed.
    */
@@ -104,10 +105,11 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   /**
    * Returns a count of items equal to the specific stack in an inventory.
    *
-   * @param stack     The stack to get a count of.
-   * @param inventory The inventory to check.
-   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
-   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
+   * @param stack      The stack to get a count of.
+   * @param inventory  The inventory to check.
+   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
+   *                   process.
+   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The total count of items in the inventory.
    */
@@ -136,10 +138,11 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   /**
    * Takes a collection of items from an inventory.
    *
-   * @param items     The collection of items to remove.
-   * @param inventory The inventory to remove the items from.
-   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
-   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
+   * @param items      The collection of items to remove.
+   * @param inventory  The inventory to remove the items from.
+   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
+   *                   process.
+   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
    */
   @Override
   public void takeItems(final Collection<SpongeItemStack> items, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
@@ -151,10 +154,11 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
    * Adds a collection of item stacks to an inventory, returns the leftover items that won't fit in
    * the inventory.
    *
-   * @param items     The collection of items to add to the inventory.
-   * @param inventory The inventory to add the collection of items to.
-   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
-   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
+   * @param items      The collection of items to add to the inventory.
+   * @param inventory  The inventory to add the collection of items to.
+   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
+   *                   process.
+   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The collection of items that won't fit in the inventory.
    */
@@ -182,10 +186,11 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   /**
    * Removes a net.tnemc.item stack with a specific amount from an inventory.
    *
-   * @param stack     The stack, with the correct amount, to remove.
-   * @param inventory The inventory to remove the net.tnemc.item stack from.
-   * @param useShulker   A boolean flag indicating whether to include shulker boxes in the removal process.
-   * @param useBundles   A boolean flag indicating whether to include bundles in the removal process.
+   * @param stack      The stack, with the correct amount, to remove.
+   * @param inventory  The inventory to remove the net.tnemc.item stack from.
+   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
+   *                   process.
+   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
    *
    * @return The remaining amount of items to remove.
    */

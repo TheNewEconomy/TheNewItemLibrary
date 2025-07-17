@@ -83,11 +83,13 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
 
   @Override
   public String identifier() {
+
     return "bucket_entity_data";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("NoAI", noAI);
     json.put("Silent", silent);
@@ -105,6 +107,7 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     noAI = json.getBoolean("NoAI");
     silent = json.getBoolean("Silent");
     noGravity = json.getBoolean("NoGravity");
@@ -120,6 +123,7 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final BucketEntityDataComponent<?, ?> other)) return false;
     return this.noAI == other.noAI &&
            this.silent == other.silent &&
@@ -136,6 +140,7 @@ public abstract class BucketEntityDataComponent<I extends AbstractItemStack<T>, 
 
   @Override
   public int hashCode() {
+
     return Objects.hash(noAI, silent, noGravity, glowing, invulnerable, health, age, variant, huntingCooldown, bucketVariantTag, type);
   }
 

@@ -35,9 +35,8 @@ import java.util.Objects;
 /**
  * AttributeModifiesComponent
  *
- * @see <a href="https://minecraft.wiki/w/Data_component_format#attribute_modifiers">Reference</a>
- *
  * @author creatorfromhell
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#attribute_modifiers">Reference</a>
  * @since 0.2.0.0
  */
 public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
@@ -45,18 +44,20 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
   protected final List<AttributeModifier> modifiers = new ArrayList<>();
 
   /**
-   * Constructor for AttributeModifiersComponent.
-   * Initializes an empty list of AttributeModifiers.
+   * Constructor for AttributeModifiersComponent. Initializes an empty list of AttributeModifiers.
+   *
    * @since 0.2.0.0
    */
   public AttributeModifiersComponent() {
+
   }
 
   /**
-   * Constructor for AttributeModifiersComponent.
-   * Initializes the component with a list of AttributeModifiers and a boolean flag to show in tooltip.
+   * Constructor for AttributeModifiersComponent. Initializes the component with a list of
+   * AttributeModifiers and a boolean flag to show in tooltip.
    *
    * @param modifiers The list of AttributeModifiers to associate with this component.
+   *
    * @since 0.2.0.0
    */
   public AttributeModifiersComponent(final List<AttributeModifier> modifiers) {
@@ -66,10 +67,12 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
 
   /**
    * @return the type of component this is.
+   *
    * @since 0.2.0.0
    */
   @Override
   public String identifier() {
+
     return "attribute_modifiers";
   }
 
@@ -77,10 +80,12 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
    * Converts this component's data to a JSON object.
    *
    * @return The JSONObject representing this component's data.
+   *
    * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
 
     final JSONArray modifiersArray = new JSONArray();
@@ -102,8 +107,9 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
   /**
    * Reads JSON data and converts it back to this component's data.
    *
-   * @param json The JSONHelper instance of the JSON data.
+   * @param json     The JSONHelper instance of the JSON data.
    * @param platform The ItemPlatform instance.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -111,12 +117,12 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
 
     modifiers.clear();
 
-    final JSONArray modifiersArray = (JSONArray) json.getObject().get("modifiers");
+    final JSONArray modifiersArray = (JSONArray)json.getObject().get("modifiers");
     if(modifiersArray != null) {
 
       for(final Object obj : modifiersArray) {
 
-        final JSONObject modifierJson = (JSONObject) obj;
+        final JSONObject modifierJson = (JSONObject)obj;
 
         final String type = modifierJson.get("type").toString();
         final String id = modifierJson.get("id").toString();
@@ -142,17 +148,21 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
    * copy of this data.
    *
    * @param component The component to compare.
+   *
    * @return True if similar, otherwise false.
+   *
    * @since 0.2.0.0
    */
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final AttributeModifiersComponent<?, ?> other)) return false;
     return Objects.equals(this.modifiers, other.modifiers);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(modifiers);
   }
 
@@ -160,6 +170,7 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
    * Retrieves the list of AttributeModifiers associated with this component.
    *
    * @return The list of AttributeModifiers.
+   *
    * @since 0.2.0.0
    */
   public List<AttributeModifier> modifiers() {
@@ -171,14 +182,17 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
    * Sets the list of AttributeModifiers for this component.
    *
    * @param modifiers The list of AttributeModifiers to set.
+   *
    * @since 0.2.0.0
    */
   public void modifiers(final List<AttributeModifier> modifiers) {
+
     this.modifiers.clear();
     this.modifiers.addAll(modifiers);
   }
 
   public void modifiers(final AttributeModifier... modifiers) {
+
     this.modifiers.clear();
     this.modifiers.addAll(Arrays.asList(modifiers));
   }
@@ -187,9 +201,11 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
    * Adds a new AttributeModifier to the list of modifiers for this component.
    *
    * @param modifier The AttributeModifier to add to the list of modifiers.
+   *
    * @since 0.2.0.0
    */
   public void modifiers(final AttributeModifier modifier) {
+
     this.modifiers.add(modifier);
   }
 }

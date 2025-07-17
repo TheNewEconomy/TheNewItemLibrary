@@ -58,11 +58,13 @@ public abstract class RepairableComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public String identifier() {
+
     return "repairable";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     final JSONArray itemsArray = new JSONArray();
     itemsArray.addAll(repairItems);
@@ -72,18 +74,21 @@ public abstract class RepairableComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     repairItems.clear();
     repairItems.addAll(json.getStringList("items"));
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final RepairableComponent<?, ?> other)) return false;
     return Objects.equals(this.repairItems, other.repairItems);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(repairItems);
   }
 

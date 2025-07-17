@@ -58,11 +58,13 @@ public abstract class PotDecorationsComponent<I extends AbstractItemStack<T>, T>
 
   @Override
   public String identifier() {
+
     return "pot_decorations";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     final JSONArray array = new JSONArray();
     array.addAll(decorations);
@@ -72,18 +74,21 @@ public abstract class PotDecorationsComponent<I extends AbstractItemStack<T>, T>
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     decorations.clear();
     decorations.addAll(json.getStringList("decorations"));
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final PotDecorationsComponent<?, ?> other)) return false;
     return Objects.equals(this.decorations, other.decorations);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(decorations);
   }
 

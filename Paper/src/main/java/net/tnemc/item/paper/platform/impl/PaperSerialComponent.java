@@ -39,10 +39,12 @@ public interface PaperSerialComponent<I extends AbstractItemStack<T>, T> extends
 
     return true;
   }
+
   /**
    * @param version the version being used when this deserializer is called.
    *
    * @return true if this deserializer is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   default boolean modernEnabled(final String version) {
@@ -55,6 +57,7 @@ public interface PaperSerialComponent<I extends AbstractItemStack<T>, T> extends
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   I serializeModern(final T item, I serialized);
@@ -64,6 +67,7 @@ public interface PaperSerialComponent<I extends AbstractItemStack<T>, T> extends
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   I serializeLegacy(final T item, I serialized);
@@ -73,6 +77,7 @@ public interface PaperSerialComponent<I extends AbstractItemStack<T>, T> extends
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   T applyModern(final I serialized, T item);
@@ -82,6 +87,7 @@ public interface PaperSerialComponent<I extends AbstractItemStack<T>, T> extends
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   T applyLegacy(final I serialized, T item);
@@ -96,6 +102,7 @@ public interface PaperSerialComponent<I extends AbstractItemStack<T>, T> extends
    */
   @Override
   default I serialize(final T item, final I serialized) {
+
     if(hasModern() && modernEnabled(PaperItemPlatform.instance().version())) {
       return serializeModern(item, serialized);
     }
@@ -112,6 +119,7 @@ public interface PaperSerialComponent<I extends AbstractItemStack<T>, T> extends
    */
   @Override
   default T apply(final I serialized, final T item) {
+
     if(hasModern() && modernEnabled(PaperItemPlatform.instance().version())) {
       return applyModern(serialized, item);
     }

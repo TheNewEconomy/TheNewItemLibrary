@@ -57,6 +57,7 @@ public class PatternData {
 
   @Override
   public PatternData clone() throws CloneNotSupportedException {
+
     return new PatternData(this.color, this.pattern);
   }
 }

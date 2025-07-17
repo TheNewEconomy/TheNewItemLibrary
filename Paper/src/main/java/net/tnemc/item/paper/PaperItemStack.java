@@ -161,10 +161,12 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   }
 
   public PaperItemStack(final String material, final int amount) {
+
     this.of(material, amount);
   }
 
   public PaperItemStack(final ItemStack locale) {
+
     this.of(locale);
   }
 
@@ -309,7 +311,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack enchant(final String enchantment, final int level) {
 
-    applyComponent(new PaperEnchantmentsComponent(new HashMap<>(){{
+    applyComponent(new PaperEnchantmentsComponent(new HashMap<>() {{
       put(enchantment, level);
     }}));
     return this;
@@ -517,6 +519,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public void resetDirty() {
+
     this.dirty = false;
   }
 
@@ -560,6 +563,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack setItemProvider(final String itemProvider) {
+
     this.itemProvider = itemProvider;
     this.dirty = true;
     return this;
@@ -1398,6 +1402,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack profile(final SkullProfile profile) {
+
     applyComponent(new PaperProfileComponent(profile));
     return this;
   }

@@ -23,7 +23,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * PlatformConverter is used for converting TNIL-based data strings to the Platform's enum/registry entries.
+ * PlatformConverter is used for converting TNIL-based data strings to the Platform's enum/registry
+ * entries.
  *
  * @author creatorfromhell
  * @since 0.2.0.0
@@ -35,15 +36,16 @@ public class PlatformConverter {
   /**
    * Registers a conversion between input and output classes using a provided converter function.
    *
-   * @param <I> The input class type
-   * @param <O> The output class type
-   * @param inputClass The class of the input object to convert from
+   * @param <I>         The input class type
+   * @param <O>         The output class type
+   * @param inputClass  The class of the input object to convert from
    * @param outputClass The class of the output object to convert to
-   * @param converter The function that performs the conversion from input to output
-   * @author creatorfromhell
+   * @param converter   The function that performs the conversion from input to output
+   *
    * @since 0.2.0.0
    */
   public <I, O> void registerConversion(final Class<I> inputClass, final Class<O> outputClass, final Function<I, O> converter) {
+
     registry.computeIfAbsent(inputClass, k->new HashMap<>())
             .put(outputClass, input->converter.apply(inputClass.cast(input)));
   }
@@ -51,16 +53,19 @@ public class PlatformConverter {
   /**
    * Performs a conversion from input type to output type using registered converters.
    *
-   * @param <I> The type of the input object
-   * @param <O> The class of the output object
-   * @param input The input object to be converted
+   * @param <I>         The type of the input object
+   * @param <O>         The class of the output object
+   * @param input       The input object to be converted
    * @param outputClass The class of the output type to be converted to
+   *
    * @return The converted output object
-   * @throws IllegalArgumentException if the input is null or if no conversion is registered for the specified types
-   * @author creatorfromhell
+   *
+   * @throws IllegalArgumentException if the input is null or if no conversion is registered for the
+   *                                  specified types
    * @since 0.2.0.0
    */
   public <I, O> O convert(final I input, final Class<O> outputClass) {
+
     if(input == null) {
       throw new IllegalArgumentException("Input cannot be null");
     }

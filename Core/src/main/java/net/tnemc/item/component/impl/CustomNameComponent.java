@@ -51,11 +51,13 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public String identifier() {
+
     return "custom_name";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("custom_name", LegacyComponentSerializer.legacySection().serialize(customName));
     return json;
@@ -63,6 +65,7 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     if(json.has("custom_name")) {
       customName = LegacyComponentSerializer.legacySection().deserialize(json.getString("custom_name"));
     }
@@ -70,6 +73,7 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final CustomNameComponent<?, ?> other)) return false;
 
     return Component.EQUALS.test(this.customName, other.customName);
@@ -77,6 +81,7 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public int hashCode() {
+
     return Objects.hash(customName);
   }
 

@@ -51,6 +51,7 @@ public abstract class ComponentEffect {
 
   @Override
   public boolean equals(final Object obj) {
+
     if(!(obj instanceof final ComponentEffect other)) return false;
 
     return Float.compare(this.probability, other.probability) == 0;
@@ -58,6 +59,7 @@ public abstract class ComponentEffect {
 
   @Override
   public int hashCode() {
+
     return Objects.hash(probability);
   }
 }

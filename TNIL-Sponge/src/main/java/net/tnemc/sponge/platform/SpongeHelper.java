@@ -34,15 +34,17 @@ import java.util.LinkedList;
 public class SpongeHelper extends BaseHelper {
 
   public SpongeHelper() {
-    registerHandler("materials", new SupplierRegistryHandler(() -> {
+
+    registerHandler("materials", new SupplierRegistryHandler(()->{
 
       final LinkedList<String> keys = new LinkedList<>();
 
-      Sponge.game().registry(RegistryTypes.ITEM_TYPE).stream().forEach(itemType->keys.add(Sponge.game().registry(RegistryTypes.ITEM_TYPE).valueKey(itemType).asString()));;
+      Sponge.game().registry(RegistryTypes.ITEM_TYPE).stream().forEach(itemType->keys.add(Sponge.game().registry(RegistryTypes.ITEM_TYPE).valueKey(itemType).asString()));
+      ;
       return keys;
     }));
 
-    registerHandler("enchantments", new SupplierRegistryHandler(() -> {
+    registerHandler("enchantments", new SupplierRegistryHandler(()->{
 
       final LinkedList<String> keys = new LinkedList<>();
       Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).stream().forEach(enchantment->keys.add(Sponge.game().registry(RegistryTypes.ENCHANTMENT_TYPE).valueKey(enchantment).asString()));
@@ -50,7 +52,7 @@ public class SpongeHelper extends BaseHelper {
       return keys;
     }));
 
-    registerHandler("flags", new SupplierRegistryHandler(() -> {
+    registerHandler("flags", new SupplierRegistryHandler(()->{
       final LinkedList<String> keys = new LinkedList<>();
 
       keys.add("HIDE_ATTRIBUTES");

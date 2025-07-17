@@ -49,11 +49,13 @@ public abstract class MapColorComponent<I extends AbstractItemStack<T>, T> imple
 
   @Override
   public String identifier() {
+
     return "map_color";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("map_color", mapColor);
     return json;
@@ -61,17 +63,20 @@ public abstract class MapColorComponent<I extends AbstractItemStack<T>, T> imple
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     mapColor = json.getInteger("map_color");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final MapColorComponent<?, ?> other)) return false;
     return this.mapColor == other.mapColor;
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(mapColor);
   }
 

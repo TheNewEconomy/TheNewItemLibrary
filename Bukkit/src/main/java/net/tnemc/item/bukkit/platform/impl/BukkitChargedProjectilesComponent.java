@@ -51,6 +51,7 @@ public class BukkitChargedProjectilesComponent extends ContainerComponent<Bukkit
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -64,6 +65,7 @@ public class BukkitChargedProjectilesComponent extends ContainerComponent<Bukkit
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -87,6 +89,7 @@ public class BukkitChargedProjectilesComponent extends ContainerComponent<Bukkit
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -95,7 +98,7 @@ public class BukkitChargedProjectilesComponent extends ContainerComponent<Bukkit
     if(item.hasItemMeta() && item.getItemMeta() instanceof final CrossbowMeta meta) {
 
       final BukkitChargedProjectilesComponent component = (serialized.bukkitComponent(identifier()) instanceof final ContainerComponent<?, ?> getComponent)?
-                                                 (BukkitChargedProjectilesComponent)getComponent : new BukkitChargedProjectilesComponent();
+                                                          (BukkitChargedProjectilesComponent)getComponent : new BukkitChargedProjectilesComponent();
 
       final List<ItemStack> projectiles = meta.getChargedProjectiles();
       for(int i = 0; i < projectiles.size(); i++) {
@@ -119,6 +122,7 @@ public class BukkitChargedProjectilesComponent extends ContainerComponent<Bukkit
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

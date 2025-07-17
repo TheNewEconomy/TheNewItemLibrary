@@ -58,11 +58,13 @@ public abstract class RecipesComponent<I extends AbstractItemStack<T>, T> implem
 
   @Override
   public String identifier() {
+
     return "recipes";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     final JSONArray recipesArray = new JSONArray();
     recipesArray.addAll(recipes);
@@ -72,18 +74,21 @@ public abstract class RecipesComponent<I extends AbstractItemStack<T>, T> implem
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     recipes.clear();
     recipes.addAll(json.getStringList("recipes"));
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final RecipesComponent<?, ?> other)) return false;
     return Objects.equals(this.recipes, other.recipes);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(recipes);
   }
 

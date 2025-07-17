@@ -30,11 +30,12 @@ import java.util.Objects;
  * HideAdditionalTooltipComponent
  *
  * @author creatorfromhell
- * @see <a href="https://minecraft.wiki/w/Data_component_format#hide_additional_tooltip">Reference</a>
+ * @see <a
+ * href="https://minecraft.wiki/w/Data_component_format#hide_additional_tooltip">Reference</a>
  * <p>
  * @since 0.2.0.0
- * @deprecated This component was deprecated in MC 1.21.5 in favor of {@link TooltipDisplayComponent}
- *
+ * @deprecated This component was deprecated in MC 1.21.5 in favor of
+ * {@link TooltipDisplayComponent}
  */
 @Deprecated(
         since = "1.21.5"
@@ -47,11 +48,13 @@ public abstract class HideAdditionalTooltipComponent<I extends AbstractItemStack
 
   @Override
   public String identifier() {
+
     return "hide_additional_tooltip";
   }
 
   @Override
   public JSONObject toJSON() {
+
     return new JSONObject(); // Empty JSON as no additional data is required
   }
 
@@ -62,11 +65,13 @@ public abstract class HideAdditionalTooltipComponent<I extends AbstractItemStack
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     return component instanceof HideAdditionalTooltipComponent<?, ?>;
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(identifier());
   }
 }

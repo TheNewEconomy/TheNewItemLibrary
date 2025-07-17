@@ -108,23 +108,32 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
     addEffect(new TeleportRandomlyComponentEffect());
   }
 
+  public static String componentString(@NotNull final Component component) {
+
+    return PlainTextComponentSerializer.plainText().serialize(component);
+  }
+
   /**
    * Creates a new stack based on the given material.
    *
    * @param material The material used for creating the stack.
+   *
    * @return The newly created stack.
+   *
    * @since 0.2.0.0
    */
   public abstract I createStack(final String material);
 
   /**
    * @return the version that is being used currently
+   *
    * @since 0.2.0.0
    */
   public abstract String version();
 
   /**
    * Adds default configurations or settings to be used by the implementing class.
+   *
    * @since 0.2.0.0
    */
   public abstract void addDefaults();
@@ -133,13 +142,14 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * Retrieves the platform converter associated with the current item platform.
    *
    * @return The {@link PlatformConverter} instance used by the item platform.
+   *
    * @since 0.2.0.0
    */
   public PlatformConverter converter() {
 
     return converter;
   }
-  
+
   public void debug(final String message) {
     //TODO: debug
   }
@@ -148,6 +158,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * Retrieves the default provider for the item stack comparison.
    *
    * @return the default provider for the item stack comparison.
+   *
    * @since 0.2.0.0
    */
   public abstract @NotNull ItemProvider<S> defaultProvider();
@@ -156,24 +167,32 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * Retrieves the identifier of the default provider for the item stack comparison.
    *
    * @return The identifier of the default provider for the item stack comparison.
+   *
    * @since 0.2.0.0
    */
   public abstract @NotNull String defaultProviderIdentifier();
 
   /**
-   * Provides access to the calculations provider for performing various platform-specific operations.
+   * Provides access to the calculations provider for performing various platform-specific
+   * operations.
    *
-   * @return An instance of {@link CalculationsProvider} that handles calculations related to the item platform.
+   * @return An instance of {@link CalculationsProvider} that handles calculations related to the
+   * item platform.
+   *
    * @since 0.2.0.0
    */
   public abstract CalculationsProvider<I, S, U> calculations();
 
   /**
-   * Checks if any of the registered item providers are applicable to the given serialized item and item.
+   * Checks if any of the registered item providers are applicable to the given serialized item and
+   * item.
    *
    * @param serialized The serialized item stack to check against.
-   * @param item The item to check for applicability.
-   * @return True if an item provider is found that applies to the serialized item and item, otherwise false.
+   * @param item       The item to check for applicability.
+   *
+   * @return True if an item provider is found that applies to the serialized item and item,
+   * otherwise false.
+   *
    * @since 0.2.0.0
    */
   public boolean providerApplies(final AbstractItemStack<? extends S> serialized, final S item) {
@@ -192,10 +211,14 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   }
 
   /**
-   * Retrieves the item provider for the given itemProvider name, or returns the default provider if not found.
+   * Retrieves the item provider for the given itemProvider name, or returns the default provider if
+   * not found.
    *
    * @param itemProvider The name of the ItemProvider to retrieve.
-   * @return The ItemProvider associated with the itemProvider name, or the default provider if not found.
+   *
+   * @return The ItemProvider associated with the itemProvider name, or the default provider if not
+   * found.
+   *
    * @since 0.2.0.0
    */
   public ItemProvider<S> provider(final String itemProvider) {
@@ -207,6 +230,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * Adds an ItemProvider to the ItemPlatform.
    *
    * @param provider The ItemProvider to add to the platform
+   *
    * @since 0.2.0.0
    */
   public void addItemProvider(final ItemProvider<S> provider) {
@@ -219,6 +243,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    *
    * @param identifier The identifier for the persistent data type.
    * @param type       The class representing the persistent data type.
+   *
    * @since 0.2.0.0
    */
   public void addPersistentDataType(final String identifier, @NotNull final Class<? extends PersistentDataType<?>> type) {
@@ -236,6 +261,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * deserializer.
    *
    * @param object the object to add.
+   *
    * @since 0.2.0.0
    */
   public void addMulti(@NotNull final Object object) {
@@ -299,13 +325,16 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * Converts the given locale stack to an instance of {@link AbstractItemStack}
    *
    * @param locale the locale to convert
+   *
    * @return the converted locale of type I
+   *
    * @since 0.2.0.0
    */
   public abstract I locale(final S locale);
 
   /**
    * @param check the {@link ItemCheck check} to add.
+   *
    * @since 0.2.0.0
    */
   public void addCheck(@NotNull final ItemCheck<S> check) {
@@ -315,6 +344,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
   /**
    * @param applicator the applicator to add
+   *
    * @since 0.2.0.0
    */
   public void addApplicator(@NotNull final ItemApplicator<I, S> applicator) {
@@ -324,6 +354,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
   /**
    * @param serializer the deserializer to add
+   *
    * @since 0.2.0.0
    */
   public void addSerializer(@NotNull final ItemSerializer<I, S> serializer) {
@@ -335,6 +366,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * Adds a ReviveEffect to the reviveEffects map.
    *
    * @param effect The ReviveEffect instance to add. Must not be null.
+   *
    * @since 0.2.0.0
    */
   public void addEffect(@NotNull final ComponentEffect effect) {
@@ -344,9 +376,8 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   }
 
   /**
-   * Used to check if two locale stacks are comparable.
-   * How they are performed:
-   * - if a locale check applies, the check result is returned, true is the default return.
+   * Used to check if two locale stacks are comparable. How they are performed: - if a locale check
+   * applies, the check result is returned, true is the default return.
    *
    * @param original       the original stack
    * @param check          the stack to use for the check
@@ -354,6 +385,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    *                       disabled for the check.
    *
    * @return True if the check passes, otherwise false.
+   *
    * @since 0.2.0.0
    */
   public boolean check(@NotNull final S original, @NotNull final S check, @NotNull final String... disabledChecks) {
@@ -399,6 +431,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * @param order    the order of the checks to run for the comparison
    *
    * @return True if the check passes, otherwise false.
+   *
    * @since 0.2.0.0
    */
   public boolean checkOrder(@NotNull final S original, @NotNull final S check, @NotNull final String... order) {
@@ -437,6 +470,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    *                       disabled for the check.
    *
    * @return True if the check passes, otherwise false.
+   *
    * @since 0.2.0.0
    */
   public boolean check(@NotNull final I original, @NotNull final I check, final String... disabledChecks) {
@@ -481,6 +515,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * @param order    the order of the checks to run for the comparison
    *
    * @return True if the check passes, otherwise false.
+   *
    * @since 0.2.0.0
    */
   public boolean checkOrder(@NotNull final I original, @NotNull final I check, @NotNull final String... order) {
@@ -515,6 +550,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * @param item       the locale itemstack object to apply the applications to
    *
    * @return the updated item stack after applying the applicators
+   *
    * @since 0.2.0.0
    */
   public S apply(@NotNull final I serialized, @NotNull S item) {
@@ -540,6 +576,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * @param serialized the serialized item stack we should use to apply this serializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   public I serializer(@NotNull final S item, @NotNull I serialized) {
@@ -550,7 +587,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
         //System.out.println("Serializer ready to apply: " + serializer.identifier());
 
-        if(serializer instanceof final SerialComponent<I,S> component) {
+        if(serializer instanceof final SerialComponent<I, S> component) {
 
           //System.out.println("Serializer is component");
           if(!component.appliesTo(item)) {
@@ -573,14 +610,10 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    * @param object the JSON object to deserialize
    *
    * @return an initialized AbstractItemStack object
+   *
    * @since 0.2.0.0
    */
   public abstract Optional<I> initSerialized(final JSONObject object);
-
-  public static String componentString(@NotNull final Component component) {
-
-    return PlainTextComponentSerializer.plainText().serialize(component);
-  }
 
   public Map<String, Class<? extends ComponentEffect>> effects() {
 

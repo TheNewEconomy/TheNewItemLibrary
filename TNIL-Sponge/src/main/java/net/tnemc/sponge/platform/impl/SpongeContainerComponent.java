@@ -124,7 +124,7 @@ public class SpongeContainerComponent extends ContainerComponent<SpongeItemStack
     if(key.isPresent()) {
 
       final SpongeContainerComponent component = (serialized.spongeComponent(identifier()) instanceof final ContainerComponent<?, ?> getComponent)?
-                                              (SpongeContainerComponent)getComponent : new SpongeContainerComponent();
+                                                 (SpongeContainerComponent)getComponent : new SpongeContainerComponent();
 
       for(final Slot slot : key.get().slots()) {
 

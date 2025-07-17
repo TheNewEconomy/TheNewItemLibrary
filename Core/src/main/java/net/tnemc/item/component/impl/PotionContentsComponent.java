@@ -89,18 +89,20 @@ public abstract class PotionContentsComponent<I extends AbstractItemStack<T>, T>
 
   @Override
   public String identifier() {
+
     return "potion_contents";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("potion", potionId);
     json.put("custom_color", customColor);
     json.put("custom_name", customName);
 
     final JSONArray effectsArray = new JSONArray();
-    for (final EffectInstance effect : customEffects) {
+    for(final EffectInstance effect : customEffects) {
       effectsArray.add(effect.toJSON());
     }
     json.put("custom_effects", effectsArray);
@@ -109,21 +111,23 @@ public abstract class PotionContentsComponent<I extends AbstractItemStack<T>, T>
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     potionId = json.getString("potion");
     customColor = json.getInteger("custom_color");
     customName = json.getString("custom_name");
 
     customEffects.clear();
-    final JSONArray effectsArray = (JSONArray) json.getObject().get("custom_effects");
-    for (final Object obj : effectsArray) {
+    final JSONArray effectsArray = (JSONArray)json.getObject().get("custom_effects");
+    for(final Object obj : effectsArray) {
       final EffectInstance effect = new EffectInstance();
-      effect.readJSON(new JSONHelper((JSONObject) obj));
+      effect.readJSON(new JSONHelper((JSONObject)obj));
       customEffects.add(effect);
     }
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final PotionContentsComponent<?, ?> other)) return false;
     return Objects.equals(this.potionId, other.potionId) &&
            this.customColor == other.customColor &&
@@ -133,6 +137,7 @@ public abstract class PotionContentsComponent<I extends AbstractItemStack<T>, T>
 
   @Override
   public int hashCode() {
+
     return Objects.hash(potionId, customColor, customName, customEffects);
   }
 

@@ -38,11 +38,13 @@ public class RemoveEffectsComponentEffect extends ComponentEffect {
 
   @Override
   public String getType() {
+
     return "remove_effects";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("type", getType());
     json.put("probability", probability);
@@ -56,6 +58,7 @@ public class RemoveEffectsComponentEffect extends ComponentEffect {
 
   @Override
   public void readJSON(final JSONHelper json) {
+
     probability = json.getFloat("probability");
 
     effectIds.clear();
@@ -65,11 +68,13 @@ public class RemoveEffectsComponentEffect extends ComponentEffect {
   }
 
   public List<String> getEffectIds() {
+
     return effectIds;
   }
 
   @Override
   public boolean equals(final Object obj) {
+
     if(!(obj instanceof final RemoveEffectsComponentEffect other)) return false;
 
     return super.equals(obj) && Objects.equals(this.effectIds, other.effectIds);
@@ -77,11 +82,13 @@ public class RemoveEffectsComponentEffect extends ComponentEffect {
 
   @Override
   public int hashCode() {
+
     return Objects.hash(super.hashCode(), effectIds);
   }
 
   @Override
   public RemoveEffectsComponentEffect clone() {
+
     final RemoveEffectsComponentEffect copy = new RemoveEffectsComponentEffect();
     copy.probability(this.probability);
     copy.getEffectIds().addAll(this.effectIds);

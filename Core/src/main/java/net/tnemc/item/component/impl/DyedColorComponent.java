@@ -27,9 +27,9 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * DyedColorComponent -The color applied of this leather armor piece. Color codes are the hex code of
- * the color converted to a decimal number, or can be calculated from the Red, Green and Blue components
- * using this formula: "R &lt;&lt; 16 + G &lt;&lt; 8 + B"
+ * DyedColorComponent -The color applied of this leather armor piece. Color codes are the hex code
+ * of the color converted to a decimal number, or can be calculated from the Red, Green and Blue
+ * components using this formula: "R &lt;&lt; 16 + G &lt;&lt; 8 + B"
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#dyed_color">Reference</a>
@@ -56,11 +56,13 @@ public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public String identifier() {
+
     return "dyed_color";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("rgb", rgb);
     return json;
@@ -68,11 +70,13 @@ public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     rgb = json.getInteger("rgb");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final DyedColorComponent<?, ?> other)) return false;
 
     return this.rgb == other.rgb;
@@ -80,6 +84,7 @@ public abstract class DyedColorComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public int hashCode() {
+
     return Objects.hash(rgb);
   }
 

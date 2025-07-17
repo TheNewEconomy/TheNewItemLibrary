@@ -41,11 +41,12 @@ import java.util.UUID;
 public class PaperHelper extends BaseHelper {
 
   public PaperHelper() {
-    registerHandler("materials", new SupplierRegistryHandler(() -> {
+
+    registerHandler("materials", new SupplierRegistryHandler(()->{
 
       final LinkedList<String> keys = new LinkedList<>();
 
-      Registry.MATERIAL.forEach(material -> {
+      Registry.MATERIAL.forEach(material->{
         if(material.isItem()) {
           keys.add(material.getKey().getKey());
         }
@@ -53,7 +54,7 @@ public class PaperHelper extends BaseHelper {
       return keys;
     }));
 
-    registerHandler("enchantments", new SupplierRegistryHandler(() -> {
+    registerHandler("enchantments", new SupplierRegistryHandler(()->{
 
       final LinkedList<String> keys = new LinkedList<>();
       if(VersionUtil.isVersion(PaperItemPlatform.instance().version(), "1.21")) {
@@ -65,10 +66,9 @@ public class PaperHelper extends BaseHelper {
           }
         });
 
-
       } else {
 
-        Registry.ENCHANTMENT.forEach((enchantment) -> {
+        Registry.ENCHANTMENT.forEach((enchantment)->{
           if(enchantment != null) {
 
             keys.add(enchantment.getKey().toString());
@@ -78,7 +78,7 @@ public class PaperHelper extends BaseHelper {
       return keys;
     }));
 
-    registerHandler("flags", new SupplierRegistryHandler(() -> {
+    registerHandler("flags", new SupplierRegistryHandler(()->{
       final LinkedList<String> keys = new LinkedList<>();
 
       for(final ItemFlag itemFlag : ItemFlag.values()) {

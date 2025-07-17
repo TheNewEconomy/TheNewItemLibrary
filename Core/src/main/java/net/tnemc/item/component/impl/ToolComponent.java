@@ -91,6 +91,7 @@ public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implement
 
   /**
    * @return the type of component this is.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -103,6 +104,7 @@ public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implement
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -127,6 +129,7 @@ public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implement
    * Reads JSON data and converts it back to a {@link SerialComponent} object.
    *
    * @param json The JSONHelper instance of the json data.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -150,6 +153,7 @@ public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implement
    * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -170,11 +174,13 @@ public abstract class ToolComponent<I extends AbstractItemStack<T>, T> implement
   }
 
   public void rules(final List<ToolRule> rules) {
+
     this.rules.clear();
     this.rules.addAll(rules);
   }
 
   public void rules(final ToolRule... rules) {
+
     this.rules.clear();
     this.rules.addAll(Arrays.asList(rules));
   }

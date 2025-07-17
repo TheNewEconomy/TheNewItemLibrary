@@ -25,7 +25,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * StoredEnchantmentsComponents - Can contain either the following fields, or key-value pairs of levels of enchantments.
+ * StoredEnchantmentsComponents - Can contain either the following fields, or key-value pairs of
+ * levels of enchantments.
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#stored_enchantments">Reference</a>
@@ -45,17 +46,20 @@ public abstract class StoredEnchantmentsComponent<I extends AbstractItemStack<T>
 
   @Override
   public String identifier() {
+
     return "stored_enchantments";
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final StoredEnchantmentsComponent<?, ?> other)) return false;
     return Objects.equals(this.levels, other.levels);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(super.hashCode(), levels);
   }
 }

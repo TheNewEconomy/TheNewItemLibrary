@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>TNIL-Example</artifactId>
     <packaging>jar</packaging>
@@ -7,7 +9,7 @@
     <parent>
         <groupId>net.tnemc</groupId>
         <artifactId>TNIL</artifactId>
-        <version>0.1.2.0-SNAPSHOT-10</version>
+        <version>0.1.2.0-SNAPSHOT-11</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -76,7 +78,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                    <dependencyReducedPomLocation>
+                        ${project.build.directory}/dependency-reduced-pom.xml
+                    </dependencyReducedPomLocation>
                 </configuration>
             </plugin>
         </plugins>
@@ -104,19 +108,19 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-Paper</artifactId>
-            <version>0.1.2.0-SNAPSHOT-10</version>
+            <version>0.1.2.0-SNAPSHOT-11</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-Bukkit</artifactId>
-            <version>0.1.2.0-SNAPSHOT-10</version>
+            <version>0.1.2.0-SNAPSHOT-11</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-Core</artifactId>
-            <version>0.1.2.0-SNAPSHOT-10</version>
+            <version>0.1.2.0-SNAPSHOT-11</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

@@ -29,9 +29,9 @@ import java.util.Objects;
 /**
  * InstrumentComponent
  *
+ * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#instrument">Reference</a>
  * <p>
- * @author creatorfromhell
  * @since 0.2.0.0
  */
 public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
@@ -64,11 +64,13 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public String identifier() {
+
     return "instrument";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("sound_event", soundEvent);
     json.put("use_duration", useDuration);
@@ -78,6 +80,7 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     soundEvent = json.getString("sound_event");
     useDuration = json.getInteger("use_duration");
     range = json.getInteger("range");
@@ -85,6 +88,7 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final InstrumentComponent<?, ?> other)) return false;
 
     return Objects.equals(this.soundEvent, other.soundEvent) &&
@@ -94,6 +98,7 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public int hashCode() {
+
     return Objects.hash(soundEvent, useDuration, range);
   }
 

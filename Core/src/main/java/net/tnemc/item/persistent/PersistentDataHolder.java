@@ -43,6 +43,7 @@ public class PersistentDataHolder {
    * Decodes the {@link JSONHelper JSON object} and sets the values in the current instance.
    *
    * @param json The {@link JSONHelper JSON object} to be decoded
+   *
    * @since 0.2.0.0
    */
   public void readJSON(final JSONObject json, final ItemPlatform<?, ?, ?> platform) {
@@ -59,6 +60,7 @@ public class PersistentDataHolder {
    * Convert a PersistentDataHolder object to a JSONObject.
    *
    * @return The JSONObject representation of the PersistentDataHolder object.
+   *
    * @since 0.2.0.0
    */
   public JSONObject toJSON() {
@@ -79,6 +81,7 @@ public class PersistentDataHolder {
    *
    * @return An Optional containing the decoded PersistentDataType if it exists, otherwise an empty
    * Optional
+   *
    * @since 0.2.0.0
    */
   public Optional<PersistentDataType<?>> decode(final JSONHelper json, final ItemPlatform<?, ?, ?> platform) {

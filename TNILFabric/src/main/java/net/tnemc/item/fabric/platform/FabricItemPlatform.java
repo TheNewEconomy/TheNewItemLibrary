@@ -80,6 +80,7 @@ public class FabricItemPlatform extends ItemPlatform<FabricItemStack, ItemStack,
       return instance;
     }
   }
+
   /**
    * Creates a new stack based on the given material.
    *

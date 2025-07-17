@@ -54,7 +54,7 @@ public class TNILCountCommand implements CommandExecutor {
       }
     } else {
 
-      target = (Player) sender;
+      target = (Player)sender;
     }
 
     final int normalAmount = Example.instance().getPlatform().calculations().count(Example.instance().getItem(), target.getInventory());

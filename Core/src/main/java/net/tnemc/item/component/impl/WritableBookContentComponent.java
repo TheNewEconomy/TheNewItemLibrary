@@ -58,11 +58,13 @@ public abstract class WritableBookContentComponent<I extends AbstractItemStack<T
 
   @Override
   public String identifier() {
+
     return "writable_book_content";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     final JSONArray pagesArray = new JSONArray();
     pagesArray.addAll(pages);
@@ -72,18 +74,21 @@ public abstract class WritableBookContentComponent<I extends AbstractItemStack<T
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     pages.clear();
     pages.addAll(json.getStringList("pages"));
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final WritableBookContentComponent<?, ?> other)) return false;
     return Objects.equals(this.pages, other.pages);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(pages);
   }
 

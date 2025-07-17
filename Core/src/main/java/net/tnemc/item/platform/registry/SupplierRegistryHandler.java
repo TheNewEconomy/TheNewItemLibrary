@@ -24,7 +24,8 @@ import java.util.LinkedList;
 import java.util.function.Supplier;
 
 /**
- * SupplierRegistryHandler extends RegistryHandler and handles the initialization of keys using a Supplier.
+ * SupplierRegistryHandler extends RegistryHandler and handles the initialization of keys using a
+ * Supplier.
  *
  * @author creatorfromhell
  * @since 0.2.0.0

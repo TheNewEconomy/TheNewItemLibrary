@@ -50,6 +50,7 @@ public class FabricDyedColorComponent extends DyedColorComponent<FabricItemStack
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -64,6 +65,7 @@ public class FabricDyedColorComponent extends DyedColorComponent<FabricItemStack
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -104,7 +106,7 @@ public class FabricDyedColorComponent extends DyedColorComponent<FabricItemStack
     keyOptional.ifPresent((key->{
 
       final FabricDyedColorComponent component = (serialized.fabricComponent(identifier()) instanceof final DyedColorComponent<?, ?> getComponent)?
-                                                  (FabricDyedColorComponent)getComponent : new FabricDyedColorComponent();
+                                                 (FabricDyedColorComponent)getComponent : new FabricDyedColorComponent();
 
       component.rgb = key.rgb();
     }));

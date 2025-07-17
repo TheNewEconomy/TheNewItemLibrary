@@ -30,10 +30,11 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * EnchantmentsComponent - Can contain either the following fields, or key-value pairs of levels of enchantments.
+ * EnchantmentsComponent - Can contain either the following fields, or key-value pairs of levels of
+ * enchantments.
  *
- * @see <a href="https://minecraft.wiki/w/Data_component_format#enchantments">Reference</a>
  * @author creatorfromhell
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#enchantments">Reference</a>
  * @since 0.2.0.0
  */
 public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
@@ -51,11 +52,13 @@ public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> i
 
   @Override
   public String identifier() {
+
     return "enchantments";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
 
     final JSONArray enchantmentsArray = new JSONArray();
@@ -73,12 +76,13 @@ public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> i
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     levels.clear();
 
-    final JSONArray enchantmentsArray = (JSONArray) json.getObject().get("enchantments");
+    final JSONArray enchantmentsArray = (JSONArray)json.getObject().get("enchantments");
     if(enchantmentsArray != null) {
       for(final Object obj : enchantmentsArray) {
-        final JSONObject enchantmentJson = (JSONObject) obj;
+        final JSONObject enchantmentJson = (JSONObject)obj;
 
         final String id = enchantmentJson.get("id").toString();
         final int level = Integer.parseInt(enchantmentJson.get("level").toString());
@@ -89,6 +93,7 @@ public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> i
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final EnchantmentsComponent<?, ?> other)) return false;
 
     return Objects.equals(this.levels, other.levels);
@@ -96,6 +101,7 @@ public abstract class EnchantmentsComponent<I extends AbstractItemStack<T>, T> i
 
   @Override
   public int hashCode() {
+
     return Objects.hash(levels);
   }
 

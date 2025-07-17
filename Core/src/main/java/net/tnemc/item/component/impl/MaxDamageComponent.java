@@ -49,11 +49,13 @@ public abstract class MaxDamageComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public String identifier() {
+
     return "max_damage";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("max_damage", maxDamage);
     return json;
@@ -61,17 +63,20 @@ public abstract class MaxDamageComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     maxDamage = json.getInteger("max_damage");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final MaxDamageComponent<?, ?> other)) return false;
     return this.maxDamage == other.maxDamage;
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(maxDamage);
   }
 

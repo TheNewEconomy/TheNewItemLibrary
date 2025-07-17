@@ -17,6 +17,7 @@ package net.tnemc.sponge;
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.component.SerialComponent;
@@ -149,10 +150,12 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   }
 
   public SpongeItemStack(final String material, final int amount) {
+
     this.of(material, amount);
   }
 
   public SpongeItemStack(final ItemStack locale) {
+
     this.of(locale);
   }
 
@@ -265,7 +268,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public SpongeItemStack enchant(final String enchantment, final int level) {
 
-    applyComponent(new SpongeEnchantmentsComponent(new HashMap<>(){{
+    applyComponent(new SpongeEnchantmentsComponent(new HashMap<>() {{
       put(enchantment, level);
     }}));
     return this;
@@ -470,6 +473,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public void resetDirty() {
+
     this.dirty = false;
   }
 
@@ -512,6 +516,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public SpongeItemStack setItemProvider(final String itemProvider) {
+
     this.itemProvider = itemProvider;
     return this;
   }
@@ -1337,6 +1342,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public SpongeItemStack profile(final SkullProfile profile) {
+
     applyComponent(new SpongeProfileComponent(profile));
     return this;
   }

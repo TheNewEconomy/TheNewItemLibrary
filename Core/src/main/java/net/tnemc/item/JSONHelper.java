@@ -100,13 +100,15 @@ public class JSONHelper {
    * Parses a JSON array into a String list.
    *
    * @param identifier The key of the JSON array.
+   *
    * @return A String list containing the elements of the JSON array.
    */
   public List<String> getStringList(final String identifier) {
+
     final List<String> result = new ArrayList<>();
     if(has(identifier)) {
 
-      final JSONArray array = (JSONArray) object.get(identifier);
+      final JSONArray array = (JSONArray)object.get(identifier);
       for(final Object obj : array) {
 
         result.add(obj.toString());
@@ -119,13 +121,15 @@ public class JSONHelper {
    * Parses a JSON array into a Integer List.
    *
    * @param identifier The key of the JSON array.
+   *
    * @return An Integer List containing the elements of the JSON array.
    */
   public List<Integer> getIntegerList(final String identifier) {
+
     final List<Integer> result = new ArrayList<>();
     if(has(identifier)) {
 
-      final JSONArray array = (JSONArray) object.get(identifier);
+      final JSONArray array = (JSONArray)object.get(identifier);
       for(final Object obj : array) {
 
         result.add(Integer.parseInt(obj.toString()));
@@ -138,13 +142,15 @@ public class JSONHelper {
    * Parses a JSON array into a Float List.
    *
    * @param identifier The key of the JSON array.
+   *
    * @return A Float List containing the elements of the JSON array.
    */
   public List<Float> getFloatList(final String identifier) {
+
     final List<Float> result = new ArrayList<>();
     if(has(identifier)) {
 
-      final JSONArray array = (JSONArray) object.get(identifier);
+      final JSONArray array = (JSONArray)object.get(identifier);
       for(final Object obj : array) {
 
         result.add(Float.parseFloat(obj.toString()));
@@ -157,13 +163,15 @@ public class JSONHelper {
    * Parses a JSON array into a Boolean List.
    *
    * @param identifier The key of the JSON array.
+   *
    * @return A Boolean List containing the elements of the JSON array.
    */
   public List<Boolean> getBooleanList(final String identifier) {
+
     final List<Boolean> result = new ArrayList<>();
     if(has(identifier)) {
 
-      final JSONArray array = (JSONArray) object.get(identifier);
+      final JSONArray array = (JSONArray)object.get(identifier);
       for(final Object obj : array) {
 
         result.add(Boolean.parseBoolean(obj.toString()));
@@ -176,12 +184,14 @@ public class JSONHelper {
    * Parses a JSON array into an int array.
    *
    * @param identifier The key of the JSON array.
+   *
    * @return An int[] containing the elements of the JSON array.
    */
   public int[] getIntArray(final String identifier) {
+
     if(has(identifier)) {
 
-      final JSONArray array = (JSONArray) object.get(identifier);
+      final JSONArray array = (JSONArray)object.get(identifier);
 
       final int[] result = new int[array.size()];
       for(int i = 0; i < array.size(); i++) {

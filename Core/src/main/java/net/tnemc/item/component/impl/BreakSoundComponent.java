@@ -27,8 +27,8 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * BreakSoundComponent - When present, this sound will be played when the item runs out of durability and breaks
- * Added in MC 1.21.5
+ * BreakSoundComponent - When present, this sound will be played when the item runs out of
+ * durability and breaks Added in MC 1.21.5
  *
  * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#break_sound">Reference</a>
@@ -50,6 +50,7 @@ public abstract class BreakSoundComponent<I extends AbstractItemStack<T>, T> imp
 
   /**
    * @return the type of component this is.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -62,6 +63,7 @@ public abstract class BreakSoundComponent<I extends AbstractItemStack<T>, T> imp
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -78,6 +80,7 @@ public abstract class BreakSoundComponent<I extends AbstractItemStack<T>, T> imp
    * Reads JSON data and converts it back to a {@link SerialComponent} object.
    *
    * @param json The JSONHelper instance of the json data.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -93,6 +96,7 @@ public abstract class BreakSoundComponent<I extends AbstractItemStack<T>, T> imp
    * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
+   *
    * @since 0.2.0.0
    */
   @Override

@@ -40,6 +40,7 @@ public class PaperOldBaseColorComponent extends BaseColorComponent<PaperItemStac
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -53,6 +54,7 @@ public class PaperOldBaseColorComponent extends BaseColorComponent<PaperItemStac
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -81,6 +83,7 @@ public class PaperOldBaseColorComponent extends BaseColorComponent<PaperItemStac
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -91,7 +94,7 @@ public class PaperOldBaseColorComponent extends BaseColorComponent<PaperItemStac
       if(meta.getBaseColor() != null) {
 
         final PaperOldBaseColorComponent component = (serialized.paperComponent(identifier()) instanceof final BaseColorComponent<?, ?> getComponent)?
-                                                          (PaperOldBaseColorComponent)getComponent : new PaperOldBaseColorComponent();
+                                                     (PaperOldBaseColorComponent)getComponent : new PaperOldBaseColorComponent();
 
         component.color = PaperItemPlatform.instance().converter().convert(meta.getBaseColor(), String.class);
 
@@ -107,6 +110,7 @@ public class PaperOldBaseColorComponent extends BaseColorComponent<PaperItemStac
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

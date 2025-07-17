@@ -47,6 +47,7 @@ public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStac
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -60,6 +61,7 @@ public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStac
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -83,6 +85,7 @@ public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStac
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -91,7 +94,7 @@ public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStac
     if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
 
       final PaperOldMaxDamageComponent component = (serialized.paperComponent(identifier()) instanceof final MaxDamageComponent<?, ?> getComponent)?
-                                                     (PaperOldMaxDamageComponent)getComponent : new PaperOldMaxDamageComponent();
+                                                   (PaperOldMaxDamageComponent)getComponent : new PaperOldMaxDamageComponent();
 
       component.maxDamage = meta.getMaxDamage();
 
@@ -106,6 +109,7 @@ public class PaperOldMaxDamageComponent extends MaxDamageComponent<PaperItemStac
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

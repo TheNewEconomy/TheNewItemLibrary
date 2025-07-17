@@ -51,6 +51,7 @@ public class SpongeModelDataComponent extends ModelDataComponent<SpongeItemStack
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -75,6 +76,7 @@ public class SpongeModelDataComponent extends ModelDataComponent<SpongeItemStack
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -139,6 +141,7 @@ public class SpongeModelDataComponent extends ModelDataComponent<SpongeItemStack
   }
 
   private List<Color> fromStrings(final List<String> strings) {
+
     final List<Color> colors = new ArrayList<>();
     for(final String string : strings) {
 

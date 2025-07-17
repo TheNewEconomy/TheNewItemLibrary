@@ -37,6 +37,7 @@ public class PaperOldFoodComponent extends FoodComponent<PaperItemStack, ItemSta
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -51,6 +52,7 @@ public class PaperOldFoodComponent extends FoodComponent<PaperItemStack, ItemSta
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -82,6 +84,7 @@ public class PaperOldFoodComponent extends FoodComponent<PaperItemStack, ItemSta
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -91,7 +94,7 @@ public class PaperOldFoodComponent extends FoodComponent<PaperItemStack, ItemSta
     if(meta != null && meta.hasFood()) {
 
       final PaperOldFoodComponent component = (serialized.paperComponent(identifier()) instanceof final FoodComponent<?, ?> getComponent)?
-                                                     (PaperOldFoodComponent)getComponent : new PaperOldFoodComponent();
+                                              (PaperOldFoodComponent)getComponent : new PaperOldFoodComponent();
 
       component.canAlwaysEat = meta.getFood().canAlwaysEat();
       component.saturation = meta.getFood().getSaturation();
@@ -108,6 +111,7 @@ public class PaperOldFoodComponent extends FoodComponent<PaperItemStack, ItemSta
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

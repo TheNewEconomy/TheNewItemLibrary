@@ -55,6 +55,7 @@ public class SpongeDyedColorComponent extends DyedColorComponent<SpongeItemStack
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -76,6 +77,7 @@ public class SpongeDyedColorComponent extends DyedColorComponent<SpongeItemStack
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -116,7 +118,7 @@ public class SpongeDyedColorComponent extends DyedColorComponent<SpongeItemStack
     keyOptional.ifPresent((key->{
 
       final SpongeDyedColorComponent component = (serialized.spongeComponent(identifier()) instanceof final DyedColorComponent<?, ?> getComponent)?
-                                              (SpongeDyedColorComponent)getComponent : new SpongeDyedColorComponent();
+                                                 (SpongeDyedColorComponent)getComponent : new SpongeDyedColorComponent();
 
       component.rgb = key.color().rgb();
     }));

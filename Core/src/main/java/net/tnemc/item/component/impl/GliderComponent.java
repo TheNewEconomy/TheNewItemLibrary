@@ -42,11 +42,13 @@ public abstract class GliderComponent<I extends AbstractItemStack<T>, T> impleme
 
   @Override
   public String identifier() {
+
     return "glider";
   }
 
   @Override
   public JSONObject toJSON() {
+
     return new JSONObject(); // Empty JSON as no additional data is required
   }
 
@@ -57,11 +59,13 @@ public abstract class GliderComponent<I extends AbstractItemStack<T>, T> impleme
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     return component instanceof GliderComponent<?, ?>;
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(identifier());
   }
 }

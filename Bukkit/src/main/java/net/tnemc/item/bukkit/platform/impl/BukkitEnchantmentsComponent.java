@@ -48,6 +48,7 @@ public class BukkitEnchantmentsComponent extends EnchantmentsComponent<BukkitIte
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -61,6 +62,7 @@ public class BukkitEnchantmentsComponent extends EnchantmentsComponent<BukkitIte
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -91,13 +93,14 @@ public class BukkitEnchantmentsComponent extends EnchantmentsComponent<BukkitIte
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
   public BukkitItemStack serialize(final ItemStack item, final BukkitItemStack serialized) {
 
     final BukkitEnchantmentsComponent component = (serialized.bukkitComponent(identifier()) instanceof final EnchantmentsComponent<?, ?> getComponent)?
-                                          (BukkitEnchantmentsComponent)getComponent : new BukkitEnchantmentsComponent();
+                                                  (BukkitEnchantmentsComponent)getComponent : new BukkitEnchantmentsComponent();
 
     for(final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
 
@@ -114,6 +117,7 @@ public class BukkitEnchantmentsComponent extends EnchantmentsComponent<BukkitIte
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

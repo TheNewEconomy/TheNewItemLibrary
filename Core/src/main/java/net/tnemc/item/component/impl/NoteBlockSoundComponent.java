@@ -49,11 +49,13 @@ public abstract class NoteBlockSoundComponent<I extends AbstractItemStack<T>, T>
 
   @Override
   public String identifier() {
+
     return "note_block_sound";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("note_block_sound", soundId);
     return json;
@@ -61,17 +63,20 @@ public abstract class NoteBlockSoundComponent<I extends AbstractItemStack<T>, T>
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     soundId = json.getString("note_block_sound");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final NoteBlockSoundComponent<?, ?> other)) return false;
     return Objects.equals(this.soundId, other.soundId);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(soundId);
   }
 

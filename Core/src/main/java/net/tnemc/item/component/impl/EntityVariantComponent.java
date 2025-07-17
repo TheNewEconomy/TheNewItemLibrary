@@ -52,6 +52,7 @@ public abstract class EntityVariantComponent<I extends AbstractItemStack<T>, T> 
 
   /**
    * @return the type of component this is.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -64,6 +65,7 @@ public abstract class EntityVariantComponent<I extends AbstractItemStack<T>, T> 
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -81,6 +83,7 @@ public abstract class EntityVariantComponent<I extends AbstractItemStack<T>, T> 
    * Reads JSON data and converts it back to a {@link SerialComponent} object.
    *
    * @param json The JSONHelper instance of the json data.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -97,6 +100,7 @@ public abstract class EntityVariantComponent<I extends AbstractItemStack<T>, T> 
    * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
+   *
    * @since 0.2.0.0
    */
   @Override

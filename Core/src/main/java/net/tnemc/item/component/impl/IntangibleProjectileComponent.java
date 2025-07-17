@@ -42,11 +42,13 @@ public abstract class IntangibleProjectileComponent<I extends AbstractItemStack<
 
   @Override
   public String identifier() {
+
     return "intangible_projectile";
   }
 
   @Override
   public JSONObject toJSON() {
+
     return new JSONObject(); // Empty JSON as no additional data is needed
   }
 
@@ -57,11 +59,13 @@ public abstract class IntangibleProjectileComponent<I extends AbstractItemStack<
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     return component instanceof IntangibleProjectileComponent;
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(identifier());
   }
 }

@@ -49,6 +49,7 @@ public abstract class PersistentDataType<T> {
    * Returns the type of the PersistentDataType.
    *
    * @return The type of the PersistentDataType as a String.
+   *
    * @since 0.2.0.0
    */
   public abstract String type();
@@ -57,6 +58,7 @@ public abstract class PersistentDataType<T> {
    * Encodes the value of the PersistentDataType into a string representation.
    *
    * @return The encoded string representation of the value
+   *
    * @since 0.2.0.0
    */
   public abstract String encode();
@@ -67,9 +69,9 @@ public abstract class PersistentDataType<T> {
    * @param encoded The string to be decoded
    *
    * @return The decoded value of type T
-   * @since 0.2.0.0
    *
    * @throws IllegalArgumentException if the encoded string is invalid
+   * @since 0.2.0.0
    */
   public abstract T decode(final String encoded) throws IllegalArgumentException;
 
@@ -77,6 +79,7 @@ public abstract class PersistentDataType<T> {
    * Decodes the {@link JSONHelper JSON object} and sets the values in the current instance.
    *
    * @param json The {@link JSONHelper JSON object} to be decoded
+   *
    * @since 0.2.0.0
    */
   public void readJSON(final JSONHelper json) {

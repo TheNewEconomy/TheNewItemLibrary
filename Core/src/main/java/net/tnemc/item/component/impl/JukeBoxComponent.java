@@ -47,6 +47,7 @@ public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> implem
 
   /**
    * @return the type of component this is.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -59,6 +60,7 @@ public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> implem
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -74,6 +76,7 @@ public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> implem
    * Reads JSON data and converts it back to a {@link SerialComponent} object.
    *
    * @param json The JSONHelper instance of the json data.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -89,6 +92,7 @@ public abstract class JukeBoxComponent<I extends AbstractItemStack<T>, T> implem
    * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
+   *
    * @since 0.2.0.0
    */
   @Override

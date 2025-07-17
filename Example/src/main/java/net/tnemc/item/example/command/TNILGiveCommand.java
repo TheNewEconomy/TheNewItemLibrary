@@ -37,6 +37,7 @@ public class TNILGiveCommand implements CommandExecutor {
 
   @Override
   public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+
     if(args.length != 2) {
 
       sender.sendMessage(ChatColor.RED + "Usage: /tnilgive <player> <amount>");
@@ -59,7 +60,6 @@ public class TNILGiveCommand implements CommandExecutor {
       sender.sendMessage(ChatColor.RED + "Invalid number.");
       return true;
     }
-
 
 
     Example.instance().getPlatform().calculations().giveItems(Collections.singletonList(Example.instance().getItem().amount(10)), target.getInventory());

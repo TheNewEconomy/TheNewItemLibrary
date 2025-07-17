@@ -42,14 +42,16 @@ public class BlockPredicate {
    * Converts this block predicate to a JSON object.
    *
    * @return The JSONObject representing this block predicate.
+   *
    * @since 0.2.0.0
    */
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("blocks", blocks);
 
     final JSONObject stateJson = new JSONObject();
-    for (final Map.Entry<String, String> entry : state.entrySet()) {
+    for(final Map.Entry<String, String> entry : state.entrySet()) {
       stateJson.put(entry.getKey(), entry.getValue());
     }
     json.put("state", stateJson);
@@ -61,16 +63,18 @@ public class BlockPredicate {
    * Reads JSON data and populates this block predicate.
    *
    * @param json The JSONHelper instance of the JSON data.
+   *
    * @since 0.2.0.0
    */
   public void readJSON(final JSONHelper json) {
+
     blocks.clear();
     blocks.addAll(json.getStringList("blocks"));
 
     state.clear();
     final JSONObject stateJson = json.getJSON("state");
     if(stateJson != null) {
-      for (final Object key : stateJson.keySet()) {
+      for(final Object key : stateJson.keySet()) {
         state.put(key.toString(), stateJson.get(key).toString());
       }
     }
@@ -78,6 +82,7 @@ public class BlockPredicate {
 
   @Override
   public boolean equals(final Object obj) {
+
     if(!(obj instanceof final BlockPredicate other)) return false;
 
     return blocks.equals(other.blocks) && state.equals(other.state);
@@ -85,6 +90,7 @@ public class BlockPredicate {
 
   @Override
   public int hashCode() {
+
     return blocks.hashCode() + state.hashCode();
   }
 

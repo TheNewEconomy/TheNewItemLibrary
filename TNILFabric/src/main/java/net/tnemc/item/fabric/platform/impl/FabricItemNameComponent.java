@@ -48,6 +48,7 @@ public class FabricItemNameComponent extends ItemNameComponent<FabricItemStack, 
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -62,6 +63,7 @@ public class FabricItemNameComponent extends ItemNameComponent<FabricItemStack, 
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -102,7 +104,7 @@ public class FabricItemNameComponent extends ItemNameComponent<FabricItemStack, 
     keyOptional.ifPresent((key->{
 
       final FabricItemNameComponent component = (serialized.fabricComponent(identifier()) instanceof final ItemNameComponent<?, ?> getComponent)?
-                                                  (FabricItemNameComponent)getComponent : new FabricItemNameComponent();
+                                                (FabricItemNameComponent)getComponent : new FabricItemNameComponent();
 
       component.itemName = Utils.toComponent(key);
     }));

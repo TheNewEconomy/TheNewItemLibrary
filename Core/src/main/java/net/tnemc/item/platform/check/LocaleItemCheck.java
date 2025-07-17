@@ -21,7 +21,8 @@ package net.tnemc.item.platform.check;
 import net.tnemc.item.AbstractItemStack;
 
 /**
- * LocaleItemCheck is used to check the locale item specifically, and is the priority check in platform checks.
+ * LocaleItemCheck is used to check the locale item specifically, and is the priority check in
+ * platform checks.
  *
  * @author creatorfromhell
  * @since 0.2.0.0
@@ -35,6 +36,7 @@ public interface LocaleItemCheck<T> extends ItemCheck<T> {
    * @param check    the item to check
    *
    * @return true if the LocaleItemCheck applies, false otherwise
+   *
    * @since 0.2.0.0
    */
   boolean applies(final T original, final T check);
@@ -44,6 +46,7 @@ public interface LocaleItemCheck<T> extends ItemCheck<T> {
    * @param check    the stack to use for the check
    *
    * @return True if the check passes, otherwise false.
+   *
    * @since 0.2.0.0
    */
   boolean check(final T original, final T check);
@@ -53,6 +56,7 @@ public interface LocaleItemCheck<T> extends ItemCheck<T> {
    * @param check    the stack to use for the check
    *
    * @return True if the check passes, otherwise false.
+   *
    * @since 0.2.0.0
    */
   @Override

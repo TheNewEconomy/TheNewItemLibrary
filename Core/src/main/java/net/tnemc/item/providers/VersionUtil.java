@@ -31,7 +31,7 @@ public class VersionUtil {
 
     return new Semver(currentVersion, Semver.SemverType.LOOSE).isGreaterThanOrEqualTo(compare);
   }
-  
+
   public static boolean isLessThan(final String currentVersion, final String compare) {
 
     return new Semver(currentVersion, Semver.SemverType.LOOSE).isLowerThan(compare);

@@ -42,6 +42,7 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
 
   /**
    * Represents a component that handles banner patterns for an object.
+   *
    * @since 0.2.0.0
    */
   public BukkitBannerPatternsComponent() {
@@ -52,6 +53,7 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
    * Creates a new BannerPatternsComponent with the provided list of PatternData objects.
    *
    * @param patterns The list of PatternData objects to initialize the component with.
+   *
    * @since 0.2.0.0
    */
   public BukkitBannerPatternsComponent(final List<PatternData> patterns) {
@@ -63,6 +65,7 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -76,6 +79,7 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -113,6 +117,7 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -121,13 +126,13 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
     if(item.hasItemMeta() && item.getItemMeta() instanceof final BannerMeta meta) {
 
       final BukkitBannerPatternsComponent component = (serialized.bukkitComponent(identifier()) instanceof final BannerPatternsComponent<?, ?> getComponent)?
-                                                 (BukkitBannerPatternsComponent)getComponent : new BukkitBannerPatternsComponent();
+                                                      (BukkitBannerPatternsComponent)getComponent : new BukkitBannerPatternsComponent();
 
       for(final Pattern pattern : meta.getPatterns()) {
 
         try {
           component.patterns.add(new PatternData(String.valueOf(pattern.getColor().getColor().asRGB()),
-                                       BukkitItemPlatform.instance().converter().convert(pattern.getPattern(), String.class)));
+                                                 BukkitItemPlatform.instance().converter().convert(pattern.getPattern(), String.class)));
         } catch(final Exception ignore) {
 
           //key isn't found
@@ -146,6 +151,7 @@ public class BukkitBannerPatternsComponent extends BannerPatternsComponent<Bukki
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

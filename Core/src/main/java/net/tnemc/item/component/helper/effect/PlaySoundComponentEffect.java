@@ -35,11 +35,13 @@ public class PlaySoundComponentEffect extends ComponentEffect {
 
   @Override
   public String getType() {
+
     return "play_sound";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("type", getType());
     json.put("probability", probability);
@@ -50,6 +52,7 @@ public class PlaySoundComponentEffect extends ComponentEffect {
 
   @Override
   public void readJSON(final JSONHelper json) {
+
     probability = json.getFloat("probability");
     sound = json.getString("sound");
   }
@@ -66,6 +69,7 @@ public class PlaySoundComponentEffect extends ComponentEffect {
 
   @Override
   public boolean equals(final Object obj) {
+
     if(!(obj instanceof final PlaySoundComponentEffect other)) return false;
 
     return super.equals(obj) && Objects.equals(this.sound, other.sound);
@@ -73,6 +77,7 @@ public class PlaySoundComponentEffect extends ComponentEffect {
 
   @Override
   public int hashCode() {
+
     return Objects.hash(super.hashCode(), sound);
   }
 

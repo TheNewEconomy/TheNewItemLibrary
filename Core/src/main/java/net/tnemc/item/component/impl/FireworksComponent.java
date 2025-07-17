@@ -59,11 +59,13 @@ public abstract class FireworksComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public String identifier() {
+
     return "fireworks";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
 
     final JSONArray explosionsArray = new JSONArray();
@@ -79,14 +81,15 @@ public abstract class FireworksComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     explosions.clear();
 
-    final JSONArray explosionsArray = (JSONArray) json.getObject().get("explosions");
+    final JSONArray explosionsArray = (JSONArray)json.getObject().get("explosions");
     if(explosionsArray != null) {
       for(final Object obj : explosionsArray) {
 
         final ExplosionData explosion = new ExplosionData();
-        explosion.readJSON(new JSONHelper((JSONObject) obj));
+        explosion.readJSON(new JSONHelper((JSONObject)obj));
         explosions.add(explosion);
       }
     }
@@ -98,6 +101,7 @@ public abstract class FireworksComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final FireworksComponent<?, ?> other)) return false;
 
     return this.flightDuration == other.flightDuration &&
@@ -106,6 +110,7 @@ public abstract class FireworksComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public int hashCode() {
+
     return Objects.hash(explosions, flightDuration);
   }
 

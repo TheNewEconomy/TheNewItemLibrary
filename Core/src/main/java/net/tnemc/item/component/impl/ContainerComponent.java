@@ -50,11 +50,13 @@ public abstract class ContainerComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public String identifier() {
+
     return "container";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject itemsObj = new JSONObject();
 
     items.forEach((slot, item)->{
@@ -77,6 +79,7 @@ public abstract class ContainerComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(component instanceof final ContainerComponent<?, ?> compare) {
 
       if(items.size() != compare.items.size()) return false;
@@ -98,6 +101,7 @@ public abstract class ContainerComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public int hashCode() {
+
     return Objects.hash(items);
   }
 

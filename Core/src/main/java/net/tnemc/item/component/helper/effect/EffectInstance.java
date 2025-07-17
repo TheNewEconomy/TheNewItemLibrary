@@ -59,6 +59,7 @@ public class EffectInstance {
   }
 
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("id", id);
     json.put("amplifier", amplifier);
@@ -70,6 +71,7 @@ public class EffectInstance {
   }
 
   public void readJSON(final JSONHelper json) {
+
     id = json.getString("id");
     amplifier = json.getInteger("amplifier");
     duration = json.getInteger("duration");
@@ -80,6 +82,7 @@ public class EffectInstance {
 
   @Override
   public boolean equals(final Object obj) {
+
     if(!(obj instanceof final EffectInstance other)) return false;
 
     return Objects.equals(this.id, other.id) &&
@@ -92,6 +95,7 @@ public class EffectInstance {
 
   @Override
   public int hashCode() {
+
     return Objects.hash(id, amplifier, duration, ambient, showParticles, showIcon);
   }
 
@@ -157,6 +161,7 @@ public class EffectInstance {
 
   @Override
   public EffectInstance clone() throws CloneNotSupportedException {
+
     return new EffectInstance(
             this.id,
             this.amplifier,

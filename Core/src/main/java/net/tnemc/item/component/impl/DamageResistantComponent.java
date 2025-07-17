@@ -32,9 +32,8 @@ import java.util.Objects;
 /**
  * DamageResistantComponent
  *
- * @see <a href="https://minecraft.wiki/w/Data_component_format#damage_resistant">Reference</a>
- *
  * @author creatorfromhell
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#damage_resistant">Reference</a>
  * @since 0.2.0.0
  */
 public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
@@ -46,15 +45,18 @@ public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T
   }
 
   public DamageResistantComponent(final String type) {
+
     this.types.add(type);
   }
 
   public DamageResistantComponent(final List<String> types) {
+
     this.types.addAll(types);
   }
 
   @Override
   public String identifier() {
+
     return "damage_resistant";
   }
 
@@ -68,6 +70,7 @@ public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     types.clear();
     if(json.has("types")) {
       types.addAll(json.getStringList("types"));
@@ -76,6 +79,7 @@ public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final DamageResistantComponent<?, ?> other)) return false;
 
     return Objects.equals(this.types, other.types);
@@ -83,6 +87,7 @@ public abstract class DamageResistantComponent<I extends AbstractItemStack<T>, T
 
   @Override
   public int hashCode() {
+
     return Objects.hash(types);
   }
 

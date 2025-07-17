@@ -61,11 +61,13 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
 
   @Override
   public String identifier() {
+
     return "lore";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     final JSONArray loreArray = new JSONArray();
 
@@ -79,6 +81,7 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     lore.clear();
 
     for(final String str : json.getStringList("lore")) {
@@ -101,6 +104,7 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
 
   @Override
   public int hashCode() {
+
     return Objects.hash(super.hashCode(), lore);
   }
 

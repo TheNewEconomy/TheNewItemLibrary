@@ -38,17 +38,19 @@ public class ApplyEffectsComponentEffect extends ComponentEffect {
 
   @Override
   public String getType() {
+
     return "apply_effects";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("type", getType());
     json.put("probability", probability);
 
     final JSONArray effectsArray = new JSONArray();
-    for (final EffectInstance effect : effects) {
+    for(final EffectInstance effect : effects) {
       effectsArray.add(effect.toJSON());
     }
     json.put("effects", effectsArray);
@@ -58,25 +60,28 @@ public class ApplyEffectsComponentEffect extends ComponentEffect {
 
   @Override
   public void readJSON(final JSONHelper json) {
+
     probability = json.getFloat("probability");
 
     effects.clear();
     if(json.has("effects")) {
-      final JSONArray effectsArray = (JSONArray) json.getObject().get("effects");
-      for (final Object obj : effectsArray) {
+      final JSONArray effectsArray = (JSONArray)json.getObject().get("effects");
+      for(final Object obj : effectsArray) {
         final EffectInstance effect = new EffectInstance();
-        effect.readJSON(new JSONHelper((JSONObject) obj));
+        effect.readJSON(new JSONHelper((JSONObject)obj));
         effects.add(effect);
       }
     }
   }
 
   public List<EffectInstance> getEffects() {
+
     return effects;
   }
 
   @Override
   public boolean equals(final Object obj) {
+
     if(!(obj instanceof final ApplyEffectsComponentEffect other)) return false;
 
     return super.equals(obj) && Objects.equals(this.effects, other.effects);
@@ -84,6 +89,7 @@ public class ApplyEffectsComponentEffect extends ComponentEffect {
 
   @Override
   public int hashCode() {
+
     return Objects.hash(super.hashCode(), effects);
   }
 

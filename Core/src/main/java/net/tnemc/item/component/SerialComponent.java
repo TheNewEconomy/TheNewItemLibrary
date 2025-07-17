@@ -40,7 +40,9 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    * Checks if this component applies to the specified item.
    *
    * @param item The item to check against.
+   *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   boolean appliesTo(T item);
@@ -49,6 +51,7 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
+   *
    * @since 0.2.0.0
    */
   JSONObject toJSON();
@@ -58,6 +61,7 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    *
    * @param json     The JSONHelper instance of the json data.
    * @param platform The {@link ItemPlatform platform} instance.
+   *
    * @since 0.2.0.0
    */
   void readJSON(JSONHelper json, ItemPlatform<I, T, ?> platform);
@@ -66,8 +70,10 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    * Checks if this component applies to the specified item stack.
    *
    * @param original the original item stack
-   * @param check the item stack to check against
+   * @param check    the item stack to check against
+   *
    * @return true if the check passes, false otherwise
+   *
    * @since 0.2.0.0
    */
   default boolean applies(final AbstractItemStack<T> original, final AbstractItemStack<T> check) {
@@ -80,6 +86,7 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
    * @param check    the stack to use for the check
    *
    * @return True if the check passes, otherwise false.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -105,8 +112,8 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
   }
 
   /**
-   *
    * @param component The SerialComponent to compare for similarity.
+   *
    * @return True if the components are similar, false otherwise.
    */
   boolean similar(final SerialComponent<?, ?> component);

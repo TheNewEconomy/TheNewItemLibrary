@@ -37,6 +37,7 @@ public class PersistentInt extends PersistentDataType<Integer> {
    * Returns the type of the PersistentDataType.
    *
    * @return The type of the PersistentDataType as a String.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -49,6 +50,7 @@ public class PersistentInt extends PersistentDataType<Integer> {
    * Encodes the value of the PersistentDataType into a string representation.
    *
    * @return The encoded string representation of the value
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -61,6 +63,7 @@ public class PersistentInt extends PersistentDataType<Integer> {
    * Decodes the given encoded string and sets the decoded value.
    *
    * @param encoded The string to be decoded
+   *
    * @since 0.2.0.0
    */
   @Override

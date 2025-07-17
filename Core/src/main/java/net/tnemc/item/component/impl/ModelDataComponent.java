@@ -32,10 +32,11 @@ import java.util.Objects;
 /**
  * ModelDataComponent
  *
- * @see <a href="https://minecraft.wiki/w/Data_component_format#custom_model_data">Minecraft Reference</a>
+ * @author creatorfromhell
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#custom_model_data">Minecraft
+ * Reference</a>
  * <p>
  * Note: Paper API v 1.21.4
- * @author creatorfromhell
  * @since 0.2.0.0
  */
 public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
@@ -59,10 +60,12 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
 
   /**
    * @return the type of component this is.
+   *
    * @since 0.2.0.0
    */
   @Override
   public String identifier() {
+
     return "model-data";
   }
 
@@ -70,10 +73,12 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
    * Converts this component's data to a JSON object.
    *
    * @return The JSONObject representing this component's data.
+   *
    * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("colours", colours);
     json.put("floats", floats);
@@ -85,12 +90,14 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
   /**
    * Reads JSON data and converts it back to this component's data.
    *
-   * @param json      The JSONHelper instance of the json data.
-   * @param platform  The ItemPlatform instance.
+   * @param json     The JSONHelper instance of the json data.
+   * @param platform The ItemPlatform instance.
+   *
    * @since 0.2.0.0
    */
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     colours.clear();
     colours.addAll(json.getStringList("colours"));
 
@@ -109,11 +116,14 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
    * copy of this data.
    *
    * @param component The component to compare.
+   *
    * @return True if similar, otherwise false.
+   *
    * @since 0.2.0.0
    */
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final ModelDataComponent<?, ?> other)) return false;
     return Objects.equals(this.colours, other.colours) &&
            Objects.equals(this.floats, other.floats) &&
@@ -123,6 +133,7 @@ public abstract class ModelDataComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public int hashCode() {
+
     return Objects.hash(colours, floats, flags, strings);
   }
 

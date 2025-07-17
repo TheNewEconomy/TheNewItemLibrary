@@ -34,9 +34,9 @@ import java.util.Objects;
  */
 public class ExplosionData {
 
-  protected String shape; // small_ball, large_ball, star, creeper, burst
   protected final List<Integer> colors = new ArrayList<>();
   protected final List<Integer> fadeColors = new ArrayList<>();
+  protected String shape; // small_ball, large_ball, star, creeper, burst
   protected boolean hasTrail;
   protected boolean hasTwinkle;
 
@@ -64,9 +64,11 @@ public class ExplosionData {
    * Converts this explosion data to a JSON object.
    *
    * @return The JSONObject representing this explosion data.
+   *
    * @since 0.2.0.0
    */
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("shape", shape);
     json.put("colors", colors);
@@ -80,9 +82,11 @@ public class ExplosionData {
    * Reads JSON data and populates this explosion data.
    *
    * @param json The JSONHelper instance of the JSON data.
+   *
    * @since 0.2.0.0
    */
   public void readJSON(final JSONHelper json) {
+
     shape = json.getString("shape");
 
     colors.clear();
@@ -97,6 +101,7 @@ public class ExplosionData {
 
   @Override
   public boolean equals(final Object obj) {
+
     if(!(obj instanceof final ExplosionData other)) return false;
 
     return Objects.equals(this.shape, other.shape) &&
@@ -108,6 +113,7 @@ public class ExplosionData {
 
   @Override
   public int hashCode() {
+
     return Objects.hash(shape, colors, fadeColors, hasTrail, hasTwinkle);
   }
 

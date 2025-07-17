@@ -49,6 +49,7 @@ public class FabricEnchantmentsComponent extends EnchantmentsComponent<FabricIte
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -63,6 +64,7 @@ public class FabricEnchantmentsComponent extends EnchantmentsComponent<FabricIte
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -115,7 +117,7 @@ public class FabricEnchantmentsComponent extends EnchantmentsComponent<FabricIte
     keyOptional.ifPresent((key->{
 
       final FabricEnchantmentsComponent component = (serialized.fabricComponent(identifier()) instanceof final EnchantmentsComponent<?, ?> getComponent)?
-                                                  (FabricEnchantmentsComponent)getComponent : new FabricEnchantmentsComponent();
+                                                    (FabricEnchantmentsComponent)getComponent : new FabricEnchantmentsComponent();
 
       component.levels.clear();
       for(final RegistryEntry<Enchantment> enchantment : key.getEnchantments()) {

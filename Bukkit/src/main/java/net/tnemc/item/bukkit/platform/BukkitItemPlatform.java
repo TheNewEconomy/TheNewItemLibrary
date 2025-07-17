@@ -82,11 +82,6 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
     super();
   }
 
-  @Override
-  public BukkitItemStack createStack(final String material) {
-    return new BukkitItemStack().of(material, 1);
-  }
-
   public static BukkitItemPlatform instance() {
 
     final BukkitItemPlatform result = instance;
@@ -105,12 +100,20 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
     }
   }
 
+  @Override
+  public BukkitItemStack createStack(final String material) {
+
+    return new BukkitItemStack().of(material, 1);
+  }
+
   /**
    * @return the version that is being used currently
+   *
    * @since 0.2.0.0
    */
   @Override
   public String version() {
+
     return Bukkit.getServer().getBukkitVersion().split("-")[0];
   }
 
@@ -157,6 +160,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
    * Retrieves the default provider for the item stack comparison.
    *
    * @return the default provider for the item stack comparison.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -169,6 +173,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
    * Retrieves the identifier of the default provider for the item stack comparison.
    *
    * @return The identifier of the default provider for the item stack comparison.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -179,6 +184,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
 
   @Override
   public BukkitCalculationsProvider calculations() {
+
     return calculationsProvider;
   }
 
@@ -188,6 +194,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
    * @param locale the locale to convert
    *
    * @return the converted locale of type I
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -196,20 +203,28 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
     return new BukkitItemStack().of(locale);
   }
 
-  @SuppressWarnings({"deprecation", "UnstableApiUsage" })
+  @SuppressWarnings({ "deprecation", "UnstableApiUsage" })
   private void registerConversions() {
 
     //RegisterConversion for EquipmentSlot
-    converter.registerConversion(String.class, EquipmentSlot.class, input -> {
-      switch (input.toUpperCase()) {
-        case "HAND": return EquipmentSlot.HAND;
-        case "OFF_HAND": return EquipmentSlot.OFF_HAND;
-        case "FEET": return EquipmentSlot.FEET;
-        case "LEGS": return EquipmentSlot.LEGS;
-        case "CHEST": return EquipmentSlot.CHEST;
-        case "HEAD": return EquipmentSlot.HEAD;
-        case "BODY": return EquipmentSlot.BODY;
-        default: return EquipmentSlot.HAND;
+    converter.registerConversion(String.class, EquipmentSlot.class, input->{
+      switch(input.toUpperCase()) {
+        case "HAND":
+          return EquipmentSlot.HAND;
+        case "OFF_HAND":
+          return EquipmentSlot.OFF_HAND;
+        case "FEET":
+          return EquipmentSlot.FEET;
+        case "LEGS":
+          return EquipmentSlot.LEGS;
+        case "CHEST":
+          return EquipmentSlot.CHEST;
+        case "HEAD":
+          return EquipmentSlot.HEAD;
+        case "BODY":
+          return EquipmentSlot.BODY;
+        default:
+          return EquipmentSlot.HAND;
       }
     });
 
@@ -248,14 +263,14 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
       default -> throw new IllegalArgumentException("Unknown input: " + input);
     });
 
-    converter.registerConversion(AttributeModifier.Operation.class, String.class, input ->switch(input) {
+    converter.registerConversion(AttributeModifier.Operation.class, String.class, input->switch(input) {
       case ADD_NUMBER -> "add_value";
       case ADD_SCALAR -> "add_multiplied_base";
       case MULTIPLY_SCALAR_1 -> "add_multiplied_total";
     });
 
     //Register conversions for DyeColor
-    converter.registerConversion(String.class, DyeColor.class, input ->switch(input.toLowerCase(Locale.ROOT)) {
+    converter.registerConversion(String.class, DyeColor.class, input->switch(input.toLowerCase(Locale.ROOT)) {
       case "white" -> DyeColor.WHITE;
       case "orange" -> DyeColor.ORANGE;
       case "magenta" -> DyeColor.MAGENTA;
@@ -275,7 +290,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
       default -> throw new IllegalArgumentException("Unknown DyeColor: " + input);
     });
 
-    converter.registerConversion(DyeColor.class, String.class, input ->switch(input) {
+    converter.registerConversion(DyeColor.class, String.class, input->switch(input) {
       case WHITE -> "white";
       case ORANGE -> "orange";
       case MAGENTA -> "magenta";
@@ -490,6 +505,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
    * @param object the JSON object to deserialize
    *
    * @return an initialized AbstractItemStack object
+   *
    * @since 0.2.0.0
    */
   @Override

@@ -56,6 +56,7 @@ public class FabricContainerComponent extends ContainerComponent<FabricItemStack
    */
   @Override
   public boolean appliesTo(final ItemStack item) {
+
     return item.hasChangedComponent(DataComponentTypes.CONTAINER);
   }
 
@@ -117,7 +118,7 @@ public class FabricContainerComponent extends ContainerComponent<FabricItemStack
     keyOptional.ifPresent((key->{
 
       final FabricContainerComponent component = (serialized.fabricComponent(identifier()) instanceof final ContainerComponent<?, ?> getComponent)?
-                                              (FabricContainerComponent)getComponent : new FabricContainerComponent();
+                                                 (FabricContainerComponent)getComponent : new FabricContainerComponent();
 
       int i = 0;
       final Iterator<ItemStack> it = key.stream().iterator();

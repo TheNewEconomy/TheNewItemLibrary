@@ -27,11 +27,12 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * ProvidesBannerPatternsComponent -When present, this item can be placed in the pattern slot of a Loom.
- * Added in MC 1.21.5
+ * ProvidesBannerPatternsComponent -When present, this item can be placed in the pattern slot of a
+ * Loom. Added in MC 1.21.5
  *
  * @author creatorfromhell
- * @see <a href="https://minecraft.wiki/w/Data_component_format#provides_banner_patterns">Reference</a>
+ * @see <a
+ * href="https://minecraft.wiki/w/Data_component_format#provides_banner_patterns">Reference</a>
  * <p>
  * @since 0.2.0.0
  */
@@ -50,6 +51,7 @@ public abstract class ProvidesBannerPatternsComponent<I extends AbstractItemStac
 
   /**
    * @return the type of component this is.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -62,6 +64,7 @@ public abstract class ProvidesBannerPatternsComponent<I extends AbstractItemStac
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -78,6 +81,7 @@ public abstract class ProvidesBannerPatternsComponent<I extends AbstractItemStac
    * Reads JSON data and converts it back to a {@link SerialComponent} object.
    *
    * @param json The JSONHelper instance of the json data.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -93,6 +97,7 @@ public abstract class ProvidesBannerPatternsComponent<I extends AbstractItemStac
    * @param component The component to compare.
    *
    * @return True if similar, otherwise false.
+   *
    * @since 0.2.0.0
    */
   @Override

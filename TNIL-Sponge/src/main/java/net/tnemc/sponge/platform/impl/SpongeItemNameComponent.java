@@ -49,6 +49,7 @@ public class SpongeItemNameComponent extends ItemNameComponent<SpongeItemStack, 
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -70,6 +71,7 @@ public class SpongeItemNameComponent extends ItemNameComponent<SpongeItemStack, 
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -110,7 +112,7 @@ public class SpongeItemNameComponent extends ItemNameComponent<SpongeItemStack, 
     keyOptional.ifPresent((key->{
 
       final SpongeItemNameComponent component = (serialized.spongeComponent(identifier()) instanceof final ItemNameComponent<?, ?> getComponent)?
-                                                 (SpongeItemNameComponent)getComponent : new SpongeItemNameComponent();
+                                                (SpongeItemNameComponent)getComponent : new SpongeItemNameComponent();
 
       component.itemName = key;
     }));

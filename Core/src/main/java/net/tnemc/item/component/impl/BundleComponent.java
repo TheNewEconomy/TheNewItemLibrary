@@ -25,13 +25,14 @@ import java.util.Map;
 /**
  * BundleComponent - The items stored inside this bundle.
  *
- * @see <a href="https://minecraft.wiki/w/Data_component_format#bundle_contents">Reference</a>
  * @author creatorfromhell
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#bundle_contents">Reference</a>
  * @since 0.2.0.0
  */
 public abstract class BundleComponent<I extends AbstractItemStack<T>, T> extends ContainerComponent<I, T> {
 
   public BundleComponent() {
+
     super();
   }
 
@@ -42,6 +43,7 @@ public abstract class BundleComponent<I extends AbstractItemStack<T>, T> extends
 
   @Override
   public String identifier() {
+
     return "bundle";
   }
 }

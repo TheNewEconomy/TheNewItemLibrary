@@ -27,11 +27,13 @@ import java.util.LinkedList;
  * @since 0.2.0.0
  */
 public abstract class RegistryHandler {
+
   protected final LinkedList<String> keys = new LinkedList<>();
 
   public abstract void initialize();
 
   public LinkedList<String> getKeys() {
+
     return keys;
   }
 }

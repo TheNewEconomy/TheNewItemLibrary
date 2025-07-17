@@ -4,14 +4,18 @@
     <img src="logo.png" width="500"  alt="tnil logo"/>
 </p>
 
-A library used by The New Economy for item-based operations, including calculations, removal, comparisons, and serialization of any items,
-including potions, shulker boxes, and other "special" items. This library serializes the items into JSON-valid Strings. This library has also
+A library used by The New Economy for item-based operations, including calculations, removal,
+comparisons, and serialization of any items,
+including potions, shulker boxes, and other "special" items. This library serializes the items into
+JSON-valid Strings. This library has also
 been rewritten to be platform-agnostic, and will include sponge support shortly.
 
 ## Maven
+
 TheNewItemLibrary uses maven for dependency management.
 
 Repository:
+
 ```XML
 <repository>
     <id>codemc-releases</id>
@@ -20,6 +24,7 @@ Repository:
 ```
 
 Core Dependency:
+
 ```XML
 <dependency>
     <groupId>net.tnemc</groupId>
@@ -30,6 +35,7 @@ Core Dependency:
 ```
 
 Bukkit Dependency:
+
 ```XML
 <dependency>
     <groupId>net.tnemc</groupId>
@@ -40,6 +46,7 @@ Bukkit Dependency:
 ```
 
 Sponge 8 Dependency:
+
 ```XML
 <dependency>
     <groupId>net.tnemc</groupId>
@@ -55,13 +62,16 @@ Sponge 7 Dependency:
 
 ## Contributing
 
-Contributions to TheNewEconomy are welcome and encouraged! Whether you're fixing a bug, adding a new feature, or improving documentation, we would love your help.
+Contributions to TheNewEconomy are welcome and encouraged! Whether you're fixing a bug, adding a new
+feature, or improving documentation, we would love your help.
 
-However, to ensure the project stays consistent and manageable, we ask that you follow our [contributing guidelines](.contributing/contributing.md) before submitting a pull request.
+However, to ensure the project stays consistent and manageable, we ask that you follow
+our [contributing guidelines](.contributing/contributing.md) before submitting a pull request.
 
 Please make sure to:
 
-- Sign the Contributor License Agreement (CLA) if this is your first contribution when it appears in the Pull Request.
+- Sign the Contributor License Agreement (CLA) if this is your first contribution when it appears in
+  the Pull Request.
 - Follow the coding standards and branch naming conventions outlined in the guidelines.
 - Use the required IntelliJ plugin **Final Obsession** for code quality and consistency.
 

@@ -49,11 +49,13 @@ public abstract class ItemModelComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public String identifier() {
+
     return "item_model";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("model", model);
     return json;
@@ -61,11 +63,13 @@ public abstract class ItemModelComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     model = json.getString("model");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final ItemModelComponent<?, ?> other)) return false;
 
     return Objects.equals(this.model, other.model);
@@ -73,6 +77,7 @@ public abstract class ItemModelComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public int hashCode() {
+
     return Objects.hash(model);
   }
 

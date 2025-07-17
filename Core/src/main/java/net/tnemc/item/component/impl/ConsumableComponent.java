@@ -41,15 +41,16 @@ import java.util.Objects;
  */
 public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
+  protected final List<ComponentEffect> effects = new ArrayList<>();
   protected float consumeSeconds = 1.6f; // Default to 1.6 seconds
   protected String animation = "eat"; // Default animation
   protected String sound = "entity.generic.eat"; // Default sound
   protected boolean hasConsumeParticles = true; // Default true
-  protected final List<ComponentEffect> effects = new ArrayList<>();
 
   public ConsumableComponent() {
 
   }
+
   public ConsumableComponent(final List<ComponentEffect> effects) {
 
     this.effects.addAll(effects);
@@ -92,11 +93,13 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public String identifier() {
+
     return "consumable";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("consume_seconds", consumeSeconds);
     json.put("animation", animation);
@@ -104,7 +107,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
     json.put("has_consume_particles", hasConsumeParticles);
 
     final JSONArray effectsArray = new JSONArray();
-    for (final ComponentEffect effect : effects) {
+    for(final ComponentEffect effect : effects) {
       effectsArray.add(effect.toJSON());
     }
     json.put("on_consume_effects", effectsArray);
@@ -114,6 +117,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     consumeSeconds = json.getFloat("consume_seconds");
     animation = json.getString("animation");
     sound = json.getString("sound");
@@ -122,9 +126,9 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
     effects.clear();
     if(json.has("on_consume_effects")) {
 
-      final JSONArray effectsArray = (JSONArray) json.getObject().get("on_consume_effects");
-      for (final Object obj : effectsArray) {
-        final JSONObject effectJson = (JSONObject) obj;
+      final JSONArray effectsArray = (JSONArray)json.getObject().get("on_consume_effects");
+      for(final Object obj : effectsArray) {
+        final JSONObject effectJson = (JSONObject)obj;
         final String type = effectJson.get("type").toString();
 
         // Get the effect class from the platform's reviveEffects map
@@ -136,7 +140,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
             final ComponentEffect effect = effectClass.getDeclaredConstructor().newInstance();
             effect.readJSON(new JSONHelper(effectJson));
             effects.add(effect);
-          } catch (final ReflectiveOperationException e) {
+          } catch(final ReflectiveOperationException e) {
             throw new RuntimeException("Failed to instantiate ComponentEffect for type: " + type, e);
           }
         }
@@ -146,6 +150,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final ConsumableComponent<?, ?> other)) return false;
     return Float.compare(this.consumeSeconds, other.consumeSeconds) == 0 &&
            Objects.equals(this.animation, other.animation) &&
@@ -156,6 +161,7 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
 
   @Override
   public int hashCode() {
+
     return Objects.hash(consumeSeconds, animation, sound, hasConsumeParticles, effects);
   }
 
@@ -205,10 +211,12 @@ public abstract class ConsumableComponent<I extends AbstractItemStack<T>, T> imp
   }
 
   public void effects(final ComponentEffect... effects) {
+
     this.effects.addAll(Arrays.asList(effects));
   }
 
   public void effects(final List<ComponentEffect> effects) {
+
     this.effects.clear();
     this.effects.addAll(effects);
   }

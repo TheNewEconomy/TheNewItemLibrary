@@ -23,7 +23,8 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.platform.Identifiable;
 
 /**
- * The ItemApplicator interface represents an applicator that can be used to apply changes to an item.
+ * The ItemApplicator interface represents an applicator that can be used to apply changes to an
+ * item.
  *
  * @param <I> the type of AbstractItemStack that this applicator can work with
  * @param <T> the type of item that this applicator can modify
@@ -37,6 +38,7 @@ public interface ItemApplicator<I extends AbstractItemStack<T>, T> extends Ident
    * @param version the version being used when this applicator is called.
    *
    * @return true if this applicator is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   boolean enabled(final String version);
@@ -46,6 +48,7 @@ public interface ItemApplicator<I extends AbstractItemStack<T>, T> extends Ident
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   T apply(final I serialized, T item);

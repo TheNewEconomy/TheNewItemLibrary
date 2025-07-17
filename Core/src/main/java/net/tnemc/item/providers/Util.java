@@ -38,11 +38,13 @@ public class Util {
    *
    * @param list1 the first list of Components to compare
    * @param list2 the second list of Components to compare
+   *
    * @return true if the text content of the two lists is equal, false otherwise
+   *
    * @since 0.2.0.0
-   * @author creatorfromhell
    */
   public static boolean textComponentsEqual(final List<Component> list1, final List<Component> list2) {
+
     final LinkedList<String> list1Copy = new LinkedList<>();
     for(final Component component : list1) {
       list1Copy.add(PlainTextComponentSerializer.plainText().serialize(component));
@@ -60,11 +62,13 @@ public class Util {
    *
    * @param list1 the first list to be compared
    * @param list2 the second list to be compared
+   *
    * @return true if the two lists contain the same elements, false otherwise
+   *
    * @since 0.2.0.0
-   * @author creatorfromhell
    */
   public static <V> boolean listsEquals(final List<V> list1, final List<V> list2) {
+
     return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
   }
 
@@ -74,10 +78,11 @@ public class Util {
    * @param list1 the first list to compare
    * @param list2 the second list to compare
    * @param debug true if debug information should be printed, false otherwise
-   * @param <V> the type of elements in the lists
+   * @param <V>   the type of elements in the lists
+   *
    * @return true if the lists contain the same elements, false otherwise
+   *
    * @since 0.2.0.0
-   * @author creatorfromhell
    */
   public static <V> boolean listsEquals(final List<V> list1, final List<V> list2, final boolean debug) {
 
@@ -98,15 +103,18 @@ public class Util {
   }
 
   /**
-   * Compares two sets to see if they are equal. The sets are considered equal if each set contains all elements of the other set.
+   * Compares two sets to see if they are equal. The sets are considered equal if each set contains
+   * all elements of the other set.
    *
    * @param list1 the first set to be compared
    * @param list2 the second set to be compared
+   *
    * @return true if the sets are equal, false otherwise
+   *
    * @since 0.2.0.0
-   * @author creatorfromhell
    */
   public static <V> boolean setsEquals(final Set<V> list1, final Set<V> list2) {
+
     return new HashSet<>(list1).containsAll(list2) && new HashSet<>(list2).containsAll(list1);
   }
 }

@@ -48,22 +48,6 @@ public class ToolRule {
     this.drops = drops;
   }
 
-  public JSONObject toJSON() {
-
-    final JSONObject rule = new JSONObject();
-    rule.put("speed", speed);
-    rule.put("drops", drops);
-
-    if(!materials.isEmpty()) {
-      final JSONObject materialsObj = new JSONObject();
-      for(int i = 0; i < materials.size(); i++) {
-        materialsObj.put(i, materials.get(i));
-      }
-      rule.put("materials", materialsObj);
-    }
-    return rule;
-  }
-
   public static ToolRule readJSON(final JSONHelper json) {
 
     final ToolRule rule = new ToolRule();
@@ -86,19 +70,35 @@ public class ToolRule {
     return rule;
   }
 
+  public JSONObject toJSON() {
+
+    final JSONObject rule = new JSONObject();
+    rule.put("speed", speed);
+    rule.put("drops", drops);
+
+    if(!materials.isEmpty()) {
+      final JSONObject materialsObj = new JSONObject();
+      for(int i = 0; i < materials.size(); i++) {
+        materialsObj.put(i, materials.get(i));
+      }
+      rule.put("materials", materialsObj);
+    }
+    return rule;
+  }
+
   public List<String> getMaterials() {
 
     return materials;
   }
 
-  public void addMaterials(final List<String> materials) {
-
-    this.materials.addAll(materials);
-  }
-
   public void setMaterials(final List<String> materials) {
 
     this.materials.clear();
+    this.materials.addAll(materials);
+  }
+
+  public void addMaterials(final List<String> materials) {
+
     this.materials.addAll(materials);
   }
 

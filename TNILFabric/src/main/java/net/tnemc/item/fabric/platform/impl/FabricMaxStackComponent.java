@@ -45,6 +45,7 @@ public class FabricMaxStackComponent extends MaxStackSizeComponent<FabricItemSta
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -59,6 +60,7 @@ public class FabricMaxStackComponent extends MaxStackSizeComponent<FabricItemSta
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -99,7 +101,7 @@ public class FabricMaxStackComponent extends MaxStackSizeComponent<FabricItemSta
     keyOptional.ifPresent((key->{
 
       final FabricMaxStackComponent component = (serialized.fabricComponent(identifier()) instanceof final MaxStackSizeComponent<?, ?> getComponent)?
-                                                  (FabricMaxStackComponent)getComponent : new FabricMaxStackComponent();
+                                                (FabricMaxStackComponent)getComponent : new FabricMaxStackComponent();
 
       component.maxStackSize = key;
     }));

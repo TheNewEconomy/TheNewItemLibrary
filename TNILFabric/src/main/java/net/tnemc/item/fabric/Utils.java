@@ -34,11 +34,13 @@ import java.util.List;
 public class Utils {
 
   public static Component toComponent(final Text text) {
+
     final String json = Text.Serialization.toJsonString(text, DynamicRegistryManager.EMPTY);
     return GsonComponentSerializer.gson().deserialize(json);
   }
 
   public static Text toText(final Component component) {
+
     final String json = GsonComponentSerializer.gson().serialize(component);
     return Text.Serialization.fromJson(json, DynamicRegistryManager.EMPTY);
   }

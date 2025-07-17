@@ -57,11 +57,13 @@ public abstract class UseCooldownComponent<I extends AbstractItemStack<T>, T> im
 
   @Override
   public String identifier() {
+
     return "use_cooldown";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("seconds", seconds);
     json.put("cooldown_group", cooldownGroup);
@@ -70,18 +72,21 @@ public abstract class UseCooldownComponent<I extends AbstractItemStack<T>, T> im
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     seconds = json.getFloat("seconds");
     cooldownGroup = json.getString("cooldown_group");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final UseCooldownComponent<?, ?> other)) return false;
     return this.seconds == other.seconds && Objects.equals(this.cooldownGroup, other.cooldownGroup);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(seconds, cooldownGroup);
   }
 

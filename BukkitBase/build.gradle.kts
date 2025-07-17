@@ -78,7 +78,7 @@ publishing {
 
             val mavenUsername = System.getenv("GRADLE_PROJECT_MAVEN_USERNAME")
             val mavenPassword = System.getenv("GRADLE_PROJECT_MAVEN_PASSWORD")
-            if(mavenUsername != null && mavenPassword != null) {
+            if (mavenUsername != null && mavenPassword != null) {
                 credentials {
                     username = mavenUsername
                     password = mavenPassword

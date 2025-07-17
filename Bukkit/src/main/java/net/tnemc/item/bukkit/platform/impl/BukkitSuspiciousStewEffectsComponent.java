@@ -57,6 +57,7 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -70,6 +71,7 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -94,7 +96,7 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
                                                     effect.showParticles(),
                                                     effect.showIcon()), true);
             }
-          } catch(final Exception ignore) {}
+          } catch(final Exception ignore) { }
         });
 
         item.setItemMeta(meta);
@@ -108,6 +110,7 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -116,7 +119,7 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
     if(item.hasItemMeta() && item.getItemMeta() instanceof final SuspiciousStewMeta meta) {
 
       final BukkitSuspiciousStewEffectsComponent component = (serialized.bukkitComponent(identifier()) instanceof final SuspiciousStewEffectsComponent<?, ?> getComponent)?
-                                                    (BukkitSuspiciousStewEffectsComponent)getComponent : new BukkitSuspiciousStewEffectsComponent();
+                                                             (BukkitSuspiciousStewEffectsComponent)getComponent : new BukkitSuspiciousStewEffectsComponent();
 
       for(final PotionEffect effect : meta.getCustomEffects()) {
 
@@ -125,14 +128,14 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
           if(id != null) {
 
             component.effects.add(new EffectInstance(id,
-                                           effect.getAmplifier(),
-                                           effect.getDuration(),
-                                           effect.hasParticles(),
-                                           effect.isAmbient(),
-                                           effect.hasIcon()));
+                                                     effect.getAmplifier(),
+                                                     effect.getDuration(),
+                                                     effect.hasParticles(),
+                                                     effect.isAmbient(),
+                                                     effect.hasIcon()));
 
           }
-        } catch(final Exception ignore) {}
+        } catch(final Exception ignore) { }
       }
 
       serialized.applyComponent(component);
@@ -146,6 +149,7 @@ public class BukkitSuspiciousStewEffectsComponent extends SuspiciousStewEffectsC
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

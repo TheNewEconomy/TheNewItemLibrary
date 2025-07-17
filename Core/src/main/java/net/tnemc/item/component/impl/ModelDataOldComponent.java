@@ -37,6 +37,7 @@ public abstract class ModelDataOldComponent<I extends AbstractItemStack<T>, T> i
   protected int modelData;
 
   public ModelDataOldComponent() {
+
     this.modelData = -1;
   }
 
@@ -47,10 +48,12 @@ public abstract class ModelDataOldComponent<I extends AbstractItemStack<T>, T> i
 
   /**
    * @return the type of component this is.
+   *
    * @since 0.2.0.0
    */
   @Override
   public String identifier() {
+
     return "model-data-old";
   }
 
@@ -58,10 +61,12 @@ public abstract class ModelDataOldComponent<I extends AbstractItemStack<T>, T> i
    * Converts this component's data to a JSON object.
    *
    * @return The JSONObject representing this component's data.
+   *
    * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("modelData", modelData);
     return json;
@@ -70,12 +75,14 @@ public abstract class ModelDataOldComponent<I extends AbstractItemStack<T>, T> i
   /**
    * Reads JSON data and converts it back to this component's data.
    *
-   * @param json      The JSONHelper instance of the json data.
-   * @param platform  The ItemPlatform instance.
+   * @param json     The JSONHelper instance of the json data.
+   * @param platform The ItemPlatform instance.
+   *
    * @since 0.2.0.0
    */
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     this.modelData = json.getInteger("modelData");
   }
 
@@ -84,17 +91,21 @@ public abstract class ModelDataOldComponent<I extends AbstractItemStack<T>, T> i
    * copy of this data.
    *
    * @param component The component to compare.
+   *
    * @return True if similar, otherwise false.
+   *
    * @since 0.2.0.0
    */
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final ModelDataOldComponent<?, ?> other)) return false;
     return this.modelData == other.modelData();
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(modelData);
   }
 

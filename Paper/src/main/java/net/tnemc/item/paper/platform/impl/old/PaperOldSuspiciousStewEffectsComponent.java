@@ -42,6 +42,7 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -55,6 +56,7 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -79,7 +81,7 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
                                                     effect.showParticles(),
                                                     effect.showIcon()), true);
             }
-          } catch(final Exception ignore) {}
+          } catch(final Exception ignore) { }
         });
 
         item.setItemMeta(meta);
@@ -93,6 +95,7 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -101,7 +104,7 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
     if(item.hasItemMeta() && item.getItemMeta() instanceof final SuspiciousStewMeta meta) {
 
       final PaperOldSuspiciousStewEffectsComponent component = (serialized.paperComponent(identifier()) instanceof final SuspiciousStewEffectsComponent<?, ?> getComponent)?
-                                                      (PaperOldSuspiciousStewEffectsComponent)getComponent : new PaperOldSuspiciousStewEffectsComponent();
+                                                               (PaperOldSuspiciousStewEffectsComponent)getComponent : new PaperOldSuspiciousStewEffectsComponent();
 
       for(final PotionEffect effect : meta.getCustomEffects()) {
 
@@ -110,14 +113,14 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
           if(id != null) {
 
             component.effects.add(new EffectInstance(id,
-                                           effect.getAmplifier(),
-                                           effect.getDuration(),
-                                           effect.hasParticles(),
-                                           effect.isAmbient(),
-                                           effect.hasIcon()));
+                                                     effect.getAmplifier(),
+                                                     effect.getDuration(),
+                                                     effect.hasParticles(),
+                                                     effect.isAmbient(),
+                                                     effect.hasIcon()));
 
           }
-        } catch(final Exception ignore) {}
+        } catch(final Exception ignore) { }
       }
 
       serialized.applyComponent(component);
@@ -131,6 +134,7 @@ public class PaperOldSuspiciousStewEffectsComponent extends SuspiciousStewEffect
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

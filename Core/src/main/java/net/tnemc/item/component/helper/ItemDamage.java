@@ -19,13 +19,14 @@ package net.tnemc.item.component.helper;
  */
 
 /**
- * ItemDamage - Controls how much damage should be applied to the item from a given attack
- * If not specified, a point of durability is removed for every point of damage dealt
- * The final damage applied to the item is determined by: floor(base + factor * dealt_damage)
- * The final value may be negative, causing the item to be repaired
+ * ItemDamage - Controls how much damage should be applied to the item from a given attack If not
+ * specified, a point of durability is removed for every point of damage dealt The final damage
+ * applied to the item is determined by: floor(base + factor * dealt_damage) The final value may be
+ * negative, causing the item to be repaired
+ *
  * @author creatorfromhell
- * @since 0.2.0.0
  * @see net.tnemc.item.component.impl.BlocksAttacksComponent
+ * @since 0.2.0.0
  */
 public class ItemDamage {
 
@@ -57,6 +58,7 @@ public class ItemDamage {
 
   @Override
   public ItemDamage clone() throws CloneNotSupportedException {
+
     return new ItemDamage(this.threshold, this.base, this.factor);
   }
 }

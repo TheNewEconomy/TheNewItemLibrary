@@ -37,6 +37,7 @@ public class TNILTakeCommand implements CommandExecutor {
 
   @Override
   public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+
     if(args.length != 2) {
       sender.sendMessage(ChatColor.RED + "Usage: /tniltake <player> <amount>");
       return true;
@@ -51,7 +52,7 @@ public class TNILTakeCommand implements CommandExecutor {
     final int amount;
     try {
       amount = Integer.parseInt(args[1]);
-    } catch (final NumberFormatException e) {
+    } catch(final NumberFormatException e) {
       sender.sendMessage(ChatColor.RED + "Invalid number.");
       return true;
     }

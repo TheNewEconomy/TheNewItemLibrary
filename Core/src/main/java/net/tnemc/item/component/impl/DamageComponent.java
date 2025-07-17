@@ -39,8 +39,9 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
   protected int damage = 0; // The number of uses consumed
 
   /**
-   * Represents a component that manages damage information.
-   * This component stores and provides methods for handling damage values.
+   * Represents a component that manages damage information. This component stores and provides
+   * methods for handling damage values.
+   *
    * @since 0.2.0.0
    */
   public DamageComponent() {
@@ -51,6 +52,7 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
    * Constructs a new DamageComponent with the specified damage amount.
    *
    * @param damage the amount of damage for the component
+   *
    * @since 0.2.0.0
    */
   public DamageComponent(final int damage) {
@@ -63,11 +65,13 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
 
   @Override
   public String identifier() {
+
     return "damage";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("damage", damage);
     return json;
@@ -75,6 +79,7 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     if(json.has("damage")) {
       damage = json.getInteger("damage");
     }
@@ -82,6 +87,7 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final DamageComponent<?, ?> other)) {
 
       //System.out.println("mismatch damage component");
@@ -96,6 +102,7 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
 
   @Override
   public int hashCode() {
+
     return Objects.hash(damage);
   }
 
@@ -103,6 +110,7 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
    * Retrieves the current damage value.
    *
    * @return the current damage value
+   *
    * @since 0.2.0.0
    */
   public int damage() {
@@ -114,6 +122,7 @@ public abstract class DamageComponent<I extends AbstractItemStack<T>, T> impleme
    * Sets the amount of damage.
    *
    * @param damage the amount of damage to set
+   *
    * @since 0.2.0.0
    */
   public void damage(final int damage) {

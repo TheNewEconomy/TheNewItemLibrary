@@ -55,6 +55,7 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -69,6 +70,7 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -82,6 +84,7 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -105,7 +108,7 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
 
         colorList.add(Color.fromARGB(Integer.parseInt(colorStr)));
 
-      } catch(final Exception ignore){}
+      } catch(final Exception ignore) { }
     }
     builder.addColors(colorList);
 
@@ -139,7 +142,7 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
           try {
 
             colourList.add(Color.fromARGB(Integer.parseInt(colourStr)));
-          } catch(final Exception ignore) {}
+          } catch(final Exception ignore) { }
         }
 
         component.setColors(colourList);
@@ -158,6 +161,7 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -169,7 +173,7 @@ public class PaperModelDataComponent extends ModelDataComponent<PaperItemStack, 
     }
 
     final PaperModelDataComponent component = (serialized.paperComponent(identifier()) instanceof final ModelDataComponent<?, ?> getComponent)?
-                                             (PaperModelDataComponent)getComponent : new PaperModelDataComponent();
+                                              (PaperModelDataComponent)getComponent : new PaperModelDataComponent();
 
     component.flags.addAll(color.flags());
     component.floats.addAll(color.floats());

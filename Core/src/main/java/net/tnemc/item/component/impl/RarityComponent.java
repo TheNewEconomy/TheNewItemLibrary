@@ -51,11 +51,13 @@ public abstract class RarityComponent<I extends AbstractItemStack<T>, T> impleme
 
   @Override
   public String identifier() {
+
     return "rarity";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("rarity", rarity);
     return json;
@@ -63,17 +65,20 @@ public abstract class RarityComponent<I extends AbstractItemStack<T>, T> impleme
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     rarity = json.getString("rarity");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final RarityComponent<?, ?> other)) return false;
     return Objects.equals(this.rarity, other.rarity);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(rarity);
   }
 

@@ -56,6 +56,7 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -69,6 +70,7 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -117,6 +119,7 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -128,7 +131,7 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
     }
 
     final PaperDyedColorComponent component = (serialized.paperComponent(identifier()) instanceof final DyedColorComponent<?, ?> getComponent)?
-                                           (PaperDyedColorComponent)getComponent : new PaperDyedColorComponent();
+                                              (PaperDyedColorComponent)getComponent : new PaperDyedColorComponent();
 
     component.rgb(color.color().asARGB());
 
@@ -164,6 +167,7 @@ public class PaperDyedColorComponent extends DyedColorComponent<PaperItemStack, 
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

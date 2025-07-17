@@ -33,14 +33,17 @@ public abstract class BaseHelper {
   protected final Map<String, RegistryHandler> registryHandlers = new HashMap<>();
 
   public void initializeHandlers() {
+
     registryHandlers.values().forEach(RegistryHandler::initialize);
   }
 
   public RegistryHandler getHandler(final String identifier) {
+
     return registryHandlers.get(identifier);
   }
 
   public void registerHandler(final String identifier, final RegistryHandler handler) {
+
     registryHandlers.put(identifier, handler);
   }
 
@@ -56,6 +59,7 @@ public abstract class BaseHelper {
    * Returns a collection of materials.
    *
    * @return a collection of materials
+   *
    * @since 0.2.0.0
    */
   public LinkedList<String> materials() {
@@ -67,6 +71,7 @@ public abstract class BaseHelper {
    * Returns a collection of enchantments.
    *
    * @return a collection of enchantments
+   *
    * @since 0.2.0.0
    */
   public LinkedList<String> enchantments() {
@@ -78,6 +83,7 @@ public abstract class BaseHelper {
    * Returns a collection of flags.
    *
    * @return a collection of flags
+   *
    * @since 0.2.0.0
    */
   public LinkedList<String> flags() {

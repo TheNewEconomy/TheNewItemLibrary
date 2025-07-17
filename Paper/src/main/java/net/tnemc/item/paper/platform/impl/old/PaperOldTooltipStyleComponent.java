@@ -49,6 +49,7 @@ public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperIt
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -62,6 +63,7 @@ public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperIt
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -87,6 +89,7 @@ public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperIt
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -96,7 +99,7 @@ public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperIt
     if(meta != null && meta.hasTooltipStyle() && meta.getTooltipStyle() != null) {
 
       final PaperOldTooltipStyleComponent component = (serialized.paperComponent(identifier()) instanceof final TooltipStyleComponent<?, ?> getComponent)?
-                                              (PaperOldTooltipStyleComponent)getComponent : new PaperOldTooltipStyleComponent();
+                                                      (PaperOldTooltipStyleComponent)getComponent : new PaperOldTooltipStyleComponent();
 
       component.style = meta.getTooltipStyle().toString();
       serialized.applyComponent(component);
@@ -110,6 +113,7 @@ public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperIt
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

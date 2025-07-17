@@ -51,11 +51,13 @@ public abstract class TrimComponent<I extends AbstractItemStack<T>, T> implement
 
   @Override
   public String identifier() {
+
     return "trim";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("pattern", pattern);
     json.put("material", material);
@@ -64,12 +66,14 @@ public abstract class TrimComponent<I extends AbstractItemStack<T>, T> implement
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     pattern = json.getString("pattern");
     material = json.getString("material");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final TrimComponent<?, ?> other)) return false;
     return Objects.equals(this.pattern, other.pattern) &&
            Objects.equals(this.material, other.material);
@@ -77,6 +81,7 @@ public abstract class TrimComponent<I extends AbstractItemStack<T>, T> implement
 
   @Override
   public int hashCode() {
+
     return Objects.hash(super.hashCode(), pattern, material);
   }
 

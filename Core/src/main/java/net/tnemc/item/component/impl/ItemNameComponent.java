@@ -31,9 +31,9 @@ import java.util.Objects;
 /**
  * ItemNameComponent
  *
+ * @author creatorfromhell
  * @see <a href="https://minecraft.wiki/w/Data_component_format#item_name">Reference</a>
  * <p>
- * @author creatorfromhell
  * @since 0.2.0.0
  */
 public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
@@ -51,11 +51,13 @@ public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> imple
 
   @Override
   public String identifier() {
+
     return "item_name";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("item_name", LegacyComponentSerializer.legacySection().serialize(itemName));
     return json;
@@ -63,11 +65,13 @@ public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> imple
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     itemName = LegacyComponentSerializer.legacySection().deserialize(json.getString("item_name"));
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final ItemNameComponent<?, ?> other)) return false;
 
     return Objects.equals(this.itemName, other.itemName);
@@ -75,6 +79,7 @@ public abstract class ItemNameComponent<I extends AbstractItemStack<T>, T> imple
 
   @Override
   public int hashCode() {
+
     return Objects.hash(itemName);
   }
 

@@ -48,6 +48,7 @@ public class FabricCustomNameComponent extends CustomNameComponent<FabricItemSta
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -62,6 +63,7 @@ public class FabricCustomNameComponent extends CustomNameComponent<FabricItemSta
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override

@@ -29,9 +29,8 @@ import java.util.Objects;
 /**
  * BaseColorComponent - The base dye color of the banner applied on a shield
  *
- * @see <a href="https://minecraft.wiki/w/Data_component_format#base_color">Reference</a>
- *
  * @author creatorfromhell
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#base_color">Reference</a>
  * @since 0.2.0.0
  */
 
@@ -47,6 +46,7 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
    * Constructs a new BaseColorComponent with the specified color.
    *
    * @param color The base color value for the component.
+   *
    * @since 0.2.0.0
    */
   public BaseColorComponent(final String color) {
@@ -56,10 +56,12 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
 
   /**
    * @return the type of component this is.
+   *
    * @since 0.2.0.0
    */
   @Override
   public String identifier() {
+
     return "base_color";
   }
 
@@ -67,10 +69,12 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
    * Converts this component's data to a JSON object.
    *
    * @return The JSONObject representing this component's data.
+   *
    * @since 0.2.0.0
    */
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("color", color);
     return json;
@@ -79,12 +83,14 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
   /**
    * Reads JSON data and converts it back to this component's data.
    *
-   * @param json The JSONHelper instance of the JSON data.
+   * @param json     The JSONHelper instance of the JSON data.
    * @param platform The ItemPlatform instance.
+   *
    * @since 0.2.0.0
    */
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     if(json.has("color")) {
       color = json.getString("color");
     }
@@ -95,11 +101,14 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
    * copy of this data.
    *
    * @param component The component to compare.
+   *
    * @return True if similar, otherwise false.
+   *
    * @since 0.2.0.0
    */
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final BaseColorComponent<?, ?> other)) return false;
 
     return Objects.equals(color, other.color);
@@ -107,6 +116,7 @@ public abstract class BaseColorComponent<I extends AbstractItemStack<T>, T> impl
 
   @Override
   public int hashCode() {
+
     return Objects.hash(color);
   }
 

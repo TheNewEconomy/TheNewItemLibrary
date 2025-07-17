@@ -40,27 +40,32 @@ public abstract class UnbreakableComponent<I extends AbstractItemStack<T>, T> im
 
   @Override
   public String identifier() {
+
     return "unbreakable";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     return json;
   }
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final UnbreakableComponent<?, ?> other)) return false;
     return true;
   }
 
   @Override
   public int hashCode() {
+
     return super.hashCode();
   }
 }

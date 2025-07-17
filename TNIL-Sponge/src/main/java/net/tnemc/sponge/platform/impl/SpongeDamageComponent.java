@@ -38,6 +38,7 @@ public class SpongeDamageComponent extends DamageComponent<SpongeItemStack, Item
   /**
    * Represents a component that manages damage information. This component stores and provides
    * methods for handling damage values.
+   *
    * @since 0.2.0.0
    */
   public SpongeDamageComponent() {
@@ -48,6 +49,7 @@ public class SpongeDamageComponent extends DamageComponent<SpongeItemStack, Item
    * Constructs a new DamageComponent with the specified damage amount.
    *
    * @param damage the amount of damage for the component
+   *
    * @since 0.2.0.0
    */
   public SpongeDamageComponent(final int damage) {
@@ -59,6 +61,7 @@ public class SpongeDamageComponent extends DamageComponent<SpongeItemStack, Item
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -80,6 +83,7 @@ public class SpongeDamageComponent extends DamageComponent<SpongeItemStack, Item
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
+   *
    * @since 0.2.0.0
    */
   @Override
@@ -120,7 +124,7 @@ public class SpongeDamageComponent extends DamageComponent<SpongeItemStack, Item
     keyOptional.ifPresent((key->{
 
       final SpongeDamageComponent component = (serialized.spongeComponent(identifier()) instanceof final DamageComponent<?, ?> getComponent)?
-                                                  (SpongeDamageComponent)getComponent : new SpongeDamageComponent();
+                                              (SpongeDamageComponent)getComponent : new SpongeDamageComponent();
 
       component.damage = key;
     }));

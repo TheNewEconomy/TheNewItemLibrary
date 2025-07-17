@@ -30,7 +30,8 @@ import java.util.Objects;
  * EnchantmentGlintOverrideComponent
  *
  * @author creatorfromhell
- * @see <a href="https://minecraft.wiki/w/Data_component_format#enchantment_glint_override">Reference</a>
+ * @see <a
+ * href="https://minecraft.wiki/w/Data_component_format#enchantment_glint_override">Reference</a>
  * <p>
  * @since 0.2.0.0
  */
@@ -49,11 +50,13 @@ public abstract class EnchantmentGlintOverrideComponent<I extends AbstractItemSt
 
   @Override
   public String identifier() {
+
     return "enchantment_glint_override";
   }
 
   @Override
   public JSONObject toJSON() {
+
     final JSONObject json = new JSONObject();
     json.put("enchantment_glint_override", glintOverride);
     return json;
@@ -61,17 +64,20 @@ public abstract class EnchantmentGlintOverrideComponent<I extends AbstractItemSt
 
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
+
     glintOverride = json.getBoolean("enchantment_glint_override");
   }
 
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
+
     if(!(component instanceof final EnchantmentGlintOverrideComponent<?, ?> other)) return false;
     return this.glintOverride == other.glintOverride;
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(glintOverride);
   }
 

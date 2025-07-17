@@ -63,6 +63,7 @@ public class ItemAdderProvider implements ItemProvider<ItemStack> {
    */
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
+
     final CustomStack originalStack = CustomStack.getInstance(original.providerItemID());
     if(originalStack == null) {
       return false;
