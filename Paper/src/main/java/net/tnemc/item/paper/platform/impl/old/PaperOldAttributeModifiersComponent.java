@@ -29,6 +29,7 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -69,7 +70,7 @@ public class PaperOldAttributeModifiersComponent extends AttributeModifiersCompo
 
         final AttributeModifier.Operation operation = PaperItemPlatform.instance().converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);
         final EquipmentSlotGroup slot = PaperItemPlatform.instance().converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);
-        final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType()),
+        final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType().toLowerCase(Locale.ROOT)),
                                                              attribute.getAmount(),
                                                              operation,
                                                              slot);

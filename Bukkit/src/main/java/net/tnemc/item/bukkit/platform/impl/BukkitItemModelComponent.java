@@ -25,6 +25,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -75,7 +76,7 @@ public class BukkitItemModelComponent extends ItemModelComponent<BukkitItemStack
 
         final ItemMeta meta = item.getItemMeta();
 
-        meta.setItemModel(NamespacedKey.fromString(componentOptional.get().model));
+        meta.setItemModel(NamespacedKey.fromString(componentOptional.get().model.toLowerCase(Locale.ROOT)));
         item.setItemMeta(meta);
       }
     }

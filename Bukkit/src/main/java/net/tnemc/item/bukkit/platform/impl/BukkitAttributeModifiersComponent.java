@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -89,7 +90,7 @@ public class BukkitAttributeModifiersComponent extends AttributeModifiersCompone
 
         final AttributeModifier.Operation operation = BukkitItemPlatform.instance().converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);
         final EquipmentSlotGroup slot = BukkitItemPlatform.instance().converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);
-        final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType()),
+        final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType().toLowerCase(Locale.ROOT)),
                                                              attribute.getAmount(),
                                                              operation,
                                                              slot);

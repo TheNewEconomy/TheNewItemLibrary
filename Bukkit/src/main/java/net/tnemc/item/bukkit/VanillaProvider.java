@@ -26,6 +26,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Locale;
+
 /**
  * VanillaProvider
  *
@@ -87,7 +89,7 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
       Material material = null;
 
       try {
-        final NamespacedKey key = NamespacedKey.fromString(bukkit.material());
+        final NamespacedKey key = NamespacedKey.fromString(bukkit.material().toLowerCase(Locale.ROOT));
         if(key != null) {
 
           material = Registry.MATERIAL.get(key);

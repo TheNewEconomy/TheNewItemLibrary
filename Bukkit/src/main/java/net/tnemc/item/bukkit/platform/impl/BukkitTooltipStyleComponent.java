@@ -25,6 +25,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -74,7 +75,7 @@ public class BukkitTooltipStyleComponent extends TooltipStyleComponent<BukkitIte
       final String toolTip = componentOptional.get().style;
       if(meta != null && !toolTip.isEmpty()) {
 
-        meta.setTooltipStyle(NamespacedKey.fromString(toolTip));
+        meta.setTooltipStyle(NamespacedKey.fromString(toolTip.toLowerCase(Locale.ROOT)));
         item.setItemMeta(meta);
       }
     }

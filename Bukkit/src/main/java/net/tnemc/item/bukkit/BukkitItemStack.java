@@ -124,6 +124,7 @@ import org.json.simple.parser.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -172,7 +173,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
     Material materialInstance = null;
 
     try {
-      final NamespacedKey key = NamespacedKey.fromString(material);
+      final NamespacedKey key = NamespacedKey.fromString(material.toLowerCase(Locale.ROOT));
       if(key != null) {
 
         materialInstance = Registry.MATERIAL.get(key);

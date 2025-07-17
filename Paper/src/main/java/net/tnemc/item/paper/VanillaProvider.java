@@ -26,6 +26,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Locale;
+
 /**
  * VanillaProvider
  *
@@ -88,7 +90,7 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
 
       //System.out.println("Creating paper locale");
       try {
-        final NamespacedKey key = NamespacedKey.fromString(bukkit.material());
+        final NamespacedKey key = NamespacedKey.fromString(bukkit.material().toLowerCase(Locale.ROOT));
 
         //System.out.println("looking for locale mat key");
         if(key != null) {

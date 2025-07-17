@@ -126,6 +126,7 @@ import org.json.simple.parser.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -187,7 +188,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
 
     //System.out.println("Creating paper stack");
     try {
-      final NamespacedKey key = NamespacedKey.fromString(material);
+      final NamespacedKey key = NamespacedKey.fromString(material.toLowerCase(Locale.ROOT));
 
       //System.out.println("looking for mat key");
       if(key != null) {

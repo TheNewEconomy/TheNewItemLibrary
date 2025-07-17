@@ -301,7 +301,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
 
       converter.registerConversion(String.class, PatternType.class, input->{
 
-        final NamespacedKey key = NamespacedKey.fromString(input);
+        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
         if(key != null) {
 
           final PatternType patternType = Registry.BANNER_PATTERN.get(key);
@@ -340,7 +340,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
 
       converter.registerConversion(String.class, Enchantment.class, (final String input)->{
 
-        final NamespacedKey key = NamespacedKey.fromString(input);
+        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
         if(key != null) {
 
           return Registry.ENCHANTMENT.getOrThrow(key);
@@ -353,7 +353,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
     } else if(VersionUtil.isOneThirteen(version())) {
       converter.registerConversion(String.class, Enchantment.class, (final String input)->{
 
-        final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.fromString(input));
+        final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.fromString(input.toLowerCase(Locale.ROOT)));
         if(enchantment == null) {
 
           throw new IllegalArgumentException("Unknown Enchantment: " + input);
@@ -385,7 +385,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
       converter.registerConversion(TrimMaterial.class, String.class, input->input.getKeyOrThrow().toString());
 
       converter.registerConversion(String.class, TrimMaterial.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input);
+        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
         if(key != null) {
 
           return Registry.TRIM_MATERIAL.getOrThrow(key);
@@ -398,7 +398,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
       converter.registerConversion(TrimMaterial.class, String.class, input->input.getKey().toString());
 
       converter.registerConversion(String.class, TrimMaterial.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input);
+        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
         if(key != null) {
 
           return Registry.TRIM_MATERIAL.get(key);
@@ -436,7 +436,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
       converter.registerConversion(TrimPattern.class, String.class, input->input.getKeyOrThrow().toString());
 
       converter.registerConversion(String.class, TrimPattern.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input);
+        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
         if(key != null) {
 
           return Registry.TRIM_PATTERN.getOrThrow(key);
@@ -449,7 +449,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
       converter.registerConversion(TrimPattern.class, String.class, input->input.getKey().toString());
 
       converter.registerConversion(String.class, TrimPattern.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input);
+        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
         if(key != null) {
 
           return Registry.TRIM_PATTERN.get(key);
@@ -462,7 +462,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
 
       converter.registerConversion(PotionEffectType.class, String.class, input->input.getKeyOrThrow().toString());
       converter.registerConversion(String.class, PotionEffectType.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input);
+        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
         if(key != null) {
 
           return Registry.EFFECT.getOrThrow(key);
