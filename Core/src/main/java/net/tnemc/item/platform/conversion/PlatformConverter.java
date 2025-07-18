@@ -86,6 +86,5 @@ public class PlatformConverter {
     }
 
     throw new IllegalArgumentException("No conversion registered from " + inputClass.getName() + " to " + outputClass.getName());
-
   }
 }
