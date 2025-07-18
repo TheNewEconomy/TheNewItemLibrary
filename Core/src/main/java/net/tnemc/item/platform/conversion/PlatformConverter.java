@@ -73,10 +73,19 @@ public class PlatformConverter {
     final Class<?> inputClass = input.getClass();
     final Function<Object, Object> converter = registry.getOrDefault(inputClass, Map.of()).get(outputClass);
 
-    if(converter == null) {
-      throw new IllegalArgumentException("No conversion registered from " + inputClass.getName() + " to " + outputClass.getName());
+    if(converter != null) {
+
+      return outputClass.cast(converter.apply(input));
     }
 
-    return outputClass.cast(converter.apply(input));
+    for(final Map.Entry<Class<?>, Map<Class<?>, Function<Object, Object>>> entry : registry.entrySet()) {
+      if(entry.getKey().isAssignableFrom(inputClass)) {
+
+        return outputClass.cast(entry.getKey().cast(input));
+      }
+    }
+
+    throw new IllegalArgumentException("No conversion registered from " + inputClass.getName() + " to " + outputClass.getName());
+
   }
 }
