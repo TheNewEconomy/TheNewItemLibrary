@@ -81,7 +81,7 @@ public class PlatformConverter {
     for(final Map.Entry<Class<?>, Map<Class<?>, Function<Object, Object>>> entry : registry.entrySet()) {
       if(entry.getKey().isAssignableFrom(inputClass)) {
 
-        return outputClass.cast(entry.getKey().cast(input));
+        return outputClass.cast(entry.getValue().get(outputClass).apply(input));
       }
     }
 
