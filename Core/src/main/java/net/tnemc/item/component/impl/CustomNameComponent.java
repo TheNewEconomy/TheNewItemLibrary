@@ -75,11 +75,20 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
 
+    System.out.println("customname component");
+
     if(!(component instanceof final CustomNameComponent<?, ?> other)) return false;
+
+    System.out.println("is customname component");
 
     if(this.customName == null && other.customName == null) return true;
 
+    System.out.println("both aren't null");
+
     if(this.customName == null || other.customName == null) return false;
+
+    System.out.println("This.custom: " + PlainTextComponentSerializer.plainText().serialize(this.customName));
+    System.out.println("other.custom: " + PlainTextComponentSerializer.plainText().serialize(other.customName));
 
     return PlainTextComponentSerializer.plainText().serialize(this.customName).equalsIgnoreCase(PlainTextComponentSerializer.plainText().serialize(other.customName));
   }
