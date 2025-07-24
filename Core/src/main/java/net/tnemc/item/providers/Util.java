@@ -54,6 +54,9 @@ public class Util {
     for(final Component component : list2) {
       list2Copy.add(PlainTextComponentSerializer.plainText().serialize(component));
     }
+
+    System.out.println("Lore1: " + list1Copy.toArray());
+    System.out.println("Lore2: " + list2Copy.toArray());
     return listsEquals(list1Copy, list2Copy);
   }
 

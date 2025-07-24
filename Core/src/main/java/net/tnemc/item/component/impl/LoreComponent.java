@@ -92,10 +92,10 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
 
-    //System.out.println("Lore equals");
+    System.out.println("Lore equals");
 
     if(!(component instanceof final LoreComponent<?, ?> other)) {
-      //System.out.println("incompatible component");
+      System.out.println("incompatible component");
       return false;
     }
 

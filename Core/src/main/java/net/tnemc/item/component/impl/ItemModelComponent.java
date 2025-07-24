@@ -70,7 +70,12 @@ public abstract class ItemModelComponent<I extends AbstractItemStack<T>, T> impl
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
 
+    System.out.println("Lore equals");
+
     if(!(component instanceof final ItemModelComponent<?, ?> other)) return false;
+
+    System.out.println("This.model: " + this.model);
+    System.out.println("other.model: " + other.model);
 
     return Objects.equals(this.model, other.model);
   }
