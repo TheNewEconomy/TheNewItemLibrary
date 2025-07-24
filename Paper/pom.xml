@@ -9,7 +9,7 @@
     <parent>
         <groupId>net.tnemc</groupId>
         <artifactId>TNIL</artifactId>
-        <version>0.1.2.1-SNAPSHOT-1</version>
+        <version>0.1.2.1-SNAPSHOT-2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -127,13 +127,13 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-BukkitBase</artifactId>
-            <version>0.1.2.1-SNAPSHOT-1</version>
+            <version>0.1.2.1-SNAPSHOT-2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>TNIL-Core</artifactId>
-            <version>0.1.2.1-SNAPSHOT-1</version>
+            <version>0.1.2.1-SNAPSHOT-2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

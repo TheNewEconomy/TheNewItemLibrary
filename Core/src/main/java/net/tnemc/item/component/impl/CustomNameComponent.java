@@ -76,7 +76,7 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
 
     if(!(component instanceof final CustomNameComponent<?, ?> other)) return false;
 
-    return Component.EQUALS.test(this.customName, other.customName);
+    return Objects.equals(this.customName, other.customName);
   }
 
   @Override
