@@ -20,6 +20,7 @@ package net.tnemc.item.component.impl;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
@@ -76,7 +77,11 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
 
     if(!(component instanceof final CustomNameComponent<?, ?> other)) return false;
 
-    return Objects.equals(this.customName, other.customName);
+    if(this.customName == null && other.customName == null) return true;
+
+    if(this.customName == null || other.customName == null) return false;
+
+    return PlainTextComponentSerializer.plainText().serialize(this.customName).equalsIgnoreCase(PlainTextComponentSerializer.plainText().serialize(other.customName));
   }
 
   @Override
