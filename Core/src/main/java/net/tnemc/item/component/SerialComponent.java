@@ -97,6 +97,9 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
     System.out.println("Original contains: " + original.components().containsKey(identifier()));
     System.out.println("check contains: " + check.components().containsKey(identifier()));
 
+    System.out.println("original: " + original.toJSON().toString());
+    System.out.println("check: " + check.toJSON().toString());
+
     if(original.components().containsKey(identifier()) && check.components().containsKey(identifier())) {
       System.out.println("Both stacks contain the check, doing equals");
 
