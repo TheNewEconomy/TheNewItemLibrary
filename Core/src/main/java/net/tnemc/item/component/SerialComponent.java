@@ -48,6 +48,15 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
   boolean appliesTo(T item);
 
   /**
+   * Checks if the object is empty.
+   *
+   * @return True if the object is empty, false otherwise.
+   */
+  default boolean empty() {
+    return false;
+  }
+
+  /**
    * Converts the {@link SerialComponent} to a JSON object.
    *
    * @return The JSONObject representing this {@link SerialComponent}.
@@ -94,21 +103,20 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
 
     //System.out.println("Checking " + identifier());
 
-    System.out.println("Original contains: " + original.components().containsKey(identifier()));
-    System.out.println("check contains: " + check.components().containsKey(identifier()));
-
-    if(original.components().containsKey(identifier()) && identifier().equalsIgnoreCase("lore")) {
-
-      System.out.println("original String: " + original.components().get(identifier()).toString());
-    }
-
-    if(check.components().containsKey(identifier()) && identifier().equalsIgnoreCase("lore")) {
-
-      System.out.println("check String: " + check.components().get(identifier()).toString());
-    }
+//    System.out.println("Original contains: " + original.components().containsKey(identifier()));
+//    System.out.println("check contains: " + check.components().containsKey(identifier()));
+//
+//    if(original.components().containsKey(identifier()) && identifier().equalsIgnoreCase("lore")) {
+//
+//      System.out.println("original String: " + original.components().get(identifier()).toString());
+//    }
+//
+//    if(check.components().containsKey(identifier()) && identifier().equalsIgnoreCase("lore")) {
+//
+//      System.out.println("check String: " + check.components().get(identifier()).toString());
+//    }
 
     if(original.components().containsKey(identifier()) && check.components().containsKey(identifier())) {
-      System.out.println("Both stacks contain the check, doing equals");
 
       final SerialComponent<?, ?> originalComponent = original.components().get(identifier());
       final SerialComponent<?, ?> checkComponent = check.components().get(identifier());
@@ -117,7 +125,13 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
       return original.components().get(identifier()).similar(check.components().get(identifier()));
     }
 
-    System.out.println("Both components do not contain the check, doing check to make sure neither have it.");
+    if(original.components().containsKey(identifier()) && original.components().get(identifier()).empty()) {
+      return true;
+    }
+
+    if(check.components().containsKey(identifier()) && check.components().get(identifier()).empty()) {
+      return true;
+    }
     return !original.components().containsKey(identifier()) && !check.components().containsKey(identifier());
   }
 

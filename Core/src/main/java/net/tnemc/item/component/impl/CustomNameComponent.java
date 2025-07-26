@@ -75,27 +75,27 @@ public abstract class CustomNameComponent<I extends AbstractItemStack<T>, T> imp
   @Override
   public boolean similar(final SerialComponent<?, ?> component) {
 
-    System.out.println("customname component");
+    //System.out.println("customname component");
 
     if(!(component instanceof final CustomNameComponent<?, ?> other)) return false;
 
-    System.out.println("is customname component");
+    //System.out.println("is customname component");
 
     if(this.customName == null && other.customName == null) return true;
 
-    System.out.println("both aren't null");
+    //System.out.println("both aren't null");
 
     if(this.customName == null || other.customName == null) return false;
 
-    System.out.println("This.custom: " + PlainTextComponentSerializer.plainText().serialize(this.customName));
-    System.out.println("other.custom: " + PlainTextComponentSerializer.plainText().serialize(other.customName));
-    System.out.println("equals: " + PlainTextComponentSerializer.plainText().serialize(this.customName).equalsIgnoreCase(PlainTextComponentSerializer.plainText().serialize(other.customName)));
+    //System.out.println("This.custom: " + PlainTextComponentSerializer.plainText().serialize(this.customName));
+    //System.out.println("other.custom: " + PlainTextComponentSerializer.plainText().serialize(other.customName));
+    //System.out.println("equals: " + PlainTextComponentSerializer.plainText().serialize(this.customName).equalsIgnoreCase(PlainTextComponentSerializer.plainText().serialize(other.customName)));
 
-    System.out.println("This.custom: " + LegacyComponentSerializer.legacySection().serialize(this.customName));
-    System.out.println("other.custom: " + LegacyComponentSerializer.legacySection().serialize(other.customName));
-    System.out.println("equals: " + LegacyComponentSerializer.legacySection().serialize(this.customName).equalsIgnoreCase(LegacyComponentSerializer.legacySection().serialize(other.customName)));
+    //System.out.println("This.custom: " + LegacyComponentSerializer.legacySection().serialize(this.customName));
+    //System.out.println("other.custom: " + LegacyComponentSerializer.legacySection().serialize(other.customName));
+    //System.out.println("equals: " + LegacyComponentSerializer.legacySection().serialize(this.customName).equalsIgnoreCase(LegacyComponentSerializer.legacySection().serialize(other.customName)));
 
-    return PlainTextComponentSerializer.plainText().serialize(this.customName).equalsIgnoreCase(PlainTextComponentSerializer.plainText().serialize(other.customName));
+    return LegacyComponentSerializer.legacySection().serialize(this.customName).equalsIgnoreCase(LegacyComponentSerializer.legacySection().serialize(other.customName));
   }
 
   @Override
