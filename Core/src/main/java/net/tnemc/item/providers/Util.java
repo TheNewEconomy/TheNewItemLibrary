@@ -45,7 +45,11 @@ public class Util {
    */
   public static boolean textComponentsEqual(final List<Component> list1, final List<Component> list2) {
 
-    if(list1.isEmpty() && list2.isEmpty()) return true;
+    System.out.println("Checking lists");
+    if(list1.isEmpty() && list2.isEmpty()) {
+      System.out.println("Both lists are empty");
+      return true;
+    }
 
     final LinkedList<String> list1Copy = new LinkedList<>();
     for(final Component component : list1) {
@@ -57,8 +61,8 @@ public class Util {
       list2Copy.add(PlainTextComponentSerializer.plainText().serialize(component));
     }
 
-    System.out.println("Lore1: " + list1Copy.toArray());
-    System.out.println("Lore2: " + list2Copy.toArray());
+    System.out.println("Lore1: " + list1Copy);
+    System.out.println("Lore2: " + list2Copy);
     return listsEquals(list1Copy, list2Copy);
   }
 
