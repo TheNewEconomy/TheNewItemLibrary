@@ -124,4 +124,12 @@ public abstract class LoreComponent<I extends AbstractItemStack<T>, T> implement
     this.lore.clear();
     this.lore.addAll(Arrays.asList(lore));
   }
+
+  @Override
+  public String toString() {
+
+    return "LoreComponent{" +
+           "lore=" + lore +
+           '}';
+  }
 }
