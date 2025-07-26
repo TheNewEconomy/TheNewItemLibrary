@@ -94,11 +94,11 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
 
     //System.out.println("Checking " + identifier());
 
-    //System.out.println("Original contains: " + original.components().containsKey(identifier()));
-    //System.out.println("check contains: " + check.components().containsKey(identifier()));
+    System.out.println("Original contains: " + original.components().containsKey(identifier()));
+    System.out.println("check contains: " + check.components().containsKey(identifier()));
 
     if(original.components().containsKey(identifier()) && check.components().containsKey(identifier())) {
-      //System.out.println("Both stacks contain the check, doing equals");
+      System.out.println("Both stacks contain the check, doing equals");
 
       final SerialComponent<?, ?> originalComponent = original.components().get(identifier());
       final SerialComponent<?, ?> checkComponent = check.components().get(identifier());
@@ -107,7 +107,7 @@ public interface SerialComponent<I extends AbstractItemStack<T>, T> extends Item
       return original.components().get(identifier()).similar(check.components().get(identifier()));
     }
 
-    //System.out.println("Both components do not contain the check, doing check to make sure neither have it.");
+    System.out.println("Both components do not contain the check, doing check to make sure neither have it.");
     return !original.components().containsKey(identifier()) && !check.components().containsKey(identifier());
   }
 
