@@ -18,8 +18,8 @@ Repository:
 
 ```XML
 <repository>
-    <id>codemc-releases</id>
-    <url>https://repo.codemc.io/repository/maven-public/</url>
+    <id>codemc-creatorfromhell</id>
+    <url>https://repo.codemc.io/repository/creatorfromhell/</url>
 </repository>
 ```
 
@@ -29,7 +29,7 @@ Core Dependency:
 <dependency>
     <groupId>net.tnemc</groupId>
     <artifactId>TNIL-Core</artifactId>
-    <version>0.1.7.4-Pre-17</version>
+    <version>0.1.2.1-SNAPSHOT-15</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -40,7 +40,18 @@ Bukkit Dependency:
 <dependency>
     <groupId>net.tnemc</groupId>
     <artifactId>TNIL-Bukkit</artifactId>
-    <version>0.1.7.4-Pre-17</version>
+    <version>0.1.2.1-SNAPSHOT-15</version>
+    <scope>compile</scope>
+</dependency>
+```
+
+Fabric Dependency:
+
+```XML
+<dependency>
+    <groupId>net.tnemc</groupId>
+    <artifactId>TNIL-Fabric</artifactId>
+    <version>0.1.2.1-SNAPSHOT-15</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -51,7 +62,7 @@ Sponge 8 Dependency:
 <dependency>
     <groupId>net.tnemc</groupId>
     <artifactId>TNIL-Sponge</artifactId>
-    <version>0.1.7.4-Pre-17</version>
+    <version>0.1.2.1-SNAPSHOT-15</version>
     <scope>compile</scope>
 </dependency>
 ```
