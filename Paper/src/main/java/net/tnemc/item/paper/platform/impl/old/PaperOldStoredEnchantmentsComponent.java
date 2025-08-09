@@ -78,6 +78,7 @@ public class PaperOldStoredEnchantmentsComponent extends StoredEnchantmentsCompo
             //enchantment couldn't be found.
           }
         }
+        item.setItemMeta(meta);
       }
     });
     return item;

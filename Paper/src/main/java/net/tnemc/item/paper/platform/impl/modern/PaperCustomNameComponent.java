@@ -96,6 +96,7 @@ public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack
     if(meta != null && componentOptional.isPresent()) {
 
       meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(componentOptional.get().customName()));
+      item.setItemMeta(meta);
     }
     return item;
   }

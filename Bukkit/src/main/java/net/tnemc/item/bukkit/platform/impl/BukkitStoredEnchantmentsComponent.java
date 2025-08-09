@@ -87,6 +87,7 @@ public class BukkitStoredEnchantmentsComponent extends StoredEnchantmentsCompone
             //enchantment couldn't be found.
           }
         }
+        item.setItemMeta(meta);
       }
     });
     return item;
