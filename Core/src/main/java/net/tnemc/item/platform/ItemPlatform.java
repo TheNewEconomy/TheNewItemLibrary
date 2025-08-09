@@ -475,34 +475,40 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    */
   public boolean check(@NotNull final I original, @NotNull final I check, final String... disabledChecks) {
 
-    System.out.println("Checking Original: " + original.material() + " Against: " + check.material());
+    //System.out.println("Checking Original: " + original.material() + " Against: " + check.material());
+
+    if(!normalizeMaterial(original.material()).equalsIgnoreCase(normalizeMaterial(check.material()))) {
+
+      //System.out.println("Materials do not match");
+      return false;
+    }
 
     final List<String> disabled = Arrays.asList(disabledChecks);
     for(final ItemCheck<S> checkItem : checks.values()) {
 
-      System.out.println("Check: " + checkItem.identifier());
+      //System.out.println("Check: " + checkItem.identifier());
 
       if(disabled.contains(checkItem.identifier())) {
 
-        System.out.println("Check Disabled: " + checkItem.identifier());
+        //System.out.println("Check Disabled: " + checkItem.identifier());
         continue;
       }
 
       if(!checkItem.enabled(version())) {
 
-        System.out.println("Check Not Enabled: " + checkItem.identifier());
+        //System.out.println("Check Not Enabled: " + checkItem.identifier());
         continue;
       }
 
       if(!checkItem.applies(original, check)) {
 
-        System.out.println("Check Doesn't Apply: " + checkItem.identifier());
+        //System.out.println("Check Doesn't Apply: " + checkItem.identifier());
         continue;
       }
 
       if(!checkItem.check(original, check)) {
 
-        System.out.println("Failed check: " + checkItem.identifier());
+        //System.out.println("Failed check: " + checkItem.identifier());
         return false;
       }
     }
@@ -620,5 +626,13 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   public Map<String, Class<? extends ComponentEffect>> effects() {
 
     return effects;
+  }
+
+  protected String normalizeMaterial(@NotNull final String material) {
+
+    if(material.contains(":")) {
+      return material;
+    }
+    return "minecraft:" + material;
   }
 }
