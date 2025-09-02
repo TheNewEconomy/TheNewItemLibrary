@@ -131,7 +131,6 @@ public class PaperCalculationsProvider implements CalculationsProvider<PaperItem
           }
 
           amount += item.getAmount();
-          inventory.setItem(shulkerSlot, null);
           shulkerInventory.setItem(shulkerSlot, null);
         }
 

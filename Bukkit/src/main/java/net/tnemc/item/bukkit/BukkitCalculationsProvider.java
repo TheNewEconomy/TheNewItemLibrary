@@ -131,7 +131,6 @@ public class BukkitCalculationsProvider implements CalculationsProvider<BukkitIt
           }
 
           amount += item.getAmount();
-          inventory.setItem(shulkerSlot, null);
           shulkerInventory.setItem(shulkerSlot, null);
         }
 
