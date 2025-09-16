@@ -143,7 +143,7 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
       addItemProvider(new ItemAdderProvider());
     }
 
-    if(Bukkit.getPluginManager().isPluginEnabled("MythicMobs")) {
+    if(Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
       addItemProvider(new MMOItemProvider());
     }
 

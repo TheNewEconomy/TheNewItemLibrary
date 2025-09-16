@@ -148,7 +148,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       addItemProvider(new ItemAdderProvider());
     }
 
-    if(Bukkit.getPluginManager().isPluginEnabled("MythicMobs")) {
+    if(Bukkit.getPluginManager().isPluginEnabled("MMOItems")) {
       addItemProvider(new MMOItemProvider());
     }
 
