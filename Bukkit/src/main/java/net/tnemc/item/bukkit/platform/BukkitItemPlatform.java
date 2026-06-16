@@ -114,7 +114,21 @@ public class BukkitItemPlatform extends ItemPlatform<BukkitItemStack, ItemStack,
   @Override
   public String version() {
 
-    return Bukkit.getServer().getBukkitVersion().split("-")[0];
+    String version = Bukkit.getServer().getBukkitVersion();
+    if (version.indexOf('-') != -1)
+      version = version.substring(0, version.indexOf('-'));
+
+    if (version.contains(".build.")) {
+      version = version.substring(0, version.indexOf(".build."));
+    }
+
+    final String[] split = version.split("\\.");
+
+    if (split.length == 2) {
+      return split[0] + "." + split[1] + ".0";
+    }
+
+    return version;
   }
 
   @Override
