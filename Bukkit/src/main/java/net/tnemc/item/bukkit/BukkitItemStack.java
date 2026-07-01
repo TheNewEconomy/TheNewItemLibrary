@@ -207,6 +207,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
 
     this.localeStack = locale;
 
+    //System.out.println("Locale stack applied");
     try {
 
       final NamespacedKey key = locale.getType().getKeyOrNull();
@@ -218,6 +219,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
       material = locale.getType().getKey().toString();
     }
 
+    //System.out.println("Material: " + material);
     this.amount = locale.getAmount();
     final ItemMeta meta = locale.getItemMeta();
     if(meta != null) {
@@ -226,6 +228,8 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
         this.flags.add(flag.name());
       }
     }
+
+    //System.out.println("Flags applied ");
 
     return BukkitItemPlatform.instance().serializer(this.localeStack, this);
   }

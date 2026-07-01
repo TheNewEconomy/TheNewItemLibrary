@@ -607,8 +607,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
         }
 
         serialized = serializer.serialize(item, serialized);
+
+        //System.out.println("Serializer applied");
       }
     }
+    //System.out.println("Serializers applied");
     return serialized;
   }
 
