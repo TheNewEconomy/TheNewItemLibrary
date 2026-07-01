@@ -27,6 +27,7 @@ import org.spongepowered.api.item.enchantment.Enchantment;
 import org.spongepowered.api.item.enchantment.EnchantmentType;
 import org.spongepowered.api.item.enchantment.EnchantmentTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
+import org.spongepowered.api.registry.RegistryTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +137,7 @@ public class SpongeEnchantmentsComponent extends EnchantmentsComponent<SpongeIte
 
       for(final Enchantment enchantment : key) {
 
-        component.levels.put(enchantment.type().key(enchantment.type().registryType()).asString(), enchantment.level());
+        component.levels.put(enchantment.type().key(RegistryTypes.ENCHANTMENT_TYPE).asString(), enchantment.level());
       }
     }));
     return serialized;

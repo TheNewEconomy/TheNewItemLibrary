@@ -67,6 +67,7 @@ import org.json.simple.parser.ParseException;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * PaperItemPlatform
@@ -75,6 +76,8 @@ import java.util.Optional;
  * @since 0.1.7.7
  */
 public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, Inventory> {
+
+  private static final Pattern DIGITS = Pattern.compile("\\d+");
 
   private static volatile PaperItemPlatform instance;
 
@@ -121,7 +124,28 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
   @Override
   public String version() {
 
-    return Bukkit.getServer().getBukkitVersion().split("-")[0];
+    String version = Bukkit.getServer().getBukkitVersion();
+    if (version.indexOf('-') != -1)
+      version = version.substring(0, version.indexOf('-'));
+
+    final String[] split = version.split("\\.");
+    if(split.length == 1) {
+      return split[0] + ".0.0";
+    }
+
+    if (split.length == 2) {
+      return split[0] + "." + split[1] + ".0";
+    }
+
+    String minorSlice = split[2];
+    if (minorSlice.indexOf('-') != -1)
+      minorSlice = minorSlice.substring(0, minorSlice.indexOf('-'));
+
+    int patch = 0;
+    if (DIGITS.matcher(minorSlice).matches()) {
+      patch = Integer.parseInt(minorSlice);
+    }
+    return split[0] + "." + split[1] + "." + patch;
   }
 
   @Override
