@@ -106,8 +106,13 @@ import net.tnemc.item.paper.platform.impl.modern.PaperLoreComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperMaxStackComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperModelDataComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperProfileComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldAttributeModifiersComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldBundleComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldContainerComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldCustomNameComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantableComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldMaxDamageComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldMaxStackSizeComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldTooltipStyleComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
@@ -629,6 +634,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack attributeModifiers(final List<AttributeModifier> modifiers, final boolean showInTooltip) {
 
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldAttributeModifiersComponent(modifiers));
+      return this;
+    }
+
     return this;
   }
 
@@ -736,6 +746,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack bundle(final Map<Integer, AbstractItemStack<ItemStack>> items) {
 
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldBundleComponent(items));
+      return this;
+    }
+
     applyComponent(new PaperBundleComponent(items));
     return this;
   }
@@ -806,6 +821,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack container(final Map<Integer, AbstractItemStack<ItemStack>> items) {
 
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldContainerComponent(items));
+      return this;
+    }
+
     applyComponent(new PaperContainerComponent(items));
     this.dirty = true;
     return this;
@@ -823,6 +843,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack customName(final Component customName) {
+
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldCustomNameComponent(customName));
+      return this;
+    }
 
     applyComponent(new PaperCustomNameComponent(customName));
     this.dirty = true;
@@ -1266,6 +1291,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack maxStackSize(final int maxStackSize) {
 
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldMaxStackSizeComponent(maxStackSize));
+      return this;
+    }
+
     applyComponent(new PaperMaxStackComponent(maxStackSize));
     return this;
   }
@@ -1285,6 +1315,10 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack modelData(final List<String> colours, final List<Float> floats, final List<Boolean> flags, final List<String> strings) {
+
+    if (!PaperItemPlatform.instance().useModern()) {
+      return this;
+    }
 
     applyComponent(new PaperModelDataComponent(colours, floats, flags, strings));
     this.dirty = true;

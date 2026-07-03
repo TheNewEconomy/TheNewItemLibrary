@@ -18,6 +18,7 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
@@ -92,11 +93,17 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
     for(final AttributeModifier modifier : modifiers) {
 
       final JSONObject modifierJson = new JSONObject();
+      modifierJson.put("id", modifier.getId());
       modifierJson.put("type", modifier.getType());
       modifierJson.put("slot", modifier.getSlot().name());
-      modifierJson.put("id", modifier.getId());
-      modifierJson.put("amount", modifier.getAmount());
       modifierJson.put("operation", modifier.getOperation());
+      modifierJson.put("amount", modifier.getAmount());
+      if (modifier.displayType().isPresent()) {
+        modifierJson.put("displayType", modifier.displayType().get());
+      }
+      if (modifier.displayValue().isPresent()) {
+        modifierJson.put("displayValue", LegacyComponentSerializer.legacySection().serialize(modifier.displayValue().get()));
+      }
       modifiersArray.add(modifierJson);
     }
     json.put("modifiers", modifiersArray);
@@ -138,6 +145,13 @@ public abstract class AttributeModifiersComponent<I extends AbstractItemStack<T>
           modifier.setAmount(Double.parseDouble(modifierJson.get("amount").toString()));
         }
 
+        if (modifierJson.containsKey("displayType")) {
+          modifier.setDisplayType(modifierJson.get("displayType").toString());
+        }
+
+        if (modifierJson.containsKey("displayValue")) {
+          modifier.setDisplayValue(LegacyComponentSerializer.legacySection().deserialize(modifierJson.get("displayValue").toString()));
+        }
         modifiers.add(modifier);
       }
     }

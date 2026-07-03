@@ -29,7 +29,7 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Locale;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -41,11 +41,31 @@ import java.util.Optional;
 public class PaperOldAttributeModifiersComponent extends AttributeModifiersComponent<PaperItemStack, ItemStack> {
 
   /**
+   * Constructor for AttributeModifiersComponent. Initializes an empty list of AttributeModifiers.
+   *
+   * @since 0.2.0.0
+   */
+  public PaperOldAttributeModifiersComponent() {
+
+  }
+
+  /**
+   * Constructor for AttributeModifiersComponent. Initializes the component with a list of
+   * AttributeModifiers and a boolean flag to show in tooltip.
+   *
+   * @param modifiers The list of AttributeModifiers to associate with this component.
+   *
+   * @since 0.2.0.0
+   */
+  public PaperOldAttributeModifiersComponent(final List<net.tnemc.item.component.helper.AttributeModifier> modifiers) {
+
+    super(modifiers);
+  }
+
+  /**
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
-   *
-   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
@@ -58,8 +78,6 @@ public class PaperOldAttributeModifiersComponent extends AttributeModifiersCompo
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
-   *
-   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
@@ -72,7 +90,7 @@ public class PaperOldAttributeModifiersComponent extends AttributeModifiersCompo
 
         final AttributeModifier.Operation operation = PaperItemPlatform.instance().converter().convert(attribute.getOperation(), AttributeModifier.Operation.class);
         final EquipmentSlotGroup slot = PaperItemPlatform.instance().converter().convert(attribute.getSlot(), EquipmentSlotGroup.class);
-        final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType().toLowerCase(Locale.ROOT)),
+        final AttributeModifier attr = new AttributeModifier(NamespacedKey.fromString(attribute.getType()),
                                                              attribute.getAmount(),
                                                              operation,
                                                              slot);
@@ -89,8 +107,6 @@ public class PaperOldAttributeModifiersComponent extends AttributeModifiersCompo
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
-   *
-   * @since 0.2.0.0
    */
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
@@ -104,8 +120,6 @@ public class PaperOldAttributeModifiersComponent extends AttributeModifiersCompo
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
-   *
-   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {

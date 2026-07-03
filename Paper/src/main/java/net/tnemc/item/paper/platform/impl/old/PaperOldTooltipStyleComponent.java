@@ -25,7 +25,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -36,21 +35,10 @@ import java.util.Optional;
  */
 public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperItemStack, ItemStack> {
 
-  public PaperOldTooltipStyleComponent() {
-
-  }
-
-  public PaperOldTooltipStyleComponent(final String style) {
-
-    super(style);
-  }
-
   /**
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
-   *
-   * @since 0.2.0.0
    */
   @Override
   public boolean enabled(final String version) {
@@ -63,8 +51,6 @@ public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperIt
    * @param item       the item that we should use to apply this applicator to.
    *
    * @return the updated item.
-   *
-   * @since 0.2.0.0
    */
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
@@ -77,7 +63,7 @@ public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperIt
       final String toolTip = componentOptional.get().style;
       if(meta != null && !toolTip.isEmpty()) {
 
-        meta.setTooltipStyle(NamespacedKey.fromString(toolTip.toLowerCase(Locale.ROOT)));
+        meta.setTooltipStyle(NamespacedKey.fromString(toolTip));
         item.setItemMeta(meta);
       }
     }
@@ -89,8 +75,6 @@ public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperIt
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
    * @return the updated serialized item.
-   *
-   * @since 0.2.0.0
    */
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
@@ -98,12 +82,9 @@ public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperIt
     final ItemMeta meta = item.getItemMeta();
     if(meta != null && meta.hasTooltipStyle() && meta.getTooltipStyle() != null) {
 
-      final PaperOldTooltipStyleComponent component = (serialized.paperComponent(identifier()) instanceof final TooltipStyleComponent<?, ?> getComponent)?
-                                                      (PaperOldTooltipStyleComponent)getComponent : new PaperOldTooltipStyleComponent();
-
-      component.style = meta.getTooltipStyle().toString();
-      serialized.applyComponent(component);
+      style = meta.getTooltipStyle().toString();
     }
+    serialized.applyComponent(this);
     return serialized;
   }
 
@@ -113,8 +94,6 @@ public class PaperOldTooltipStyleComponent extends TooltipStyleComponent<PaperIt
    * @param item The item to check against.
    *
    * @return True if this component applies to the item, false otherwise.
-   *
-   * @since 0.2.0.0
    */
   @Override
   public boolean appliesTo(final ItemStack item) {

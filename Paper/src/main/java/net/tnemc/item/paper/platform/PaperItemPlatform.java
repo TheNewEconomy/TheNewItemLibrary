@@ -39,7 +39,36 @@ import net.tnemc.item.paper.platform.impl.modern.PaperMaxStackComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperModelDataComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperProfileComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperShulkerColorComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldAttributeModifiersComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldBannerPatternsComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldBaseColorComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldBundleComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldChargedProjectilesComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldContainerComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldCustomNameComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldDamageComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldDyedColorComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantableComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldFoodComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldGliderComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldHideTooltipComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldItemModelComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldItemNameComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldLoreComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldMaxDamageComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldMaxStackSizeComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldProfileComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldRarityComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldRepairCostComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldShulkerColorComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldStoredEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldSuspiciousStewEffectsComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldTooltipStyleComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldTrimComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldUnbreakableComponent;
 import net.tnemc.item.paper.platform.providers.NexoProvider;
 import net.tnemc.item.paper.platform.providers.NovaProvider;
 import net.tnemc.item.paper.platform.providers.OraxenProvider;
@@ -85,6 +114,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
 
   protected final VanillaProvider defaultProvider = new VanillaProvider();
   protected final PaperCalculationsProvider calculationsProvider = new PaperCalculationsProvider();
+  protected boolean useModern = false;
 
   private PaperItemPlatform() {
 
@@ -151,21 +181,57 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
   @Override
   public void addDefaults() {
 
+    this.useModern = VersionUtil.isOneTwentyOneFour(version());
+
     registerConversions();
 
-    addMulti(new PaperBundleComponent());
-    addMulti(new PaperContainerComponent());
-    addMulti(new PaperCustomNameComponent());
-    addMulti(new PaperDamageComponent());
-    addMulti(new PaperEnchantmentsComponent());
-    addMulti(new PaperItemModelComponent());
-    addMulti(new PaperItemNameComponent());
-    addMulti(new PaperLoreComponent());
-    addMulti(new PaperMaxStackComponent());
-    addMulti(new PaperModelDataComponent());
-    addMulti(new PaperOldModelDataLegacyComponent());
-    addMulti(new PaperProfileComponent());
-    addMulti(new PaperShulkerColorComponent());
+    if(useModern) {
+
+      addMulti(new PaperBundleComponent());
+      addMulti(new PaperContainerComponent());
+      addMulti(new PaperCustomNameComponent());
+      addMulti(new PaperDamageComponent());
+      addMulti(new PaperEnchantmentsComponent());
+      addMulti(new PaperItemModelComponent());
+      addMulti(new PaperItemNameComponent());
+      addMulti(new PaperLoreComponent());
+      addMulti(new PaperMaxStackComponent());
+      addMulti(new PaperModelDataComponent());
+      addMulti(new PaperOldModelDataLegacyComponent());
+      addMulti(new PaperProfileComponent());
+      addMulti(new PaperShulkerColorComponent());
+    } else {
+      addMulti(new PaperOldAttributeModifiersComponent());
+      addMulti(new PaperOldBannerPatternsComponent());
+      addMulti(new PaperOldBaseColorComponent());
+      addMulti(new PaperOldBundleComponent());
+      addMulti(new PaperOldChargedProjectilesComponent());
+      addMulti(new PaperOldContainerComponent());
+      addMulti(new PaperOldCustomNameComponent());
+      addMulti(new PaperOldDamageComponent());
+      addMulti(new PaperOldDyedColorComponent());
+      addMulti(new PaperOldEnchantableComponent());
+      addMulti(new PaperOldEnchantmentsComponent());
+      addMulti(new PaperOldFoodComponent());
+      addMulti(new PaperOldGliderComponent());
+      addMulti(new PaperOldHideTooltipComponent());
+      addMulti(new PaperOldItemModelComponent());
+      addMulti(new PaperOldItemNameComponent());
+      addMulti(new PaperOldLoreComponent());
+      addMulti(new PaperOldMaxDamageComponent());
+      addMulti(new PaperOldMaxStackSizeComponent());
+      addMulti(new PaperOldModelDataComponent());
+      addMulti(new PaperOldModelDataLegacyComponent());
+      addMulti(new PaperOldProfileComponent());
+      addMulti(new PaperOldRarityComponent());
+      addMulti(new PaperOldRepairCostComponent());
+      addMulti(new PaperOldShulkerColorComponent());
+      addMulti(new PaperOldStoredEnchantmentsComponent());
+      addMulti(new PaperOldSuspiciousStewEffectsComponent());
+      addMulti(new PaperOldTooltipStyleComponent());
+      addMulti(new PaperOldTrimComponent());
+      addMulti(new PaperOldUnbreakableComponent());
+    }
 
 
     if(Bukkit.getPluginManager().isPluginEnabled("ItemsAdder")) {
@@ -572,5 +638,10 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
     } catch(final ParseException e) {
       return Optional.empty();
     }
+  }
+
+  public boolean useModern() {
+
+    return useModern;
   }
 }

@@ -19,29 +19,50 @@ package net.tnemc.item.paper.platform.impl.modern;
  */
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
-import net.kyori.adventure.text.Component;
-import net.tnemc.item.component.impl.CustomNameComponent;
+import io.papermc.paper.datacomponent.item.BundleContents;
+import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
+import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.component.helper.AttributeModifier;
+import net.tnemc.item.component.impl.AttributeModifiersComponent;
+import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.paper.PaperItemStack;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
- * PaperOldCustomNameComponent
+ * PaperOldBundleComponent
  *
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack, ItemStack> {
+public class PaperAttributeModifiersComponent extends AttributeModifiersComponent<PaperItemStack, ItemStack> {
 
-  public PaperCustomNameComponent() {
+  /**
+   * Constructor for AttributeModifiersComponent. Initializes an empty list of AttributeModifiers.
+   *
+   * @since 0.2.0.0
+   */
+  public PaperAttributeModifiersComponent() {
 
   }
 
-  public PaperCustomNameComponent(final Component customName) {
+  /**
+   * Constructor for AttributeModifiersComponent. Initializes the component with a list of
+   * AttributeModifiers and a boolean flag to show in tooltip.
+   *
+   * @param modifiers The list of AttributeModifiers to associate with this component.
+   *
+   * @since 0.2.0.0
+   */
+  public PaperAttributeModifiersComponent(final List<AttributeModifier> modifiers) {
 
-    super(customName);
+    super(modifiers);
   }
 
   /**
@@ -68,12 +89,17 @@ public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack
   @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
-    final Optional<PaperCustomNameComponent> componentOptional = serialized.component(identifier());
+    final Optional<PaperAttributeModifiersComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
       return item;
     }
 
-    item.setData(DataComponentTypes.CUSTOM_NAME, componentOptional.get().customName());
+    final ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.itemAttributes();
+
+    componentOptional.get().items.forEach((slot, stack)->builder.add(stack.provider().locale(serialized)));
+    builder.addModifier()
+    item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, builder);
+
     return item;
   }
 
@@ -88,15 +114,26 @@ public class PaperCustomNameComponent extends CustomNameComponent<PaperItemStack
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    final Component name = item.getData(DataComponentTypes.CUSTOM_NAME);
-    if(name == null || !(Component.IS_NOT_EMPTY.test(name))) {
+    final ItemAttributeModifiers attributes = item.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+    if(attributes == null) {
       return serialized;
     }
 
-    final PaperCustomNameComponent component = (serialized.paperComponent(identifier()) instanceof final CustomNameComponent<?, ?> getComponent)?
-                                               (PaperCustomNameComponent)getComponent : new PaperCustomNameComponent();
+    final PaperAttributeModifiersComponent component = (serialized.paperComponent(identifier()) instanceof final AttributeModifiersComponent<?, ?> getComponent)?
+                                                       (PaperAttributeModifiersComponent)getComponent : new PaperAttributeModifiersComponent();
 
-    component.customName(name);
+    int i = 0;
+    for(final ItemStack stack : contents.contents()) {
+
+      if(stack.getType().equals(Material.AIR)) {
+        continue;
+      }
+
+      final PaperItemStack containerSerial = new PaperItemStack().of(stack);
+      PaperItemPlatform.instance().providerApplies(containerSerial, stack);
+      component.items.put(i, containerSerial);
+      i++;
+    }
 
     serialized.applyComponent(component);
     return serialized;

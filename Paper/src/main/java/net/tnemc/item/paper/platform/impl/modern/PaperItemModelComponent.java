@@ -22,13 +22,9 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.key.Key;
 import net.tnemc.item.component.impl.ItemModelComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -37,7 +33,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
+public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, ItemStack> {
 
   public PaperItemModelComponent() {
 
@@ -70,7 +66,7 @@ public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, 
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperItemModelComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
@@ -78,33 +74,6 @@ public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, 
     }
 
     item.setData(DataComponentTypes.ITEM_MODEL, Key.key(componentOptional.get().model));
-    return item;
-  }
-
-  /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   *
-   * @since 0.2.0.0
-   */
-  @Override
-  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
-
-    final Optional<PaperItemModelComponent> componentOptional = serialized.component(identifier());
-
-    if(componentOptional.isPresent()) {
-
-      if(item.getItemMeta() != null && componentOptional.get().model != null
-         && !componentOptional.get().model.isEmpty()) {
-
-        final ItemMeta meta = item.getItemMeta();
-
-        meta.setItemModel(NamespacedKey.fromString(componentOptional.get().model.toLowerCase(Locale.ROOT)));
-        item.setItemMeta(meta);
-      }
-    }
     return item;
   }
 
@@ -117,7 +86,7 @@ public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, 
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
     final Key key = item.getData(DataComponentTypes.ITEM_MODEL);
     if(key == null) {
@@ -130,30 +99,6 @@ public class PaperItemModelComponent extends ItemModelComponent<PaperItemStack, 
     component.model(key.asString());
 
     serialized.applyComponent(component);
-    return serialized;
-  }
-
-  /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   *
-   * @since 0.2.0.0
-   */
-  @Override
-  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
-
-    final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.getItemModel() != null) {
-
-      final PaperItemModelComponent component = (serialized.paperComponent(identifier()) instanceof final ItemModelComponent<?, ?> getComponent)?
-                                                (PaperItemModelComponent)getComponent : new PaperItemModelComponent();
-
-      component.model(meta.getItemModel().toString());
-
-      serialized.applyComponent(component);
-    }
     return serialized;
   }
 

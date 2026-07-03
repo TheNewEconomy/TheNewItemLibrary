@@ -24,11 +24,9 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.component.impl.BundleComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
-import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BundleMeta;
 
 import java.util.Map;
 import java.util.Optional;
@@ -39,7 +37,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
+public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemStack> {
 
   public PaperBundleComponent() {
 
@@ -72,7 +70,7 @@ public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemSt
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperBundleComponent> componentOptional = serialized.component(identifier());
     if(componentOptional.isEmpty()) {
@@ -88,30 +86,6 @@ public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemSt
   }
 
   /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   *
-   * @since 0.2.0.0
-   */
-  @Override
-  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
-
-    final Optional<PaperBundleComponent> componentOptional = serialized.component(identifier());
-    componentOptional.ifPresent(component->{
-
-      if(item.hasItemMeta() && item.getItemMeta() instanceof final BundleMeta meta) {
-
-        componentOptional.get().items.forEach((slot, stack)->meta.addItem(stack.provider().locale(serialized)));
-
-        item.setItemMeta(meta);
-      }
-    });
-    return item;
-  }
-
-  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -120,7 +94,7 @@ public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemSt
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
     final BundleContents contents = item.getData(DataComponentTypes.BUNDLE_CONTENTS);
     if(contents == null) {
@@ -144,43 +118,6 @@ public class PaperBundleComponent extends BundleComponent<PaperItemStack, ItemSt
     }
 
     serialized.applyComponent(component);
-    return serialized;
-  }
-
-  /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   *
-   * @since 0.2.0.0
-   */
-  @Override
-  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
-
-    if(item.hasItemMeta() && item.getItemMeta() instanceof final BundleMeta meta) {
-
-      final PaperBundleComponent component = (serialized.paperComponent(identifier()) instanceof final BundleComponent<?, ?> getComponent)?
-                                             (PaperBundleComponent)getComponent : new PaperBundleComponent();
-
-      int i = 0;
-      for(final ItemStack stack : meta.getItems()) {
-        if(stack == null) {
-          continue;
-        }
-
-        if(stack.getType().equals(Material.AIR)) {
-          continue;
-        }
-
-        final PaperItemStack containerSerial = new PaperItemStack().of(stack);
-        PaperItemPlatform.instance().providerApplies(containerSerial, stack);
-        component.items.put(i, containerSerial);
-        i++;
-      }
-
-      serialized.applyComponent(component);
-    }
     return serialized;
   }
 
