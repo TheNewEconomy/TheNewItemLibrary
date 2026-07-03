@@ -96,8 +96,6 @@ public class PaperAttributeModifiersComponent extends AttributeModifiersComponen
 
     final ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.itemAttributes();
 
-    componentOptional.get().items.forEach((slot, stack)->builder.add(stack.provider().locale(serialized)));
-    builder.addModifier()
     item.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, builder);
 
     return item;
