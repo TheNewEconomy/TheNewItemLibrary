@@ -23,12 +23,14 @@ import io.papermc.paper.datacomponent.item.DamageResistant;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.TypedKey;
 import io.papermc.paper.registry.set.RegistrySet;
+import net.kyori.adventure.key.Key;
 import net.tnemc.item.component.impl.DamageResistantComponent;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Registry;
 import org.bukkit.damage.DamageType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,14 +80,12 @@ public class PaperDamageResistantComponent extends DamageResistantComponent<Pape
     if(componentOptional.isEmpty() || componentOptional.get().types().isEmpty()) {
       return item;
     }
-    final List<TypedKey<DamageType>> typeSet = new ArrayList<>();
-    for(final String type : componentOptional.get().types()) {
 
+    final TypedKey<DamageType>[] keys = componentOptional.get().types().stream()
+            .map(value->TypedKey.create(RegistryKey.DAMAGE_TYPE, Key.key(value)))
+            .toArray(TypedKey[]::new);
 
-      typeSet.add(RegistryKey.DAMAGE_TYPE.typedKey(type));
-    }
-
-    item.setData(DataComponentTypes.DAMAGE_RESISTANT, DamageResistant.damageResistant(RegistrySet.keySet(RegistryKey.DAMAGE_TYPE, typeSet)));
+    item.setData(DataComponentTypes.DAMAGE_RESISTANT, DamageResistant.damageResistant(RegistrySet.keySet(RegistryKey.DAMAGE_TYPE, keys)));
 
     return item;
   }
