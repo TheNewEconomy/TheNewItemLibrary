@@ -27,6 +27,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * PaperOldProfileComponent
@@ -53,7 +54,6 @@ public class PaperOldProfileComponent extends ProfileComponent<PaperItemStack, I
    *
    * @return the updated item.
    */
-  @Override
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
     final ItemMeta meta = item.getItemMeta();
@@ -64,13 +64,17 @@ public class PaperOldProfileComponent extends ProfileComponent<PaperItemStack, I
 
         try {
 
-          if(profile.getUuid() != null) {
-            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(profile.getUuid()));
+          final UUID uuid = invokeProfile(profile, "uuid", "getUuid");
+          if(uuid != null) {
+            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
           }
 
         } catch(final Exception ignore) {
 
-          skullMeta.setOwner(profile.getName());
+          final String name = invokeProfile(profile, "name", "getName");
+          if(name != null) {
+            skullMeta.setOwner(name);
+          }
         }
       }
       item.setItemMeta(meta);
@@ -78,12 +82,6 @@ public class PaperOldProfileComponent extends ProfileComponent<PaperItemStack, I
     return item;
   }
 
-  /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   */
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
@@ -94,13 +92,12 @@ public class PaperOldProfileComponent extends ProfileComponent<PaperItemStack, I
       try {
 
         if(meta.getOwningPlayer() != null) {
-
-          profile.setUuid(meta.getOwningPlayer().getUniqueId());
+          invokeProfileVoid(profile, meta.getOwningPlayer().getUniqueId(), "uuid", "setUuid");
         }
 
       } catch(final Exception ignore) {
 
-        profile.setName(meta.getOwner());
+        invokeProfileVoid(profile, meta.getOwner(), "name", "setName");
       }
       serialized.applyComponent(this);
     }
@@ -118,5 +115,28 @@ public class PaperOldProfileComponent extends ProfileComponent<PaperItemStack, I
   public boolean appliesTo(final ItemStack item) {
 
     return item.getItemMeta() instanceof SkullMeta;
+  }
+
+  @SuppressWarnings("unchecked")
+  private static <T> T invokeProfile(final SkullProfile profile, final String... methods) {
+
+    for(final String method : methods) {
+      try {
+        return (T)profile.getClass().getMethod(method).invoke(profile);
+      } catch(final Exception ignore) {
+      }
+    }
+    return null;
+  }
+
+  private static void invokeProfileVoid(final SkullProfile profile, final Object value, final String... methods) {
+
+    for(final String method : methods) {
+      try {
+        profile.getClass().getMethod(method, value.getClass()).invoke(profile, value);
+        return;
+      } catch(final Exception ignore) {
+      }
+    }
   }
 }
