@@ -24,7 +24,7 @@ import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import net.tnemc.item.component.helper.effect.ComponentEffect;
 import net.tnemc.item.component.impl.DeathProtectionComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.platform.PaperConsumeEffectAdapter;
+import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 
@@ -72,8 +72,7 @@ public class PaperDeathProtectionComponent extends DeathProtectionComponent<Pape
     final List<ConsumeEffect> effects = new ArrayList<>();
 
     for(final ComponentEffect effect : componentOptional.get().deathEffects()) {
-      final Optional<ConsumeEffect> paperEffect = PaperConsumeEffectAdapter.toPaper(effect);
-      paperEffect.ifPresent(effects::add);
+      effects.add(PaperItemPlatform.instance().converter().convert(effect, ConsumeEffect.class));
     }
 
     item.setData(DataComponentTypes.DEATH_PROTECTION, DeathProtection.deathProtection(effects));
@@ -94,8 +93,7 @@ public class PaperDeathProtectionComponent extends DeathProtectionComponent<Pape
     component.deathEffects().clear();
 
     for(final ConsumeEffect effect : protection.deathEffects()) {
-      final Optional<ComponentEffect> tnilEffect = PaperConsumeEffectAdapter.fromPaper(effect);
-      tnilEffect.ifPresent(componentEffect->component.deathEffects().add(componentEffect));
+      component.deathEffects().add(PaperItemPlatform.instance().converter().convert(effect, ComponentEffect.class));
     }
 
     serialized.applyComponent(component);

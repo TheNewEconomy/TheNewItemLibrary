@@ -20,17 +20,16 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
+import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
 import net.kyori.adventure.key.Key;
 import net.tnemc.item.component.helper.effect.ComponentEffect;
 import net.tnemc.item.component.impl.ConsumableComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.platform.PaperConsumeEffectAdapter;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -84,7 +83,7 @@ public class PaperConsumableComponent extends ConsumableComponent<PaperItemStack
     }
 
     for(final ComponentEffect effect : component.effects()) {
-      PaperConsumeEffectAdapter.toPaper(effect).ifPresent(builder::addEffect);
+      builder.addEffect(PaperItemPlatform.instance().converter().convert(effect, ConsumeEffect.class));
     }
 
     item.setData(DataComponentTypes.CONSUMABLE, builder);
@@ -111,7 +110,7 @@ public class PaperConsumableComponent extends ConsumableComponent<PaperItemStack
     }
 
     component.effects().clear();
-    consumable.consumeEffects().forEach(effect->PaperConsumeEffectAdapter.fromPaper(effect).ifPresent(component.effects()::add));
+    consumable.consumeEffects().forEach(effect->component.effects.add(PaperItemPlatform.instance().converter().convert(effect, ComponentEffect.class)));
 
     serialized.applyComponent(component);
     return serialized;

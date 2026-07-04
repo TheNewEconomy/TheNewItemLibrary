@@ -18,15 +18,24 @@ package net.tnemc.item.paper.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.TypedKey;
+import io.papermc.paper.registry.set.RegistrySet;
+import net.kyori.adventure.key.Key;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkitbase.platform.providers.ItemAdderProvider;
 import net.tnemc.item.bukkitbase.platform.providers.MMOItemProvider;
 import net.tnemc.item.bukkitbase.platform.providers.SlimefunProvider;
 import net.tnemc.item.component.helper.EquipSlot;
+import net.tnemc.item.component.helper.effect.ApplyEffectsComponentEffect;
+import net.tnemc.item.component.helper.effect.ComponentEffect;
 import net.tnemc.item.component.helper.effect.EffectInstance;
+import net.tnemc.item.component.helper.effect.PlaySoundComponentEffect;
+import net.tnemc.item.component.helper.effect.RemoveEffectsComponentEffect;
+import net.tnemc.item.component.helper.effect.TeleportRandomlyComponentEffect;
 import net.tnemc.item.paper.PaperCalculationsProvider;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.VanillaProvider;
@@ -91,6 +100,7 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffect;
@@ -335,6 +345,94 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       });
 
       converter.registerConversion(ItemUseAnimation.class, String.class, input -> input.name().toLowerCase(Locale.ROOT));
+    }
+
+    //ConsumeEffect converter
+    if(useModern) {
+      converter.registerConversion(ComponentEffect.class, ConsumeEffect.class, effect->{
+
+        if(effect instanceof final ApplyEffectsComponentEffect apply) {
+          return ConsumeEffect.applyStatusEffects(apply.getEffects().stream()
+                                                          .map(effectInstance->PaperItemPlatform.instance().converter().convert(effectInstance, PotionEffect.class))
+                                                          .toList(), apply.probability());
+        }
+
+        if(effect instanceof final RemoveEffectsComponentEffect remove) {
+          if(!remove.removeAll()) {
+            return ConsumeEffect.removeEffects(RegistrySet.keySet(RegistryKey.MOB_EFFECT,
+                                                                  remove.getEffectIds().stream()
+                                                                          .map(id->TypedKey.create(RegistryKey.MOB_EFFECT,
+                                                                                                   PaperItemPlatform.instance().converter().convert(id, PotionEffectType.class).getKey()))
+                                                                          .toList()));
+          }
+          return ConsumeEffect.clearAllStatusEffects();
+        }
+
+        if(effect instanceof final PlaySoundComponentEffect sound) {
+          return ConsumeEffect.playSoundConsumeEffect(Key.key(sound.sound()));
+        }
+
+        if(effect instanceof final TeleportRandomlyComponentEffect teleport) {
+          return ConsumeEffect.teleportRandomlyEffect(teleport.getDiameter());
+        }
+
+        return null;
+      });
+
+      converter.registerConversion(ConsumeEffect.class, ComponentEffect.class, effect->{
+
+        if(effect instanceof final ConsumeEffect.ApplyStatusEffects apply) {
+          final ApplyEffectsComponentEffect tnil = new ApplyEffectsComponentEffect();
+          tnil.probability(apply.probability());
+          tnil.getEffects().addAll(apply.effects().stream()
+                                           .map(effectInstance->PaperItemPlatform.instance().converter().convert(effectInstance, EffectInstance.class))
+                                           .toList());
+          return tnil;
+        }
+
+        if(effect instanceof final ConsumeEffect.RemoveStatusEffects remove) {
+          final RemoveEffectsComponentEffect tnil = new RemoveEffectsComponentEffect();
+          remove.removeEffects().forEach(type->tnil.getEffectIds().add(PaperItemPlatform.instance().converter().convert(type, String.class)));
+          return tnil;
+        }
+
+        if(effect instanceof final ConsumeEffect.ClearAllStatusEffects clear) {
+          return new RemoveEffectsComponentEffect();
+        }
+
+        if(effect instanceof final ConsumeEffect.PlaySound sound) {
+          final PlaySoundComponentEffect tnil = new PlaySoundComponentEffect();
+          tnil.sound(sound.sound().asString());
+          return tnil;
+        }
+
+        if(effect instanceof final ConsumeEffect.TeleportRandomly teleport) {
+          final TeleportRandomlyComponentEffect tnil = new TeleportRandomlyComponentEffect();
+          tnil.setDiameter(teleport.diameter());
+          return tnil;
+        }
+
+        return null;
+      });
+    }
+
+    //ItemType
+    if(useModern) {
+      converter.registerConversion(String.class, ItemType.class, input -> {
+        if (input == null || input.isBlank()) {
+          throw new IllegalArgumentException("Item type cannot be null or blank.");
+        }
+
+        final ItemType type = Registry.ITEM.get(NamespacedKey.fromString(input.toLowerCase(Locale.ROOT)));
+
+        if (type == null) {
+          throw new IllegalArgumentException("Unknown item type: " + input);
+        }
+
+        return type;
+      });
+
+      converter.registerConversion(ItemType.class, String.class, input -> input.getKey().toString().toLowerCase(Locale.ROOT));
     }
 
 
