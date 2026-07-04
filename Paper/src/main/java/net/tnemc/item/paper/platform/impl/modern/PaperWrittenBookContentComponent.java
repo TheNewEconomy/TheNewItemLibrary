@@ -67,19 +67,17 @@ public class PaperWrittenBookContentComponent extends WrittenBookContentComponen
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperWrittenBookContentComponent> componentOptional = serialized.component(identifier());
-    if(componentOptional.isEmpty()) {
+    if (componentOptional.isEmpty()) {
       return item;
     }
 
     final PaperWrittenBookContentComponent component = componentOptional.get();
     final WrittenBookContent content = WrittenBookContent.writtenBookContent(component.title(), component.author())
-                                                    .author(component.author())
                                                     .generation(component.generation())
                                                     .resolved(component.resolved())
                                                     .addPages(component.pages()).build();
 
     item.setData(DataComponentTypes.WRITTEN_BOOK_CONTENT, content);
-
     return item;
   }
 
@@ -100,7 +98,7 @@ public class PaperWrittenBookContentComponent extends WrittenBookContentComponen
     component.resolved(content.resolved());
 
     for(final Filtered<Component> page : content.pages()) {
-      component.pages.add(page.filtered());
+      component.pages.add(page.raw());
     }
 
     serialized.applyComponent(component);

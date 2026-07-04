@@ -573,6 +573,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
         item = applicator.apply(serialized, item);
       }
+      //System.out.println("Applicator applied");
     }
     return item;
   }

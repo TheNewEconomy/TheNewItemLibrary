@@ -36,6 +36,10 @@ import java.util.Optional;
  */
 public class PaperUseCooldownComponent extends UseCooldownComponent<PaperItemStack, ItemStack> {
 
+  public PaperUseCooldownComponent() {
+
+  }
+
   public PaperUseCooldownComponent(final float seconds) {
 
     super(seconds);

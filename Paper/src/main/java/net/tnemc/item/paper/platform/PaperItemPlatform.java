@@ -39,18 +39,76 @@ import net.tnemc.item.component.helper.effect.TeleportRandomlyComponentEffect;
 import net.tnemc.item.paper.PaperCalculationsProvider;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.VanillaProvider;
+import net.tnemc.item.paper.platform.impl.modern.PaperAttackRangeComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperAttributeModifiersComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperBannerPatternsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperBaseColorComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperBlocksAttacksComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperBreakSoundComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperCanBreakComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperCanPlaceOnComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperChargedProjectilesComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperConsumableComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperContainerComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperContainerLootComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperCustomNameComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperDamageComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperDamageResistantComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperDamageTypeComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperDeathProtectionComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperDyedColorComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperEnchantableComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperEnchantmentGlintOverrideComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperEquipComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperFireworkExplosionComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperFireworksComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperFoodComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperGliderComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperInstrumentComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperIntangibleProjectileComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperItemModelComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperItemNameComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperJukeBoxComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperKineticWeaponComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperLodestoneTrackerComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperLoreComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperMapColorComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperMapIDComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperMaxDamageComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperMaxStackComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperMinimumAttackChargeComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperModelDataComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperNoteBlockSoundComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperOminousBottleAmplifierComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperPiercingWeaponComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperPotDecorationsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperPotionContentsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperPotionDurationScaleComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperProfileComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperProvidesBannerPatternsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperProvidesTrimMaterialComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperRarityComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperRecipesComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperRepairCostComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperRepairableComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperShulkerColorComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperStoredEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperSulfurCubeContentComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperSuspiciousStewEffectsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperSwingAnimationComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperToolComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperTooltipDisplayComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperTooltipStyleComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperTrimComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperUnbreakableComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperUseCooldownComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperUseEffectsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperUseRemainderComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperWeaponComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperWritableBookContentComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperWrittenBookContentComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldAttributeModifiersComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldBannerPatternsComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldBaseColorComponent;
@@ -204,6 +262,11 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
 
     registerConversions();
 
+    if(VersionUtil.isTwentySixTwo(version())) {
+
+      addMulti(new PaperSulfurCubeContentComponent());
+    }
+
     if(useModern) {
 
       addMulti(new PaperBundleComponent());
@@ -219,6 +282,66 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       addMulti(new PaperOldModelDataLegacyComponent());
       addMulti(new PaperProfileComponent());
       addMulti(new PaperShulkerColorComponent());
+      addMulti(new PaperPotionContentsComponent());
+      addMulti(new PaperPotionDurationScaleComponent());
+      addMulti(new PaperWritableBookContentComponent());
+      addMulti(new PaperConsumableComponent());
+      addMulti(new PaperProvidesBannerPatternsComponent());
+      addMulti(new PaperProvidesTrimMaterialComponent());
+      addMulti(new PaperRarityComponent());
+      addMulti(new PaperRecipesComponent());
+      addMulti(new PaperRepairableComponent());
+      addMulti(new PaperRepairCostComponent());
+      addMulti(new PaperStoredEnchantmentsComponent());
+
+      addMulti(new PaperAttackRangeComponent());
+      addMulti(new PaperAttributeModifiersComponent());
+      addMulti(new PaperBannerPatternsComponent());
+      addMulti(new PaperBaseColorComponent());
+      addMulti(new PaperBlocksAttacksComponent());
+      addMulti(new PaperBreakSoundComponent());
+      addMulti(new PaperCanBreakComponent());
+      addMulti(new PaperCanPlaceOnComponent());
+      addMulti(new PaperChargedProjectilesComponent());
+      addMulti(new PaperContainerLootComponent());
+      addMulti(new PaperDamageComponent());
+      addMulti(new PaperDamageResistantComponent());
+      addMulti(new PaperDamageTypeComponent());
+      addMulti(new PaperDeathProtectionComponent());
+      addMulti(new PaperDyedColorComponent());
+      addMulti(new PaperEnchantableComponent());
+      addMulti(new PaperEnchantmentGlintOverrideComponent());
+      addMulti(new PaperEquipComponent());
+      addMulti(new PaperFireworkExplosionComponent());
+      addMulti(new PaperFireworksComponent());
+      addMulti(new PaperFoodComponent());
+      addMulti(new PaperGliderComponent());
+      addMulti(new PaperInstrumentComponent());
+      addMulti(new PaperIntangibleProjectileComponent());
+      addMulti(new PaperJukeBoxComponent());
+      addMulti(new PaperKineticWeaponComponent());
+      addMulti(new PaperLodestoneTrackerComponent());
+      addMulti(new PaperMapColorComponent());
+      addMulti(new PaperMapIDComponent());
+      addMulti(new PaperMaxDamageComponent());
+      addMulti(new PaperMaxStackComponent());
+      addMulti(new PaperMinimumAttackChargeComponent());
+      addMulti(new PaperNoteBlockSoundComponent());
+      addMulti(new PaperOminousBottleAmplifierComponent());
+      addMulti(new PaperPiercingWeaponComponent());
+      addMulti(new PaperPotDecorationsComponent());
+      addMulti(new PaperSuspiciousStewEffectsComponent());
+      addMulti(new PaperSwingAnimationComponent());
+      addMulti(new PaperToolComponent());
+      addMulti(new PaperTooltipDisplayComponent());
+      addMulti(new PaperTooltipStyleComponent());
+      addMulti(new PaperTrimComponent());
+      addMulti(new PaperUnbreakableComponent());
+      addMulti(new PaperUseCooldownComponent());
+      addMulti(new PaperUseEffectsComponent());
+      addMulti(new PaperUseRemainderComponent());
+      addMulti(new PaperWeaponComponent());
+      addMulti(new PaperWrittenBookContentComponent());
     } else {
       addMulti(new PaperOldAttributeModifiersComponent());
       addMulti(new PaperOldBannerPatternsComponent());
@@ -449,6 +572,47 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       }
     });
 
+
+    converter.registerConversion(EquipmentSlot.class, String.class, EquipmentSlot::name);
+
+    // EquipmentSlot -> EquipSlot
+    converter.registerConversion(EquipmentSlot.class, EquipSlot.class, input -> {
+      if (input == null) {
+        return EquipSlot.HAND;
+      }
+
+      final String name = input.name();
+
+      if ("HAND".equals(name)) {
+        return EquipSlot.HAND;
+      }
+
+      try {
+        return EquipSlot.valueOf(name);
+      } catch (final IllegalArgumentException ignored) {
+        return EquipSlot.HAND;
+      }
+    });
+
+    // EquipSlot -> EquipmentSlot
+    converter.registerConversion(EquipSlot.class, EquipmentSlot.class, input -> {
+      if (input == null) {
+        return EquipmentSlot.HAND;
+      }
+
+      final String name = switch (input) {
+        case MAIN_HAND -> "HAND";
+        case ANY, SADDLE, ARMOUR -> "HAND";
+        default -> input.name();
+      };
+
+      try {
+        return EquipmentSlot.valueOf(name);
+      } catch (final IllegalArgumentException ignored) {
+        return EquipmentSlot.HAND;
+      }
+    });
+
     converter.registerConversion(EffectInstance.class, PotionEffect.class, effect -> {
       final PotionEffectType type = converter.convert(effect.id(), PotionEffectType.class);
 
@@ -508,8 +672,6 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
         default -> EquipSlot.ANY;
       };
     });
-
-    converter.registerConversion(EquipmentSlot.class, String.class, EquipmentSlot::name);
 
     //RegisterConversion for EquipmentSlotGroup
     try {

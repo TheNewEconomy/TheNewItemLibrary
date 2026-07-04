@@ -20,7 +20,6 @@ package net.tnemc.item.paper.platform.impl.modern;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
-import net.kyori.adventure.key.Key;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.EquipSlot;
 import net.tnemc.item.component.impl.AttributeModifiersComponent;
@@ -29,11 +28,9 @@ import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -71,6 +68,7 @@ public class PaperAttributeModifiersComponent extends AttributeModifiersComponen
     final ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.itemAttributes();
 
     for(final AttributeModifier modifier : componentOptional.get().modifiers()) {
+
       final org.bukkit.attribute.AttributeModifier.Operation operation = PaperItemPlatform.instance().converter().convert(modifier.getOperation(), org.bukkit.attribute.AttributeModifier.Operation.class);
       final EquipmentSlotGroup slot = PaperItemPlatform.instance().converter().convert(modifier.getSlot(), EquipmentSlotGroup.class);
       final org.bukkit.attribute.AttributeModifier attr = new org.bukkit.attribute.AttributeModifier(NamespacedKey.fromString(modifier.getType()),
@@ -103,7 +101,7 @@ public class PaperAttributeModifiersComponent extends AttributeModifiersComponen
       final AttributeModifier modifier = new AttributeModifier(
               PaperItemPlatform.instance().converter().convert(entry.attribute(), String.class),
               entry.modifier().getKey().asString(),
-              entry.modifier().getOperation().name().toLowerCase(Locale.ROOT)
+              PaperItemPlatform.instance().converter().convert(entry.modifier().getOperation(), String.class)
       );
 
       modifier.setAmount(entry.modifier().getAmount());
