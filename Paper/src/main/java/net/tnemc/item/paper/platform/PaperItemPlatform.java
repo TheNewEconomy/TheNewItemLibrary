@@ -18,12 +18,15 @@ package net.tnemc.item.paper.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkitbase.platform.providers.ItemAdderProvider;
 import net.tnemc.item.bukkitbase.platform.providers.MMOItemProvider;
 import net.tnemc.item.bukkitbase.platform.providers.SlimefunProvider;
+import net.tnemc.item.component.helper.EquipSlot;
+import net.tnemc.item.component.helper.effect.EffectInstance;
 import net.tnemc.item.paper.PaperCalculationsProvider;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.VanillaProvider;
@@ -79,6 +82,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.enchantments.Enchantment;
@@ -89,6 +93,7 @@ import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
@@ -98,6 +103,9 @@ import org.json.simple.parser.ParseException;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
+
+import static org.bukkit.inventory.EquipmentSlotGroup.MAINHAND;
+import static org.bukkit.inventory.EquipmentSlotGroup.OFFHAND;
 
 /**
  * PaperItemPlatform
@@ -313,40 +321,97 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
 
   private void registerConversions() {
 
+    if(useModern) {
+      converter.registerConversion(String.class, ItemUseAnimation.class, input -> {
+        if (input == null || input.isBlank()) {
+          return ItemUseAnimation.EAT;
+        }
+
+        try {
+          return ItemUseAnimation.valueOf(input.trim().toUpperCase(Locale.ROOT));
+        } catch (final IllegalArgumentException ex) {
+          return ItemUseAnimation.EAT;
+        }
+      });
+
+      converter.registerConversion(ItemUseAnimation.class, String.class, input -> input.name().toLowerCase(Locale.ROOT));
+    }
+
+
     //RegisterConversion for EquipmentSlot
-    converter.registerConversion(String.class, EquipmentSlot.class, input->{
-      switch(input.toUpperCase()) {
-        case "HAND":
-          return EquipmentSlot.HAND;
-        case "OFF_HAND":
-          return EquipmentSlot.OFF_HAND;
-        case "FEET":
-          return EquipmentSlot.FEET;
-        case "LEGS":
-          return EquipmentSlot.LEGS;
-        case "CHEST":
-          return EquipmentSlot.CHEST;
-        case "HEAD":
-          return EquipmentSlot.HEAD;
-        case "BODY":
-          return EquipmentSlot.BODY;
-        case "SADDLE":
-          return EquipmentSlot.SADDLE;
-        default:
-          return EquipmentSlot.HAND;
+    converter.registerConversion(String.class, EquipmentSlot.class, input -> {
+      if (input == null) {
+        return EquipmentSlot.HAND;
+      }
+
+      try {
+        return EquipmentSlot.valueOf(input.trim().toUpperCase(Locale.ROOT));
+      } catch (final IllegalArgumentException ex) {
+        return EquipmentSlot.HAND; // fallback for unknown values
       }
     });
 
-    converter.registerConversion(EquipmentSlot.class, String.class, input->switch(input) {
-      case HAND -> "HAND";
-      case OFF_HAND -> "OFF_HAND";
-      case FEET -> "FEET";
-      case LEGS -> "LEGS";
-      case CHEST -> "CHEST";
-      case HEAD -> "HEAD";
-      case BODY -> "BODY";
-      case SADDLE -> "SADDLE";
+    converter.registerConversion(EffectInstance.class, PotionEffect.class, effect -> {
+      final PotionEffectType type = converter.convert(effect.id(), PotionEffectType.class);
+
+      return new PotionEffect(
+              type,
+              effect.duration(),
+              effect.amplifier(),
+              effect.ambient(),
+              effect.showParticles(),
+              effect.showIcon()
+      );
     });
+
+    converter.registerConversion(PotionEffect.class, EffectInstance.class, effect -> {
+      return new EffectInstance(
+              converter.convert(effect.getType(), String.class),
+              effect.getAmplifier(),
+              effect.getDuration(),
+              effect.hasParticles(),
+              effect.isAmbient(),
+              effect.hasIcon()
+      );
+    });
+
+    converter.registerConversion(EquipSlot.class, EquipmentSlotGroup.class, input -> {
+      if (input == null || input == EquipSlot.ANY) {
+        return EquipmentSlotGroup.ANY;
+      }
+
+      return switch (input) {
+        case ARMOUR -> EquipmentSlotGroup.CHEST;
+        case MAIN_HAND -> MAINHAND;
+        case OFF_HAND -> OFFHAND;
+        default -> {
+          try {
+            yield EquipmentSlotGroup.getByName(input.name());
+          } catch (final IllegalArgumentException ex) {
+            yield EquipmentSlotGroup.ANY;
+          }
+        }
+      };
+    });
+
+    converter.registerConversion(EquipmentSlotGroup.class, EquipSlot.class, input -> {
+      if (input == null) {
+        return EquipSlot.ANY;
+      }
+
+      return switch (input.toString().toUpperCase(Locale.ROOT)) {
+        case "HEAD" -> EquipSlot.HEAD;
+        case "CHEST" -> EquipSlot.CHEST;
+        case "LEGS" -> EquipSlot.LEGS;
+        case "FEET" -> EquipSlot.FEET;
+        case "HAND" -> EquipSlot.HAND;
+        case "MAINHAND" -> EquipSlot.MAIN_HAND;
+        case "OFFHAND" -> EquipSlot.OFF_HAND;
+        default -> EquipSlot.ANY;
+      };
+    });
+
+    converter.registerConversion(EquipmentSlot.class, String.class, EquipmentSlot::name);
 
     //RegisterConversion for EquipmentSlotGroup
     try {
@@ -361,6 +426,35 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       converter.registerConversion(EquipmentSlotGroup.class, String.class, EquipmentSlotGroup::toString);
     } catch(final NoClassDefFoundError ignore) {
 
+    }
+
+    //Register Conversions for Attribute.class
+    if(useModern) {
+
+      converter.registerConversion(String.class, Attribute.class, input -> {
+        if (input == null) {
+          throw new IllegalArgumentException("Attribute cannot be null.");
+        }
+
+        final Attribute attribute = Registry.ATTRIBUTE.get(NamespacedKey.fromString(input.toLowerCase(Locale.ROOT)));
+
+        if (attribute == null) {
+          throw new IllegalArgumentException("Unknown attribute: " + input);
+        }
+
+        return attribute;
+      });
+
+      converter.registerConversion(Attribute.class, String.class, input -> input.getKey().toString().toLowerCase(Locale.ROOT));
+    } else {
+      converter.registerConversion(String.class, Attribute.class, input -> {
+        final Attribute attribute = Attribute.valueOf(input.toUpperCase(Locale.ROOT));
+        return attribute;
+      });
+
+      converter.registerConversion(Attribute.class, String.class,
+                                   input -> input.name().toLowerCase(Locale.ROOT)
+                                  );
     }
 
     //Register Conversions for AttributeModifier
