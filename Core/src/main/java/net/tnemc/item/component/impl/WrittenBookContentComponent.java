@@ -18,6 +18,8 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
@@ -40,7 +42,7 @@ import java.util.Objects;
  */
 public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-  protected final List<String> pages = new ArrayList<>();
+  protected final List<Component> pages = new ArrayList<>();
   protected String title;
   protected String author;
   protected int generation;
@@ -78,7 +80,7 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
   }
 
   public WrittenBookContentComponent(final String title, final String author, final int generation,
-                                     final boolean resolved, final List<String> pages) {
+                                     final boolean resolved, final List<Component> pages) {
 
     this.title = title;
     this.author = author;
@@ -98,7 +100,9 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
 
     final JSONObject json = new JSONObject();
     final JSONArray pagesArray = new JSONArray();
-    pagesArray.addAll(pages);
+    for(final Component page : pages) {
+      pagesArray.add(LegacyComponentSerializer.legacySection().serialize(page));
+    }
     json.put("pages", pagesArray);
     json.put("title", title);
     json.put("author", author);
@@ -111,7 +115,10 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
 
     pages.clear();
-    pages.addAll(json.getStringList("pages"));
+    final List<String> pageContent = json.getStringList("pages");
+    for(final String page : pageContent) {
+      pages.add(LegacyComponentSerializer.legacySection().deserialize(page));
+    }
     if(json.has("title")) title = json.getString("title");
     if(json.has("author")) author = json.getString("author");
     if(json.has("generation")) generation = json.getInteger("generation");
@@ -135,18 +142,18 @@ public abstract class WrittenBookContentComponent<I extends AbstractItemStack<T>
     return Objects.hash(pages, title, author, generation, resolved);
   }
 
-  public List<String> pages() {
+  public List<Component> pages() {
 
     return pages;
   }
 
-  public void pages(final List<String> pages) {
+  public void pages(final List<Component> pages) {
 
     this.pages.clear();
     this.pages.addAll(pages);
   }
 
-  public void pages(final String... pages) {
+  public void pages(final Component... pages) {
 
     this.pages.clear();
     this.pages.addAll(Arrays.asList(pages));
