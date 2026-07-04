@@ -90,6 +90,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -621,6 +622,50 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
         }
         throw new IllegalArgumentException("Unknown PotionEffectType: " + input);
       });
+    }
+
+    // Register conversions for PotionType.
+    if(VersionUtil.isOneTwentyOneFour(version())) {
+
+      converter.registerConversion(String.class, PotionType.class, (final String input)->{
+
+        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
+        if(key != null) {
+
+          return Registry.POTION.getOrThrow(key);
+        }
+        throw new IllegalArgumentException("Unknown PotionType: " + input);
+      });
+
+      converter.registerConversion(PotionType.class, String.class, (final PotionType input)->input.getKey().toString());
+
+    } else if(VersionUtil.isOneThirteen(version())) {
+
+      converter.registerConversion(String.class, PotionType.class, (final String input)->{
+
+        final PotionType potion = PotionType.valueOf(input.toUpperCase(Locale.ROOT));
+        if(potion == null) {
+
+          throw new IllegalArgumentException("Unknown PotionType: " + input);
+        }
+        return potion;
+      });
+
+      converter.registerConversion(PotionType.class, String.class, (final PotionType input)->input.name().toLowerCase(Locale.ROOT));
+
+    } else {
+
+      converter.registerConversion(String.class, PotionType.class, (final String input)->{
+
+        final PotionType potion = PotionType.valueOf(input.toUpperCase(Locale.ROOT));
+        if(potion == null) {
+
+          throw new IllegalArgumentException("Unknown PotionType: " + input);
+        }
+        return potion;
+      });
+
+      converter.registerConversion(PotionType.class, String.class, (final PotionType input)->input.name());
     }
   }
 
