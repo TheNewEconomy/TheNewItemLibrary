@@ -101,14 +101,44 @@ public abstract class PotDecorationsComponent<I extends AbstractItemStack<T>, T>
 
     Arrays.fill(this.decorations, null);
 
-    for(int i = 0; i < Math.min(4, decorations.length); i++) {
-      this.decorations[i] = decorations[i];
-    }
+    System.arraycopy(decorations, 0, this.decorations, 0, Math.min(4, decorations.length));
+  }
+
+  public String west() {
+    return decoration(0);
+  }
+
+  public String north() {
+    return decoration(1);
+  }
+
+  public String east() {
+    return decoration(2);
+  }
+
+  public String south() {
+    return decoration(3);
   }
 
   public String decoration(final int side) {
 
     return decorations[side];
+  }
+
+  public void west(final String decoration) {
+    decoration(0, decoration);
+  }
+
+  public void north(final String decoration) {
+    decoration(1, decoration);
+  }
+
+  public void east(final String decoration) {
+    decoration(2, decoration);
+  }
+
+  public void south(final String decoration) {
+    decoration(3, decoration);
   }
 
   public void decoration(final int side, final String decoration) {
