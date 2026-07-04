@@ -129,45 +129,6 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
   }
 
   /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   *
-   * @since 0.2.0.0
-   */
-  @Override
-  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
-
-    if(item.hasItemMeta() && item.getItemMeta() instanceof final BlockStateMeta meta
-       && meta.hasBlockState() && meta.getBlockState() instanceof final Container container) {
-
-      final PaperContainerComponent component = (serialized.paperComponent(identifier()) instanceof final ContainerComponent<?, ?> getComponent)?
-                                                (PaperContainerComponent)getComponent : new PaperContainerComponent();
-
-      final Inventory inventory = container.getInventory();
-      for(int i = 0; i < inventory.getSize(); i++) {
-
-        final ItemStack stack = inventory.getItem(i);
-        if(stack == null) {
-          continue;
-        }
-
-        if(stack.getType().equals(Material.AIR)) {
-          continue;
-        }
-
-        final PaperItemStack containerSerial = new PaperItemStack().of(stack);
-        PaperItemPlatform.instance().providerApplies(containerSerial, stack);
-        component.items.put(i, containerSerial);
-      }
-
-      serialized.applyComponent(component);
-    }
-    return serialized;
-  }
-
-  /**
    * Checks if this component applies to the specified item.
    *
    * @param item The item to check against.

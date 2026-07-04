@@ -329,6 +329,8 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
           return EquipmentSlot.HEAD;
         case "BODY":
           return EquipmentSlot.BODY;
+        case "SADDLE":
+          return EquipmentSlot.SADDLE;
         default:
           return EquipmentSlot.HAND;
       }
@@ -342,6 +344,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       case CHEST -> "CHEST";
       case HEAD -> "HEAD";
       case BODY -> "BODY";
+      case SADDLE -> "SADDLE";
     });
 
     //RegisterConversion for EquipmentSlotGroup
