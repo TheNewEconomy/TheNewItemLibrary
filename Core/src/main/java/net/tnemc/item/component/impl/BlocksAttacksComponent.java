@@ -93,7 +93,13 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
     for(final DamageReduction reduction : reductions) {
 
       final JSONObject reductionJson = new JSONObject();
-      reductionJson.put("type", reduction.type());
+
+
+      final JSONArray typesArray = new JSONArray();
+      for(final String type : reduction.types()) {
+        typesArray.add(type);
+      }
+      reductionJson.put("types", typesArray);
       reductionJson.put("base", reduction.base());
       reductionJson.put("factor", reduction.factor());
       reductionJson.put("horizontalBlockingAngle", reduction.horizontalBlockingAngle());
@@ -149,11 +155,18 @@ public abstract class BlocksAttacksComponent<I extends AbstractItemStack<T>, T> 
       for(final Object obj : reductionsArray) {
 
         final JSONObject reductionJson = (JSONObject)obj;
-        final String type = reductionJson.get("type").toString();
+
+        final List<String> types = new ArrayList<>();
+        final JSONArray typesArray = (JSONArray)reductionJson.get("types");
+        for(final Object typeObj : typesArray) {
+          types.add(typeObj.toString());
+        }
+
+
         final float base = Float.parseFloat(reductionJson.get("base").toString());
         final float factor = Float.parseFloat(reductionJson.get("factor").toString());
         final float horizontalBlockingAngle = Float.parseFloat(reductionJson.get("horizontalBlockingAngle").toString());
-        reductions.add(new DamageReduction(type, base, factor, horizontalBlockingAngle));
+        reductions.add(new DamageReduction(types, base, factor, horizontalBlockingAngle));
       }
     }
 

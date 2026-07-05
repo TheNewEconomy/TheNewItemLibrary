@@ -72,6 +72,10 @@ public class RemoveEffectsComponentEffect extends ComponentEffect {
     return effectIds;
   }
 
+  public boolean removeAll() {
+    return effectIds.isEmpty();
+  }
+
   @Override
   public boolean equals(final Object obj) {
 

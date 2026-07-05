@@ -18,28 +18,111 @@ package net.tnemc.item.paper.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkitbase.platform.providers.ItemAdderProvider;
 import net.tnemc.item.bukkitbase.platform.providers.MMOItemProvider;
 import net.tnemc.item.bukkitbase.platform.providers.SlimefunProvider;
+import net.tnemc.item.component.helper.EquipSlot;
+import net.tnemc.item.component.helper.effect.EffectInstance;
 import net.tnemc.item.paper.PaperCalculationsProvider;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.VanillaProvider;
+import net.tnemc.item.paper.platform.impl.modern.PaperAttackRangeComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperAttributeModifiersComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperBannerPatternsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperBaseColorComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperBreakSoundComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperCanBreakComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperCanPlaceOnComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperChargedProjectilesComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperConsumableComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperContainerComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperContainerLootComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperCustomNameComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperDamageComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperDamageTypeComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperDeathProtectionComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperDyedColorComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperEnchantableComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperEnchantmentGlintOverrideComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperEquipComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperFireworkExplosionComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperFireworksComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperFoodComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperGliderComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperInstrumentComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperIntangibleProjectileComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperItemModelComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperItemNameComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperJukeBoxComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperKineticWeaponComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperLodestoneTrackerComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperLoreComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperMapColorComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperMapIDComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperMaxDamageComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperMaxStackComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperMinimumAttackChargeComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperModelDataComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperNoteBlockSoundComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperOminousBottleAmplifierComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperPiercingWeaponComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperPotDecorationsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperPotionContentsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperPotionDurationScaleComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperProfileComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperProvidesTrimMaterialComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperRarityComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperRecipesComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperRepairCostComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperRepairableComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperShulkerColorComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperStoredEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperSuspiciousStewEffectsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperSwingAnimationComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperToolComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperTooltipDisplayComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperTooltipStyleComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperTrimComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperUnbreakableComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperUseCooldownComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperUseEffectsComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperUseRemainderComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperWeaponComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperWritableBookContentComponent;
+import net.tnemc.item.paper.platform.impl.modern.PaperWrittenBookContentComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldAttributeModifiersComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldBannerPatternsComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldBaseColorComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldBundleComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldChargedProjectilesComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldContainerComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldCustomNameComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldDamageComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldDyedColorComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantableComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldFoodComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldGliderComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldHideTooltipComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldItemModelComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldItemNameComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldLoreComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldMaxDamageComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldMaxStackSizeComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldProfileComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldRarityComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldRepairCostComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldShulkerColorComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldStoredEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldSuspiciousStewEffectsComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldTooltipStyleComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldTrimComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldUnbreakableComponent;
 import net.tnemc.item.paper.platform.providers.NexoProvider;
 import net.tnemc.item.paper.platform.providers.NovaProvider;
 import net.tnemc.item.paper.platform.providers.OraxenProvider;
@@ -48,18 +131,13 @@ import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.block.banner.PatternType;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.trim.TrimMaterial;
-import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
@@ -68,6 +146,9 @@ import org.json.simple.parser.ParseException;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
+
+import static org.bukkit.inventory.EquipmentSlotGroup.MAINHAND;
+import static org.bukkit.inventory.EquipmentSlotGroup.OFFHAND;
 
 /**
  * PaperItemPlatform
@@ -85,6 +166,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
 
   protected final VanillaProvider defaultProvider = new VanillaProvider();
   protected final PaperCalculationsProvider calculationsProvider = new PaperCalculationsProvider();
+  protected boolean useModern = false;
 
   private PaperItemPlatform() {
 
@@ -151,21 +233,132 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
   @Override
   public void addDefaults() {
 
-    registerConversions();
+    final String version = version();
+    this.useModern = VersionUtil.isOneTwentyOneFour(version);
 
-    addMulti(new PaperBundleComponent());
-    addMulti(new PaperContainerComponent());
-    addMulti(new PaperCustomNameComponent());
-    addMulti(new PaperDamageComponent());
-    addMulti(new PaperEnchantmentsComponent());
-    addMulti(new PaperItemModelComponent());
-    addMulti(new PaperItemNameComponent());
-    addMulti(new PaperLoreComponent());
-    addMulti(new PaperMaxStackComponent());
-    addMulti(new PaperModelDataComponent());
-    addMulti(new PaperOldModelDataLegacyComponent());
-    addMulti(new PaperProfileComponent());
-    addMulti(new PaperShulkerColorComponent());
+    registerConversions();
+    new SharedConverters(this.converter).init();
+
+    if(useModern) {
+      new ModernConverters(this.converter).init();
+    }
+
+    if(VersionUtil.isOneThirteen(version)) {
+      new OneThirteenConverters(this.converter).init();
+    }
+
+    if(VersionUtil.isOneTwenty(version)) {
+      new OneTwentyConverters(this.converter).init();
+    }
+
+    if(VersionUtil.isOneTwentyOne(version)) {
+      new OneTwentyOneConverters(this.converter).init();
+    }
+
+    if(useModern) {
+
+      addMulti(new PaperBundleComponent());
+      addMulti(new PaperContainerComponent());
+      addMulti(new PaperCustomNameComponent());
+      addMulti(new PaperDamageComponent());
+      addMulti(new PaperEnchantmentsComponent());
+      addMulti(new PaperItemModelComponent());
+      addMulti(new PaperItemNameComponent());
+      addMulti(new PaperLoreComponent());
+      addMulti(new PaperMaxStackComponent());
+      addMulti(new PaperModelDataComponent());
+      addMulti(new PaperOldModelDataLegacyComponent());
+      addMulti(new PaperProfileComponent());
+      addMulti(new PaperShulkerColorComponent());
+      addMulti(new PaperPotionContentsComponent());
+      addMulti(new PaperPotionDurationScaleComponent());
+      addMulti(new PaperWritableBookContentComponent());
+      addMulti(new PaperConsumableComponent());
+      addMulti(new PaperProvidesTrimMaterialComponent());
+      addMulti(new PaperRarityComponent());
+      addMulti(new PaperRecipesComponent());
+      addMulti(new PaperRepairableComponent());
+      addMulti(new PaperRepairCostComponent());
+      addMulti(new PaperStoredEnchantmentsComponent());
+
+      addMulti(new PaperAttackRangeComponent());
+      addMulti(new PaperAttributeModifiersComponent());
+      addMulti(new PaperBannerPatternsComponent());
+      addMulti(new PaperBaseColorComponent());
+      addMulti(new PaperBreakSoundComponent());
+      addMulti(new PaperCanBreakComponent());
+      addMulti(new PaperCanPlaceOnComponent());
+      addMulti(new PaperChargedProjectilesComponent());
+      addMulti(new PaperContainerLootComponent());
+      addMulti(new PaperDamageComponent());
+      addMulti(new PaperDamageTypeComponent());
+      addMulti(new PaperDeathProtectionComponent());
+      addMulti(new PaperDyedColorComponent());
+      addMulti(new PaperEnchantableComponent());
+      addMulti(new PaperEnchantmentGlintOverrideComponent());
+      addMulti(new PaperEquipComponent());
+      addMulti(new PaperFireworkExplosionComponent());
+      addMulti(new PaperFireworksComponent());
+      addMulti(new PaperFoodComponent());
+      addMulti(new PaperGliderComponent());
+      addMulti(new PaperInstrumentComponent());
+      addMulti(new PaperIntangibleProjectileComponent());
+      addMulti(new PaperJukeBoxComponent());
+      addMulti(new PaperKineticWeaponComponent());
+      addMulti(new PaperLodestoneTrackerComponent());
+      addMulti(new PaperMapColorComponent());
+      addMulti(new PaperMapIDComponent());
+      addMulti(new PaperMaxDamageComponent());
+      addMulti(new PaperMaxStackComponent());
+      addMulti(new PaperMinimumAttackChargeComponent());
+      addMulti(new PaperNoteBlockSoundComponent());
+      addMulti(new PaperOminousBottleAmplifierComponent());
+      addMulti(new PaperPiercingWeaponComponent());
+      addMulti(new PaperPotDecorationsComponent());
+      addMulti(new PaperSuspiciousStewEffectsComponent());
+      addMulti(new PaperSwingAnimationComponent());
+      addMulti(new PaperToolComponent());
+      addMulti(new PaperTooltipDisplayComponent());
+      addMulti(new PaperTooltipStyleComponent());
+      addMulti(new PaperTrimComponent());
+      addMulti(new PaperUnbreakableComponent());
+      addMulti(new PaperUseCooldownComponent());
+      addMulti(new PaperUseEffectsComponent());
+      addMulti(new PaperUseRemainderComponent());
+      addMulti(new PaperWeaponComponent());
+      addMulti(new PaperWrittenBookContentComponent());
+    } else {
+      addMulti(new PaperOldAttributeModifiersComponent());
+      addMulti(new PaperOldBannerPatternsComponent());
+      addMulti(new PaperOldBaseColorComponent());
+      addMulti(new PaperOldBundleComponent());
+      addMulti(new PaperOldChargedProjectilesComponent());
+      addMulti(new PaperOldContainerComponent());
+      addMulti(new PaperOldCustomNameComponent());
+      addMulti(new PaperOldDamageComponent());
+      addMulti(new PaperOldDyedColorComponent());
+      addMulti(new PaperOldEnchantableComponent());
+      addMulti(new PaperOldEnchantmentsComponent());
+      addMulti(new PaperOldFoodComponent());
+      addMulti(new PaperOldGliderComponent());
+      addMulti(new PaperOldHideTooltipComponent());
+      addMulti(new PaperOldItemModelComponent());
+      addMulti(new PaperOldItemNameComponent());
+      addMulti(new PaperOldLoreComponent());
+      addMulti(new PaperOldMaxDamageComponent());
+      addMulti(new PaperOldMaxStackSizeComponent());
+      addMulti(new PaperOldModelDataComponent());
+      addMulti(new PaperOldModelDataLegacyComponent());
+      addMulti(new PaperOldProfileComponent());
+      addMulti(new PaperOldRarityComponent());
+      addMulti(new PaperOldRepairCostComponent());
+      addMulti(new PaperOldShulkerColorComponent());
+      addMulti(new PaperOldStoredEnchantmentsComponent());
+      addMulti(new PaperOldSuspiciousStewEffectsComponent());
+      addMulti(new PaperOldTooltipStyleComponent());
+      addMulti(new PaperOldTrimComponent());
+      addMulti(new PaperOldUnbreakableComponent());
+    }
 
 
     if(Bukkit.getPluginManager().isPluginEnabled("ItemsAdder")) {
@@ -246,52 +439,84 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
 
   private void registerConversions() {
 
+
     //RegisterConversion for EquipmentSlot
-    converter.registerConversion(String.class, EquipmentSlot.class, input->{
-      switch(input.toUpperCase()) {
-        case "HAND":
-          return EquipmentSlot.HAND;
-        case "OFF_HAND":
-          return EquipmentSlot.OFF_HAND;
-        case "FEET":
-          return EquipmentSlot.FEET;
-        case "LEGS":
-          return EquipmentSlot.LEGS;
-        case "CHEST":
-          return EquipmentSlot.CHEST;
-        case "HEAD":
-          return EquipmentSlot.HEAD;
-        case "BODY":
-          return EquipmentSlot.BODY;
-        default:
-          return EquipmentSlot.HAND;
+    converter.registerConversion(String.class, EquipmentSlot.class, input -> {
+      if (input == null) {
+        return EquipmentSlot.HAND;
+      }
+
+      try {
+        return EquipmentSlot.valueOf(input.trim().toUpperCase(Locale.ROOT));
+      } catch (final IllegalArgumentException ex) {
+        return EquipmentSlot.HAND; // fallback for unknown values
       }
     });
 
-    converter.registerConversion(EquipmentSlot.class, String.class, input->switch(input) {
-      case HAND -> "HAND";
-      case OFF_HAND -> "OFF_HAND";
-      case FEET -> "FEET";
-      case LEGS -> "LEGS";
-      case CHEST -> "CHEST";
-      case HEAD -> "HEAD";
-      case BODY -> "BODY";
+
+    converter.registerConversion(EquipmentSlot.class, String.class, EquipmentSlot::name);
+
+    // EquipmentSlot -> EquipSlot
+    converter.registerConversion(EquipmentSlot.class, EquipSlot.class, input -> {
+      if (input == null) {
+        return EquipSlot.HAND;
+      }
+
+      final String name = input.name();
+
+      if ("HAND".equals(name)) {
+        return EquipSlot.HAND;
+      }
+
+      try {
+        return EquipSlot.valueOf(name);
+      } catch (final IllegalArgumentException ignored) {
+        return EquipSlot.HAND;
+      }
     });
 
-    //RegisterConversion for EquipmentSlotGroup
-    try {
-      converter.registerConversion(String.class, EquipmentSlotGroup.class, input->{
-        final EquipmentSlotGroup group = EquipmentSlotGroup.getByName(input);
-        if(group == null) {
-          throw new IllegalArgumentException("Unknown input: " + input);
-        }
-        return group;
-      });
+    // EquipSlot -> EquipmentSlot
+    converter.registerConversion(EquipSlot.class, EquipmentSlot.class, input -> {
+      if (input == null) {
+        return EquipmentSlot.HAND;
+      }
 
-      converter.registerConversion(EquipmentSlotGroup.class, String.class, EquipmentSlotGroup::toString);
-    } catch(final NoClassDefFoundError ignore) {
+      final String name = switch (input) {
+        case MAIN_HAND -> "HAND";
+        case ANY, SADDLE, ARMOUR -> "HAND";
+        default -> input.name();
+      };
 
-    }
+      try {
+        return EquipmentSlot.valueOf(name);
+      } catch (final IllegalArgumentException ignored) {
+        return EquipmentSlot.HAND;
+      }
+    });
+
+    converter.registerConversion(EffectInstance.class, PotionEffect.class, effect -> {
+      final PotionEffectType type = converter.convert(effect.id(), PotionEffectType.class);
+
+      return new PotionEffect(
+              type,
+              effect.duration(),
+              effect.amplifier(),
+              effect.ambient(),
+              effect.showParticles(),
+              effect.showIcon()
+      );
+    });
+
+    converter.registerConversion(PotionEffect.class, EffectInstance.class, effect -> {
+      return new EffectInstance(
+              converter.convert(effect.getType(), String.class),
+              effect.getAmplifier(),
+              effect.getDuration(),
+              effect.hasParticles(),
+              effect.isAmbient(),
+              effect.hasIcon()
+      );
+    });
 
     //Register Conversions for AttributeModifier
     converter.registerConversion(String.class, AttributeModifier.Operation.class, input->switch(input.toLowerCase()) {
@@ -347,131 +572,6 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       case BLACK -> "black";
     });
 
-    //Register Conversions for PatternType, which will be dependent on versions
-    //We'll separate the legacy find methods from the modern ones in order to maintain one component
-    // class for both.
-    if(VersionUtil.isOneTwentyOne(version())) {
-
-      converter.registerConversion(String.class, PatternType.class, input->{
-
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          final PatternType patternType = Registry.BANNER_PATTERN.get(key);
-          if(patternType != null) {
-
-            return patternType;
-          }
-        }
-        throw new IllegalArgumentException("Unknown PatternType: " + input);
-      });
-
-      if(VersionUtil.isOneTwentyOneFour(version())) {
-
-        converter.registerConversion(PatternType.class, String.class, input->{
-
-          final NamespacedKey key = input.getKey();
-
-          return key.toString();
-        });
-      } else {
-
-        converter.registerConversion(PatternType.class, String.class, input->{
-
-          final NamespacedKey key = input.getKey();
-
-          return key.toString();
-        });
-      }
-
-    }
-
-    //Register Conversions for Enchantment, which will be dependent on versions
-    //We'll separate the legacy find methods from the modern ones in order to maintain one component
-    // class for both.
-    if(VersionUtil.isOneTwentyOneFour(version())) {
-
-      converter.registerConversion(String.class, Enchantment.class, (final String input)->{
-
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return Registry.ENCHANTMENT.getOrThrow(key);
-        }
-        throw new IllegalArgumentException("Unknown Enchantment: " + input);
-      });
-
-      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)->input.getKey().toString());
-
-    } else if(VersionUtil.isOneThirteen(version())) {
-      converter.registerConversion(String.class, Enchantment.class, (final String input)->{
-
-        final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.fromString(input.toLowerCase(Locale.ROOT)));
-        if(enchantment == null) {
-
-          throw new IllegalArgumentException("Unknown Enchantment: " + input);
-        }
-        return enchantment;
-      });
-
-      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)->input.getKey().getKey());
-    } else {
-
-      converter.registerConversion(String.class, Enchantment.class, (final String input)->{
-
-        final Enchantment enchantment = Enchantment.getByName(input);
-        if(enchantment == null) {
-
-          throw new IllegalArgumentException("Unknown Enchantment: " + input);
-        }
-        return enchantment;
-      });
-
-      converter.registerConversion(Enchantment.class, String.class, Enchantment::getName);
-    }
-
-    //Register Conversions for Trim Material, which will be dependent on versions
-    //We'll separate the legacy find methods from the modern ones in order to maintain one component
-    // class for both.
-    if(VersionUtil.isOneTwentyOneFour(version())) {
-
-      converter.registerConversion(TrimMaterial.class, String.class, input->{
-
-        final NamespacedKey key = RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).getKey(input);
-        if(key != null) {
-
-          return key.asString();
-        }
-
-        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
-      });
-
-      converter.registerConversion(String.class, TrimMaterial.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).getOrThrow(key);
-        }
-        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
-      });
-
-    } else if(VersionUtil.isOneTwenty(version())) {
-
-      converter.registerConversion(TrimMaterial.class, String.class, input->input.getKey().toString());
-
-      converter.registerConversion(String.class, TrimMaterial.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return Registry.TRIM_MATERIAL.get(key);
-        }
-        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
-      });
-    }
-
-    //Register Conversions for NamespacedKey, which will be dependent on versions
-    //We'll separate the legacy find methods from the modern ones in order to maintain one component
-    // class for both.
     try {
       converter.registerConversion(ItemRarity.class, String.class, input->switch(input) {
         case EPIC -> "epic";
@@ -488,70 +588,6 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       });
     } catch(final NoClassDefFoundError ignore) {
 
-    }
-
-    //Register Conversions for Trim Pattern, which will be dependent on versions
-    //We'll separate the legacy find methods from the modern ones in order to maintain one component
-    // class for both.
-    if(VersionUtil.isOneTwentyOneFour(version())) {
-
-      converter.registerConversion(TrimPattern.class, String.class, input->{
-
-        final NamespacedKey key = RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_PATTERN).getKey(input);
-        if(key != null) {
-
-          return key.asString();
-        }
-
-        throw new IllegalArgumentException("Unknown TrimPattern: " + input);
-      });
-
-      converter.registerConversion(String.class, TrimPattern.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_PATTERN).getOrThrow(key);
-        }
-        throw new IllegalArgumentException("Unknown TrimPattern: " + input);
-      });
-
-    } else if(VersionUtil.isOneTwenty(version())) {
-
-      converter.registerConversion(TrimPattern.class, String.class, input->input.getKey().toString());
-
-      converter.registerConversion(String.class, TrimPattern.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return Registry.TRIM_PATTERN.get(key);
-        }
-        throw new IllegalArgumentException("Unknown TrimPattern: " + input);
-      });
-    }
-
-    if(VersionUtil.isOneTwentyOneFour(version())) {
-
-      converter.registerConversion(PotionEffectType.class, String.class, input->input.getKey().toString());
-      converter.registerConversion(String.class, PotionEffectType.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return Registry.EFFECT.getOrThrow(key);
-        }
-        throw new IllegalArgumentException("Unknown PotionEffectType: " + input);
-      });
-    } else {
-
-      converter.registerConversion(PotionEffectType.class, String.class, PotionEffectType::getName);
-      converter.registerConversion(String.class, PotionEffectType.class, input->{
-
-        final PotionEffectType type = PotionEffectType.getByName(input);
-        if(type != null) {
-
-          return type;
-        }
-        throw new IllegalArgumentException("Unknown PotionEffectType: " + input);
-      });
     }
   }
 
@@ -572,5 +608,10 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
     } catch(final ParseException e) {
       return Optional.empty();
     }
+  }
+
+  public boolean useModern() {
+
+    return useModern;
   }
 }

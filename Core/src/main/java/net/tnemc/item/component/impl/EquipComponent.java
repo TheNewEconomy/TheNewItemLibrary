@@ -49,6 +49,8 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
   protected boolean dispensable;
   protected boolean swappable;
   protected boolean equipOnInteract; //as of SnapShot 25w03a
+  protected boolean canBeSheared;
+  protected String shearSound;
 
   public EquipComponent(final String cameraKey) {
 
@@ -171,6 +173,8 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
     equip.put("dispensable", dispensable);
     equip.put("swappable", swappable);
     equip.put("equipOnInteract", equipOnInteract);
+    equip.put("canBeSheared", canBeSheared);
+    equip.put("shearSound", shearSound);
 
     if(!entities.isEmpty()) {
 
@@ -201,6 +205,8 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
     dispensable = json.getBoolean("dispensable");
     swappable = json.getBoolean("swappable");
     equipOnInteract = json.getBoolean("equipOnInteract");
+    canBeSheared = json.getBoolean("canBeSheared");
+    shearSound = json.getString("shearSound");
 
     entities.clear();
     entities.addAll(json.getStringList("entities"));
@@ -229,7 +235,9 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
              this.dispensable == equipComponent.dispensable &&
              this.swappable == equipComponent.swappable &&
              this.equipOnInteract == equipComponent.equipOnInteract &&
-             this.entities.equals(equipComponent.entities);
+             this.entities.equals(equipComponent.entities) &&
+             this.canBeSheared == equipComponent.canBeSheared &&
+             Objects.equals(this.shearSound, equipComponent.shearSound);
 
     }
     return false;
@@ -330,5 +338,25 @@ public abstract class EquipComponent<I extends AbstractItemStack<T>, T> implemen
   public void equipOnInteract(final boolean equipOnInteract) {
 
     this.equipOnInteract = equipOnInteract;
+  }
+
+  public String shearSound() {
+
+    return shearSound;
+  }
+
+  public void shearSound(final String shearSound) {
+
+    this.shearSound = shearSound;
+  }
+
+  public boolean canBeSheared() {
+
+    return canBeSheared;
+  }
+
+  public void canBeSheared(final boolean canBeSheared) {
+
+    this.canBeSheared = canBeSheared;
   }
 }

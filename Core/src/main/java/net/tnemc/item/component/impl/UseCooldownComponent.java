@@ -39,6 +39,10 @@ public abstract class UseCooldownComponent<I extends AbstractItemStack<T>, T> im
   protected float seconds;
   protected String cooldownGroup;
 
+  public UseCooldownComponent() {
+
+  }
+
   public UseCooldownComponent(final float seconds) {
 
     this.seconds = seconds;

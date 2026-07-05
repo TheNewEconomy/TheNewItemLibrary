@@ -573,6 +573,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
         item = applicator.apply(serialized, item);
       }
+      //System.out.println("Applicator applied");
     }
     return item;
   }
@@ -607,8 +608,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
         }
 
         serialized = serializer.serialize(item, serialized);
+
+        //System.out.println("Serializer applied");
       }
     }
+    //System.out.println("Serializers applied");
     return serialized;
   }
 

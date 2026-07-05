@@ -18,6 +18,9 @@ package net.tnemc.item.component.helper;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * DamageReduction - Controls how much damage should be blocked in a given attack
  *
@@ -26,27 +29,27 @@ package net.tnemc.item.component.helper;
  */
 public class DamageReduction {
 
-  protected final String type;
+  protected final List<String> types = new ArrayList<>();
   protected final float base;
   protected final float factor;
   protected final float horizontalBlockingAngle;
 
-  public DamageReduction(final String type, final float base, final float factor) {
+  public DamageReduction(final List<String> types, final float base, final float factor) {
 
-    this(type, base, factor, 90.0f);
+    this(types, base, factor, 90.0f);
   }
 
-  public DamageReduction(final String type, final float base, final float factor, final float horizontalBlockingAngle) {
+  public DamageReduction(final List<String> types, final float base, final float factor, final float horizontalBlockingAngle) {
 
-    this.type = type;
+    this.types.addAll(types);
     this.base = base;
     this.factor = factor;
     this.horizontalBlockingAngle = horizontalBlockingAngle;
   }
 
-  public String type() {
+  public List<String> types() {
 
-    return type;
+    return types;
   }
 
   public float base() {
@@ -67,11 +70,10 @@ public class DamageReduction {
   @Override
   public DamageReduction clone() throws CloneNotSupportedException {
 
-    return new DamageReduction(
-            this.type,
-            this.base,
-            this.factor,
-            this.horizontalBlockingAngle
+    return new DamageReduction(this.types,
+                               this.base,
+                               this.factor,
+                               this.horizontalBlockingAngle
     );
   }
 }

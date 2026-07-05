@@ -21,11 +21,8 @@ package net.tnemc.item.paper.platform.impl.modern;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.tnemc.item.component.impl.DamageComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.platform.PaperItemPlatform;
-import net.tnemc.item.paper.platform.impl.PaperSerialComponent;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 
 import java.util.Optional;
 
@@ -35,7 +32,7 @@ import java.util.Optional;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
-public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemStack> implements PaperSerialComponent<PaperItemStack, ItemStack> {
+public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemStack> {
 
   /**
    * Represents a component that manages damage information. This component stores and provides
@@ -81,7 +78,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
    * @since 0.2.0.0
    */
   @Override
-  public ItemStack applyModern(final PaperItemStack serialized, final ItemStack item) {
+  public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
     //System.out.println("=== Apply Modern Damage ===");
     final Optional<PaperDamageComponent> componentOptional = serialized.component(identifier());
@@ -97,37 +94,6 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
   }
 
   /**
-   * @param serialized the serialized item stack to use
-   * @param item       the item that we should use to apply this applicator to.
-   *
-   * @return the updated item.
-   *
-   * @since 0.2.0.0
-   */
-  @Override
-  public ItemStack applyLegacy(final PaperItemStack serialized, final ItemStack item) {
-    //System.out.println("Apply Legacy Damage");
-
-    final Optional<PaperDamageComponent> componentOptional = serialized.component(identifier());
-
-    if(componentOptional.isPresent()) {
-      if(VersionUtil.isOneThirteen(PaperItemPlatform.instance().version())) {
-
-        if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
-
-          meta.setDamage(componentOptional.get().damage());
-          item.setItemMeta(meta);
-        }
-      } else {
-        //System.out.println("Empty Damage");
-
-        item.setDurability((short)componentOptional.get().damage);
-      }
-    }
-    return item;
-  }
-
-  /**
    * @param item       the item that we should use to deserialize.
    * @param serialized the serialized item stack we should use to apply this deserializer to
    *
@@ -136,7 +102,7 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
    * @since 0.2.0.0
    */
   @Override
-  public PaperItemStack serializeModern(final ItemStack item, final PaperItemStack serialized) {
+  public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
     //System.out.println("==== Damage ====");
 
     final Integer damageValue = item.getData(DataComponentTypes.DAMAGE);
@@ -154,36 +120,6 @@ public class PaperDamageComponent extends DamageComponent<PaperItemStack, ItemSt
 
     serialized.applyComponent(component);
     //System.out.println("==== End Damage ====");
-    return serialized;
-  }
-
-  /**
-   * @param item       the item that we should use to deserialize.
-   * @param serialized the serialized item stack we should use to apply this deserializer to
-   *
-   * @return the updated serialized item.
-   *
-   * @since 0.2.0.0
-   */
-  @Override
-  public PaperItemStack serializeLegacy(final ItemStack item, final PaperItemStack serialized) {
-
-    int damage = 0;
-    if(VersionUtil.isOneThirteen(PaperItemPlatform.instance().version())) {
-
-      if(item.hasItemMeta() && item.getItemMeta() instanceof final Damageable meta) {
-        damage = meta.getDamage();
-      }
-    } else {
-      damage = item.getDurability();
-    }
-
-    final PaperDamageComponent component = (serialized.paperComponent(identifier()) instanceof final DamageComponent<?, ?> getComponent)?
-                                           (PaperDamageComponent)getComponent : new PaperDamageComponent();
-    component.damage(damage);
-
-
-    serialized.applyComponent(component);
     return serialized;
   }
 
