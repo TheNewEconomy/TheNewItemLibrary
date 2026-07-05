@@ -43,7 +43,6 @@ import net.tnemc.item.paper.platform.impl.modern.PaperAttackRangeComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperAttributeModifiersComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperBannerPatternsComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperBaseColorComponent;
-import net.tnemc.item.paper.platform.impl.modern.PaperBlocksAttacksComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperBreakSoundComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperCanBreakComponent;
@@ -54,7 +53,6 @@ import net.tnemc.item.paper.platform.impl.modern.PaperContainerComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperContainerLootComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperCustomNameComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperDamageComponent;
-import net.tnemc.item.paper.platform.impl.modern.PaperDamageResistantComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperDamageTypeComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperDeathProtectionComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperDyedColorComponent;
@@ -87,7 +85,6 @@ import net.tnemc.item.paper.platform.impl.modern.PaperPotDecorationsComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperPotionContentsComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperPotionDurationScaleComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperProfileComponent;
-import net.tnemc.item.paper.platform.impl.modern.PaperProvidesBannerPatternsComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperProvidesTrimMaterialComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperRarityComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperRecipesComponent;
@@ -95,7 +92,6 @@ import net.tnemc.item.paper.platform.impl.modern.PaperRepairCostComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperRepairableComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperShulkerColorComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperStoredEnchantmentsComponent;
-import net.tnemc.item.paper.platform.impl.modern.PaperSulfurCubeContentComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperSuspiciousStewEffectsComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperSwingAnimationComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperToolComponent;
@@ -262,11 +258,6 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
 
     registerConversions();
 
-    if(VersionUtil.isTwentySixTwo(version())) {
-
-      addMulti(new PaperSulfurCubeContentComponent());
-    }
-
     if(useModern) {
 
       addMulti(new PaperBundleComponent());
@@ -286,7 +277,6 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       addMulti(new PaperPotionDurationScaleComponent());
       addMulti(new PaperWritableBookContentComponent());
       addMulti(new PaperConsumableComponent());
-      addMulti(new PaperProvidesBannerPatternsComponent());
       addMulti(new PaperProvidesTrimMaterialComponent());
       addMulti(new PaperRarityComponent());
       addMulti(new PaperRecipesComponent());
@@ -298,14 +288,12 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       addMulti(new PaperAttributeModifiersComponent());
       addMulti(new PaperBannerPatternsComponent());
       addMulti(new PaperBaseColorComponent());
-      addMulti(new PaperBlocksAttacksComponent());
       addMulti(new PaperBreakSoundComponent());
       addMulti(new PaperCanBreakComponent());
       addMulti(new PaperCanPlaceOnComponent());
       addMulti(new PaperChargedProjectilesComponent());
       addMulti(new PaperContainerLootComponent());
       addMulti(new PaperDamageComponent());
-      addMulti(new PaperDamageResistantComponent());
       addMulti(new PaperDamageTypeComponent());
       addMulti(new PaperDeathProtectionComponent());
       addMulti(new PaperDyedColorComponent());
