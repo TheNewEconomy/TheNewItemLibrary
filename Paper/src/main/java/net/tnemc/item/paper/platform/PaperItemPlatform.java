@@ -18,24 +18,12 @@ package net.tnemc.item.paper.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
-import io.papermc.paper.datacomponent.item.consumable.ItemUseAnimation;
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.TypedKey;
-import io.papermc.paper.registry.set.RegistrySet;
-import net.kyori.adventure.key.Key;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.bukkitbase.platform.providers.ItemAdderProvider;
 import net.tnemc.item.bukkitbase.platform.providers.MMOItemProvider;
 import net.tnemc.item.bukkitbase.platform.providers.SlimefunProvider;
 import net.tnemc.item.component.helper.EquipSlot;
-import net.tnemc.item.component.helper.effect.ApplyEffectsComponentEffect;
-import net.tnemc.item.component.helper.effect.ComponentEffect;
 import net.tnemc.item.component.helper.effect.EffectInstance;
-import net.tnemc.item.component.helper.effect.PlaySoundComponentEffect;
-import net.tnemc.item.component.helper.effect.RemoveEffectsComponentEffect;
-import net.tnemc.item.component.helper.effect.TeleportRandomlyComponentEffect;
 import net.tnemc.item.paper.PaperCalculationsProvider;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.paper.VanillaProvider;
@@ -143,23 +131,14 @@ import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.block.banner.PatternType;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ItemType;
-import org.bukkit.inventory.meta.trim.TrimMaterial;
-import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -254,9 +233,27 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
   @Override
   public void addDefaults() {
 
-    this.useModern = VersionUtil.isOneTwentyOneFour(version());
+    final String version = version();
+    this.useModern = VersionUtil.isOneTwentyOneFour(version);
 
     registerConversions();
+    new SharedConverters(this.converter).init();
+
+    if(useModern) {
+      new ModernConverters(this.converter).init();
+    }
+
+    if(VersionUtil.isOneThirteen(version)) {
+      new OneThirteenConverters(this.converter).init();
+    }
+
+    if(VersionUtil.isOneTwenty(version)) {
+      new OneTwentyConverters(this.converter).init();
+    }
+
+    if(VersionUtil.isOneTwentyOne(version)) {
+      new OneTwentyOneConverters(this.converter).init();
+    }
 
     if(useModern) {
 
@@ -442,110 +439,6 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
 
   private void registerConversions() {
 
-    if(useModern) {
-      converter.registerConversion(String.class, ItemUseAnimation.class, input -> {
-        if (input == null || input.isBlank()) {
-          return ItemUseAnimation.EAT;
-        }
-
-        try {
-          return ItemUseAnimation.valueOf(input.trim().toUpperCase(Locale.ROOT));
-        } catch (final IllegalArgumentException ex) {
-          return ItemUseAnimation.EAT;
-        }
-      });
-
-      converter.registerConversion(ItemUseAnimation.class, String.class, input -> input.name().toLowerCase(Locale.ROOT));
-    }
-
-    //ConsumeEffect converter
-    if(useModern) {
-      converter.registerConversion(ComponentEffect.class, ConsumeEffect.class, effect->{
-
-        if(effect instanceof final ApplyEffectsComponentEffect apply) {
-          return ConsumeEffect.applyStatusEffects(apply.getEffects().stream()
-                                                          .map(effectInstance->PaperItemPlatform.instance().converter().convert(effectInstance, PotionEffect.class))
-                                                          .toList(), apply.probability());
-        }
-
-        if(effect instanceof final RemoveEffectsComponentEffect remove) {
-          if(!remove.removeAll()) {
-            return ConsumeEffect.removeEffects(RegistrySet.keySet(RegistryKey.MOB_EFFECT,
-                                                                  remove.getEffectIds().stream()
-                                                                          .map(id->TypedKey.create(RegistryKey.MOB_EFFECT,
-                                                                                                   PaperItemPlatform.instance().converter().convert(id, PotionEffectType.class).getKey()))
-                                                                          .toList()));
-          }
-          return ConsumeEffect.clearAllStatusEffects();
-        }
-
-        if(effect instanceof final PlaySoundComponentEffect sound) {
-          return ConsumeEffect.playSoundConsumeEffect(Key.key(sound.sound()));
-        }
-
-        if(effect instanceof final TeleportRandomlyComponentEffect teleport) {
-          return ConsumeEffect.teleportRandomlyEffect(teleport.getDiameter());
-        }
-
-        return null;
-      });
-
-      converter.registerConversion(ConsumeEffect.class, ComponentEffect.class, effect->{
-
-        if(effect instanceof final ConsumeEffect.ApplyStatusEffects apply) {
-          final ApplyEffectsComponentEffect tnil = new ApplyEffectsComponentEffect();
-          tnil.probability(apply.probability());
-          tnil.getEffects().addAll(apply.effects().stream()
-                                           .map(effectInstance->PaperItemPlatform.instance().converter().convert(effectInstance, EffectInstance.class))
-                                           .toList());
-          return tnil;
-        }
-
-        if(effect instanceof final ConsumeEffect.RemoveStatusEffects remove) {
-          final RemoveEffectsComponentEffect tnil = new RemoveEffectsComponentEffect();
-          remove.removeEffects().forEach(type->tnil.getEffectIds().add(PaperItemPlatform.instance().converter().convert(type, String.class)));
-          return tnil;
-        }
-
-        if(effect instanceof final ConsumeEffect.ClearAllStatusEffects clear) {
-          return new RemoveEffectsComponentEffect();
-        }
-
-        if(effect instanceof final ConsumeEffect.PlaySound sound) {
-          final PlaySoundComponentEffect tnil = new PlaySoundComponentEffect();
-          tnil.sound(sound.sound().asString());
-          return tnil;
-        }
-
-        if(effect instanceof final ConsumeEffect.TeleportRandomly teleport) {
-          final TeleportRandomlyComponentEffect tnil = new TeleportRandomlyComponentEffect();
-          tnil.setDiameter(teleport.diameter());
-          return tnil;
-        }
-
-        return null;
-      });
-    }
-
-    //ItemType
-    if(useModern) {
-      converter.registerConversion(String.class, ItemType.class, input -> {
-        if (input == null || input.isBlank()) {
-          throw new IllegalArgumentException("Item type cannot be null or blank.");
-        }
-
-        final ItemType type = Registry.ITEM.get(NamespacedKey.fromString(input.toLowerCase(Locale.ROOT)));
-
-        if (type == null) {
-          throw new IllegalArgumentException("Unknown item type: " + input);
-        }
-
-        return type;
-      });
-
-      converter.registerConversion(ItemType.class, String.class, input -> input.getKey().toString().toLowerCase(Locale.ROOT));
-    }
-
 
     //RegisterConversion for EquipmentSlot
     converter.registerConversion(String.class, EquipmentSlot.class, input -> {
@@ -625,86 +518,6 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       );
     });
 
-    converter.registerConversion(EquipSlot.class, EquipmentSlotGroup.class, input -> {
-      if (input == null || input == EquipSlot.ANY) {
-        return EquipmentSlotGroup.ANY;
-      }
-
-      return switch (input) {
-        case ARMOUR -> EquipmentSlotGroup.CHEST;
-        case MAIN_HAND -> MAINHAND;
-        case OFF_HAND -> OFFHAND;
-        default -> {
-          try {
-            yield EquipmentSlotGroup.getByName(input.name());
-          } catch (final IllegalArgumentException ex) {
-            yield EquipmentSlotGroup.ANY;
-          }
-        }
-      };
-    });
-
-    converter.registerConversion(EquipmentSlotGroup.class, EquipSlot.class, input -> {
-      if (input == null) {
-        return EquipSlot.ANY;
-      }
-
-      return switch (input.toString().toUpperCase(Locale.ROOT)) {
-        case "HEAD" -> EquipSlot.HEAD;
-        case "CHEST" -> EquipSlot.CHEST;
-        case "LEGS" -> EquipSlot.LEGS;
-        case "FEET" -> EquipSlot.FEET;
-        case "HAND" -> EquipSlot.HAND;
-        case "MAINHAND" -> EquipSlot.MAIN_HAND;
-        case "OFFHAND" -> EquipSlot.OFF_HAND;
-        default -> EquipSlot.ANY;
-      };
-    });
-
-    //RegisterConversion for EquipmentSlotGroup
-    try {
-      converter.registerConversion(String.class, EquipmentSlotGroup.class, input->{
-        final EquipmentSlotGroup group = EquipmentSlotGroup.getByName(input);
-        if(group == null) {
-          throw new IllegalArgumentException("Unknown input: " + input);
-        }
-        return group;
-      });
-
-      converter.registerConversion(EquipmentSlotGroup.class, String.class, EquipmentSlotGroup::toString);
-    } catch(final NoClassDefFoundError ignore) {
-
-    }
-
-    //Register Conversions for Attribute.class
-    if(useModern) {
-
-      converter.registerConversion(String.class, Attribute.class, input -> {
-        if (input == null) {
-          throw new IllegalArgumentException("Attribute cannot be null.");
-        }
-
-        final Attribute attribute = Registry.ATTRIBUTE.get(NamespacedKey.fromString(input.toLowerCase(Locale.ROOT)));
-
-        if (attribute == null) {
-          throw new IllegalArgumentException("Unknown attribute: " + input);
-        }
-
-        return attribute;
-      });
-
-      converter.registerConversion(Attribute.class, String.class, input -> input.getKey().toString().toLowerCase(Locale.ROOT));
-    } else {
-      converter.registerConversion(String.class, Attribute.class, input -> {
-        final Attribute attribute = Attribute.valueOf(input.toUpperCase(Locale.ROOT));
-        return attribute;
-      });
-
-      converter.registerConversion(Attribute.class, String.class,
-                                   input -> input.name().toLowerCase(Locale.ROOT)
-                                  );
-    }
-
     //Register Conversions for AttributeModifier
     converter.registerConversion(String.class, AttributeModifier.Operation.class, input->switch(input.toLowerCase()) {
       case "add_value" -> AttributeModifier.Operation.ADD_NUMBER;
@@ -759,131 +572,6 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       case BLACK -> "black";
     });
 
-    //Register Conversions for PatternType, which will be dependent on versions
-    //We'll separate the legacy find methods from the modern ones in order to maintain one component
-    // class for both.
-    if(VersionUtil.isOneTwentyOne(version())) {
-
-      converter.registerConversion(String.class, PatternType.class, input->{
-
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          final PatternType patternType = Registry.BANNER_PATTERN.get(key);
-          if(patternType != null) {
-
-            return patternType;
-          }
-        }
-        throw new IllegalArgumentException("Unknown PatternType: " + input);
-      });
-
-      if(VersionUtil.isOneTwentyOneFour(version())) {
-
-        converter.registerConversion(PatternType.class, String.class, input->{
-
-          final NamespacedKey key = input.getKey();
-
-          return key.toString();
-        });
-      } else {
-
-        converter.registerConversion(PatternType.class, String.class, input->{
-
-          final NamespacedKey key = input.getKey();
-
-          return key.toString();
-        });
-      }
-
-    }
-
-    //Register Conversions for Enchantment, which will be dependent on versions
-    //We'll separate the legacy find methods from the modern ones in order to maintain one component
-    // class for both.
-    if(VersionUtil.isOneTwentyOneFour(version())) {
-
-      converter.registerConversion(String.class, Enchantment.class, (final String input)->{
-
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return Registry.ENCHANTMENT.getOrThrow(key);
-        }
-        throw new IllegalArgumentException("Unknown Enchantment: " + input);
-      });
-
-      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)->input.getKey().toString());
-
-    } else if(VersionUtil.isOneThirteen(version())) {
-      converter.registerConversion(String.class, Enchantment.class, (final String input)->{
-
-        final Enchantment enchantment = Enchantment.getByKey(NamespacedKey.fromString(input.toLowerCase(Locale.ROOT)));
-        if(enchantment == null) {
-
-          throw new IllegalArgumentException("Unknown Enchantment: " + input);
-        }
-        return enchantment;
-      });
-
-      converter.registerConversion(Enchantment.class, String.class, (final Enchantment input)->input.getKey().getKey());
-    } else {
-
-      converter.registerConversion(String.class, Enchantment.class, (final String input)->{
-
-        final Enchantment enchantment = Enchantment.getByName(input);
-        if(enchantment == null) {
-
-          throw new IllegalArgumentException("Unknown Enchantment: " + input);
-        }
-        return enchantment;
-      });
-
-      converter.registerConversion(Enchantment.class, String.class, Enchantment::getName);
-    }
-
-    //Register Conversions for Trim Material, which will be dependent on versions
-    //We'll separate the legacy find methods from the modern ones in order to maintain one component
-    // class for both.
-    if(VersionUtil.isOneTwentyOneFour(version())) {
-
-      converter.registerConversion(TrimMaterial.class, String.class, input->{
-
-        final NamespacedKey key = RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).getKey(input);
-        if(key != null) {
-
-          return key.asString();
-        }
-
-        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
-      });
-
-      converter.registerConversion(String.class, TrimMaterial.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).getOrThrow(key);
-        }
-        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
-      });
-
-    } else if(VersionUtil.isOneTwenty(version())) {
-
-      converter.registerConversion(TrimMaterial.class, String.class, input->input.getKey().toString());
-
-      converter.registerConversion(String.class, TrimMaterial.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return Registry.TRIM_MATERIAL.get(key);
-        }
-        throw new IllegalArgumentException("Unknown TrimMaterial: " + input);
-      });
-    }
-
-    //Register Conversions for NamespacedKey, which will be dependent on versions
-    //We'll separate the legacy find methods from the modern ones in order to maintain one component
-    // class for both.
     try {
       converter.registerConversion(ItemRarity.class, String.class, input->switch(input) {
         case EPIC -> "epic";
@@ -900,114 +588,6 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       });
     } catch(final NoClassDefFoundError ignore) {
 
-    }
-
-    //Register Conversions for Trim Pattern, which will be dependent on versions
-    //We'll separate the legacy find methods from the modern ones in order to maintain one component
-    // class for both.
-    if(VersionUtil.isOneTwentyOneFour(version())) {
-
-      converter.registerConversion(TrimPattern.class, String.class, input->{
-
-        final NamespacedKey key = RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_PATTERN).getKey(input);
-        if(key != null) {
-
-          return key.asString();
-        }
-
-        throw new IllegalArgumentException("Unknown TrimPattern: " + input);
-      });
-
-      converter.registerConversion(String.class, TrimPattern.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return RegistryAccess.registryAccess().getRegistry(RegistryKey.TRIM_PATTERN).getOrThrow(key);
-        }
-        throw new IllegalArgumentException("Unknown TrimPattern: " + input);
-      });
-
-    } else if(VersionUtil.isOneTwenty(version())) {
-
-      converter.registerConversion(TrimPattern.class, String.class, input->input.getKey().toString());
-
-      converter.registerConversion(String.class, TrimPattern.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return Registry.TRIM_PATTERN.get(key);
-        }
-        throw new IllegalArgumentException("Unknown TrimPattern: " + input);
-      });
-    }
-
-    if(VersionUtil.isOneTwentyOneFour(version())) {
-
-      converter.registerConversion(PotionEffectType.class, String.class, input->input.getKey().toString());
-      converter.registerConversion(String.class, PotionEffectType.class, input->{
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return Registry.EFFECT.getOrThrow(key);
-        }
-        throw new IllegalArgumentException("Unknown PotionEffectType: " + input);
-      });
-    } else {
-
-      converter.registerConversion(PotionEffectType.class, String.class, PotionEffectType::getName);
-      converter.registerConversion(String.class, PotionEffectType.class, input->{
-
-        final PotionEffectType type = PotionEffectType.getByName(input);
-        if(type != null) {
-
-          return type;
-        }
-        throw new IllegalArgumentException("Unknown PotionEffectType: " + input);
-      });
-    }
-
-    // Register conversions for PotionType.
-    if(VersionUtil.isOneTwentyOneFour(version())) {
-
-      converter.registerConversion(String.class, PotionType.class, (final String input)->{
-
-        final NamespacedKey key = NamespacedKey.fromString(input.toLowerCase(Locale.ROOT));
-        if(key != null) {
-
-          return Registry.POTION.getOrThrow(key);
-        }
-        throw new IllegalArgumentException("Unknown PotionType: " + input);
-      });
-
-      converter.registerConversion(PotionType.class, String.class, (final PotionType input)->input.getKey().toString());
-
-    } else if(VersionUtil.isOneThirteen(version())) {
-
-      converter.registerConversion(String.class, PotionType.class, (final String input)->{
-
-        final PotionType potion = PotionType.valueOf(input.toUpperCase(Locale.ROOT));
-        if(potion == null) {
-
-          throw new IllegalArgumentException("Unknown PotionType: " + input);
-        }
-        return potion;
-      });
-
-      converter.registerConversion(PotionType.class, String.class, (final PotionType input)->input.name().toLowerCase(Locale.ROOT));
-
-    } else {
-
-      converter.registerConversion(String.class, PotionType.class, (final String input)->{
-
-        final PotionType potion = PotionType.valueOf(input.toUpperCase(Locale.ROOT));
-        if(potion == null) {
-
-          throw new IllegalArgumentException("Unknown PotionType: " + input);
-        }
-        return potion;
-      });
-
-      converter.registerConversion(PotionType.class, String.class, (final PotionType input)->input.name());
     }
   }
 
