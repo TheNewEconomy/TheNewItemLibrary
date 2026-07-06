@@ -19,16 +19,7 @@ package net.tnemc.item.component.impl;
  */
 
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.JSONHelper;
-import net.tnemc.item.component.SerialComponent;
-import net.tnemc.item.platform.ItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
-import org.json.simple.JSONObject;
-
-import java.util.Objects;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * SulfurCubeContentComponent

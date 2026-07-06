@@ -89,7 +89,6 @@ import net.tnemc.item.paper.platform.impl.modern.PaperTrimComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperUnbreakableComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperUseCooldownComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperUseEffectsComponent;
-import net.tnemc.item.paper.platform.impl.modern.PaperUseRemainderComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperWeaponComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperWritableBookContentComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperWrittenBookContentComponent;
@@ -133,7 +132,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
@@ -146,9 +144,6 @@ import org.json.simple.parser.ParseException;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
-
-import static org.bukkit.inventory.EquipmentSlotGroup.MAINHAND;
-import static org.bukkit.inventory.EquipmentSlotGroup.OFFHAND;
 
 /**
  * PaperItemPlatform
@@ -236,6 +231,9 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
     final String version = version();
     this.useModern = VersionUtil.isOneTwentyOneFour(version);
 
+    //System.out.println("Using PaperItemPlatform version " + version);
+    //System.out.println("Using PaperItemPlatform modern: " + useModern);
+
     registerConversions();
     new SharedConverters(this.converter).init();
 
@@ -243,11 +241,11 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       new ModernConverters(this.converter).init();
     }
 
-    if(VersionUtil.isOneThirteen(version)) {
+    if(VersionUtil.isOneThirteen(version) && !useModern) {
       new OneThirteenConverters(this.converter).init();
     }
 
-    if(VersionUtil.isOneTwenty(version)) {
+    if(VersionUtil.isOneTwenty(version) && !useModern) {
       new OneTwentyConverters(this.converter).init();
     }
 
@@ -324,7 +322,7 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       addMulti(new PaperUnbreakableComponent());
       addMulti(new PaperUseCooldownComponent());
       addMulti(new PaperUseEffectsComponent());
-      addMulti(new PaperUseRemainderComponent());
+      //addMulti(new PaperUseRemainderComponent());
       addMulti(new PaperWeaponComponent());
       addMulti(new PaperWrittenBookContentComponent());
     } else {

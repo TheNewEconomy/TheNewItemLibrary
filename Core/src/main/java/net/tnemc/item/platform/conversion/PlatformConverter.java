@@ -46,6 +46,8 @@ public class PlatformConverter {
    */
   public <I, O> void registerConversion(final Class<I> inputClass, final Class<O> outputClass, final Function<I, O> converter) {
 
+    //System.out.println("Register conversion from " + inputClass.getName() + " to " + outputClass.getName());
+
     registry.computeIfAbsent(inputClass, k->new HashMap<>())
             .put(outputClass, input->converter.apply(inputClass.cast(input)));
   }
@@ -66,7 +68,10 @@ public class PlatformConverter {
    */
   public <I, O> O convert(final I input, final Class<O> outputClass) {
 
+    //System.out.println("Convert " + input.getClass().getName() + " to " + outputClass.getName());
+
     if(input == null) {
+      //System.out.println("Input cannot be null");
       throw new IllegalArgumentException("Input cannot be null");
     }
 
@@ -85,6 +90,7 @@ public class PlatformConverter {
       }
     }
 
+    //System.out.println("No conversion registered from " + inputClass.getName() + " to " + outputClass.getName());
     throw new IllegalArgumentException("No conversion registered from " + inputClass.getName() + " to " + outputClass.getName());
   }
 }

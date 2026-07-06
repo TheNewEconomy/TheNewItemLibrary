@@ -23,7 +23,8 @@ import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.StringDataConverter;
 import net.tnemc.item.platform.ItemPlatform;
-import org.json.simple.JSONArray;import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.Collections;
 import java.util.HashMap;
