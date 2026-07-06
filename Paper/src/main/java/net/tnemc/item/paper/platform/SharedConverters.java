@@ -18,21 +18,13 @@ package net.tnemc.item.paper.platform;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import net.tnemc.item.component.helper.DyeColor;
-import net.tnemc.item.component.helper.EquipSlot;
-import net.tnemc.item.component.helper.effect.EffectInstance;
 import net.tnemc.item.platform.conversion.PlatformConverter;
 import net.tnemc.item.providers.VersionUtil;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
 import java.util.Locale;
-
-import static net.tnemc.item.component.helper.EquipSlot.ARMOUR;
 
 /**
  * SharedConverters

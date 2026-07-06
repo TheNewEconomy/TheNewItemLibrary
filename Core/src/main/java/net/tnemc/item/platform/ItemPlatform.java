@@ -567,6 +567,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
       //System.out.println("Try applicator: " + applicator.identifier());
 
+      /*final StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+      for (final StackTraceElement s : elements) {
+        System.out.println("At " + s.getClassName() + "." + s.getMethodName());
+      }*/
+
       if(applicator.enabled(version())) {
 
         //System.out.println("Applicator ready to apply");
@@ -575,6 +580,8 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
       }
       //System.out.println("Applicator applied");
     }
+
+    //System.out.println("All applicators applied");
     return item;
   }
 

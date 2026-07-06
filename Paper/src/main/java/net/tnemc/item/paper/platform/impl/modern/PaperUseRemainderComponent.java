@@ -22,7 +22,6 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.UseRemainder;
 import net.tnemc.item.component.impl.UseRemainderComponent;
 import net.tnemc.item.paper.PaperItemStack;
-import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.VersionUtil;
 import org.bukkit.inventory.ItemStack;
 
@@ -86,7 +85,6 @@ public class PaperUseRemainderComponent extends UseRemainderComponent<PaperItemS
                                                  (PaperUseRemainderComponent)getComponent : new PaperUseRemainderComponent();
 
     final PaperItemStack remainderStack = new PaperItemStack().of(remainder.transformInto());
-    PaperItemPlatform.instance().providerApplies(remainderStack, remainder.transformInto());
 
     component.item(remainderStack);
 

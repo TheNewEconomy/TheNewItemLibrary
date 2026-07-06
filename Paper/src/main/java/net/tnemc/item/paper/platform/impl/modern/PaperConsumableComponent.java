@@ -102,7 +102,7 @@ public class PaperConsumableComponent extends ConsumableComponent<PaperItemStack
                                                (PaperConsumableComponent)getComponent : new PaperConsumableComponent();
 
     component.consumeSeconds(consumable.consumeSeconds());
-    component.animation(PaperItemPlatform.instance().converter().convert(component.animation(), String.class));
+    component.animation(PaperItemPlatform.instance().converter().convert(consumable.animation(), String.class));
     component.hasConsumeParticles(consumable.hasConsumeParticles());
 
     if(consumable.sound() != null) {

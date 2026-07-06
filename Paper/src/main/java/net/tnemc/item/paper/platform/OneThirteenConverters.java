@@ -43,13 +43,13 @@ public class OneThirteenConverters {
   public void init() {
 
     //Attribute
-    converter.registerConversion(String.class, Attribute.class, input -> {
+    converter.registerConversion(String.class, Attribute.class, input->{
       final Attribute attribute = Attribute.valueOf(input.toUpperCase(Locale.ROOT));
       return attribute;
     });
 
     converter.registerConversion(Attribute.class, String.class,
-                                 input -> input.name().toLowerCase(Locale.ROOT)
+                                 input->input.name().toLowerCase(Locale.ROOT)
                                 );
 
     //Enchantment
