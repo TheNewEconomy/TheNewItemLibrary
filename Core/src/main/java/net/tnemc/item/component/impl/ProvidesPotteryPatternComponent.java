@@ -29,26 +29,24 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * MobVisibilityComponent
+ * ProvidesPotteryPatternComponent
  *
  * @author creatorfromhell
- * @see <a href="https://minecraft.wiki/w/Data_component_format#mob_visibility">Reference</a>
+ * @see <a href="https://minecraft.wiki/w/Data_component_format#provides_pottery_pattern">Reference</a>
  * <p>
  * @since 0.2.0.0
  */
-public abstract class MobVisibilityComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
+public abstract class ProvidesPotteryPatternComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-    protected final List<String> entities = new ArrayList<>();
-    protected float visibility = 0;
+    protected final List<String> patterns = new ArrayList<>();
 
-    public MobVisibilityComponent() {
+    public ProvidesPotteryPatternComponent() {
 
     }
 
-    public MobVisibilityComponent(final List<String> entities, final float visibility) {
+    public ProvidesPotteryPatternComponent(final List<String> patterns) {
 
-        this.entities.addAll(entities);
-        this.visibility = visibility;
+        this.patterns.addAll(patterns);
     }
 
     /**
@@ -59,7 +57,7 @@ public abstract class MobVisibilityComponent<I extends AbstractItemStack<T>, T> 
     @Override
     public String identifier() {
 
-        return "mob_visibility";
+        return "provides_pottery_pattern";
     }
 
     /**
@@ -74,8 +72,7 @@ public abstract class MobVisibilityComponent<I extends AbstractItemStack<T>, T> 
 
         final JSONObject json = new JSONObject();
 
-        json.put("entities", entities);
-        json.put("visibility", visibility);
+        json.put("patterns", patterns);
 
         return json;
     }
@@ -90,8 +87,7 @@ public abstract class MobVisibilityComponent<I extends AbstractItemStack<T>, T> 
     @Override
     public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
 
-        this.entities.addAll(json.getStringList("entities"));
-        this.visibility = json.getFloat("visibility");
+        this.patterns.addAll(json.getStringList("patterns"));
     }
 
     /**
@@ -107,29 +103,19 @@ public abstract class MobVisibilityComponent<I extends AbstractItemStack<T>, T> 
     @Override
     public boolean similar(final SerialComponent<?, ?> component) {
 
-        if(!(component instanceof final MobVisibilityComponent<?, ?> other)) return false;
+        if(!(component instanceof final ProvidesPotteryPatternComponent<?, ?> other)) return false;
 
-        return entities.equals(other.entities) && visibility == other.visibility;
+        return patterns.equals(other.patterns);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(entities, visibility);
+        return Objects.hash(patterns);
     }
 
-    public List<String> entities() {
+    public List<String> patterns() {
 
-        return entities;
-    }
-
-    public float visibility() {
-
-        return visibility;
-    }
-
-    public void visibility(final float visibility) {
-
-        this.visibility = visibility;
+        return patterns;
     }
 }
