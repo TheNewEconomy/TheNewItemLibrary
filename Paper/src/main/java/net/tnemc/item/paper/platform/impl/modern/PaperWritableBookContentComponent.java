@@ -87,7 +87,7 @@ public class PaperWritableBookContentComponent extends WritableBookContentCompon
     final PaperWritableBookContentComponent component = (serialized.paperComponent(identifier()) instanceof final WritableBookContentComponent<?, ?> getComponent)?
                                                         (PaperWritableBookContentComponent)getComponent : new PaperWritableBookContentComponent();
 
-    component.pages(content.pages().stream().map(Filtered::filtered).toList());
+    component.pages(content.pages().stream().map(Filtered::raw).toList());
 
     serialized.applyComponent(component);
     return serialized;
