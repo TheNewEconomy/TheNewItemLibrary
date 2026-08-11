@@ -76,7 +76,7 @@ public class BukkitBundleComponent extends BundleComponent<BukkitItemStack, Item
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final BundleMeta meta) {
 
-        componentOptional.get().items.forEach((slot, stack)->meta.addItem(stack.provider().locale(serialized)));
+        componentOptional.get().items.forEach((slot, stack)->meta.addItem(stack.provider().locale(stack)));
 
         item.setItemMeta(meta);
       }
@@ -112,7 +112,6 @@ public class BukkitBundleComponent extends BundleComponent<BukkitItemStack, Item
         }
 
         final BukkitItemStack containerSerial = new BukkitItemStack().of(stack);
-        BukkitItemPlatform.instance().providerApplies(containerSerial, stack);
         component.items.put(i, containerSerial);
         i++;
       }
