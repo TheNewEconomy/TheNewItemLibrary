@@ -47,7 +47,7 @@ public class PaperBreakSoundComponent extends BreakSoundComponent<PaperItemStack
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOneFour(version);
+    return VersionUtil.isOneTwentyOneFive(version);
   }
 
   @Override

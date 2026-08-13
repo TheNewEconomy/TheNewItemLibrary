@@ -46,7 +46,7 @@ public class PaperMinimumAttackChargeComponent extends MinimumAttackChargeCompon
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOneFour(version);
+    return VersionUtil.isOneTwentyOneEleven(version);
   }
 
   @Override

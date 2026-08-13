@@ -51,7 +51,7 @@ public class PaperAttackRangeComponent extends AttackRangeComponent<PaperItemSta
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOneFour(version);
+    return VersionUtil.isOneTwentyOneEleven(version);
   }
 
   @Override

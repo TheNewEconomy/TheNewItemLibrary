@@ -41,7 +41,7 @@ public class PaperUnbreakableComponent extends UnbreakableComponent<PaperItemSta
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOneFour(version);
+    return VersionUtil.isOneTwentyOneFive(version);
   }
 
   @Override
