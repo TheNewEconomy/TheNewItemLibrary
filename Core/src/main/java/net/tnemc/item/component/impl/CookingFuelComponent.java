@@ -22,6 +22,7 @@ import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.platform.ItemPlatform;
+import net.tnemc.item.providers.VersionUtil;
 import org.json.simple.JSONObject;
 
 import java.util.Objects;
@@ -56,6 +57,19 @@ public abstract class CookingFuelComponent<I extends AbstractItemStack<T>, T> im
     public String identifier() {
 
         return "cooking_fuel";
+    }
+
+    /**
+     * @param version the version being used when this check is called.
+     *
+     * @return true if this check is enabled for the version, otherwise false
+     *
+     * @since 0.2.0.0
+     */
+    @Override
+    public boolean enabled(final String version) {
+
+        return VersionUtil.isTwentySixThree(version);
     }
 
     /**

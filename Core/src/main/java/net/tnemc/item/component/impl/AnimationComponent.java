@@ -28,35 +28,33 @@ import org.json.simple.JSONObject;
 import java.util.Objects;
 
 /**
- * CompostableComponent - If present, the item can be used on the composter, regardless of its value in layers
+ * AnimationComponent
  *
  * @author creatorfromhell
- * @see <a href="https://minecraft.wiki/w/Data_component_format#compostable">Reference</a>
- * <p>
  * @since 0.2.0.0
  */
-public abstract class CompostableComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
+public abstract class AnimationComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
-    protected String layers = "";
+    protected String animation = "default";
+    protected int animationDuration = 6;
 
-    public CompostableComponent() {
+    public AnimationComponent() {
 
     }
 
-    public CompostableComponent(final String layers) {
-
-        this.layers = layers;
+    public AnimationComponent(final String animation) {
+        this.animation = animation;
     }
 
-    /**
-     * @return the type of component this is.
-     *
-     * @since 0.2.0.0
-     */
+    public AnimationComponent(final String animation, final int animationDuration) {
+        this.animation = animation;
+        this.animationDuration = animationDuration;
+    }
+
     @Override
     public String identifier() {
 
-        return "compostable";
+        return "animation";
     }
 
     /**
@@ -72,67 +70,52 @@ public abstract class CompostableComponent<I extends AbstractItemStack<T>, T> im
         return VersionUtil.isTwentySixThree(version);
     }
 
-    /**
-     * Converts the {@link SerialComponent} to a JSON object.
-     *
-     * @return The JSONObject representing this {@link SerialComponent}.
-     *
-     * @since 0.2.0.0
-     */
     @Override
     public JSONObject toJSON() {
 
         final JSONObject json = new JSONObject();
-
-        json.put("layers", layers);
-
+        json.put("animation", animation);
+        json.put("animation_duration", animationDuration);
         return json;
     }
 
-    /**
-     * Reads JSON data and converts it back to a {@link SerialComponent} object.
-     *
-     * @param json The JSONHelper instance of the json data.
-     *
-     * @since 0.2.0.0
-     */
     @Override
     public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
 
-        this.layers = json.getString("layers");
+        animation(json.getString("animation"));
+        animationDuration(json.getInteger("animation_duration"));
     }
 
-    /**
-     * Used to determine if some data is equal to this data. This means that it has to be an exact
-     * copy of this data. For instance, book copies will return false when compared to the original.
-     *
-     * @param component The component to compare.
-     *
-     * @return True if similar, otherwise false.
-     *
-     * @since 0.2.0.0
-     */
     @Override
     public boolean similar(final SerialComponent<?, ?> component) {
 
-        if(!(component instanceof final CompostableComponent<?, ?> other)) return false;
-
-        return layers.equals(other.layers);
+        if(!(component instanceof final AnimationComponent<?, ?> other)) return false;
+        return Objects.equals(this.animation, other.animation) && this.animationDuration == other.animationDuration;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(layers);
+        return Objects.hash(animation, animationDuration);
     }
 
-    public String layers() {
+    public String animation() {
 
-        return layers;
+        return animation;
     }
 
-    public void layers(final String layers) {
+    public void animation(final String animation) {
 
-        this.layers = layers;
+        this.animation = animation;
+    }
+
+    public int animationDuration() {
+
+        return animationDuration;
+    }
+
+    public void animationDuration(final int animationDuration) {
+
+        this.animationDuration = animationDuration;
     }
 }

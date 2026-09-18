@@ -32,6 +32,7 @@ import java.util.Objects;
 public class TeleportRandomlyComponentEffect extends ComponentEffect {
 
   private float diameter = 16.0f; // Default to 16.0
+  private boolean directionalParticles = true;
 
   @Override
   public String getType() {
@@ -46,6 +47,7 @@ public class TeleportRandomlyComponentEffect extends ComponentEffect {
     json.put("type", getType());
     json.put("probability", probability);
     json.put("diameter", diameter);
+    json.put("directional_particles", directionalParticles);
 
     return json;
   }
@@ -55,6 +57,7 @@ public class TeleportRandomlyComponentEffect extends ComponentEffect {
 
     probability = json.getFloat("probability");
     diameter = json.getFloat("diameter");
+    directionalParticles = json.getBoolean("directional_particles");
   }
 
   public float getDiameter() {
@@ -67,18 +70,28 @@ public class TeleportRandomlyComponentEffect extends ComponentEffect {
     this.diameter = diameter;
   }
 
+  public boolean directionalParticles() {
+
+    return directionalParticles;
+  }
+
+  public void directionalParticles(final boolean directionalParticles) {
+
+    this.directionalParticles = directionalParticles;
+  }
+
   @Override
   public boolean equals(final Object obj) {
 
     if(!(obj instanceof final TeleportRandomlyComponentEffect other)) return false;
 
-    return super.equals(obj) && Float.compare(this.diameter, other.diameter) == 0;
+    return super.equals(obj) && Float.compare(this.diameter, other.diameter) == 0 && this.directionalParticles == other.directionalParticles;
   }
 
   @Override
   public int hashCode() {
 
-    return Objects.hash(super.hashCode(), diameter);
+    return Objects.hash(super.hashCode(), diameter, directionalParticles);
   }
 
   @Override
@@ -87,6 +100,7 @@ public class TeleportRandomlyComponentEffect extends ComponentEffect {
     final TeleportRandomlyComponentEffect copy = new TeleportRandomlyComponentEffect();
     copy.probability(this.probability);
     copy.setDiameter(this.getDiameter());
+    copy.directionalParticles(this.directionalParticles());
     return copy;
   }
 }
