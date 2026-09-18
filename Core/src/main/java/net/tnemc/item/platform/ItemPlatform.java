@@ -569,7 +569,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
       /*final StackTraceElement[] elements = Thread.currentThread().getStackTrace();
       for (final StackTraceElement s : elements) {
-        System.out.println("At " + s.getClassName() + "." + s.getMethodName());
+        //System.out.println("At " + s.getClassName() + "." + s.getMethodName());
       }*/
 
       if(applicator.enabled(version())) {
@@ -613,6 +613,8 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
             continue;
           }
         }
+
+        //System.out.println("Serializer applies");
 
         serialized = serializer.serialize(item, serialized);
 

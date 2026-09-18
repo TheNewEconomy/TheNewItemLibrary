@@ -32,6 +32,7 @@ import net.tnemc.item.component.helper.effect.PlaySoundComponentEffect;
 import net.tnemc.item.component.helper.effect.RemoveEffectsComponentEffect;
 import net.tnemc.item.component.helper.effect.TeleportRandomlyComponentEffect;
 import net.tnemc.item.platform.conversion.PlatformConverter;
+import org.bukkit.JukeboxSong;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
@@ -97,6 +98,31 @@ public class ModernConverters {
     });
 
     converter.registerConversion(ItemUseAnimation.class, String.class, input -> input.name().toLowerCase(Locale.ROOT));
+
+    // JukeboxSong
+    converter.registerConversion(String.class, JukeboxSong.class, input -> {
+      if (input == null || input.isBlank()) {
+        return null;
+      }
+
+      final NamespacedKey key = NamespacedKey.fromString(input.trim().toLowerCase(Locale.ROOT));
+
+      if (key == null) {
+        return null;
+      }
+
+      return RegistryAccess.registryAccess().getRegistry(RegistryKey.JUKEBOX_SONG).get(key);
+    });
+
+    converter.registerConversion(JukeboxSong.class, String.class, input -> {
+      if (input == null) {
+        return null;
+      }
+
+      final NamespacedKey key = RegistryAccess.registryAccess().getRegistry(RegistryKey.JUKEBOX_SONG).getKey(input);
+
+      return key != null ? key.toString() : null;
+    });
 
     //Attribute
     converter.registerConversion(String.class, Attribute.class, input -> {
@@ -176,7 +202,13 @@ public class ModernConverters {
 
       if(effect instanceof final ConsumeEffect.RemoveStatusEffects remove) {
         final RemoveEffectsComponentEffect tnil = new RemoveEffectsComponentEffect();
-        remove.removeEffects().forEach(type->tnil.getEffectIds().add(PaperItemPlatform.instance().converter().convert(type, String.class)));
+        remove.removeEffects().forEach(type->{
+
+          final PotionEffectType effectType = RegistryAccess.registryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(type);
+          if (effectType != null) {
+            tnil.getEffectIds().add(PaperItemPlatform.instance().converter().convert(effectType, String.class));
+          }
+        });
         return tnil;
       }
 

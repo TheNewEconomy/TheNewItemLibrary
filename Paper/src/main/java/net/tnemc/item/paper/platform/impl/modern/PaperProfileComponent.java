@@ -87,28 +87,36 @@ public class PaperProfileComponent extends ProfileComponent<PaperItemStack, Item
   public ItemStack apply(final PaperItemStack serialized, final ItemStack item) {
 
     final Optional<PaperProfileComponent> componentOptional = serialized.component(identifier());
+
     if(componentOptional.isEmpty()) {
       return item;
     }
 
     final SkullProfile profile = componentOptional.get().profile;
-    if(profile.name() == null && profile.uuid() == null) {
+
+    if(profile == null) {
+      return item;
+    }
+
+    final boolean hasName = profile.name() != null && !profile.name().isBlank();
+    final boolean hasUuid = profile.uuid() != null;
+    final boolean hasTexture = profile.texture() != null && !profile.texture().isBlank();
+
+    if(!hasName && !hasUuid && !hasTexture) {
       return item;
     }
 
     final ResolvableProfile.Builder builder = ResolvableProfile.resolvableProfile();
 
-    if(profile.name() != null) {
-
+    if(hasName) {
       builder.name(profile.name());
     }
 
-    if(profile.uuid() != null) {
-
+    if(hasUuid) {
       builder.uuid(profile.uuid());
     }
 
-    if(profile.texture() != null && !profile.texture().isBlank()) {
+    if(hasTexture) {
       builder.addProperty(new ProfileProperty("textures", profile.texture()));
     }
 

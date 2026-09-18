@@ -59,7 +59,7 @@ public class PaperEquipComponent extends EquipComponent<PaperItemStack, ItemStac
   @Override
   public boolean enabled(final String version) {
 
-    return VersionUtil.isOneTwentyOneFour(version);
+    return VersionUtil.isOneTwentyOneSix(version);
   }
 
   @Override
@@ -129,6 +129,7 @@ public class PaperEquipComponent extends EquipComponent<PaperItemStack, ItemStac
     component.equipOnInteract(equippable.equipOnInteract());
     component.canBeSheared(equippable.canBeSheared());
 
+    //TODO Multi-version this 1.21.5, 1.21.6 additions
     if(equippable.equipSound() != null) {
       component.equipSound(equippable.equipSound().asString());
     }
