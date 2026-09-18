@@ -220,4 +220,12 @@ public class VersionUtil {
 
     return isVersion(currentVersion, "26.2.0");
   }
+
+  /**
+   * @return Whether the bukkit in use is for MC >= 26.3
+   */
+  public static boolean isTwentySixThree(final String currentVersion) {
+
+    return isVersion(currentVersion, "26.3.0");
+  }
 }

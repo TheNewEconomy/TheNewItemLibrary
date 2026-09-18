@@ -34,6 +34,9 @@ import java.util.Objects;
  * <p>
  * @since 0.2.0.0
  */
+@Deprecated(
+    since = "26.3"
+)
 public abstract class MapColorComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected int mapColor;

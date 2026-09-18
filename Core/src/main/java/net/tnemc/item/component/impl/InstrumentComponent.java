@@ -18,6 +18,8 @@ package net.tnemc.item.component.impl;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.JSONHelper;
 import net.tnemc.item.component.SerialComponent;
@@ -36,8 +38,10 @@ import java.util.Objects;
  */
 public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
+  protected Component description;
   protected String soundEvent;
   protected int useDuration;
+  protected int durabilityDamage;
   protected int range;
 
   public InstrumentComponent() {
@@ -62,6 +66,15 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
     this.range = range;
   }
 
+  public InstrumentComponent(final Component description, final String soundEvent, final int useDuration, final int durabilityDamage, final int range) {
+
+    this.description = description;
+    this.soundEvent = soundEvent;
+    this.useDuration = useDuration;
+    this.durabilityDamage = durabilityDamage;
+    this.range = range;
+  }
+
   @Override
   public String identifier() {
 
@@ -72,8 +85,10 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
   public JSONObject toJSON() {
 
     final JSONObject json = new JSONObject();
+    json.put("description", LegacyComponentSerializer.legacySection().serialize(description));
     json.put("sound_event", soundEvent);
     json.put("use_duration", useDuration);
+    json.put("durabilityDamage", durabilityDamage);
     json.put("range", range);
     return json;
   }
@@ -81,8 +96,10 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
   @Override
   public void readJSON(final JSONHelper json, final ItemPlatform<I, T, ?> platform) {
 
+    description = LegacyComponentSerializer.legacySection().deserialize(json.getString("description"));
     soundEvent = json.getString("sound_event");
     useDuration = json.getInteger("use_duration");
+    durabilityDamage = json.getInteger("durabilityDamage");
     range = json.getInteger("range");
   }
 
@@ -91,15 +108,27 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
 
     if(!(component instanceof final InstrumentComponent<?, ?> other)) return false;
 
-    return Objects.equals(this.soundEvent, other.soundEvent) &&
+    return Objects.equals(this.description, other.description) &&
+           Objects.equals(this.soundEvent, other.soundEvent) &&
            this.useDuration == other.useDuration &&
+           this.durabilityDamage == other.durabilityDamage &&
            this.range == other.range;
   }
 
   @Override
   public int hashCode() {
 
-    return Objects.hash(soundEvent, useDuration, range);
+    return Objects.hash(description, soundEvent, useDuration, durabilityDamage, range);
+  }
+
+  public Component description() {
+
+    return description;
+  }
+
+  public void description(final Component description) {
+
+    this.description = description;
   }
 
   public String soundEvent() {
@@ -120,6 +149,16 @@ public abstract class InstrumentComponent<I extends AbstractItemStack<T>, T> imp
   public void useDuration(final int useDuration) {
 
     this.useDuration = useDuration;
+  }
+
+  public int durabilityDamage() {
+
+    return durabilityDamage;
+  }
+
+  public void durabilityDamage(final int durabilityDamage) {
+
+    this.durabilityDamage = durabilityDamage;
   }
 
   public int range() {

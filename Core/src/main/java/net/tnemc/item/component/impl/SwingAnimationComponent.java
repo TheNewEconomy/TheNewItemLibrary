@@ -33,6 +33,9 @@ import java.util.Objects;
  * @author creatorfromhell
  * @since 0.2.0.0
  */
+@Deprecated(
+    since = "26.3"
+)
 public abstract class SwingAnimationComponent<I extends AbstractItemStack<T>, T> implements SerialComponent<I, T> {
 
   protected String animation = "default";

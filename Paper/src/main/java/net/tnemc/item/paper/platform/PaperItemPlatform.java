@@ -255,6 +255,13 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
 
     if(useModern) {
 
+      //Deprecated and removed in 26.3
+      if (!VersionUtil.isTwentySixThree(version)) {
+
+        addMulti(new PaperMapColorComponent());
+        addMulti(new PaperSwingAnimationComponent());
+      }
+
       addMulti(new PaperBundleComponent());
       addMulti(new PaperContainerComponent());
       addMulti(new PaperCustomNameComponent());
@@ -304,7 +311,6 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       addMulti(new PaperJukeBoxComponent());
       addMulti(new PaperKineticWeaponComponent());
       addMulti(new PaperLodestoneTrackerComponent());
-      addMulti(new PaperMapColorComponent());
       addMulti(new PaperMapIDComponent());
       addMulti(new PaperMaxDamageComponent());
       addMulti(new PaperMaxStackComponent());
@@ -314,7 +320,6 @@ public class PaperItemPlatform extends ItemPlatform<PaperItemStack, ItemStack, I
       addMulti(new PaperPiercingWeaponComponent());
       addMulti(new PaperPotDecorationsComponent());
       addMulti(new PaperSuspiciousStewEffectsComponent());
-      addMulti(new PaperSwingAnimationComponent());
       addMulti(new PaperToolComponent());
       addMulti(new PaperTooltipDisplayComponent());
       addMulti(new PaperTooltipStyleComponent());
