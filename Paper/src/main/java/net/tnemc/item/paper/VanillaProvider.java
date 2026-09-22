@@ -18,6 +18,7 @@ package net.tnemc.item.paper;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.key.Key;
 import net.tnemc.item.AbstractItemStack;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.ItemProvider;
@@ -65,8 +66,17 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
   @Override
   public boolean similar(final AbstractItemStack<? extends ItemStack> original, final ItemStack compare) {
 
-    final PaperItemStack compareStack = new PaperItemStack().of(compare);
+    if(compare == null || compare.getType().isAir()) {
+      return false;
+    }
 
+    final Key materialKey = Key.key(original.material());
+    if(!materialKey.equals(compare.getType().getKey())) {
+
+      return false;
+    }
+
+    final PaperItemStack compareStack = new PaperItemStack().of(compare.clone());
     return PaperItemPlatform.instance().check((PaperItemStack)original, compareStack);
   }
 
@@ -86,7 +96,14 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
     if(original instanceof final PaperItemStack bukkit) {
 
       if(!bukkit.isDirty()) {
-        return bukkit.cacheLocale();
+
+        final ItemStack cacheLocale = bukkit.cacheLocale();
+        if(cacheLocale != null) {
+
+          final ItemStack result = cacheLocale.clone();
+          result.setAmount(amount);
+          return result;
+        }
       }
 
       Material material = null;
@@ -123,12 +140,13 @@ public class VanillaProvider implements ItemProvider<ItemStack> {
 
       //System.out.println("locale Material v2: " + stack.getType().translationKey());
 
-      bukkit.updateCache(stack);
+      // The cache belongs to TNIL; callers always receive an independently mutable stack.
+      bukkit.updateCache(stack.clone());
       bukkit.resetDirty();
 
-      //System.out.println("locale Material v3: " + stack.getType().translationKey());
-
-      return stack;
+      final ItemStack result = stack.clone();
+      result.setAmount(amount);
+      return result;
     }
     return null;
   }

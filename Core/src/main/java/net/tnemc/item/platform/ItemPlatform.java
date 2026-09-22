@@ -27,6 +27,7 @@ import net.tnemc.item.component.helper.effect.ComponentEffect;
 import net.tnemc.item.component.helper.effect.PlaySoundComponentEffect;
 import net.tnemc.item.component.helper.effect.RemoveEffectsComponentEffect;
 import net.tnemc.item.component.helper.effect.TeleportRandomlyComponentEffect;
+import net.tnemc.item.key.ItemKey;
 import net.tnemc.item.persistent.PersistentDataType;
 import net.tnemc.item.persistent.impl.PersistentBool;
 import net.tnemc.item.persistent.impl.PersistentByte;
@@ -40,6 +41,7 @@ import net.tnemc.item.persistent.impl.PersistentLongArray;
 import net.tnemc.item.persistent.impl.PersistentShort;
 import net.tnemc.item.persistent.impl.PersistentString;
 import net.tnemc.item.platform.applier.ItemApplicator;
+import net.tnemc.item.platform.capability.SupportLevel;
 import net.tnemc.item.platform.check.ItemCheck;
 import net.tnemc.item.platform.check.LocaleItemCheck;
 import net.tnemc.item.platform.conversion.PlatformConverter;
@@ -50,11 +52,13 @@ import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
  * ItemPlatform
@@ -79,7 +83,11 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
   protected final Map<String, Class<? extends ComponentEffect>> effects = new HashMap<>();
 
+  protected final Map<String, SupportLevel> capabilities = new ConcurrentHashMap<>();
+
   protected final PlatformConverter converter;
+
+  private Consumer<String> debugLogger = message->{ };
 
   public ItemPlatform() {
 
@@ -89,6 +97,9 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   public ItemPlatform(final PlatformConverter converter) {
 
     this.converter = converter;
+
+    capability("tnil:namespaced_item_keys", SupportLevel.FULL);
+    capability("tnil:component_capabilities", SupportLevel.FULL);
 
     addPersistentDataType("bool", PersistentBool.class);
     addPersistentDataType("byte", PersistentByte.class);
@@ -125,6 +136,16 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   public abstract I createStack(final String material);
 
   /**
+   * Creates a stack of items based on the provided item key.
+   *
+   * @param key the non-null identifier of the item for which the stack is created
+   * @return the created stack of items
+   */
+  public I createStack(@NotNull final ItemKey key) {
+    return createStack(key.toString());
+  }
+
+  /**
    * @return the version that is being used currently
    *
    * @since 0.2.0.0
@@ -151,7 +172,17 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   }
 
   public void debug(final String message) {
-    //TODO: debug
+    debugLogger.accept(message);
+  }
+
+  /**
+   * Configures the logger used by platform debug messages. By default debug output is discarded.
+   *
+   * @param logger consumer that receives debug messages
+   * @since 0.2.0.0
+   */
+  public void debugLogger(@NotNull final Consumer<String> logger) {
+    this.debugLogger = logger;
   }
 
   /**
@@ -223,7 +254,33 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    */
   public ItemProvider<S> provider(final String itemProvider) {
 
-    return itemProviders.getOrDefault(itemProvider, defaultProvider());
+    return findProvider(itemProvider).orElseGet(this::defaultProvider);
+  }
+
+  /**
+   * Resolves a provider without silently falling back to the default provider.
+   *
+   * @param itemProvider provider identifier
+   * @return the provider when registered
+   * @since 0.2.0.0
+   */
+  public Optional<ItemProvider<S>> findProvider(final String itemProvider) {
+    if(itemProvider == null) {
+      return Optional.empty();
+    }
+    return Optional.ofNullable(itemProviders.get(itemProvider));
+  }
+
+  /**
+   * Resolves a provider and fails explicitly when it is unavailable.
+   *
+   * @param itemProvider provider identifier
+   * @return the registered provider
+   * @throws IllegalArgumentException when no provider is registered for the identifier
+   * @since 0.2.0.0
+   */
+  public ItemProvider<S> requireProvider(final String itemProvider) {
+    return findProvider(itemProvider).orElseThrow(()->new IllegalArgumentException("No item provider registered with identifier: " + itemProvider));
   }
 
   /**
@@ -253,7 +310,50 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
   public Map<String, Class<? extends PersistentDataType<?>>> getClasses() {
 
-    return classes;
+    return Collections.unmodifiableMap(classes);
+  }
+
+
+  /**
+   * Retrieves the support level for a given capability identifier.
+   *
+   * @param identifier the unique identifier of the capability; must not be null
+   * @return the support level associated with the identifier, or {@code UNSUPPORTED} if the identifier is not found
+   */
+  public SupportLevel capability(@NotNull final String identifier) {
+    return capabilities.getOrDefault(identifier, SupportLevel.UNSUPPORTED);
+  }
+
+  /**
+   * Retrieves an unmodifiable view of the capabilities map, which contains
+   * the set of supported features and their corresponding support levels.
+   *
+   * @return an unmodifiable map where the keys are feature names as strings
+   *         and the values are their associated support levels.
+   */
+  public Map<String, SupportLevel> capabilities() {
+    return Map.copyOf(capabilities);
+  }
+
+  /**
+   * Adds or updates the support level for a given capability identifier.
+   *
+   * @param identifier the unique identifier for the capability; must not be null
+   * @param support the level of support associated with the capability; must not be null
+   */
+  public void capability(@NotNull final String identifier, @NotNull final SupportLevel support) {
+    capabilities.put(identifier, support);
+  }
+
+  /**
+   * Determines if the given identifier is supported by evaluating its support level.
+   *
+   * @param identifier the identifier to check for support, must not be null.
+   * @return {@code true} if the support level for the given identifier is not {@code UNSUPPORTED};
+   *         {@code false} otherwise.
+   */
+  public boolean supports(@NotNull final String identifier) {
+    return capability(identifier) != SupportLevel.UNSUPPORTED;
   }
 
   /**
@@ -271,9 +371,10 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
       try {
 
         if(!check.enabled(version())) {
-
+          capabilities.putIfAbsent(check.identifier(), SupportLevel.UNSUPPORTED);
           return;
         }
+        capabilities.putIfAbsent(check.identifier(), SupportLevel.FULL);
 
         if(check instanceof final LocaleItemCheck<?> localeItemCheck) {
 
@@ -293,9 +394,10 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
       try {
 
         if(!applicator.enabled(version())) {
-
+          capabilities.putIfAbsent(applicator.identifier(), SupportLevel.UNSUPPORTED);
           return;
         }
+        capabilities.putIfAbsent(applicator.identifier(), SupportLevel.FULL);
 
         applicators.put(applicator.identifier(), (ItemApplicator<I, S>)applicator);
       } catch(final Exception ignore) {
@@ -309,9 +411,10 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
       try {
 
         if(!serializer.enabled(version())) {
-
+          capabilities.putIfAbsent(serializer.identifier(), SupportLevel.UNSUPPORTED);
           return;
         }
+        capabilities.putIfAbsent(serializer.identifier(), SupportLevel.FULL);
 
         serializers.put(serializer.identifier(), (ItemSerializer<I, S>)serializer);
       } catch(final Exception ignore) {
@@ -340,6 +443,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   public void addCheck(@NotNull final ItemCheck<S> check) {
 
     checks.put(check.identifier(), check);
+    capabilities.putIfAbsent(check.identifier(), SupportLevel.FULL);
   }
 
   /**
@@ -350,6 +454,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   public void addApplicator(@NotNull final ItemApplicator<I, S> applicator) {
 
     applicators.put(applicator.identifier(), applicator);
+    capabilities.putIfAbsent(applicator.identifier(), SupportLevel.FULL);
   }
 
   /**
@@ -360,6 +465,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
   public void addSerializer(@NotNull final ItemSerializer<I, S> serializer) {
 
     serializers.put(serializer.identifier(), serializer);
+    capabilities.putIfAbsent(serializer.identifier(), SupportLevel.FULL);
   }
 
   /**
@@ -569,7 +675,7 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
 
       /*final StackTraceElement[] elements = Thread.currentThread().getStackTrace();
       for (final StackTraceElement s : elements) {
-        //System.out.println("At " + s.getClassName() + "." + s.getMethodName());
+        System.out.println("At " + s.getClassName() + "." + s.getMethodName());
       }*/
 
       if(applicator.enabled(version())) {
@@ -613,8 +719,6 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
             continue;
           }
         }
-
-        //System.out.println("Serializer applies");
 
         serialized = serializer.serialize(item, serialized);
 

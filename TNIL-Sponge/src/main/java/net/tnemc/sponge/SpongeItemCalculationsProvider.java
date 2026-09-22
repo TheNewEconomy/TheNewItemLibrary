@@ -21,6 +21,9 @@ package net.tnemc.sponge;
  */
 
 import net.tnemc.item.InventoryType;
+import net.tnemc.item.inventory.InventorySlot;
+import net.tnemc.item.inventory.InventoryView;
+import net.tnemc.sponge.inventory.SpongeInventoryAdapter;
 import net.tnemc.item.providers.CalculationsProvider;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.Keys;
@@ -29,8 +32,6 @@ import org.spongepowered.api.entity.Item;
 import org.spongepowered.api.entity.living.player.server.ServerPlayer;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.item.inventory.ItemStackSnapshot;
-import org.spongepowered.api.item.inventory.transaction.InventoryTransactionResult;
 import org.spongepowered.api.world.Location;
 
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class SpongeItemCalculationsProvider implements CalculationsProvider<SpongeItemStack, ItemStack, Inventory> {
+
+  private final SpongeInventoryAdapter inventories = new SpongeInventoryAdapter();
 
   /**
    * Removes items from a collection based on certain criteria.
@@ -81,24 +84,24 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
    */
   @Override
   public int removeAll(final SpongeItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
-
+    final InventoryView<ItemStack> view = inventories.view(inventory);
     final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
     compare.setQuantity(1);
 
     int amount = 0;
-    for(final Inventory slot : inventory.slots()) {
-      final ItemStack slotItem = slot.peek();
+    for(final InventorySlot<ItemStack> slot : view.slots()) {
+      final ItemStack slotItem = slot.item();
+      if(slotItem == null) continue;
 
-      if(slotItem != null) {
-
-        final ItemStack compareI = slotItem.copy();
-        compareI.setQuantity(1);
-        if(compareI.equalTo(stack.provider().locale(stack, stack.amount()))) {
-          amount += slotItem.quantity();
-          slot.clear();
-        }
+      final ItemStack candidate = slotItem.copy();
+      candidate.setQuantity(1);
+      if(candidate.equalTo(compare)) {
+        amount += slotItem.quantity();
+        slot.item(null);
       }
     }
+
+    inventories.apply(inventory, view.mutation());
     return amount;
   }
 
@@ -127,7 +130,7 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
 
         final ItemStack compareI = slotItem.copy();
         compareI.setQuantity(1);
-        if(compareI.equalTo(stack.provider().locale(stack, stack.amount()))) {
+        if(compareI.equalTo(compare)) {
           count += slot.totalQuantity();
         }
       }
@@ -147,7 +150,11 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
   @Override
   public void takeItems(final Collection<SpongeItemStack> items, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
 
-    items.forEach(itemStack->removeItem(itemStack, inventory, useShulker, useBundles));
+    final InventoryView<ItemStack> view = inventories.view(inventory);
+    for(final SpongeItemStack item : items) {
+      removeItem(item, view);
+    }
+    inventories.apply(inventory, view.mutation());
   }
 
   /**
@@ -164,22 +171,55 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
    */
   @Override
   public Collection<SpongeItemStack> giveItems(final Collection<SpongeItemStack> items, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
-
+    final InventoryView<ItemStack> view = inventories.view(inventory);
     final Collection<SpongeItemStack> leftOver = new ArrayList<>();
 
     for(final SpongeItemStack stack : items) {
+      if(stack == null) continue;
 
-      if(stack == null) {
-        continue;
+      final ItemStack insertion = stack.provider().locale(stack, stack.amount()).copy();
+      int left = insertion.quantity();
+
+      for(final InventorySlot<ItemStack> slot : view.slots()) {
+        if(left <= 0) break;
+        final ItemStack current = slot.item();
+        if(current == null) continue;
+
+        final ItemStack a = current.copy();
+        final ItemStack b = insertion.copy();
+        a.setQuantity(1);
+        b.setQuantity(1);
+        if(!a.equalTo(b)) continue;
+
+        final int maximum = Math.min(view.maxStackSize(), current.maxStackQuantity());
+        final int moved = Math.min(maximum - current.quantity(), left);
+        if(moved > 0) {
+          final ItemStack changed = current.copy();
+          changed.setQuantity(current.quantity() + moved);
+          slot.item(changed);
+          left -= moved;
+        }
       }
 
-      final InventoryTransactionResult result = inventory.offer(stack.provider().locale(stack, stack.amount()));
-      final List<ItemStackSnapshot> rejected = result.rejectedItems();
-      if(!rejected.isEmpty()) {
+      for(final InventorySlot<ItemStack> slot : view.slots()) {
+        if(left <= 0) break;
+        if(slot.item() != null) continue;
 
-        rejected.forEach(snapshot->leftOver.add(new SpongeItemStack().of(snapshot.asMutable())));
+        final int moved = Math.min(Math.min(view.maxStackSize(), insertion.maxStackQuantity()), left);
+        final ItemStack changed = insertion.copy();
+        changed.setQuantity(moved);
+        slot.item(changed);
+        left -= moved;
+      }
+
+      if(left > 0) {
+        final ItemStack remainder = insertion.copy();
+        remainder.setQuantity(left);
+        leftOver.add(new SpongeItemStack().of(remainder));
       }
     }
+
+    inventories.apply(inventory, view.mutation());
     return leftOver;
   }
 
@@ -196,32 +236,35 @@ public class SpongeItemCalculationsProvider implements CalculationsProvider<Spon
    */
   @Override
   public int removeItem(final SpongeItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
+    final InventoryView<ItemStack> view = inventories.view(inventory);
+    final int left = removeItem(stack, view);
+    inventories.apply(inventory, view.mutation());
+    return left;
+  }
 
-    int left = stack.provider().locale(stack, stack.amount()).copy().quantity();
-
+  private int removeItem(final SpongeItemStack stack, final InventoryView<ItemStack> view) {
+    int left = stack.amount();
     final ItemStack compare = stack.provider().locale(stack, stack.amount()).copy();
     compare.setQuantity(1);
-    for(final Inventory slot : inventory.slots()) {
+
+    for(final InventorySlot<ItemStack> slot : view.slots()) {
       if(left <= 0) break;
+      final ItemStack slotItem = slot.item();
+      if(slotItem == null) continue;
 
-      final ItemStack slotItem = slot.peek();
-      if(slotItem != null) {
+      final ItemStack candidate = slotItem.copy();
+      candidate.setQuantity(1);
+      if(!compare.equalTo(candidate)) continue;
 
+      final int removed = Math.min(left, slotItem.quantity());
+      left -= removed;
 
-        final ItemStack compare1 = slotItem.copy();
-        compare1.setQuantity(1);
-        if(compare.equalTo(compare1)) {
-          final int quantity = slotItem.quantity();
-
-          if(quantity > left) {
-            slotItem.setQuantity(quantity - left);
-            slot.set(0, slotItem);
-            left = 0;
-          } else {
-            left -= quantity;
-            slot.clear();
-          }
-        }
+      if(removed == slotItem.quantity()) {
+        slot.item(null);
+      } else {
+        final ItemStack changed = slotItem.copy();
+        changed.setQuantity(slotItem.quantity() - removed);
+        slot.item(changed);
       }
     }
     return left;

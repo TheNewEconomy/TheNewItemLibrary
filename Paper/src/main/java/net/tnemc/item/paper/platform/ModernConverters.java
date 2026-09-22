@@ -33,6 +33,7 @@ import net.tnemc.item.component.helper.effect.RemoveEffectsComponentEffect;
 import net.tnemc.item.component.helper.effect.TeleportRandomlyComponentEffect;
 import net.tnemc.item.platform.conversion.PlatformConverter;
 import org.bukkit.JukeboxSong;
+import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
@@ -62,6 +63,10 @@ public class ModernConverters {
   }
 
   public void init() {
+
+    converter.registerConversion(Keyed.class, String.class, value->value.getKey().asString());
+    converter.registerConversion(Key.class, String.class, Key::asString);
+
 
     //Enchantment
     converter.registerConversion(String.class, Enchantment.class, (final String input)->{
@@ -202,13 +207,7 @@ public class ModernConverters {
 
       if(effect instanceof final ConsumeEffect.RemoveStatusEffects remove) {
         final RemoveEffectsComponentEffect tnil = new RemoveEffectsComponentEffect();
-        remove.removeEffects().forEach(type->{
-
-          final PotionEffectType effectType = RegistryAccess.registryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(type);
-          if (effectType != null) {
-            tnil.getEffectIds().add(PaperItemPlatform.instance().converter().convert(effectType, String.class));
-          }
-        });
+        remove.removeEffects().forEach(type->tnil.getEffectIds().add(PaperItemPlatform.instance().converter().convert(type, String.class)));
         return tnil;
       }
 

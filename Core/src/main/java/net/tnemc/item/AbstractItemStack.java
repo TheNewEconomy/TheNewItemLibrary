@@ -94,6 +94,7 @@ import net.tnemc.item.component.impl.UseCooldownComponent;
 import net.tnemc.item.component.impl.WeaponComponent;
 import net.tnemc.item.component.impl.WritableBookContentComponent;
 import net.tnemc.item.component.impl.WrittenBookContentComponent;
+import net.tnemc.item.key.ItemKey;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.persistent.PersistentDataType;
 import net.tnemc.item.providers.ItemProvider;
@@ -127,6 +128,17 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @since 0.2.0.0
    */
   AbstractItemStack<T> of(final String material, final int amount);
+
+  /**
+   * Creates a new instance of AbstractItemStack with the specified ItemKey and amount.
+   *
+   * @param key the ItemKey representing the item
+   * @param amount the quantity of the item
+   * @return a new AbstractItemStack instance with the provided key and amount
+   */
+  default AbstractItemStack<T> of(final ItemKey key, final int amount) {
+    return of(key.toString(), amount);
+  }
 
   /**
    * Creates a new item stack from a locale-specific object.
@@ -217,6 +229,18 @@ public interface AbstractItemStack<T> extends Cloneable {
   String material();
 
   /**
+   * Retrieves the ItemKey associated with the current object.
+   *
+   * The ItemKey is constructed based on the material associated
+   * with the object.
+   *
+   * @return the ItemKey derived from the object's material
+   */
+  default ItemKey itemKey() {
+    return ItemKey.of(material());
+  }
+
+  /**
    * Sets the material of the item stack.
    *
    * @param material The material name.
@@ -226,6 +250,16 @@ public interface AbstractItemStack<T> extends Cloneable {
    * @since 0.2.0.0
    */
   AbstractItemStack<T> material(String material);
+
+  /**
+   * Translates an ItemKey into its string representation and retrieves the corresponding AbstractItemStack.
+   *
+   * @param key the ItemKey to be converted into a string and used to retrieve the material
+   * @return the AbstractItemStack corresponding to the specified ItemKey
+   */
+  default AbstractItemStack<T> material(final ItemKey key) {
+    return material(key.toString());
+  }
 
   /**
    * The quantity of the item stack.

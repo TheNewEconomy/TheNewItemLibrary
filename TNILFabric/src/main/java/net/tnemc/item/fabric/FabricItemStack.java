@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.key.ItemKey;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.BlockPredicate;
@@ -191,7 +192,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
     this.namespace = id.getNamespace();
     this.material = id.getPath();
 
-    System.out.println("Material String: " + material);
+    FabricItemPlatform.instance().debug("Material String: " + material);
 
     this.amount = locale.getCount();
 
@@ -311,7 +312,7 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public String material() {
 
-    return "";
+    return new ItemKey(namespace, material).toString();
   }
 
   /**
@@ -326,6 +327,10 @@ public class FabricItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public AbstractItemStack<ItemStack> material(final String material) {
 
+    final ItemKey key = ItemKey.of(material);
+    this.namespace = key.namespace();
+    this.material = key.value();
+    this.dirty = true;
     return this;
   }
 

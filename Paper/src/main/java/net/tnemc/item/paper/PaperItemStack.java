@@ -93,6 +93,7 @@ import net.tnemc.item.component.impl.UseCooldownComponent;
 import net.tnemc.item.component.impl.WeaponComponent;
 import net.tnemc.item.component.impl.WritableBookContentComponent;
 import net.tnemc.item.component.impl.WrittenBookContentComponent;
+import net.tnemc.item.key.ItemKey;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.paper.platform.impl.modern.PaperBundleComponent;
 import net.tnemc.item.paper.platform.impl.modern.PaperContainerComponent;
@@ -375,7 +376,7 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack material(final String material) {
 
-    this.material = material;
+    this.material = ItemKey.of(material).toString();
     this.dirty = true;
     return this;
   }

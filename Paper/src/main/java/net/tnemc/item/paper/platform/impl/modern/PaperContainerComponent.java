@@ -79,7 +79,25 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
 
     final ItemContainerContents.Builder builder = ItemContainerContents.containerContents();
 
-    componentOptional.get().items().forEach((slot, stack)->builder.add(stack.provider().locale(stack)));
+    int nextSlot = 0;
+    for(final Map.Entry<Integer, AbstractItemStack<ItemStack>> entry : new java.util.TreeMap<>(componentOptional.get().items()).entrySet()) {
+
+      final int slot = entry.getKey();
+      if(slot < 0) {
+
+        throw new IllegalArgumentException("Container slot cannot be negative: " + slot);
+      }
+
+      while(nextSlot < slot) {
+
+        builder.add(new ItemStack(Material.AIR));
+        nextSlot++;
+      }
+
+      final AbstractItemStack<ItemStack> stack = entry.getValue();
+      builder.add(stack.provider().locale(stack, stack.amount()));
+      nextSlot++;
+    }
     item.setData(DataComponentTypes.CONTAINER, builder);
 
     return item;
@@ -107,16 +125,16 @@ public class PaperContainerComponent extends ContainerComponent<PaperItemStack, 
     int i = 0;
     for(final ItemStack stack : contents.contents()) {
 
-      if (stack == null) {
+      if(stack == null) {
         continue;
       }
 
-      if (stack.getType().equals(Material.AIR)) {
+      if(stack.getType().equals(Material.AIR)) {
         continue;
       }
 
       final PaperItemStack containerSerial = new PaperItemStack().of(stack);
-      //PaperItemPlatform.instance().providerApplies(containerSerial, stack);
+      PaperItemPlatform.instance().providerApplies(containerSerial, stack);
       component.items.put(i, containerSerial);
       i++;
     }

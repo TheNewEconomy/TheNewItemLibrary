@@ -20,6 +20,7 @@ package net.tnemc.sponge;
 
 import net.kyori.adventure.text.Component;
 import net.tnemc.item.AbstractItemStack;
+import net.tnemc.item.key.ItemKey;
 import net.tnemc.item.component.SerialComponent;
 import net.tnemc.item.component.helper.AttributeModifier;
 import net.tnemc.item.component.helper.BlockPredicate;
@@ -327,7 +328,7 @@ public class SpongeItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public SpongeItemStack material(final String material) {
 
-    this.material = material;
+    this.material = ItemKey.of(material).toString();
     return this;
   }
 

@@ -3,7 +3,7 @@ package net.tnemc.item.paper;
 /*
  * The New Item Library Minecraft Server Plugin
  *
- * Copyright (C) 2024 Daniel "creatorfromhell" Vidmar
+ * Copyright (C) 2022 - 2026 Daniel "creatorfromhell" Vidmar
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,11 @@ package net.tnemc.item.paper;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+
 import net.tnemc.item.InventoryType;
+import net.tnemc.item.inventory.InventorySlot;
+import net.tnemc.item.inventory.InventoryView;
+import net.tnemc.item.paper.inventory.PaperInventoryAdapter;
 import net.tnemc.item.paper.platform.PaperItemPlatform;
 import net.tnemc.item.providers.CalculationsProvider;
 import net.tnemc.item.providers.ItemProvider;
@@ -40,415 +44,360 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Represents a Bukkit implementation of the {@link CalculationsProvider}.
+ * Paper implementation of TNIL inventory calculations.
  *
- * @author creatorfromhell
- * @since 0.1.5.0
+ * Mutating operations work against an isolated InventoryView first. The live
+ * inventory is changed only after the complete calculation succeeds.
  */
 public class PaperCalculationsProvider implements CalculationsProvider<PaperItemStack, ItemStack, Inventory> {
 
-  /**
-   * Removes items from a collection based on certain criteria.
-   *
-   * @param left     The collection of items from which to remove items.
-   * @param player   The UUID of the player associated with the removal operation.
-   * @param setOwner Indicates whether to set the owner of the removed items.(supports spigot/paper
-   *                 1.16.5+)
-   *
-   * @return True if the removal operation was successful, false otherwise.
-   */
+  private final PaperInventoryAdapter inventories = new PaperInventoryAdapter();
+
   @Override
   public boolean drop(final Collection<PaperItemStack> left, final UUID player, final boolean setOwner) {
-
     final Player playerObj = Bukkit.getPlayer(player);
     if(playerObj == null) {
       return false;
     }
 
     for(final PaperItemStack stack : left) {
-
       if(setOwner && VersionUtil.isOneSixteen(PaperItemPlatform.instance().version())) {
-
-        final Item it = playerObj.getWorld().dropItemNaturally(playerObj.getLocation(), stack.provider().locale(stack));
-        it.setOwner(player);
+        final Item item = playerObj.getWorld().dropItemNaturally(
+                playerObj.getLocation(), stack.provider().locale(stack));
+        item.setOwner(player);
         continue;
       }
 
-      playerObj.getWorld().dropItemNaturally(playerObj.getLocation(), stack.provider().locale(stack));
+      playerObj.getWorld().dropItemNaturally(
+              playerObj.getLocation(), stack.provider().locale(stack));
     }
-    return false;
+    return true;
   }
 
-  /**
-   * Removes all items that are equal to the stack from an inventory.
-   *
-   * @param stack      The stack to compare to for removal from the inventory.
-   * @param inventory  The inventory to remove the items from.
-   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
-   *                   process.
-   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
-   */
   @Override
-  public int removeAll(final PaperItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
+  public int removeAll(final PaperItemStack stack, final Inventory inventory,
+                       final boolean useShulker, final boolean useBundles) {
+    final InventoryView<ItemStack> view = inventories.view(inventory);
+    final int removed = removeAll(stack, view, useShulker, useBundles);
+    inventories.apply(inventory, view.mutation());
+    return removed;
+  }
 
-    final ItemStack compare = stack.provider().locale(stack).clone();
-    compare.setAmount(1);
-
-    int amount = 0;
+  private int removeAll(final PaperItemStack stack, final InventoryView<ItemStack> view,
+                        final boolean useShulker, final boolean useBundles) {
     final ItemProvider<ItemStack> provider = stack.provider();
+    int amount = 0;
 
-    for(int i = 0; i < inventory.getStorageContents().length; i++) {
-
-      final ItemStack item = inventory.getItem(i);
+    for(final InventorySlot<ItemStack> slot : view.slots()) {
+      final ItemStack item = slot.item();
       if(item == null) {
         continue;
       }
 
       if(provider.similar(stack, item)) {
         amount += item.getAmount();
-        inventory.setItem(i, null);
+        slot.item(null);
         continue;
       }
 
-      if(useShulker && item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
+      final ItemStack changed = item.clone();
+      boolean dirty = false;
 
-        final Inventory shulkerInventory = shulker.getInventory();
-        for(int shulkerSlot = 0; shulkerSlot < shulkerInventory.getStorageContents().length; shulkerSlot++) {
+      if(useShulker && changed.getItemMeta() instanceof final BlockStateMeta meta
+         && meta.getBlockState() instanceof final ShulkerBox shulker) {
+        final Inventory nested = shulker.getInventory();
 
-          final ItemStack shulkerStack = shulkerInventory.getItem(shulkerSlot);
-          if(shulkerStack == null) {
-
-            continue;
+        for(int nestedSlot = 0; nestedSlot < nested.getStorageContents().length; nestedSlot++) {
+          final ItemStack nestedItem = nested.getItem(nestedSlot);
+          if(nestedItem != null && provider.similar(stack, nestedItem)) {
+            amount += nestedItem.getAmount();
+            nested.setItem(nestedSlot, null);
+            dirty = true;
           }
-
-          if(!provider.similar(stack, shulkerStack)) {
-            continue;
-          }
-
-          amount += item.getAmount();
-          shulkerInventory.setItem(shulkerSlot, null);
         }
 
-        shulker.update(true);
-        meta.setBlockState(shulker);
-        item.setItemMeta(meta);
-        inventory.setItem(i, item);
+        if(dirty) {
+          meta.setBlockState(shulker);
+          changed.setItemMeta(meta);
+        }
       }
 
-      if(useBundles && item.getItemMeta() instanceof final BundleMeta bundle) {
+      if(useBundles && changed.getItemMeta() instanceof final BundleMeta bundle) {
+        final List<ItemStack> contents = new ArrayList<>(bundle.getItems());
+        final Iterator<ItemStack> iterator = contents.iterator();
+        boolean bundleDirty = false;
 
-        final List<ItemStack> items = new ArrayList<>(bundle.getItems());
-        final Iterator<ItemStack> it = items.iterator();
-        while(it.hasNext()) {
-
-          final ItemStack bundleStack = it.next();
-          if(bundleStack == null) {
-
-            continue;
-          }
-
-          if(provider.similar(stack, bundleStack)) {
-
-            amount += item.getAmount();
-            it.remove();
+        while(iterator.hasNext()) {
+          final ItemStack nestedItem = iterator.next();
+          if(nestedItem != null && provider.similar(stack, nestedItem)) {
+            amount += nestedItem.getAmount();
+            iterator.remove();
+            bundleDirty = true;
           }
         }
 
-        bundle.setItems(items);
-        item.setItemMeta(bundle);
-        inventory.setItem(i, item);
+        if(bundleDirty) {
+          bundle.setItems(contents);
+          changed.setItemMeta(bundle);
+          dirty = true;
+        }
+      }
+
+      if(dirty) {
+        slot.item(changed);
       }
     }
+
     return amount;
   }
 
-  /**
-   * Returns a count of items equal to the specific stack in an inventory.
-   *
-   * @param stack      The stack to get a count of.
-   * @param inventory  The inventory to check.
-   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
-   *                   process.
-   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
-   *
-   * @return The total count of items in the inventory.
-   */
   @Override
-  public int count(final PaperItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
-
-    final ItemStack compare = stack.provider().locale(stack).clone();
-    compare.setAmount(1);
-
-    //TODO: make this more efficient
+  public int count(final PaperItemStack stack, final Inventory inventory,
+                   final boolean useShulker, final boolean useBundles) {
     final ItemProvider<ItemStack> provider = stack.provider();
     int amount = 0;
 
     for(final ItemStack item : inventory.getStorageContents()) {
-
       if(item == null) {
         continue;
       }
 
       if(provider.similar(stack, item)) {
-
         amount += item.getAmount();
       }
 
-      if(useShulker && item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
-
-        final Inventory shulkerInventory = shulker.getInventory();
-        if(shulkerInventory.isEmpty()) {
-
-          continue;
-        }
-
-        for(int ci = 0; ci < shulkerInventory.getStorageContents().length; ci++) {
-
-          final ItemStack shulkerStack = shulkerInventory.getItem(ci);
-          if(shulkerStack == null) {
-
-            continue;
-          }
-
-          if(provider.similar(stack, shulkerStack)) {
-
-            amount += shulkerStack.getAmount();
+      if(useShulker && item.getItemMeta() instanceof final BlockStateMeta meta
+         && meta.getBlockState() instanceof final ShulkerBox shulker) {
+        for(final ItemStack nested : shulker.getInventory().getStorageContents()) {
+          if(nested != null && provider.similar(stack, nested)) {
+            amount += nested.getAmount();
           }
         }
       }
 
       if(useBundles && item.getItemMeta() instanceof final BundleMeta bundle) {
-
-        for(final ItemStack bundleItem : bundle.getItems()) {
-
-          if(bundleItem == null) {
-
-            continue;
-          }
-
-          if(provider.similar(stack, bundleItem)) {
-
-            amount += bundleItem.getAmount();
+        for(final ItemStack nested : bundle.getItems()) {
+          if(nested != null && provider.similar(stack, nested)) {
+            amount += nested.getAmount();
           }
         }
       }
     }
+
     return amount;
   }
 
-  /**
-   * Takes a collection of items from an inventory.
-   *
-   * @param items      The collection of items to remove.
-   * @param inventory  The inventory to remove the items from.
-   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
-   *                   process.
-   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
-   */
   @Override
-  public void takeItems(final Collection<PaperItemStack> items, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
+  public void takeItems(final Collection<PaperItemStack> items, final Inventory inventory,
+                        final boolean useShulker, final boolean useBundles) {
+    final InventoryView<ItemStack> view = inventories.view(inventory);
 
-    items.forEach(itemStack->removeItem(itemStack, inventory, useShulker, useBundles));
+    for(final PaperItemStack item : items) {
+      if(item != null) {
+        removeItem(item, view, useShulker, useBundles);
+      }
+    }
+
+    inventories.apply(inventory, view.mutation());
   }
 
-  /**
-   * Adds a collection of net.tnemc.item stacks to an inventory, dropping them on the ground if it's
-   * a player inventory and overflow exists.
-   *
-   * @param items      The collection of items to add to the inventory.
-   * @param inventory  The inventory to add the collection of items to.
-   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
-   *                   process.
-   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
-   */
   @Override
-  public Collection<PaperItemStack> giveItems(final Collection<PaperItemStack> items, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
-
+  public Collection<PaperItemStack> giveItems(final Collection<PaperItemStack> items,
+                                               final Inventory inventory,
+                                               final boolean useShulker,
+                                               final boolean useBundles) {
+    final InventoryView<ItemStack> view = inventories.view(inventory);
     final Collection<PaperItemStack> leftOver = new ArrayList<>();
 
     for(final PaperItemStack item : items) {
-
       if(item == null) {
         continue;
       }
 
-      final Map<Integer, ItemStack> left = inventory.addItem(item.provider().locale(item, item.amount()));
-      if(left.isEmpty()) {
-        continue;
-      }
+      final ItemStack insertion = item.provider().locale(item, item.amount());
+      final int remaining = add(view, insertion);
 
-      for(final Map.Entry<Integer, ItemStack> entry : left.entrySet()) {
-        final ItemStack i = entry.getValue();
-
-        if(i == null || i.getType() == Material.AIR) {
-          continue;
-        }
-
-        leftOver.add(new PaperItemStack().of(i));
+      if(remaining > 0) {
+        final ItemStack remainder = insertion.clone();
+        remainder.setAmount(remaining);
+        leftOver.add(new PaperItemStack().of(remainder));
       }
     }
+
+    inventories.apply(inventory, view.mutation());
     return leftOver;
   }
 
-  /**
-   * Removes an ItemStack with a specific amount from an inventory.
-   *
-   * @param stack      The stack, with the correct amount, to remove.
-   * @param inventory  The inventory to return the net.tnemc.item stack from.
-   * @param useShulker A boolean flag indicating whether to include shulker boxes in the removal
-   *                   process.
-   * @param useBundles A boolean flag indicating whether to include bundles in the removal process.
-   *
-   * @return The remaining amount of items to remove.
-   */
-  @Override
-  public int removeItem(final PaperItemStack stack, final Inventory inventory, final boolean useShulker, final boolean useBundles) {
+  private int add(final InventoryView<ItemStack> view, final ItemStack insertion) {
+    int left = insertion.getAmount();
 
-    int left = stack.provider().locale(stack).clone().getAmount();
-
-    final ItemStack compare = stack.provider().locale(stack).clone();
-    compare.setAmount(1);
-
-    //TODO: improve this
-
-    final ItemProvider<ItemStack> provider = stack.provider();
-
-    for(int i = 0; i < inventory.getStorageContents().length; i++) {
-      if(left <= 0) break;
-
-      final ItemStack item = inventory.getItem(i);
-
-      if(item == null) continue;
-
-      if(provider.similar(stack, item)) {
-
-        if(item.getAmount() > left) {
-          item.setAmount(item.getAmount() - left);
-          inventory.setItem(i, item);
-          left = 0;
-          break;
-        }
-
-        if(item.getAmount() == left) {
-          inventory.setItem(i, null);
-          left = 0;
-          break;
-        }
-
-        left -= item.getAmount();
-        inventory.setItem(i, null);
+    // Fill compatible existing stacks first.
+    for(final InventorySlot<ItemStack> slot : view.slots()) {
+      if(left <= 0) {
+        break;
       }
 
-      if(useShulker && item.getItemMeta() instanceof final BlockStateMeta meta && meta.getBlockState() instanceof final ShulkerBox shulker) {
-
-
-        final Inventory shulkerInventory = shulker.getInventory();
-        for(int shulkerSlot = 0; shulkerSlot < shulkerInventory.getStorageContents().length; shulkerSlot++) {
-
-          if(left <= 0) break;
-
-          final ItemStack shulkerStack = shulkerInventory.getItem(shulkerSlot);
-          if(shulkerStack == null) {
-
-            continue;
-          }
-
-          if(!provider.similar(stack, shulkerStack)) {
-            continue;
-          }
-
-          if(shulkerStack.getAmount() > left) {
-
-
-            shulkerStack.setAmount(shulkerStack.getAmount() - left);
-            shulkerInventory.setItem(shulkerSlot, shulkerStack);
-            left = 0;
-            break;
-          }
-
-          if(shulkerStack.getAmount() == left) {
-            shulkerInventory.setItem(shulkerSlot, null);
-            left = 0;
-            break;
-          }
-
-          left -= shulkerStack.getAmount();
-          shulkerInventory.setItem(shulkerSlot, null);
-        }
-
-        shulker.update(true);
-        meta.setBlockState(shulker);
-        item.setItemMeta(meta);
-        inventory.setItem(i, item);
+      final ItemStack current = slot.item();
+      if(current == null || !current.isSimilar(insertion)) {
+        continue;
       }
 
-      if(useBundles && item.getItemMeta() instanceof final BundleMeta bundle) {
-
-        final List<ItemStack> items = new ArrayList<>(bundle.getItems());
-        final Iterator<ItemStack> it = items.iterator();
-        while(it.hasNext()) {
-
-          final ItemStack bundleStack = it.next();
-          if(bundleStack == null) {
-
-            continue;
-          }
-
-          if(!provider.similar(stack, bundleStack)) {
-            continue;
-          }
-
-          if(bundleStack.getAmount() > left) {
-
-
-            bundleStack.setAmount(bundleStack.getAmount() - left);
-            left = 0;
-            break;
-          }
-
-          if(bundleStack.getAmount() == left) {
-            it.remove();
-            left = 0;
-            break;
-          }
-
-          left -= bundleStack.getAmount();
-          it.remove();
-        }
-
-        bundle.setItems(items);
-        item.setItemMeta(bundle);
-        inventory.setItem(i, item);
+      final int maximum = Math.min(view.maxStackSize(), current.getMaxStackSize());
+      final int space = maximum - current.getAmount();
+      if(space <= 0) {
+        continue;
       }
+
+      final int moved = Math.min(space, left);
+      final ItemStack changed = current.clone();
+      changed.setAmount(current.getAmount() + moved);
+      slot.item(changed);
+      left -= moved;
     }
+
+    // Then occupy empty storage slots.
+    for(final InventorySlot<ItemStack> slot : view.slots()) {
+      if(left <= 0) {
+        break;
+      }
+      if(slot.item() != null) {
+        continue;
+      }
+
+      final int maximum = Math.min(view.maxStackSize(), insertion.getMaxStackSize());
+      final int moved = Math.min(maximum, left);
+      final ItemStack changed = insertion.clone();
+      changed.setAmount(moved);
+      slot.item(changed);
+      left -= moved;
+    }
+
     return left;
   }
 
-  /**
-   * Used to locate an inventory for a UUID identifier.
-   *
-   * @param identifier The identifier to use for the search.
-   * @param type       The inventory type to return.
-   *
-   * @return An optional containing the inventory if it works, otherwise false.
-   */
   @Override
-  public Optional<Inventory> inventory(final UUID identifier, final InventoryType type) {
+  public int removeItem(final PaperItemStack stack, final Inventory inventory,
+                        final boolean useShulker, final boolean useBundles) {
+    final InventoryView<ItemStack> view = inventories.view(inventory);
+    final int left = removeItem(stack, view, useShulker, useBundles);
+    inventories.apply(inventory, view.mutation());
+    return left;
+  }
 
-    final OfflinePlayer player = Bukkit.getOfflinePlayer(identifier);
-    if(player.isOnline() && player.getPlayer() != null) {
+  private int removeItem(final PaperItemStack stack, final InventoryView<ItemStack> view,
+                         final boolean useShulker, final boolean useBundles) {
+    int left = stack.amount();
+    final ItemProvider<ItemStack> provider = stack.provider();
 
-      if(type.equals(InventoryType.ENDER_CHEST)) {
-        return Optional.of(player.getPlayer().getEnderChest());
-      } else {
-        return Optional.of(player.getPlayer().getInventory());
+    for(final InventorySlot<ItemStack> slot : view.slots()) {
+      if(left <= 0) {
+        break;
+      }
+
+      final ItemStack item = slot.item();
+      if(item == null) {
+        continue;
+      }
+
+      if(provider.similar(stack, item)) {
+        final int removed = Math.min(left, item.getAmount());
+        left -= removed;
+
+        if(removed == item.getAmount()) {
+          slot.item(null);
+          continue;
+        }
+
+        final ItemStack changed = item.clone();
+        changed.setAmount(item.getAmount() - removed);
+        slot.item(changed);
+        continue;
+      }
+
+      final ItemStack changed = item.clone();
+      boolean dirty = false;
+
+      if(useShulker && changed.getItemMeta() instanceof final BlockStateMeta meta
+         && meta.getBlockState() instanceof final ShulkerBox shulker) {
+        final Inventory nested = shulker.getInventory();
+
+        for(int nestedSlot = 0; nestedSlot < nested.getStorageContents().length && left > 0; nestedSlot++) {
+          final ItemStack nestedItem = nested.getItem(nestedSlot);
+          if(nestedItem == null || !provider.similar(stack, nestedItem)) {
+            continue;
+          }
+
+          final int removed = Math.min(left, nestedItem.getAmount());
+          left -= removed;
+
+          if(removed == nestedItem.getAmount()) {
+            nested.setItem(nestedSlot, null);
+          } else {
+            final ItemStack nestedChanged = nestedItem.clone();
+            nestedChanged.setAmount(nestedItem.getAmount() - removed);
+            nested.setItem(nestedSlot, nestedChanged);
+          }
+          dirty = true;
+        }
+
+        if(dirty) {
+          meta.setBlockState(shulker);
+          changed.setItemMeta(meta);
+        }
+      }
+
+      if(left > 0 && useBundles && changed.getItemMeta() instanceof final BundleMeta bundle) {
+        final List<ItemStack> contents = new ArrayList<>(bundle.getItems());
+        final Iterator<ItemStack> iterator = contents.iterator();
+        boolean bundleDirty = false;
+
+        while(iterator.hasNext() && left > 0) {
+          final ItemStack nestedItem = iterator.next();
+          if(nestedItem == null || !provider.similar(stack, nestedItem)) {
+            continue;
+          }
+
+          final int removed = Math.min(left, nestedItem.getAmount());
+          left -= removed;
+
+          if(removed == nestedItem.getAmount()) {
+            iterator.remove();
+          } else {
+            nestedItem.setAmount(nestedItem.getAmount() - removed);
+          }
+          bundleDirty = true;
+        }
+
+        if(bundleDirty) {
+          bundle.setItems(contents);
+          changed.setItemMeta(bundle);
+          dirty = true;
+        }
+      }
+
+      if(dirty) {
+        slot.item(changed);
       }
     }
+
+    return left;
+  }
+
+  @Override
+  public Optional<Inventory> inventory(final UUID identifier, final InventoryType type) {
+    final OfflinePlayer player = Bukkit.getOfflinePlayer(identifier);
+
+    if(player.isOnline() && player.getPlayer() != null) {
+      if(type.equals(InventoryType.ENDER_CHEST)) {
+        return Optional.of(player.getPlayer().getEnderChest());
+      }
+      return Optional.of(player.getPlayer().getInventory());
+    }
+
     return Optional.empty();
   }
 }

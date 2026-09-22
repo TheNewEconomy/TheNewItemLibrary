@@ -109,6 +109,7 @@ import net.tnemc.item.component.impl.UseCooldownComponent;
 import net.tnemc.item.component.impl.WeaponComponent;
 import net.tnemc.item.component.impl.WritableBookContentComponent;
 import net.tnemc.item.component.impl.WrittenBookContentComponent;
+import net.tnemc.item.key.ItemKey;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.ItemProvider;
 import net.tnemc.item.providers.SkullProfile;
@@ -350,7 +351,7 @@ public class BukkitItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public BukkitItemStack material(final String material) {
 
-    this.material = material;
+    this.material = ItemKey.of(material).toString();
     this.dirty = true;
     return this;
   }

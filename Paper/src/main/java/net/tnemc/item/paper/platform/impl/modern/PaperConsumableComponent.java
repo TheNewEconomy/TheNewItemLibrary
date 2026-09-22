@@ -109,14 +109,8 @@ public class PaperConsumableComponent extends ConsumableComponent<PaperItemStack
       component.sound(consumable.sound().asString());
     }
 
-    component.effects.clear();
-    consumable.consumeEffects().forEach(effect->{
-      final ComponentEffect componentEffect = PaperItemPlatform.instance().converter().convert(effect, ComponentEffect.class);
-
-      if (componentEffect != null) {
-        component.effects.add(componentEffect);
-      }
-    });
+    component.effects().clear();
+    consumable.consumeEffects().forEach(effect->component.effects.add(PaperItemPlatform.instance().converter().convert(effect, ComponentEffect.class)));
 
     serialized.applyComponent(component);
     return serialized;

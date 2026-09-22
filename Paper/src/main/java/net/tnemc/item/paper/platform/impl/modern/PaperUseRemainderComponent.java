@@ -69,7 +69,7 @@ public class PaperUseRemainderComponent extends UseRemainderComponent<PaperItemS
       return item;
     }
 
-    item.setData(DataComponentTypes.USE_REMAINDER, UseRemainder.useRemainder(component.item().provider().locale(serialized)));
+    item.setData(DataComponentTypes.USE_REMAINDER, UseRemainder.useRemainder(component.item().provider().locale(component.item(), component.item().amount())));
     return item;
   }
 

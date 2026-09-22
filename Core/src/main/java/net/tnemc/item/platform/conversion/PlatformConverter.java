@@ -18,8 +18,12 @@ package net.tnemc.item.platform.conversion;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -48,6 +52,10 @@ public class PlatformConverter {
 
     //System.out.println("Register conversion from " + inputClass.getName() + " to " + outputClass.getName());
 
+    Objects.requireNonNull(inputClass, "inputClass");
+    Objects.requireNonNull(outputClass, "outputClass");
+    Objects.requireNonNull(converter, "converter");
+
     registry.computeIfAbsent(inputClass, k->new HashMap<>())
             .put(outputClass, input->converter.apply(inputClass.cast(input)));
   }
@@ -68,29 +76,50 @@ public class PlatformConverter {
    */
   public <I, O> O convert(final I input, final Class<O> outputClass) {
 
-    //System.out.println("Convert " + input.getClass().getName() + " to " + outputClass.getName());
-
     if(input == null) {
-      //System.out.println("Input cannot be null");
       throw new IllegalArgumentException("Input cannot be null");
     }
+    Objects.requireNonNull(outputClass, "outputClass");
 
     final Class<?> inputClass = input.getClass();
-    final Function<Object, Object> converter = registry.getOrDefault(inputClass, Map.of()).get(outputClass);
+    final Function<Object, Object> converter = findConversion(inputClass, outputClass);
 
     if(converter != null) {
-
       return outputClass.cast(converter.apply(input));
     }
 
-    for(final Map.Entry<Class<?>, Map<Class<?>, Function<Object, Object>>> entry : registry.entrySet()) {
-      if(entry.getKey().isAssignableFrom(inputClass)) {
+    if(outputClass.isInstance(input)) {
+      return outputClass.cast(input);
+    }
 
-        return outputClass.cast(entry.getValue().get(outputClass).apply(input));
+    throw new IllegalArgumentException("No conversion registered from " + inputClass.getName() + " to " + outputClass.getName());
+  }
+
+  /**
+   * Finds the best registered conversion for the requested input/output pair.
+   * Exact input mappings win. For inherited mappings, the most-specific registered
+   * input type wins. Unrelated interfaces are ordered by class name so selection
+   * is stable across JVM runs.
+   */
+  private Function<Object, Object> findConversion(final Class<?> inputClass, final Class<?> outputClass) {
+
+    final Function<Object, Object> exact = registry.getOrDefault(inputClass, Map.of()).get(outputClass);
+    if(exact != null) {
+
+      return exact;
+    }
+
+    final List<Class<?>> candidates = new ArrayList<>();
+    for(final Map.Entry<Class<?>, Map<Class<?>, Function<Object, Object>>> entry : registry.entrySet()) {
+
+      if(entry.getKey().isAssignableFrom(inputClass) && entry.getValue().containsKey(outputClass)) {
+
+        candidates.add(entry.getKey());
       }
     }
 
-    //System.out.println("No conversion registered from " + inputClass.getName() + " to " + outputClass.getName());
-    throw new IllegalArgumentException("No conversion registered from " + inputClass.getName() + " to " + outputClass.getName());
+    candidates.removeIf(candidate->candidates.stream().anyMatch(other->candidate != other && candidate.isAssignableFrom(other)));
+
+    return candidates.stream().min(Comparator.comparing(Class::getName)).map(candidate->registry.get(candidate).get(outputClass)).orElse(null);
   }
 }

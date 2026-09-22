@@ -73,7 +73,7 @@ public class PaperChargedProjectilesComponent extends ChargedProjectilesComponen
     }
 
     final List<ItemStack> projectiles = new ArrayList<>();
-    componentOptional.get().items().forEach((slot, stack)->projectiles.add(stack.provider().locale(serialized)));
+    componentOptional.get().items().forEach((slot, stack)->projectiles.add(stack.provider().locale(stack, stack.amount())));
 
     item.setData(DataComponentTypes.CHARGED_PROJECTILES, ChargedProjectiles.chargedProjectiles(projectiles));
     return item;

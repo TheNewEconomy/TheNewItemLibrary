@@ -72,7 +72,7 @@ public class PaperOldBundleComponent extends BundleComponent<PaperItemStack, Ite
 
       if(item.hasItemMeta() && item.getItemMeta() instanceof final BundleMeta meta) {
 
-        componentOptional.get().items.forEach((slot, stack)->meta.addItem(stack.provider().locale(serialized)));
+        componentOptional.get().items.forEach((slot, stack)->meta.addItem(stack.provider().locale(stack, stack.amount())));
 
         item.setItemMeta(meta);
       }
