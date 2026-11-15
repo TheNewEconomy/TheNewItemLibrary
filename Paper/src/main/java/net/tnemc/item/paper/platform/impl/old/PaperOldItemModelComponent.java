@@ -81,7 +81,7 @@ public class PaperOldItemModelComponent extends ItemModelComponent<PaperItemStac
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.getItemModel() != null) {
+    if(meta != null && meta.hasItemModel() && meta.getItemModel() != null) {
 
       this.model = meta.getItemModel().toString();
     }

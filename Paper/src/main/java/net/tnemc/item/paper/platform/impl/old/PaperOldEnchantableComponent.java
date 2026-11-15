@@ -87,7 +87,7 @@ public class PaperOldEnchantableComponent extends EnchantableComponent<PaperItem
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null) {
+    if(meta != null && meta.hasEnchantable()) {
 
       this.value = item.getItemMeta().getEnchantable();
     }

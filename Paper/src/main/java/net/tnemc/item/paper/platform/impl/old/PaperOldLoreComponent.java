@@ -85,7 +85,7 @@ public class PaperOldLoreComponent extends LoreComponent<PaperItemStack, ItemSta
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
     final ItemMeta meta = item.getItemMeta();
-    if(meta != null && meta.getLore() != null) {
+    if(meta != null && meta.hasLore() && meta.getLore() != null) {
 
       lore.clear();
 

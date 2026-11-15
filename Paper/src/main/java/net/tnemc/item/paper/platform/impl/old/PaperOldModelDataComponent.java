@@ -108,7 +108,7 @@ public class PaperOldModelDataComponent extends ModelDataComponent<PaperItemStac
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    if(item.hasItemMeta()) {
+    if(item.hasItemMeta() && item.getItemMeta().hasCustomModelDataComponent()) {
 
       final CustomModelDataComponent dataComponent = item.getItemMeta().getCustomModelDataComponent();
       for(final Color color : dataComponent.getColors()) {
