@@ -110,10 +110,16 @@ import net.tnemc.item.paper.platform.impl.old.PaperOldAttributeModifiersComponen
 import net.tnemc.item.paper.platform.impl.old.PaperOldBundleComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldContainerComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldCustomNameComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldDamageComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldDyedColorComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantableComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldEnchantmentsComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldItemNameComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldLoreComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldMaxDamageComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldMaxStackSizeComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldModelDataLegacyComponent;
+import net.tnemc.item.paper.platform.impl.old.PaperOldProfileComponent;
 import net.tnemc.item.paper.platform.impl.old.PaperOldTooltipStyleComponent;
 import net.tnemc.item.persistent.PersistentDataHolder;
 import net.tnemc.item.providers.ItemProvider;
@@ -252,6 +258,10 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
       }
     }
 
+    //System.out.println("Material: " + material);
+    //System.out.println("Serialized null: " + (localeStack == null));
+    //System.out.println("Serialized null: " + (localeStack == null));
+
     return PaperItemPlatform.instance().serializer(this.localeStack, this);
   }
 
@@ -301,6 +311,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack loreComponent(final List<Component> lore) {
 
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldLoreComponent(lore));
+      return this;
+    }
+
     applyComponent(new PaperLoreComponent(lore));
     return this;
   }
@@ -315,6 +330,13 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack enchant(final String enchantment, final int level) {
+
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldEnchantmentsComponent(new HashMap<>() {{
+        put(enchantment, level);
+      }}));
+      return this;
+    }
 
     applyComponent(new PaperEnchantmentsComponent(new HashMap<>() {{
       put(enchantment, level);
@@ -331,6 +353,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack enchant(final Map<String, Integer> enchantments) {
+
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldEnchantmentsComponent(enchantments));
+      return this;
+    }
 
     applyComponent(new PaperEnchantmentsComponent(enchantments));
     return this;
@@ -350,6 +377,12 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
     for(final String enchantment : enchantments) {
       enchants.put(enchantment, 1);
     }
+
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldEnchantmentsComponent(enchants));
+      return this;
+    }
+
     applyComponent(new PaperEnchantmentsComponent(enchants));
     return this;
   }
@@ -867,6 +900,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack damage(final int damage) {
 
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldDamageComponent(damage));
+      return this;
+    }
+
     applyComponent(new PaperDamageComponent(damage));
     this.dirty = true;
     return this;
@@ -916,6 +954,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack dyedColor(final int rgb) {
+
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldDyedColorComponent(rgb));
+      return this;
+    }
 
     applyComponent(new PaperDyedColorComponent(rgb));
     this.dirty = true;
@@ -967,6 +1010,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack enchantments(final Map<String, Integer> levels) {
+
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldEnchantmentsComponent(levels));
+      return this;
+    }
 
     applyComponent(new PaperEnchantmentsComponent(levels));
     this.dirty = true;
@@ -1152,6 +1200,10 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
   @Override
   public PaperItemStack itemModel(final String model) {
 
+    if (!PaperItemPlatform.instance().useModern()) {
+      return this;
+    }
+
     applyComponent(new PaperItemModelComponent(model));
     this.dirty = true;
     return this;
@@ -1169,6 +1221,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack itemName(final Component itemName) {
+
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldItemNameComponent(itemName));
+      return this;
+    }
 
     applyComponent(new PaperItemNameComponent(itemName));
     this.dirty = true;
@@ -1223,6 +1280,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack lore(final List<Component> lore) {
+
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldLoreComponent(lore));
+      return this;
+    }
 
     applyComponent(new PaperLoreComponent(lore));
     this.dirty = true;
@@ -1436,6 +1498,11 @@ public class PaperItemStack implements AbstractItemStack<ItemStack> {
    */
   @Override
   public PaperItemStack profile(final SkullProfile profile) {
+
+    if (!PaperItemPlatform.instance().useModern()) {
+      applyComponent(new PaperOldProfileComponent(profile));
+      return this;
+    }
 
     applyComponent(new PaperProfileComponent(profile));
     return this;

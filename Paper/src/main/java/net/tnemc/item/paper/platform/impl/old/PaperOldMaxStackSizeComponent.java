@@ -67,6 +67,10 @@ public class PaperOldMaxStackSizeComponent extends MaxStackSizeComponent<PaperIt
 
     if(componentOptional.isPresent()) {
 
+      if (componentOptional.get().maxStackSize <= 0) {
+        return item;
+      }
+
       final ItemMeta meta = item.getItemMeta();
       if(meta != null) {
 

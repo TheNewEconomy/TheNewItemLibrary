@@ -18,6 +18,7 @@ package net.tnemc.item.paper.platform.impl.old;
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.tnemc.item.component.impl.ItemNameComponent;
 import net.tnemc.item.paper.PaperItemStack;
@@ -33,6 +34,15 @@ import java.util.Optional;
  * @since 0.2.0.0
  */
 public class PaperOldItemNameComponent extends ItemNameComponent<PaperItemStack, ItemStack> {
+
+  public PaperOldItemNameComponent() {
+
+  }
+
+  public PaperOldItemNameComponent(final Component itemName) {
+
+    super(itemName);
+  }
 
   /**
    * @param version the version being used when this check is called.

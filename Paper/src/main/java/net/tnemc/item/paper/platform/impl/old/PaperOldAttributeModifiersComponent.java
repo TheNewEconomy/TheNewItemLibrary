@@ -111,7 +111,7 @@ public class PaperOldAttributeModifiersComponent extends AttributeModifiersCompo
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    return null;
+    return serialized;
   }
 
   /**

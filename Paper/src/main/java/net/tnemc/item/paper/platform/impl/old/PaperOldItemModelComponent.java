@@ -86,6 +86,8 @@ public class PaperOldItemModelComponent extends ItemModelComponent<PaperItemStac
       this.model = meta.getItemModel().toString();
     }
 
+    //System.out.println("Serialized null: " + (serialized == null));
+
     serialized.applyComponent(this);
     return serialized;
   }
