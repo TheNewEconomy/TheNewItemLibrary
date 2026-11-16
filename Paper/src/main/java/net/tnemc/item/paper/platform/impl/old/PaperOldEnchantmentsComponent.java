@@ -35,6 +35,15 @@ import java.util.Optional;
  */
 public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperItemStack, ItemStack> {
 
+  public PaperOldEnchantmentsComponent() {
+
+  }
+
+  public PaperOldEnchantmentsComponent(final Map<String, Integer> levels) {
+
+    super(levels);
+  }
+
   /**
    * @param version the version being used when this check is called.
    *
@@ -84,12 +93,14 @@ public class PaperOldEnchantmentsComponent extends EnchantmentsComponent<PaperIt
   @Override
   public PaperItemStack serialize(final ItemStack item, final PaperItemStack serialized) {
 
-    for(final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
+    if(serialized != null) {
+      for(final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
 
-      levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
+        levels.put(PaperItemPlatform.instance().converter().convert(entry.getKey(), String.class), entry.getValue());
+      }
+
+      serialized.applyComponent(this);
     }
-
-    serialized.applyComponent(this);
     return serialized;
   }
 

@@ -597,7 +597,13 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
    */
   public I serializer(@NotNull final S item, @NotNull I serialized) {
 
+    //System.out.println("Serializer null0: " + (serialized == null));
+
     for(final ItemSerializer<I, S> serializer : serializers.values()) {
+
+      //System.out.println("Serializer ready to apply: " + serializer.identifier());
+
+      //System.out.println("Serializer null1: " + (serialized == null));
 
       if(serializer.enabled(version())) {
 
@@ -613,6 +619,8 @@ public abstract class ItemPlatform<I extends AbstractItemStack<S>, S, U> {
             continue;
           }
         }
+
+        //System.out.println("Serializer null2: " + (serialized == null));
 
         //System.out.println("Serializer applies");
 

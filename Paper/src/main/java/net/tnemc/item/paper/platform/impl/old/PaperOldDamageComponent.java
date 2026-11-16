@@ -36,6 +36,28 @@ import java.util.Optional;
 public class PaperOldDamageComponent extends DamageComponent<PaperItemStack, ItemStack> {
 
   /**
+   * Represents a component that manages damage information. This component stores and provides
+   * methods for handling damage values.
+   *
+   * @since 0.2.0.0
+   */
+  public PaperOldDamageComponent() {
+
+  }
+
+  /**
+   * Constructs a new DamageComponent with the specified damage amount.
+   *
+   * @param damage the amount of damage for the component
+   *
+   * @since 0.2.0.0
+   */
+  public PaperOldDamageComponent(final int damage) {
+
+    super(damage);
+  }
+
+  /**
    * @param version the version being used when this check is called.
    *
    * @return true if this check is enabled for the version, otherwise false
